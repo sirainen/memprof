@@ -8,6 +8,7 @@ lib_LTLIBRARIES = libmemintercept.la
 
 memprof_SOURCES =	        \
 	bfdutils.c		\
+	gui.h			\
 	inode.c			\
 	leakdetect.c		\
 	leakdetect.h		\
@@ -18,7 +19,8 @@ memprof_SOURCES =	        \
 	profile.c		\
 	profile.h		\
 	server.c		\
-	server.h
+	server.h		\
+	tree.c
 
 memprof_LDADD = $(MEMPROF_LIBS)
 

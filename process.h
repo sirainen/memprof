@@ -63,6 +63,7 @@ struct _MPProcess
 	MPServer *server;
 	
 	MPProcess *clone_of;
+	MPProcess *parent;
 	guint seqno;	
 	
 	guint bytes_used;
@@ -95,12 +96,15 @@ void        process_set_follow_fork (MPProcess          *process,
 void        process_set_follow_exec (MPProcess          *process,
 				     gboolean            follow_exec);
 
-void process_run        (MPProcess        *process,
-			 const char       *path,
-			 char            **args);
-void process_exec_reset (MPProcess        *process);
-void process_set_status (MPProcess        *process,
-			 MPProcessStatus   status);
+void  process_run             (MPProcess        *process,
+			       const char       *path,
+			       char            **args);
+void  process_detatch         (MPProcess        *process);
+void  process_exec_reset      (MPProcess        *process);
+void  process_set_status      (MPProcess        *process,
+			       MPProcessStatus   status);
+char *process_get_status_text (MPProcess        *process);
+char *process_get_cmdline     (MPProcess        *process);
 
 void        process_sections        (MPProcess          *process,
 				     SectionFunc         func,

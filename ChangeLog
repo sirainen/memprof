@@ -1,3 +1,11 @@
+Tue May 23 16:40:17 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* process.[ch]: Add functions to get the command line and 
+	status of the process.
+
+	* Makefile.am tree.c gui.h memprof.glade: Add tree window to display
+	all current traced processes.
+
 Tue May 23 14:19:44 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* server.[ch] process.[ch]: Add process and server GtkObject's
@@ -6,7 +14,7 @@ Tue May 23 14:19:44 2000  Owen Taylor  <otaylor@redhat.com>
 	* memintercept.[ch] process.c: Trap _exit() and wait for a
 	response from the server. Add a MI_EXIT command.
 
-	* inode.c: Separate out the inode-finding code from process.c
+	* inode.c memprof.h: Separate out the inode-finding code from process.c
 	
 Tue May 23 05:05:10 2000  Owen Taylor  <otaylor@redhat.com>
 

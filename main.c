@@ -29,12 +29,11 @@
 #include <gnome.h>
 
 #include "leakdetect.h"
+#include "gui.h"
 #include "memprof.h"
 #include "process.h"
 #include "profile.h"
 #include "server.h"
-
-typedef struct _ProcessWindow ProcessWindow;
 
 struct _ProcessWindow {
 	MPProcess *process;
@@ -152,37 +151,6 @@ usage_canvas_size_allocate (GtkWidget     *widget,
 			    GtkAllocation *allocation,
 			    ProcessWindow *pwin)
 {
-	if (!pwin->usage_frame) {
-		pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-							      gnome_canvas_rect_get_type (),
-							      "x1", 0.0,
-							      "y1", 0.0,
-							      "outline_color", "black", 
-							      "fill_color", "blue",
-							      NULL);
-		pwin->usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-								 gnome_canvas_rect_get_type (),
-								 "x1", 0.0,
-								 "y1", 0.0,
-								 "outline_color", "black", 
-								 "fill_color", "yellow",
-								 NULL);
-		pwin->usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-							 gnome_canvas_rect_get_type (),
-							 "x1", 0.0,
-							 "y1", 0.0,
-							 "outline_color", "black", 
-							 "fill_color", "red",
-							 NULL);
-		pwin->usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-							   gnome_canvas_rect_get_type (),
-							   "x1", 0.0,
-							   "y1", 0.0,
-							   "outline_color", "black", 
-							   "fill_color", NULL,
-							   NULL);
-	}
-
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (widget),
 					0, 0,
 					allocation->width, allocation->height);
@@ -627,8 +595,8 @@ void
 close_cb (GtkWidget *widget)
 {
 	ProcessWindow *pwin = pwin_from_widget (widget);
-       
-	process_window_destroy (pwin);
+
+	hide_and_check_quit (pwin->main_window);
 }
 
 void
@@ -650,30 +618,18 @@ exit_cb (GtkWidget *widget)
 static void
 status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 {
-	const char *status = ""; /* Quiet GCC */
+	char *status = ""; /* Quiet GCC */
 	char *title;
+	char *cmdline;
 
-	switch (process->status) {
-	case MP_PROCESS_INIT:
-		status = _("Initial");
-		break;
-	case MP_PROCESS_STARTING:
-		status = _("Starting");
-		break;
-	case MP_PROCESS_RUNNING:
-		status = _("Running");
-		break;
-	case MP_PROCESS_EXITING:
-		status = _("Exiting");
-		break;
-	case MP_PROCESS_DEFUNCT:
-		status = _("Defunct");
-		break;
-	}
-
-	title = g_strdup_printf ("%s - %d - %s", _("MemProf"), process->pid, status);
+	status = process_get_status_text (process);
+	cmdline = process_get_cmdline (process);
+	
+	title = g_strdup_printf ("%s - %s (%d) - %s", _("MemProf"), cmdline, process->pid, status);
 	gtk_window_set_title (GTK_WINDOW (pwin->main_window), title);
 	g_free (title);
+	g_free (status);
+	g_free (cmdline);
 }
 
 static void
@@ -691,6 +647,8 @@ init_process (ProcessWindow *pwin, MPProcess *process)
 
 	gtk_signal_connect (GTK_OBJECT (process), "status_changed",
 			    GTK_SIGNAL_FUNC (status_changed_cb), pwin);
+
+	tree_window_add (pwin);
 }
 
 static void
@@ -699,7 +657,8 @@ process_created_cb (MPServer *server, MPProcess *process)
 	ProcessWindow *pwin = process_window_new ();
 	
 	init_process (pwin, process);
-	gtk_widget_show (pwin->main_window);
+
+	tree_window_show ();
 }
 
 static gboolean
@@ -776,6 +735,12 @@ run_cb (GtkWidget *widget)
        }
 
        gtk_widget_destroy (run_dialog);
+}
+
+void
+process_tree_cb (GtkWidget *widget)
+{
+	tree_window_show ();
 }
 
 void
@@ -1195,13 +1160,6 @@ process_window_destroy (ProcessWindow *pwin)
 	gtk_widget_destroy (pwin->main_window);
 }
 
-static gboolean
-delete_cb (GtkWidget *widget, GdkEvent *event, ProcessWindow *pwin)
-{
-	process_window_destroy (pwin);
-	return TRUE;
-}
-
 static ProcessWindow *
 process_window_new (void)
 {
@@ -1226,7 +1184,7 @@ process_window_new (void)
        pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
 
        gtk_signal_connect (GTK_OBJECT (pwin->main_window), "delete_event",
-			   GTK_SIGNAL_FUNC (delete_cb), pwin);
+			   GTK_SIGNAL_FUNC (hide_and_check_quit), pwin);
 			   
        
        gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 400, 600);
@@ -1284,6 +1242,35 @@ process_window_new (void)
        set_white_bg (pwin->usage_canvas);
        gtk_signal_connect (GTK_OBJECT (pwin->usage_canvas), "size_allocate",
 			   GTK_SIGNAL_FUNC (usage_canvas_size_allocate), pwin);
+
+       pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+						     gnome_canvas_rect_get_type (),
+						     "x1", 0.0,
+						     "y1", 0.0,
+						     "outline_color", "black", 
+						     "fill_color", "blue",
+						     NULL);
+       pwin->usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+							gnome_canvas_rect_get_type (),
+							"x1", 0.0,
+							"y1", 0.0,
+							"outline_color", "black", 
+							"fill_color", "yellow",
+							NULL);
+       pwin->usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+						     gnome_canvas_rect_get_type (),
+						     "x1", 0.0,
+						     "y1", 0.0,
+						     "outline_color", "black", 
+						     "fill_color", "red",
+						     NULL);
+       pwin->usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+						  gnome_canvas_rect_get_type (),
+						  "x1", 0.0,
+						  "y1", 0.0,
+						  "outline_color", "black", 
+						  "fill_color", NULL,
+						  NULL);
               
        vpaned = glade_xml_get_widget (xml, "profile-vpaned");
        gtk_paned_set_position (GTK_PANED (vpaned), 150);
@@ -1350,3 +1337,39 @@ main(int argc, char **argv)
 
        return 0;
 }
+
+MPProcess *
+process_window_get_process (ProcessWindow *pwin)
+{
+	return pwin->process;
+}
+
+void
+process_window_show_hide (ProcessWindow *pwin)
+{
+	if (!GTK_WIDGET_VISIBLE (pwin->main_window))
+		gtk_widget_show (pwin->main_window);
+	else {
+		hide_and_check_quit (pwin->main_window);
+	}
+}
+
+gboolean
+hide_and_check_quit (GtkWidget *window)
+{
+	GList *toplevels;
+	
+	gtk_widget_hide (window);
+
+	toplevels = gtk_container_get_toplevels ();
+	while (toplevels) {
+		if (GTK_WIDGET_VISIBLE (toplevels->data))
+			return TRUE;
+		toplevels = toplevels->next;
+	}
+
+	gtk_main_quit ();
+	return TRUE;
+}
+
+

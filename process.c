@@ -19,6 +19,8 @@
  */
 /*====*/
 
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -419,6 +421,8 @@ process_duplicate (MPProcess *process)
 	new_process->n_allocations = process->n_allocations;
 	new_process->seqno = process->seqno;
 
+	new_process->parent = process;
+
 	return new_process;
 }
 
@@ -755,4 +759,56 @@ process_set_status (MPProcess *process, MPProcessStatus status)
 		process->status = status;
 		gtk_signal_emit (GTK_OBJECT (process), process_signals[STATUS_CHANGED]);
 	}
+}
+
+char *
+process_get_status_text (MPProcess *process)
+{
+	char *status = "";
+	
+	switch (process->status) {
+	case MP_PROCESS_INIT:
+		status = _("Initial");
+		break;
+	case MP_PROCESS_STARTING:
+		status = _("Starting");
+		break;
+	case MP_PROCESS_RUNNING:
+		status = _("Running");
+		break;
+	case MP_PROCESS_EXITING:
+		status = _("Exiting");
+		break;
+	case MP_PROCESS_DEFUNCT:
+		status = _("Defunct");
+		break;
+	}
+
+	return g_strdup (status);
+}
+
+char *
+process_get_cmdline (MPProcess *process)
+{
+	char *fname;
+	char *result;
+	char *tmp;
+	int n = 0;
+	FILE *in = NULL;
+
+	fname = g_strdup_printf ("/proc/%d/cmdline", process->pid);
+	in = fopen (fname, "r");
+	if (!in) {
+		g_warning ("Can't open %s\n", fname);
+		return g_strdup ("");
+	}
+	g_free (fname);
+
+	getline (&tmp, &n, in);
+	result = g_strdup (tmp);
+	free (tmp);
+
+	fclose (in);
+
+	return result;
 }

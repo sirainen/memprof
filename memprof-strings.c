@@ -6,6 +6,7 @@
 
 gchar *s = N_("MemProf");
 gchar *s = N_("_Run...");
+gchar *s = N_("Process _Tree");
 gchar *s = N_("Generate Profile");
 gchar *s = N_("Generate Leak Info");
 gchar *s = N_("Save Profile...");
@@ -55,8 +56,12 @@ gchar *s = N_("Profile Options");
 gchar *s = N_("Command to run on double click in stack trace:");
 gchar *s = N_("Leak Detection Options");
 gchar *s = N_("Adding Skip Function");
-gchar *s = N_("Enter the name of a function to skip when computing  profiles");
 gchar *s = N_("Add");
+gchar *s = N_("Enter the name of a function to skip when computing  profiles");
 gchar *s = N_("Run Executable");
-gchar *s = N_("Enter pathname to a executable");
 gchar *s = N_("Run");
+gchar *s = N_("Enter pathname to a executable");
+gchar *s = N_("MemProf - Processes");
+gchar *s = N_("PID");
+gchar *s = N_("Command Line");
+gchar *s = N_("Status");
