@@ -640,11 +640,22 @@ control_func (GIOChannel  *source,
 	}
 
 	switch (info.operation) {
-	case MI_NEW:
 	case MI_FORK:
+		parent_process = process_table_find (info.fork.pid);
+		if (parent_process && !parent_process->follow_fork)
+			goto out; /* Return negative response */
+
+		/* Fall through */
+	case MI_NEW:
 		process = process_table_find (info.fork.new_pid);
-		if (process)
-			process_exec_reset (process);
+		if (process) {
+			if (process->follow_exec) {
+				process = (*create_func) (NULL, info.fork.new_pid);
+				process_table_add (process); /* Overwrites old process */
+				
+			} else
+				process_exec_reset (process);
+		}
 
 		if (!process) {
 			parent_process = process_table_find (info.fork.pid);
@@ -682,7 +693,6 @@ control_func (GIOChannel  *source,
 
  out:
 	if (newfd >= 0) {
-		response = 1;
 		write (newfd, &response, 1);
 		if (!response)
 			close (newfd);
@@ -969,8 +979,25 @@ process_new (void)
 	process->seqno = 0;
 
 	process->command_queue = NULL;
+
+	process->follow_fork = FALSE;
+	process->follow_exec = FALSE;
 	
 	return process;
+}
+
+void
+process_set_follow_fork (MPProcess *process,
+			 gboolean   follow_fork)
+{
+	process->follow_fork = follow_fork;
+}
+
+void
+process_set_follow_exec (MPProcess *process,
+			 gboolean   follow_exec)
+{
+	process->follow_exec = follow_exec;
 }
 
 void

@@ -87,6 +87,8 @@ static gboolean default_follow_exec = FALSE;
 
 char *stack_command;
 
+GList *process_windows = NULL;
+
 
 /************************************************************
  * Status Page 
@@ -651,6 +653,9 @@ create_child_process (MPProcess *parent_process, pid_t pid)
 	else
 		pwin->process = process_new ();
 
+	process_set_follow_fork (pwin->process, pwin->follow_fork);
+	process_set_follow_exec (pwin->process, pwin->follow_exec);
+	
 	pwin->process->pid = pid;
 	
 	pwin->status_update_timeout =
@@ -676,6 +681,8 @@ run_file (ProcessWindow *pwin, char **args)
 	
 	if (path) {
 		pwin->process = process_new ();
+		process_set_follow_fork (pwin->process, pwin->follow_fork);
+		process_set_follow_exec (pwin->process, pwin->follow_exec);
 		process_run (pwin->process, path, args);
 		
 		if (!pwin->status_update_timeout)
@@ -1047,12 +1054,17 @@ follow_fork_cb (GtkWidget *widget)
 {
        ProcessWindow *pwin = pwin_from_widget (widget);
        pwin->follow_fork = GTK_CHECK_MENU_ITEM (widget)->active;
+       if (pwin->process)
+	       process_set_follow_fork (pwin->process, pwin->follow_fork);
 }
 
 void
 follow_exec_cb (GtkWidget *widget)
 {
        ProcessWindow *pwin = pwin_from_widget (widget);
+       pwin->follow_exec = GTK_CHECK_MENU_ITEM (widget)->active;
+       if (pwin->process)
+	       process_set_follow_exec (pwin->process, pwin->follow_exec);
 }
 
 void
@@ -1137,6 +1149,10 @@ process_window_free (ProcessWindow *pwin)
 	if (pwin->profile)
 		profile_free (pwin->profile);
 
+	process_windows = g_slist_remove (process_windows, pwin);
+	if (!process_windows)
+		gtk_main_quit ();
+	
 	g_free (pwin);
 }
 
@@ -1150,6 +1166,13 @@ process_window_destroy (ProcessWindow *pwin)
 	gtk_widget_destroy (pwin->main_window);
 }
 
+static gboolean
+delete_cb (GtkWidget *widget, GdkEvent *event, ProcessWindow *pwin)
+{
+	process_window_destroy (pwin);
+	return TRUE;
+}
+
 static ProcessWindow *
 process_window_new (void)
 {
@@ -1159,6 +1182,7 @@ process_window_new (void)
        GtkWidget *menuitem;
 
        pwin = g_new0 (ProcessWindow, 1);
+       process_windows = g_slist_prepend (process_windows, pwin);
 
        pwin->process = NULL;
        pwin->profile = NULL;
@@ -1171,6 +1195,10 @@ process_window_new (void)
        xml = glade_xml_new (glade_file, "MainWindow");
 
        pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
+
+       gtk_signal_connect (GTK_OBJECT (pwin->main_window), "delete_event",
+			   GTK_SIGNAL_FUNC (delete_cb), pwin);
+			   
        
        gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 400, 600);
 

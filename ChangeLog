@@ -1,3 +1,13 @@
+Tue May 23 05:05:10 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* main.c process.c memintercept.c: Hook up the follow-fork
+	and follow-exec options.
+
+	* main.c: Quit when all windows are closed.
+
+	* main.c: Catch windows being closed from the window manager
+	and remove timeouts properly.
+
 2000-05-07  Valek Filippov  <frob@df.ru>
 
 	* ru.po: Added "ru" to ALL_LINGUAS.

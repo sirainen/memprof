@@ -51,34 +51,41 @@ struct _MPProcess
   GHashTable *block_table;
 
   GList *command_queue;
+
+  gboolean follow_fork;
+  gboolean follow_exec;
 	
   ProcessCreateFunc create_func;
 };
 
-void        process_init          (ProcessCreateFunc   cfunc);
-MPProcess * process_new           (void);
-void        process_run           (MPProcess          *process,
-				   const char         *path,
-				   char              **args);
-MPProcess * process_duplicate     (MPProcess          *process);
-void        process_sections      (MPProcess          *process,
-				   SectionFunc         func,
-				   gpointer            user_data);
-char **     process_parse_exec    (const char         *exec_string);
-char *      process_find_exec     (char              **args);
-GList *     process_get_clones    (MPProcess          *process);
-void        process_start_input   (MPProcess          *process);
-void        process_stop_input    (MPProcess          *process);
-gboolean    process_find_line     (MPProcess          *process,
-				   void               *address,
-				   const char        **filename,
-				   char              **functionname,
-				   unsigned int       *line);
-void        process_dump_stack    (MPProcess          *process,
-				   FILE               *out,
-				   gint                stack_size,
-				   void              **stack);
-Symbol *    process_locate_symbol (MPProcess          *process,
-				   guint               addr);
+void        process_init            (ProcessCreateFunc   cfunc);
+MPProcess * process_new             (void);
+void        process_set_follow_fork (MPProcess          *process,
+				     gboolean            follow_fork);
+void        process_set_follow_exec (MPProcess          *process,
+				     gboolean            follow_exec);
+void        process_run             (MPProcess          *process,
+				     const char         *path,
+				     char              **args);
+MPProcess * process_duplicate       (MPProcess          *process);
+void        process_sections        (MPProcess          *process,
+				     SectionFunc         func,
+				     gpointer            user_data);
+char **     process_parse_exec      (const char         *exec_string);
+char *      process_find_exec       (char              **args);
+GList *     process_get_clones      (MPProcess          *process);
+void        process_start_input     (MPProcess          *process);
+void        process_stop_input      (MPProcess          *process);
+gboolean    process_find_line       (MPProcess          *process,
+				     void               *address,
+				     const char        **filename,
+				     char              **functionname,
+				     unsigned int       *line);
+void        process_dump_stack      (MPProcess          *process,
+				     FILE               *out,
+				     gint                stack_size,
+				     void              **stack);
+Symbol *    process_locate_symbol   (MPProcess          *process,
+				     guint               addr);
 
 #endif /* __PROCESS_H__ */

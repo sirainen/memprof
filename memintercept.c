@@ -107,7 +107,7 @@ new_process (pid_t old_pid, MIOperation operation)
 	int addrlen;
 	char response;
 	int outfd;
-	int i;
+	int i, count;
 
 	memset (&addr, 0, sizeof(addr));
 	
@@ -149,11 +149,14 @@ new_process (pid_t old_pid, MIOperation operation)
 	pids[i] = info.fork.new_pid;
 
 	write_all (outfd, &info, sizeof (MIInfo));
-	read (outfd, &response, 1);
 
-	if (!response) {
+	count = read (outfd, &response, 1);
+
+	if (count != 1 || !response) {
 		/* Stop tracing */
 		tracing = 0;
+		putenv ("_MEMPROF_SOCKET=");
+		
 	}
 }
 
@@ -167,7 +170,10 @@ memprof_init ()
 		exit(1);
 	}
 
-	new_process (0, MI_NEW);
+	if (socket_path[0] == '\0') /* tracing off */
+		tracing = 0;
+	else
+		new_process (0, MI_NEW);
 }
 
 #define OUT_BUF_SIZE 4096
