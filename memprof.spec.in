@@ -54,6 +54,9 @@ done
 %{_sysconfdir}/gconf/schemas/*.schemas
 
 %changelog
+* Sat Aug 31 2002 Owen Taylor <otaylor@redhat.com>
+- Version 0.5.1
+
 * Sat Aug 10 2002 Owen Taylor <otaylor@redhat.com>
 - Cleanups from Red Hat spec file, minor fixes.
 

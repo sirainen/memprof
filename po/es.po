@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Memprof 0.1\n"
-"POT-Creation-Date: 2002-08-30 04:39+0200\n"
+"POT-Creation-Date: 2002-08-31 22:21+0200\n"
 "PO-Revision-Date: 2002-07-19 16:19GMT-03:00\n"
 "Last-Translator: Pablo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Español <traductores@es.gnome.org>\n"
@@ -146,7 +146,8 @@ msgid "Defaults"
 msgstr "Predeterminados"
 
 #: memprof.glade.h:19
-msgid "Enter a regular expression of function names to skip when computing profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Ingrese una expresión regular de nombres de función a ignorar cuando se "
 "calculan los perfiles"
@@ -157,7 +158,8 @@ msgstr "Ingrese la ruta hacia un ejecutable"
 
 #: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr "Ingrese el nombre de una función a ignorar cuando se calculan los perfiles"
+msgstr ""
+"Ingrese el nombre de una función a ignorar cuando se calculan los perfiles"
 
 #: memprof.glade.h:22
 msgid "File"
@@ -372,4 +374,3 @@ msgstr "Desconectar"
 
 #~ msgid "label37"
 #~ msgstr "label37"
-

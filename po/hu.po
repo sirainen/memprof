@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof-VERSION\n"
-"POT-Creation-Date: 2002-08-11 15:31+0200\n"
+"POT-Creation-Date: 2002-08-31 22:21+0200\n"
 "PO-Revision-Date: 2001-01-24 15:15+0100\n"
 "Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -13,106 +13,66 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:530
-#, c-format
-msgid "Executation of \"%s\" failed"
-msgstr "\"%s\" futtatása nem sikerült"
-
-#: main.c:661
-msgid "Really quit MemProf?"
-msgstr "Tényleg kilépsz MemProfból?"
-
-#: main.c:707 memprof.glade.h:36
-msgid "MemProf"
-msgstr "MemProf"
-
-#: main.c:801
-#, c-format
-msgid "Cannot find executable for \"%s\""
-msgstr "\"%s\" nem található"
-
-#: main.c:1410
-msgid "MemProf Error"
-msgstr "MemProf Hiba"
-
-#: main.c:1410
-msgid "MemProf Warning"
-msgstr "MemProf Figyelmeztetés"
-
-# main.c:1609
-#: main.c:1660
-msgid "Really detach from finished process?"
-msgstr "Ténlyleg lekapcsolódjak a lefutott folyamatról?"
-
-# main.c:1611
-#: main.c:1662
-msgid "Really detach from running process?"
-msgstr "Tényleg lekapcsolódjak a futó folyamatról?"
-
-# main.c:1631
-#: main.c:1692
-msgid "Really kill running process?"
-msgstr "Tényleg megszakítsam a futó folyamatot?"
-
-# main.c:1661
-#: main.c:1725
-msgid "Create new windows for forked processes"
-msgstr "Új ablak létrehozása a 'fork()'-olt folyamatnak"
-
-# main.c:1663
-#: main.c:1727
-msgid "Retain windows for processes after exec()"
-msgstr "Folyamat ablakának megtartása exec() után"
-
-# main.c:1689
-#: main.c:1764
-msgid "Cannot find memprof.glade"
-msgstr "Nem található: memprof.glade"
-
-#: leakdetect.c:587 profile.c:203
+#: leakdetect.c:584 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "A %s kimeneti fájlt nem lehet megnyitni\n"
 
-#: process.c:815
-msgid "Initial"
-msgstr "Kiinduló"
+#: main.c:534
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "\"%s\" futtatása nem sikerült"
 
-#: process.c:818
-msgid "Starting"
-msgstr "Indul"
+#: main.c:665
+msgid "Really quit MemProf?"
+msgstr "Tényleg kilépsz MemProfból?"
 
-#: process.c:821
-msgid "Running"
-msgstr "Fut"
+#: main.c:711 memprof.glade.h:34
+msgid "MemProf"
+msgstr "MemProf"
 
-#: process.c:824
-msgid "Exiting"
-msgstr "Kilép"
+#: main.c:805
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "\"%s\" nem található"
 
-#: process.c:827 process.c:830
-msgid "Defunct"
-msgstr "Elhunyt"
+#: main.c:1416
+msgid "MemProf Error"
+msgstr "MemProf Hiba"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Nem található: libmemintercept.so"
+#: main.c:1416
+msgid "MemProf Warning"
+msgstr "MemProf Figyelmeztetés"
 
-#: tree.c:91
-msgid "Show"
-msgstr "Mutatás"
+# main.c:1609
+#: main.c:1666
+msgid "Really detach from finished process?"
+msgstr "Ténlyleg lekapcsolódjak a lefutott folyamatról?"
 
-#: tree.c:94
-msgid "Hide"
-msgstr "Elrejtés"
+# main.c:1611
+#: main.c:1668
+msgid "Really detach from running process?"
+msgstr "Tényleg lekapcsolódjak a futó folyamatról?"
 
-#: tree.c:98 memprof.glade.h:31
-msgid "Kill"
-msgstr "Megszakít"
+# main.c:1631
+#: main.c:1698
+msgid "Really kill running process?"
+msgstr "Tényleg megszakítsam a futó folyamatot?"
 
-#: tree.c:101
-msgid "Detach"
-msgstr "Lekapcsol"
+# main.c:1661
+#: main.c:1731
+msgid "Create new windows for forked processes"
+msgstr "Új ablak létrehozása a 'fork()'-olt folyamatnak"
+
+# main.c:1663
+#: main.c:1733
+msgid "Retain windows for processes after exec()"
+msgstr "Folyamat ablakának megtartása exec() után"
+
+# main.c:1689
+#: main.c:1770
+msgid "Cannot find memprof.glade"
+msgstr "Nem található: memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
@@ -131,251 +91,290 @@ msgid "32k"
 msgstr "32k"
 
 #: memprof.glade.h:5
-msgid "Add..."
-msgstr "Hozzáad..."
-
-#: memprof.glade.h:6
 msgid "Adding Skip Function"
 msgstr "Átugrandó függvények"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
 msgstr "Átugrandó reguláris kifejezés felvétele"
 
-#: memprof.glade.h:8
+#: memprof.glade.h:7
 msgid "Address"
 msgstr "Cím"
 
-#: memprof.glade.h:9
+#: memprof.glade.h:8
 msgid "Bytes"
 msgstr "Bájt"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:9
 msgid "Bytes / Allocation:"
 msgstr "Bájt / Lefoglalt terület: "
 
-#: memprof.glade.h:11
+#: memprof.glade.h:10
 msgid "Caller"
 msgstr "Hívó"
 
-#: memprof.glade.h:12
+#: memprof.glade.h:11
 msgid "Callers"
 msgstr "Hívók"
 
-#: memprof.glade.h:13
+#: memprof.glade.h:12
 msgid "Check for Leaks"
 msgstr "Csurgások ellenőrzése"
 
-#: memprof.glade.h:14
+#: memprof.glade.h:13
 msgid "Children"
 msgstr "Gyermekek"
 
-#: memprof.glade.h:15
+#: memprof.glade.h:14
 msgid "Command Line"
 msgstr "Parancssor"
 
-#: memprof.glade.h:16
+#: memprof.glade.h:15
 msgid "Command to run on double click in stack trace:"
 msgstr ""
 "Elindítandó program a Verem Információ valamely során való duplakattintáskor"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:16
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
 
-#: memprof.glade.h:18
+#: memprof.glade.h:17
 msgid "Create Profile"
 msgstr "Profil Létrehozása"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:18
 msgid "Defaults"
 msgstr "Alapértelmezett"
 
-#: memprof.glade.h:20
-msgid "Delete"
-msgstr "Töröl"
-
-#: memprof.glade.h:21
+#: memprof.glade.h:19
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Add meg azokat a függvényneveket (reguláris kifejezéssel), amelyek a "
 "profilok számításánál átugrandók."
 
-#: memprof.glade.h:22
-msgid "Enter pathname to a executable"
+#: memprof.glade.h:20
+#, fuzzy
+msgid "Enter pathname to an executable"
 msgstr "Program elérési útvonala"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:21
 #, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Profil-számításkor átugrandó függvény neve"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:22
 msgid "File"
 msgstr "Fájl"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:23
 msgid "Follow _exec()"
 msgstr "_exec() követése"
 
 # memprof-strings.c:17
-#: memprof.glade.h:26
+#: memprof.glade.h:24
 msgid "Follow _fork()"
 msgstr "_fork() követése"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:25
 msgid "Function"
 msgstr "Függvény"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:26
 msgid "Functions to Skip:"
 msgstr "Átugrandó Függvények:"
 
-#: memprof.glade.h:29
+#: memprof.glade.h:27
 msgid "Generate _Leak Report"
 msgstr "_Csurgás jelentés létrehozása"
 
 # memprof-strings.c:12
-#: memprof.glade.h:30
+#: memprof.glade.h:28
 msgid "Generate _Profile"
 msgstr "_Profil létrehozása"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr "Megszakít"
+
+#: memprof.glade.h:30
 #, fuzzy
 msgid "Kill Program"
 msgstr "Program Futtatása"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:31
 msgid "Leak Detection Options"
 msgstr "Csurgás Érzékelő Beállítások"
 
-#: memprof.glade.h:34
+#: memprof.glade.h:32
 msgid "Leaks"
 msgstr "Csurgások"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:33
 msgid "Line"
 msgstr "Sor"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:35
 msgid "MemProf - Processes"
 msgstr "MemProf - Folyamatok"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:36
 msgid "Memory Profiling Tool"
 msgstr "Memória Átvilágító Eszköz"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:37
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:38
 msgid "Preferences"
 msgstr ""
 
 # memprof-strings.c:16
-#: memprof.glade.h:41
+#: memprof.glade.h:39
 msgid "Process _Tree"
 msgstr "Folyamat_fa"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:40
 msgid "Profile"
 msgstr "Profil"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:41
 msgid "Profile Options"
 msgstr "Profil beállítása"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:42
 msgid "Regular expressions to Skip:"
 msgstr "Átugrandó (reguláris) kifejezés"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:43
 msgid "Run"
 msgstr "Futtat"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:44
 msgid "Run Executable"
 msgstr "Futtatás"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:45
 msgid "Run Program"
 msgstr "Program Futtatása"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:46
 msgid "Save"
 msgstr "Mentés"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:47
 msgid "Save Report"
 msgstr "Jelentés Mentése"
 
-#: memprof.glade.h:50
+#: memprof.glade.h:48
 msgid "Save _Leak Info..."
 msgstr "_Csurgás adatainak mentése..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:49
 msgid "Save _Profile..."
 msgstr "_Profil mentése..."
 
-#: memprof.glade.h:52
+#: memprof.glade.h:50
 msgid "Self"
 msgstr "Saját"
 
-#: memprof.glade.h:53
+#: memprof.glade.h:51
 msgid "Size"
 msgstr "Méret"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:52
 msgid "Stack Trace"
 msgstr "Verem információ"
 
-#: memprof.glade.h:55
+#: memprof.glade.h:53
 msgid "Status"
 msgstr "Állapot"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:54
 msgid "Total"
 msgstr "Összesen"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Összméret (bájt): "
 
-#: memprof.glade.h:58
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr "_Lekapcsol"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:57
 #, fuzzy
 msgid "_File"
 msgstr "Fájl"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr ""
 
-#: memprof.glade.h:61
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "_Megszakít"
 
 # memprof-strings.c:11
-#: memprof.glade.h:62
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr "_Folyamat"
 
-#: memprof.glade.h:63
+#: memprof.glade.h:61
 #, fuzzy
 msgid "_Run Program..."
 msgstr "Program Futtatása"
 
-#: memprof.glade.h:64
+#: memprof.glade.h:62
 #, fuzzy
 msgid "_Settings"
 msgstr "Indul"
+
+#: process.c:847
+msgid "Initial"
+msgstr "Kiinduló"
+
+#: process.c:850
+msgid "Starting"
+msgstr "Indul"
+
+#: process.c:853
+msgid "Running"
+msgstr "Fut"
+
+#: process.c:856
+msgid "Exiting"
+msgstr "Kilép"
+
+#: process.c:859 process.c:862
+msgid "Defunct"
+msgstr "Elhunyt"
+
+#: server.c:245
+msgid "Cannot find libmemintercept.so"
+msgstr "Nem található: libmemintercept.so"
+
+#: tree.c:91
+msgid "Show"
+msgstr "Mutatás"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "Elrejtés"
+
+#: tree.c:101
+msgid "Detach"
+msgstr "Lekapcsol"
+
+#~ msgid "Add..."
+#~ msgstr "Hozzáad..."
+
+#~ msgid "Delete"
+#~ msgstr "Töröl"
 
 #~ msgid "_Run..."
 #~ msgstr "_Futtat..."

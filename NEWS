@@ -1,3 +1,19 @@
+Overview of changes in MemProf 0.5.1
+====================================
+
+* Redo memintercept.so initialization to fix "Starter malloc size exceeded"
+  C++ problem [Owen Taylor]
+* Miscellaneous memintercept.so fixes [Owen]
+* Use less memory for storing backtraces [Owen]
+* UI tweaks [Kristian Rietveld]
+* Various bug fixes [Soeren Sandmann, Gustavo Giraldez, Alexanders Larsson, Art Haas]
+* New and updated translations:
+	- pl (GNOME PL Team)
+	- sv (Christian Rose)
+	- de (Christian Neumair)
+	- da (Ole Laursen)
+	- es (Pablo Gonzalo del Campo)
+
 Overview of changes in MemProf 0.5.0
 ====================================
 

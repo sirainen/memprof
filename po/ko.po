@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MemProf CVS-20000906\n"
-"POT-Creation-Date: 2002-08-11 15:31+0200\n"
+"POT-Creation-Date: 2002-08-31 22:21+0200\n"
 "PO-Revision-Date: 2000-09-06 17:42+0900\n"
 "Last-Translator: Chideok Hwang <hwang@mizi.co.kr>\n"
 "Language-Team: korean <ko@li.org>\n"
@@ -13,100 +13,60 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:530
-#, c-format
-msgid "Executation of \"%s\" failed"
-msgstr "\"%s\"의 실행이 실패했습니다"
-
-#: main.c:661
-msgid "Really quit MemProf?"
-msgstr "정말로 MemProf를 끝내시겠습니까?"
-
-#: main.c:707 memprof.glade.h:36
-msgid "MemProf"
-msgstr "메모리 프로파일러"
-
-#: main.c:801
-#, c-format
-msgid "Cannot find executable for \"%s\""
-msgstr "\"%s\"의 실행 파일을 찾을 수가 없습니다"
-
-#: main.c:1410
-msgid "MemProf Error"
-msgstr "MemProf 에러"
-
-#: main.c:1410
-msgid "MemProf Warning"
-msgstr "MemProf 경고"
-
-#: main.c:1660
-msgid "Really detach from finished process?"
-msgstr ""
-
-#: main.c:1662
-msgid "Really detach from running process?"
-msgstr ""
-
-#: main.c:1692
-msgid "Really kill running process?"
-msgstr "돌아가는 프로그램을 죽이시겠습니까?"
-
-#: main.c:1725
-msgid "Create new windows for forked processes"
-msgstr "새로 생성된 프로세스마다 새 창을 만듬"
-
-#: main.c:1727
-msgid "Retain windows for processes after exec()"
-msgstr "exec()실행후 프로세스들에 "
-
-#: main.c:1764
-msgid "Cannot find memprof.glade"
-msgstr "memprof.glade파일을 찾을수가 없습니다"
-
-#: leakdetect.c:587 profile.c:203
+#: leakdetect.c:584 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "출력파일(%s)를 열수가 없습니다\n"
 
-#: process.c:815
-msgid "Initial"
-msgstr "초기상태"
+#: main.c:534
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "\"%s\"의 실행이 실패했습니다"
 
-#: process.c:818
-msgid "Starting"
-msgstr "시작함"
+#: main.c:665
+msgid "Really quit MemProf?"
+msgstr "정말로 MemProf를 끝내시겠습니까?"
 
-#: process.c:821
-msgid "Running"
-msgstr "돌고있음"
+#: main.c:711 memprof.glade.h:34
+msgid "MemProf"
+msgstr "메모리 프로파일러"
 
-#: process.c:824
-msgid "Exiting"
-msgstr "끝남"
+#: main.c:805
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "\"%s\"의 실행 파일을 찾을 수가 없습니다"
 
-#: process.c:827 process.c:830
-msgid "Defunct"
-msgstr "동작하지않음"
+#: main.c:1416
+msgid "MemProf Error"
+msgstr "MemProf 에러"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "libmemintercept.so를 발견할 수가 없습니다"
+#: main.c:1416
+msgid "MemProf Warning"
+msgstr "MemProf 경고"
 
-#: tree.c:91
-msgid "Show"
-msgstr "보이기"
-
-#: tree.c:94
-msgid "Hide"
-msgstr "감추기"
-
-#: tree.c:98 memprof.glade.h:31
-msgid "Kill"
+#: main.c:1666
+msgid "Really detach from finished process?"
 msgstr ""
 
-#: tree.c:101
-msgid "Detach"
+#: main.c:1668
+msgid "Really detach from running process?"
 msgstr ""
+
+#: main.c:1698
+msgid "Really kill running process?"
+msgstr "돌아가는 프로그램을 죽이시겠습니까?"
+
+#: main.c:1731
+msgid "Create new windows for forked processes"
+msgstr "새로 생성된 프로세스마다 새 창을 만듬"
+
+#: main.c:1733
+msgid "Retain windows for processes after exec()"
+msgstr "exec()실행후 프로세스들에 "
+
+#: main.c:1770
+msgid "Cannot find memprof.glade"
+msgstr "memprof.glade파일을 찾을수가 없습니다"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
@@ -125,243 +85,279 @@ msgid "32k"
 msgstr "32k"
 
 #: memprof.glade.h:5
-msgid "Add..."
-msgstr ""
-
-#: memprof.glade.h:6
 msgid "Adding Skip Function"
 msgstr "건너띌 함수를 추가"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
 msgstr ""
 
-#: memprof.glade.h:8
+#: memprof.glade.h:7
 msgid "Address"
 msgstr "주소"
 
-#: memprof.glade.h:9
+#: memprof.glade.h:8
 msgid "Bytes"
 msgstr ""
 
-#: memprof.glade.h:10
+#: memprof.glade.h:9
 msgid "Bytes / Allocation:"
 msgstr "바이트수"
 
-#: memprof.glade.h:11
+#: memprof.glade.h:10
 msgid "Caller"
 msgstr ""
 
-#: memprof.glade.h:12
+#: memprof.glade.h:11
 msgid "Callers"
 msgstr ""
 
-#: memprof.glade.h:13
+#: memprof.glade.h:12
 msgid "Check for Leaks"
 msgstr ""
 
-#: memprof.glade.h:14
+#: memprof.glade.h:13
 msgid "Children"
 msgstr "자식들"
 
-#: memprof.glade.h:15
+#: memprof.glade.h:14
 msgid "Command Line"
 msgstr ""
 
-#: memprof.glade.h:16
+#: memprof.glade.h:15
 msgid "Command to run on double click in stack trace:"
 msgstr ""
 
-#: memprof.glade.h:17
+#: memprof.glade.h:16
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
 
-#: memprof.glade.h:18
+#: memprof.glade.h:17
 msgid "Create Profile"
 msgstr ""
 
-#: memprof.glade.h:19
+#: memprof.glade.h:18
 msgid "Defaults"
 msgstr ""
 
-#: memprof.glade.h:20
-msgid "Delete"
-msgstr "삭제"
-
-#: memprof.glade.h:21
+#: memprof.glade.h:19
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 
-#: memprof.glade.h:22
-msgid "Enter pathname to a executable"
+#: memprof.glade.h:20
+#, fuzzy
+msgid "Enter pathname to an executable"
 msgstr "실행파일에대한 패쓰를 기입하세요"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr ""
 
-#: memprof.glade.h:24
+#: memprof.glade.h:22
 msgid "File"
 msgstr ""
 
-#: memprof.glade.h:25
+#: memprof.glade.h:23
 msgid "Follow _exec()"
 msgstr ""
 
-#: memprof.glade.h:26
+#: memprof.glade.h:24
 msgid "Follow _fork()"
 msgstr ""
 
-#: memprof.glade.h:27
+#: memprof.glade.h:25
 msgid "Function"
 msgstr ""
 
-#: memprof.glade.h:28
+#: memprof.glade.h:26
 msgid "Functions to Skip:"
 msgstr "건너띌 함수들:"
 
-#: memprof.glade.h:29
+#: memprof.glade.h:27
 msgid "Generate _Leak Report"
 msgstr "메모리 유출 보고서 생성(_L)"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:28
 msgid "Generate _Profile"
 msgstr "분석 자료 생성(_P)"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr ""
+
+#: memprof.glade.h:30
 #, fuzzy
 msgid "Kill Program"
 msgstr "프로그램을 실행"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:31
 msgid "Leak Detection Options"
 msgstr ""
 
-#: memprof.glade.h:34
+#: memprof.glade.h:32
 msgid "Leaks"
 msgstr ""
 
-#: memprof.glade.h:35
+#: memprof.glade.h:33
 msgid "Line"
 msgstr ""
 
-#: memprof.glade.h:37
+#: memprof.glade.h:35
 msgid "MemProf - Processes"
 msgstr ""
 
-#: memprof.glade.h:38
+#: memprof.glade.h:36
 msgid "Memory Profiling Tool"
 msgstr ""
 
-#: memprof.glade.h:39
+#: memprof.glade.h:37
 msgid "PID"
 msgstr ""
 
-#: memprof.glade.h:40
+#: memprof.glade.h:38
 msgid "Preferences"
 msgstr ""
 
-#: memprof.glade.h:41
+#: memprof.glade.h:39
 msgid "Process _Tree"
 msgstr ""
 
-#: memprof.glade.h:42
+#: memprof.glade.h:40
 msgid "Profile"
 msgstr ""
 
-#: memprof.glade.h:43
+#: memprof.glade.h:41
 msgid "Profile Options"
 msgstr ""
 
-#: memprof.glade.h:44
+#: memprof.glade.h:42
 msgid "Regular expressions to Skip:"
 msgstr "삭제할 정규식"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:43
 msgid "Run"
 msgstr ""
 
-#: memprof.glade.h:46
+#: memprof.glade.h:44
 msgid "Run Executable"
 msgstr "프로그램을 실행"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:45
 msgid "Run Program"
 msgstr "프로그램을 실행"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:46
 msgid "Save"
 msgstr "저장"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:47
 msgid "Save Report"
 msgstr ""
 
-#: memprof.glade.h:50
+#: memprof.glade.h:48
 msgid "Save _Leak Info..."
 msgstr "메모리 유출 정보 저장(_L)..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:49
 msgid "Save _Profile..."
 msgstr "분석 자료 저장(_P)..."
 
-#: memprof.glade.h:52
+#: memprof.glade.h:50
 msgid "Self"
 msgstr ""
 
-#: memprof.glade.h:53
+#: memprof.glade.h:51
 msgid "Size"
 msgstr "크기"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:52
 msgid "Stack Trace"
 msgstr ""
 
-#: memprof.glade.h:55
+#: memprof.glade.h:53
 msgid "Status"
 msgstr "상태"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:54
 msgid "Total"
 msgstr ""
 
-#: memprof.glade.h:57
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "전체 바이트수:"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr ""
 
-#: memprof.glade.h:59
+#: memprof.glade.h:57
 #, fuzzy
 msgid "_File"
 msgstr "프로세스 죽임(_K)"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr ""
 
-#: memprof.glade.h:61
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "프로세스 죽임(_K)"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr ""
 
-#: memprof.glade.h:63
+#: memprof.glade.h:61
 #, fuzzy
 msgid "_Run Program..."
 msgstr "프로그램을 실행"
 
-#: memprof.glade.h:64
+#: memprof.glade.h:62
 #, fuzzy
 msgid "_Settings"
 msgstr "시작함"
+
+#: process.c:847
+msgid "Initial"
+msgstr "초기상태"
+
+#: process.c:850
+msgid "Starting"
+msgstr "시작함"
+
+#: process.c:853
+msgid "Running"
+msgstr "돌고있음"
+
+#: process.c:856
+msgid "Exiting"
+msgstr "끝남"
+
+#: process.c:859 process.c:862
+msgid "Defunct"
+msgstr "동작하지않음"
+
+#: server.c:245
+msgid "Cannot find libmemintercept.so"
+msgstr "libmemintercept.so를 발견할 수가 없습니다"
+
+#: tree.c:91
+msgid "Show"
+msgstr "보이기"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "감추기"
+
+#: tree.c:101
+msgid "Detach"
+msgstr ""
+
+#~ msgid "Delete"
+#~ msgstr "삭제"
 
 #~ msgid "_Run..."
 #~ msgstr "실행(_R)..."
