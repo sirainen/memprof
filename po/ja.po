@@ -188,7 +188,7 @@ msgstr "Copyright Red Hat, Inc., 1999"
 
 #: memprof-strings.c:56
 msgid "Memory Profiling Tool"
-msgstr "メモリプロファイリングツーツ"
+msgstr "メモリプロファイリングツール"
 
 #: memprof-strings.c:57
 msgid "Functions to Skip:"
