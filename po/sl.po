@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-08-20 17:08+0200\n"
+"POT-Creation-Date: 2000-09-04 21:35+0200\n"
 "PO-Revision-Date: 2000-06-26 00:00+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -307,9 +307,9 @@ msgstr "Dodajam prezrt regularni izraz"
 
 #: memprof-strings.c:82
 msgid ""
-"Enter a regular expression of function names to skipwhen computing  profiles"
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Vpi¹ite regularni izraz funkcije, ki naj se prezre, ko se raèunajo profili"
+"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo profili"
 
 #: leakdetect.c:587 profile.c:191
 #, c-format
