@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MemProf CVS-20000906\n"
-"POT-Creation-Date: 2000-09-06 17:42+0900\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2000-09-06 17:42+0900\n"
 "Last-Translator: Chideok Hwang <hwang@mizi.co.kr>\n"
 "Language-Team: korean <ko@li.org>\n"
@@ -310,7 +310,7 @@ msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "출력파일(%s)를 열수가 없습니다\n"
@@ -350,4 +350,3 @@ msgstr "감추기"
 #: tree.c:100
 msgid "Detach"
 msgstr ""
-

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3.0\n"
-"POT-Creation-Date: 2000-09-10 12:31+0200\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2000-09-11 01:58+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -314,7 +314,7 @@ msgstr ""
 "Skriv in ett reguljärt uttryck på funktionsnamn som ska hoppas över när "
 "profiler beräknas"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan inte öppna utmatningsfil: %s\n"

@@ -21,6 +21,7 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libgnome/libgnome.h>	/* For i18n */
 
 #include "profile.h"
@@ -28,7 +29,7 @@
 static GList *
 add_bytes_to_ref (GList *reflist, ProfileFunc *function, guint bytes)
 {
-  ProfileFuncRef *ref;
+  ProfileFuncRef *ref = NULL;	/* Quiet GCC */
   GList *tmp_list;
 
   tmp_list = reflist;

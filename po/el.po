@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2001-01-23 17:36+0000\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2001-01-23 18:19:58+0900\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -277,7 +277,9 @@ msgstr "Προσθήκη"
 
 #: memprof-strings.c:72
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr "Εισάγετε το όνομα της συνάρτησης για παράκαμψη κατά τον υπολογισμό της κατατόμησης"
+msgstr ""
+"Εισάγετε το όνομα της συνάρτησης για παράκαμψη κατά τον υπολογισμό της "
+"κατατόμησης"
 
 #: memprof-strings.c:73
 msgid "Run Executable"
@@ -311,9 +313,10 @@ msgstr "Προσθήκη Κανονικής Έκφρασης προς Παράκαμψη"
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Εισάγετε μια κανονική έκφραση για ονόματα συναρτήσεων για να παραμφθούν κατά τον υπολογισμό της κατατόμησης"
+"Εισάγετε μια κανονική έκφραση για ονόματα συναρτήσεων για να παραμφθούν κατά "
+"τον υπολογισμό της κατατόμησης"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Αδυναμία ανοίγματος αρχείου εξόδου: %s\n"

@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-10-30 11:20-0200\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2000-11-21 17:03-02:00\n"
 "Last-Translator: Ariel Bressan da Silva <ariel@conectiva.com.br>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar.conectiva.com.br>\n"
@@ -312,7 +312,7 @@ msgstr ""
 "Acrescentar uma expressão regular de nomes de funções para Skip "
 "quandocomputando perfis"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Não pode abrir arquivo de saída: %s\n"

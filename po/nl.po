@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof cvs\n"
-"POT-Creation-Date: 2000-10-14 15:32+0200\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2000-10-14 15:50+0200\n"
 "Last-Translator: Almer S. Tigelaar <almer1@dds.nl>\n"
 "Language-Team: Dutch <nl@li.org>\n"
@@ -275,7 +275,9 @@ msgstr "Toevoegen"
 
 #: memprof-strings.c:72
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr "Voer de naam in van de functie die overgeslagen moet worden als profielen berekend worden"
+msgstr ""
+"Voer de naam in van de functie die overgeslagen moet worden als profielen "
+"berekend worden"
 
 #: memprof-strings.c:73
 msgid "Run Executable"
@@ -308,9 +310,11 @@ msgstr "Bezig met toevoegen van Reguliere Expressie"
 #: memprof-strings.c:82
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr "Vul een reguliere expressie of functie naam in om over te slaan wanneer profielen worden berekend"
+msgstr ""
+"Vul een reguliere expressie of functie naam in om over te slaan wanneer "
+"profielen worden berekend"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan uitvoerbestand '%s' niet openen\n"

@@ -39,6 +39,9 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/share/locale/*/*/*
 
 %changelog
+* Fri Feb 09 2001 Owen Taylor <otaylor@redhat.com>
+- Version 0.4.1
+
 * Sat Jul 08 2000 Owen Taylor <otaylor@redhat.com>
 - Some cleanups, reenable local files
 

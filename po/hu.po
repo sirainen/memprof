@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof-VERSION\n"
-"POT-Creation-Date: 2000-12-14 12:47+0100\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2001-01-24 15:15+0100\n"
 "Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
@@ -44,26 +44,32 @@ msgstr "MemProf Hiba"
 msgid "MemProf Warning"
 msgstr "MemProf Figyelmeztetés"
 
+# main.c:1609
 #: main.c:1609
 msgid "Really detach from finished process?"
 msgstr "Ténlyleg lekapcsolódjak a lefutott folyamatról?"
 
+# main.c:1611
 #: main.c:1611
 msgid "Really detach from running process?"
 msgstr "Tényleg lekapcsolódjak a futó folyamatról?"
 
+# main.c:1631
 #: main.c:1631
 msgid "Really kill running process?"
 msgstr "Tényleg megszakítsam a futó folyamatot?"
 
+# main.c:1661
 #: main.c:1661
 msgid "Create new windows for forked processes"
 msgstr "Új ablak létrehozása a 'fork()'-olt folyamatnak"
 
+# main.c:1663
 #: main.c:1663
 msgid "Retain windows for processes after exec()"
 msgstr "Folyamat ablakának megtartása exec() után"
 
+# main.c:1689
 #: main.c:1689
 msgid "Cannot find memprof.glade"
 msgstr "Nem található: memprof.glade"
@@ -80,10 +86,12 @@ msgstr "_Profil mentése..."
 msgid "Save _Leak Info..."
 msgstr "_Csurgás adatainak mentése..."
 
+# memprof-strings.c:11
 #: memprof-strings.c:11
 msgid "_Process"
 msgstr "_Folyamat"
 
+# memprof-strings.c:12
 #: memprof-strings.c:12
 msgid "Generate _Profile"
 msgstr "_Profil létrehozása"
@@ -100,10 +108,12 @@ msgstr "_Megszakít"
 msgid "_Detach"
 msgstr "_Lekapcsol"
 
+# memprof-strings.c:16
 #: memprof-strings.c:16
 msgid "Process _Tree"
 msgstr "Folyamat_fa"
 
+# memprof-strings.c:17
 #: memprof-strings.c:17
 msgid "Follow _fork()"
 msgstr "_fork() követése"
@@ -309,9 +319,11 @@ msgstr "Átugrandó reguláris kifejezés felvétele"
 #: memprof-strings.c:82
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr "Add meg azokat a függvényneveket (reguláris kifejezéssel), amelyek a profilok számításánál átugrandók."
+msgstr ""
+"Add meg azokat a függvényneveket (reguláris kifejezéssel), amelyek a "
+"profilok számításánál átugrandók."
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "A %s kimeneti fájlt nem lehet megnyitni\n"

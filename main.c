@@ -627,7 +627,7 @@ pwin_from_widget (GtkWidget *widget)
 		GtkWidget *menu_shell = widget->parent;
 
 		while (menu_shell && !GTK_IS_MENU_BAR (menu_shell)) {
-			menu_shell = GTK_MENU (menu_shell)->parent_menu_item->parent;
+			menu_shell = gtk_menu_get_attach_widget (GTK_MENU (menu_shell))->parent;
 		}
 		g_assert (menu_shell != NULL);
 

@@ -1,3 +1,11 @@
+Fri Feb  9 11:49:10 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Release 0.4.1
+
+	* main.c (pwin_from_widget): Fix segfault with running accelerators
+	on menus that have never been popped up by using
+	gtk_menu_get_attach_widget() instead of ->parent_menu_shell.
+
 Fri Feb  9 10:40:31 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am (dist-hook): Add some magic to make
@@ -23,6 +31,7 @@ Sun Feb  4 14:01:45 2001  Owen Taylor  <otaylor@redhat.com>
 	* memprof.desktop: Added Greek translation. 
 
 2000-11-07 Elliot Lee <sopwith@redhat.com>
+
 	* process.c: Initialize variable to NULL to avoid some funky crash.
 
 2000-10-31  Zbigniew Chyla  <cyba@gnome.pl>

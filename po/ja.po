@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof CVS\n"
-"POT-Creation-Date: 2000-07-07 16:19-0400\n"
+"POT-Creation-Date: 2001-02-09 11:48-0500\n"
 "PO-Revision-Date: 2000-10-04 21:51+09:00\n"
 "Last-Translator: Yukihiro Nakai <nakai@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -312,7 +312,7 @@ msgid ""
 msgstr ""
 "プロファイルを作成する時にスキップする関数名の正規表現を入力してください"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "出力ファイルが開きません: %s\n"
