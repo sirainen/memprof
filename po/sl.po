@@ -295,7 +295,7 @@ msgstr "PID"
 
 #: memprof-strings.c:78
 msgid "Command Line"
-msgstr "Ukazna Vrstica"
+msgstr "Ukazna vrstica"
 
 #: memprof-strings.c:79
 msgid "Status"
