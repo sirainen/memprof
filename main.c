@@ -2180,7 +2180,7 @@ main(int argc, char **argv)
        else if (strcmp (profile_type_string, "time") == 0)
 	       profile_type = MP_PROFILE_TIME;
        else {
-	       g_printerr (_("Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"));
+	       g_printerr (_("Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"));
 	       exit (1);
        }
 	       

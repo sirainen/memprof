@@ -5,6 +5,7 @@
 	* process.c (process_read_maps): 
 	* leakdetect.c (read_stack_maps): 
 	Parse device numbers as hex.  Fix from Ian McKellar.  (Fixes #120457)
+	* main.c (main): Fix typo.  (Fixes #139682)
 	
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 
