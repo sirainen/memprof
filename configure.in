@@ -65,7 +65,7 @@ GETTEXT_PACKAGE=memprof
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE")
 
-ALL_LINGUAS="az ca da de el et fr hu it ja ko nl no pl pt_BR ru sl sv tr uk zh_CN"
+ALL_LINGUAS="az ca da de el es et fr hu it ja ko nl no pl pt_BR ru sl sv tr uk zh_CN"
 AM_GLIB_GNU_GETTEXT
 
 
