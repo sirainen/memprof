@@ -981,13 +981,31 @@ skip_defaults_cb (GtkWidget *widget, GladeXML *preferences_xml)
 }
 
 void
+preferences_destroy_cb (GtkWidget *widget, GtkObject **xml)
+{
+	g_assert( xml != NULL );
+
+	gtk_object_destroy(*xml);
+	/* Mark the property box as destroyed so we don't try to touch it again */
+	*xml = NULL;
+}
+
+void
 preferences_cb (GtkWidget *widget)
 {
-       GladeXML *xml;
+       static GladeXML *xml = NULL; /* Static so we can prevent multiple property boxes from being opened at once */
        GtkWidget *skip_clist;
-       GtkWidget *property_box;
+       static GtkWidget *property_box = NULL;
        GtkWidget *stack_command_entry;
        GtkWidget *button;
+
+       /* Check for an open property box */
+       if (xml != NULL)
+       {
+		gdk_window_show( GTK_WIDGET(property_box)->window );
+		gdk_window_raise( GTK_WIDGET(property_box)->window );
+		return;
+       }
 
        xml = glade_xml_new (glade_file, "Preferences");
        skip_clist = glade_xml_get_widget (xml, "skip-clist");
@@ -1019,9 +1037,9 @@ preferences_cb (GtkWidget *widget)
        gtk_signal_connect (GTK_OBJECT (property_box), "apply",
 			   GTK_SIGNAL_FUNC (preferences_apply_cb),
 			   GTK_OBJECT (xml));
-       gtk_signal_connect_object (GTK_OBJECT (property_box), "destroy",
-				  GTK_SIGNAL_FUNC (gtk_object_destroy),
-				  GTK_OBJECT (xml));
+       gtk_signal_connect (GTK_OBJECT (property_box), "destroy",
+		       	   GTK_SIGNAL_FUNC(preferences_destroy_cb),
+			   &(xml));
 }
 
 void

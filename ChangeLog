@@ -1,3 +1,5 @@
+2000-02-23  Peter Hawkins	<peterhawkins@ozemail.com.au>
+	* main.c: Stopped preferences dialog from being opened multiple times at once.
 2000-02-21  Lauris Kaplinski  <lauris@ariman.ee>
 
        * configure.in: Added et to ALL_LINGUAS
