@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-06-14 17:47+0200\n"
-"PO-Revision-Date: 2002-06-14 17:51+0200\n"
+"POT-Creation-Date: 2002-07-24 00:38+0200\n"
+"PO-Revision-Date: 2002-07-24 00:41+0200\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -177,8 +177,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Polecenie wykonywane po dwukrotnym kliknięciu stanu stosu:"
 
 #: memprof.glade.h:1
-msgid "Copyright Red Hat, Inc., 1999-2000"
-msgstr "Copyright Red Hat, Inc., 1999-2000"
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:1
 msgid "Create Profile"
@@ -354,6 +358,10 @@ msgstr "_Unicestwij"
 #: memprof.glade.h:1
 msgid "_Process"
 msgstr "P_roces"
+
+#: memprof.glade.h:1
+msgid "_Run Program..."
+msgstr "U_ruchom program..."
 
 #: memprof.glade.h:1
 msgid "_Settings"
