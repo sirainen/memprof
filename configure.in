@@ -30,7 +30,7 @@ fi
 changequote([,])dnl
 
 dnl Initialize gettext
-ALL_LINGUAS="fr et ja sv it"
+ALL_LINGUAS="et fr it ja no sv"
 AM_GNU_GETTEXT
 
 dnl GNOME checks (not using macros/ directory)
