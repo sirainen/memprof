@@ -1,3 +1,10 @@
+Sat Sep 20 10:52:06 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* intercept.c): Switch to atexit() as the primary means 
+	of intercepting exiting. It isn't as good as interposing _exit, 
+	but interposing _exit doesn't work with newer versions of
+	GNU libc.
+
 Wed Jul  9 22:00:01 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* Lots of new stuff. Highlights:

@@ -55,6 +55,7 @@ typedef struct {
 static void new_process (ThreadInfo *thread,
 			 pid_t       old_pid,
 			 MIOperation operation);
+static void atexit_trap (void);
 
 static int (*old_execve) (const char *filename,
 			  char *const argv[],
@@ -76,7 +77,7 @@ static ThreadInfo threads[MAX_THREADS];
 static char *socket_path = NULL;
 static unsigned int seqno = 0;
 
-#undef ENABLE_DEBUG
+#define ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
 #define MI_DEBUG(arg) mi_debug arg
@@ -169,6 +170,8 @@ initialize ()
 	old_vfork = dlsym(RTLD_NEXT, "__vfork");
 	old_clone = dlsym(RTLD_NEXT, "__clone");
 	old__exit = dlsym(RTLD_NEXT, "_exit");
+
+	atexit (atexit_trap);
 
 	mi_init ();
 	initialized = 1;
@@ -470,42 +473,64 @@ int clone (int (*fn) (void *arg),
 	return __clone (fn, child_stack, flags, arg);
 }
 
+static void
+exit_wait (void)
+{
+	MIInfo info;
+	ThreadInfo *thread;
+	int count;
+	char response;
+	info.any.operation = MI_EXIT;
+	info.any.seqno = seqno++;
+	info.any.pid = getpid();
+	
+	mi_stop ();
+	
+	thread = find_thread (info.any.pid);
+	
+	if (mi_write (thread->outfd, &info, sizeof (MIInfo)))
+		/* Wait for a response before really exiting
+		 */
+		while (1) {
+			count = read (thread->outfd, &response, 1);
+			if (count >= 0 || errno != EINTR)
+				break;
+		}
+	
+	close (thread->outfd);
+	thread->pid = 0;
+	release_thread (thread);
+}
+
+/* Because _exit() isn't interposable in recent versions of
+ * GNU libc, we can't depend on this, and instead use the less-good
+ * atexit_trap() below. But we leave this here just in case we
+ * are using an old version of libc where _exit() is interposable,
+ * so we can trap a wider range of exit conditions
+ */
 void
 _exit (int status)
 {
 	if (initialized <= 0)
-		abort_unitialized ("exit");
+		abort_unitialized ("_exit");
 
-	MI_DEBUG (("Exiting\n"));
+	MI_DEBUG (("_Exiting\n"));
 	
 	if (tracing) {
-		MIInfo info;
-		ThreadInfo *thread;
-		int count;
-		char response;
-		info.any.operation = MI_EXIT;
-		info.any.seqno = seqno++;
-		info.any.pid = getpid();
-
-		mi_stop ();
-
-		thread = find_thread (info.any.pid);
-		
-		if (mi_write (thread->outfd, &info, sizeof (MIInfo)))
-			/* Wait for a response before really exiting
-			 */
-			while (1) {
-				count = read (thread->outfd, &response, 1);
-				if (count >= 0 || errno != EINTR)
-					break;
-			}
-
-		close (thread->outfd);
-		thread->pid = 0;
-		release_thread (thread);
+		exit_wait ();
+		tracing = 0;
 	}
 
 	(*old__exit) (status);
+}
+
+static void
+atexit_trap (void)
+{
+	if (tracing) {
+		exit_wait ();
+		tracing = 0;
+	}
 }
 
 static void construct () __attribute__ ((constructor));
