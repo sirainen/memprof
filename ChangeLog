@@ -1,3 +1,8 @@
+Tue Dec 11 20:53:52 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* profile.c (profile_write): Sort child and inherited
+	lists in the output for better 'diff -u' ability.
+
 Tue Dec 11 20:40:37 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* process.c (process_command): Check for duplicate

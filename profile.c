@@ -177,6 +177,15 @@ print_refs (FILE *out, GList *reflist)
     }
 }
 
+static gint
+refs_compare (const void *a, const void *b)
+{
+  const ProfileFuncRef *refa = a;
+  const ProfileFuncRef *refb = b;
+
+  return strcmp (refa->function->symbol->name, refb->function->symbol->name);
+}
+
 void
 profile_write (Profile *profile, gchar *outfile)
 {
@@ -197,10 +206,12 @@ profile_write (Profile *profile, gchar *outfile)
     {
       fprintf (out, "%s\n", profile->functions[i]->symbol->name);
       fprintf (out, "  children:\n");
+      profile->functions[i]->children = g_list_sort (profile->functions[i]->children, refs_compare);
       print_refs (out, profile->functions[i]->children);
       fprintf (out, "  total: %d\n", profile->functions[i]->total);
       fprintf (out, "  self:  %d\n", profile->functions[i]->self);
       fprintf (out, "  inherited:\n");
+      profile->functions[i]->inherited = g_list_sort (profile->functions[i]->inherited, refs_compare);
       print_refs (out, profile->functions[i]->inherited);
       
       fprintf (out, "\n");
