@@ -1,6 +1,7 @@
 Makefile*
 stamp-cat-id
 cat-id-tbl.c
-memprof.pot
+*.pot
 POTFILES
 *.gmo
+messages
