@@ -9,8 +9,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-03-01 15:16+0100\n"
-"PO-Revision-Date: 2002-03-01 15:19+0100\n"
+"POT-Creation-Date: 2002-03-12 23:36+0100\n"
+"PO-Revision-Date: 2002-03-12 23:36+0100\n"
 "Last-Translator: GNOME PL Team <translators@gnome.pl>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -238,42 +238,6 @@ msgid "Memory Profiling Tool"
 msgstr "Narzędzie do profilowania pamięci"
 
 #: memprof-strings.c:1
-msgid "Functions to Skip:"
-msgstr "Pomijane funkcje:"
-
-#: memprof-strings.c:1 memprof-strings.c:1
-msgid "label37"
-msgstr "etykieta37"
-
-#: memprof-strings.c:1 memprof-strings.c:1
-msgid "Add..."
-msgstr "Dodaj..."
-
-#: memprof-strings.c:1 memprof-strings.c:1
-msgid "Delete"
-msgstr "Usuń"
-
-#: memprof-strings.c:1 memprof-strings.c:1
-msgid "Defaults"
-msgstr "Domyślne"
-
-#: memprof-strings.c:1
-msgid "Regular expressions to Skip:"
-msgstr "Wyrażenia regularne pominięć:"
-
-#: memprof-strings.c:1
-msgid "Profile Options"
-msgstr "Opcje profilowania"
-
-#: memprof-strings.c:1
-msgid "Command to run on double click in stack trace:"
-msgstr "Polecenie wykonywane po dwukrotnym kliknięciu stanu stosu:"
-
-#: memprof-strings.c:1
-msgid "Leak Detection Options"
-msgstr "Opcje wykrywania wycieków"
-
-#: memprof-strings.c:1
 msgid "Adding Skip Function"
 msgstr "Dodawanie pomijanej funkcji"
 
@@ -319,6 +283,46 @@ msgid ""
 msgstr ""
 "Wprowadź wyrażenie regularne opisujące nazwy funkcji pomijanych przy "
 "obliczaniu profili"
+
+#: memprof-strings.c:1
+msgid "Preferences"
+msgstr "Preferencje"
+
+#: memprof-strings.c:1
+msgid "Functions to Skip:"
+msgstr "Pomijane funkcje:"
+
+#: memprof-strings.c:1 memprof-strings.c:1
+msgid "label37"
+msgstr "etykieta37"
+
+#: memprof-strings.c:1 memprof-strings.c:1
+msgid "Add..."
+msgstr "Dodaj..."
+
+#: memprof-strings.c:1 memprof-strings.c:1
+msgid "Delete"
+msgstr "Usuń"
+
+#: memprof-strings.c:1 memprof-strings.c:1
+msgid "Defaults"
+msgstr "Domyślne"
+
+#: memprof-strings.c:1
+msgid "Regular expressions to Skip:"
+msgstr "Wyrażenia regularne pominięć:"
+
+#: memprof-strings.c:1
+msgid "Profile Options"
+msgstr "Opcje profilowania"
+
+#: memprof-strings.c:1
+msgid "Command to run on double click in stack trace:"
+msgstr "Polecenie wykonywane po dwukrotnym kliknięciu stanu stosu:"
+
+#: memprof-strings.c:1
+msgid "Leak Detection Options"
+msgstr "Opcje wykrywania wycieków"
 
 #: leakdetect.c:1 profile.c:1
 #, c-format
