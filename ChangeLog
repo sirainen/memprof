@@ -1,3 +1,9 @@
+Fri Feb  9 10:40:31 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am (dist-hook): Add some magic to make
+	sure spec file always has an entry for the current
+	version.
+
 Fri Feb  9 10:13:43 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* memintercept.c: Handle __fork, __vfork, so that

@@ -44,8 +44,8 @@ EXTRA_DIST =			\
 	leak.png		\
 	leak.xpm		\
 	memprof.glade	  	\
-	memprof.spec		\
-	memprof.png         \
+	memprof.spec.in		\
+	memprof.png         	\
 	memprof-strings.c
 
 Developmentdir = $(datadir)/gnome/apps/Development
@@ -68,3 +68,14 @@ copyrights:
              cat $$i.bak >> $$i;				  	  \
 	   fi;								  \
 	done
+
+dist-hook:
+	if grep '^- Version @VERSION@' $(srcdir)/memprof.spec.in ; then : ; else \
+	   perl -ni.bak -e \
+	      'print; if (/^%changelog/) { chomp ($$date = `date +"%a %b %d %Y"`); print "* $$date Owen Taylor <otaylor\@redhat.com>\n- Version @VERSION@\n\n"; }' \
+	      $(srcdir)/memprof.spec.in ; \
+	   ( CONFIG_FILES=memprof.spec CONFIG_HEADERS= $(SHELL) ./config.status ) ; \
+	   cp -p $(srcdir)/memprof.spec.in $(distdir) ; \
+	fi
+	cp memprof.spec $(distdir)
+
