@@ -11,108 +11,68 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2002-08-11 15:31+0200\n"
-"PO-Revision-Date: 2002-07-17 11:52+0200\n"
+"POT-Creation-Date: 2002-08-31 01:09+0200\n"
+"PO-Revision-Date: 2002-08-31 01:10+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:530
-#, c-format
-msgid "Executation of \"%s\" failed"
-msgstr "Kørsel af '%s' mislykkedes"
-
-#: main.c:661
-msgid "Really quit MemProf?"
-msgstr "Vil du virkelig afslutte Hukommelsesprofilering?"
-
-#: main.c:707 memprof.glade.h:36
-msgid "MemProf"
-msgstr "Hukommelsesprofilering"
-
-#: main.c:801
-#, c-format
-msgid "Cannot find executable for \"%s\""
-msgstr "Kunne ikke finde kørbar fil for '%s'"
-
-#: main.c:1410
-msgid "MemProf Error"
-msgstr "Hukommelsesprofileringsfejl"
-
-#: main.c:1410
-msgid "MemProf Warning"
-msgstr "Hukommelsesprofileringsadvarsel"
-
-#: main.c:1660
-msgid "Really detach from finished process?"
-msgstr "Vil du virkelig frigøre den afsluttede proces?"
-
-#: main.c:1662
-msgid "Really detach from running process?"
-msgstr "Vil du virkelig frigøre den kørende proces?"
-
-#: main.c:1692
-msgid "Really kill running process?"
-msgstr "Vil du virkelig dræbe den kørende proces?"
-
-#: main.c:1725
-msgid "Create new windows for forked processes"
-msgstr "Opret nye vinduer for fraspaltede processer"
-
-#: main.c:1727
-msgid "Retain windows for processes after exec()"
-msgstr "Behold vinduer for processer efter exec()"
-
-#: main.c:1764
-msgid "Cannot find memprof.glade"
-msgstr "Kan ikke finde memprof.glade"
-
-#: leakdetect.c:587 profile.c:203
+#: leakdetect.c:584 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åbne filen: %s\n"
 
-#: process.c:815
-msgid "Initial"
-msgstr "Begyndelse"
+#: main.c:534
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "Kørsel af '%s' mislykkedes"
 
-#: process.c:818
-msgid "Starting"
-msgstr "Starter"
+#: main.c:665
+msgid "Really quit MemProf?"
+msgstr "Vil du virkelig afslutte Hukommelsesprofilering?"
 
-#: process.c:821
-msgid "Running"
-msgstr "Kører"
+#: main.c:711 memprof.glade.h:34
+msgid "MemProf"
+msgstr "Hukommelsesprofilering"
 
-#: process.c:824
-msgid "Exiting"
-msgstr "Afslutter"
+#: main.c:805
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "Kunne ikke finde kørbar fil for '%s'"
 
-#: process.c:827 process.c:830
-msgid "Defunct"
-msgstr "Ude af drift"
+#: main.c:1416
+msgid "MemProf Error"
+msgstr "Hukommelsesprofileringsfejl"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Kan ikke finde libmemintercept.so"
+#: main.c:1416
+msgid "MemProf Warning"
+msgstr "Hukommelsesprofileringsadvarsel"
 
-#: tree.c:91
-msgid "Show"
-msgstr "Vis"
+#: main.c:1666
+msgid "Really detach from finished process?"
+msgstr "Vil du virkelig frigøre den afsluttede proces?"
 
-#: tree.c:94
-msgid "Hide"
-msgstr "Skjul"
+#: main.c:1668
+msgid "Really detach from running process?"
+msgstr "Vil du virkelig frigøre den kørende proces?"
 
-#: tree.c:98 memprof.glade.h:31
-msgid "Kill"
-msgstr "Dræb"
+#: main.c:1698
+msgid "Really kill running process?"
+msgstr "Vil du virkelig dræbe den kørende proces?"
 
-#: tree.c:101
-msgid "Detach"
-msgstr "Frigør"
+#: main.c:1731
+msgid "Create new windows for forked processes"
+msgstr "Opret nye vinduer for fraspaltede processer"
+
+#: main.c:1733
+msgid "Retain windows for processes after exec()"
+msgstr "Behold vinduer for processer efter exec()"
+
+#: main.c:1770
+msgid "Cannot find memprof.glade"
+msgstr "Kan ikke finde memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
@@ -131,54 +91,50 @@ msgid "32k"
 msgstr "32 k"
 
 #: memprof.glade.h:5
-msgid "Add..."
-msgstr "Tilføj..."
-
-#: memprof.glade.h:6
 msgid "Adding Skip Function"
 msgstr "Tilføjer oversprunget funktion"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
 msgstr "Tilføjer oversprunget regulært udtryk"
 
-#: memprof.glade.h:8
+#: memprof.glade.h:7
 msgid "Address"
 msgstr "Adresse"
 
-#: memprof.glade.h:9
+#: memprof.glade.h:8
 msgid "Bytes"
 msgstr "Byte"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:9
 msgid "Bytes / Allocation:"
 msgstr "Byte/allokering:"
 
-#: memprof.glade.h:11
+#: memprof.glade.h:10
 msgid "Caller"
 msgstr "Kalder"
 
-#: memprof.glade.h:12
+#: memprof.glade.h:11
 msgid "Callers"
 msgstr "Kaldere"
 
-#: memprof.glade.h:13
+#: memprof.glade.h:12
 msgid "Check for Leaks"
 msgstr "Tjek for lækager"
 
-#: memprof.glade.h:14
+#: memprof.glade.h:13
 msgid "Children"
 msgstr "Afkom"
 
-#: memprof.glade.h:15
+#: memprof.glade.h:14
 msgid "Command Line"
 msgstr "Kommandolinje"
 
-#: memprof.glade.h:16
+#: memprof.glade.h:15
 msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skal køres ved dobbelklik i stakefterfølgning:"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:16
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
@@ -186,186 +142,228 @@ msgstr ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:17
 msgid "Create Profile"
 msgstr "Opret profil"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:18
 msgid "Defaults"
 msgstr "Standardværdier"
 
-#: memprof.glade.h:20
-msgid "Delete"
-msgstr "Slet"
-
-#: memprof.glade.h:21
+#: memprof.glade.h:19
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Indtast et regulært udtryk med navne på funktioner der skal springes over "
 "ved beregning af profiler"
 
-#: memprof.glade.h:22
-msgid "Enter pathname to a executable"
-msgstr "Indtast sti til kørbar fil"
+#: memprof.glade.h:20
+msgid "Enter pathname to an executable"
+msgstr "Indtast sti til en kørbar fil"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr ""
 "Indtast navnet på en funktion der skal overspringes ved beregning af profiler"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:22
 msgid "File"
 msgstr "Fil"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:23
 msgid "Follow _exec()"
 msgstr "Følg _exec()"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:24
 msgid "Follow _fork()"
 msgstr "Følg _fork()"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:25
 msgid "Function"
 msgstr "Funktion"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:26
 msgid "Functions to Skip:"
 msgstr "Funktioner der springes over:"
 
-#: memprof.glade.h:29
+#: memprof.glade.h:27
 msgid "Generate _Leak Report"
 msgstr "Generér _lægkagerapport"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:28
 msgid "Generate _Profile"
 msgstr "Generér _profil"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr "Dræb"
+
+#: memprof.glade.h:30
 msgid "Kill Program"
 msgstr "Dræb program"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:31
 msgid "Leak Detection Options"
 msgstr "Lækagefindingsindstillinger"
 
-#: memprof.glade.h:34
+#: memprof.glade.h:32
 msgid "Leaks"
 msgstr "Lækager"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:33
 msgid "Line"
 msgstr "Linje"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:35
 msgid "MemProf - Processes"
 msgstr "Hukommelsesprofilering - processer"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:36
 msgid "Memory Profiling Tool"
 msgstr "Hukommelsesprofilering"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:37
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:38
 msgid "Preferences"
 msgstr "Indstillinger"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:39
 msgid "Process _Tree"
 msgstr "Proces_træ"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:40
 msgid "Profile"
 msgstr "Profil"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:41
 msgid "Profile Options"
 msgstr "Profileringsindstillinger"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:42
 msgid "Regular expressions to Skip:"
 msgstr "Regulære udtryk der springes over:"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:43
 msgid "Run"
 msgstr "Kør"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:44
 msgid "Run Executable"
 msgstr "Kør fil"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:45
 msgid "Run Program"
 msgstr "Kør program"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:46
 msgid "Save"
 msgstr "Gem"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:47
 msgid "Save Report"
 msgstr "Gem rapport"
 
-#: memprof.glade.h:50
+#: memprof.glade.h:48
 msgid "Save _Leak Info..."
 msgstr "Gem _lægkageinfo..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:49
 msgid "Save _Profile..."
 msgstr "Gem _profil..."
 
-#: memprof.glade.h:52
+#: memprof.glade.h:50
 msgid "Self"
 msgstr "Selv"
 
-#: memprof.glade.h:53
+#: memprof.glade.h:51
 msgid "Size"
 msgstr "Størrelse"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:52
 msgid "Stack Trace"
 msgstr "Stakefterfølgning"
 
-#: memprof.glade.h:55
+#: memprof.glade.h:53
 msgid "Status"
 msgstr "Status"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:54
 msgid "Total"
 msgstr "Totalt"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Totalt antal byte:"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr "_Frigør"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:57
 msgid "_File"
 msgstr "_Fil"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr "_Hjælp"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "_Dræb"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr "_Proces"
 
-#: memprof.glade.h:63
+#: memprof.glade.h:61
 msgid "_Run Program..."
 msgstr "_Kør program"
 
-#: memprof.glade.h:64
+#: memprof.glade.h:62
 msgid "_Settings"
 msgstr "_Indstillinger"
+
+#: process.c:847
+msgid "Initial"
+msgstr "Begyndelse"
+
+#: process.c:850
+msgid "Starting"
+msgstr "Starter"
+
+#: process.c:853
+msgid "Running"
+msgstr "Kører"
+
+#: process.c:856
+msgid "Exiting"
+msgstr "Afslutter"
+
+#: process.c:859 process.c:862
+msgid "Defunct"
+msgstr "Ude af drift"
+
+#: server.c:245
+msgid "Cannot find libmemintercept.so"
+msgstr "Kan ikke finde libmemintercept.so"
+
+#: tree.c:91
+msgid "Show"
+msgstr "Vis"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "Skjul"
+
+#: tree.c:101
+msgid "Detach"
+msgstr "Frigør"
+
+#~ msgid "Add..."
+#~ msgstr "Tilføj..."
+
+#~ msgid "Delete"
+#~ msgstr "Slet"
