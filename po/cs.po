@@ -1,0 +1,365 @@
+# Czech translation of memprof
+# This file is distributed under the same license as the PACKAGE package.
+# Miloslav Trmac <mitr@volny.cz>, 2002.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: memproff VERSION\n"
+"POT-Creation-Date: 2002-09-23 04:41+0200\n"
+"PO-Revision-Date: 2002-09-27 01:19+0200\n"
+"Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
+"Language-Team: Czech <cs@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: leakdetect.c:584 profile.c:202
+#, c-format
+msgid "Cannot open output file: %s\n"
+msgstr "Nemohu otevřít výstupní soubor: %s\n"
+
+#: main.c:536
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "Spuštění \"%s\" selhalo"
+
+#: main.c:667
+msgid "Really quit MemProf?"
+msgstr "Opravdu ukončit MemProf?"
+
+#: main.c:713 memprof.glade.h:34
+msgid "MemProf"
+msgstr "MemProf"
+
+#: main.c:807
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "Nemohu najít spustitelný soubor pro \"%s\""
+
+#: main.c:1418
+msgid "MemProf Error"
+msgstr "Chyba MemProf"
+
+#: main.c:1418
+msgid "MemProf Warning"
+msgstr "Varování MemProf"
+
+#: main.c:1678
+msgid "Really detach from finished process?"
+msgstr "Opradu se odpojit od skončeného procesu?"
+
+#: main.c:1680
+msgid "Really detach from running process?"
+msgstr "Opravdu se odpojit od běžícího procesu?"
+
+#: main.c:1710
+msgid "Really kill running process?"
+msgstr "Opravdu zabít běžící proces?"
+
+#: main.c:1747
+msgid "Create new windows for forked processes"
+msgstr "Vytvořit pro forkované procesy nová okna"
+
+#: main.c:1749
+msgid "Retain windows for processes after exec()"
+msgstr "Zachovat okna pro procesy po exec()"
+
+#: main.c:1751
+msgid "Type of profiling information to collect"
+msgstr "Typ sbíraných profilovacích informací"
+
+#: main.c:1753
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Počet vzorků/s pro časový profil (1k=1000)"
+
+#: main.c:1802
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Argument volby --profile musí být jeden z 'memory', 'cycles' nebo 'time'\n"
+
+#: main.c:1843
+msgid "Cannot find memprof.glade"
+msgstr "Nemohu najít memprof.glade"
+
+#: memprof.glade.h:1
+msgid "# of Allocations:"
+msgstr "# alokací:"
+
+#: memprof.glade.h:2
+msgid "0"
+msgstr "0"
+
+#: memprof.glade.h:3
+msgid "0k"
+msgstr "0k"
+
+#: memprof.glade.h:4
+msgid "32k"
+msgstr "32k"
+
+#: memprof.glade.h:5
+msgid "Adding Skip Function"
+msgstr "Přidávám přeskakovanou funkci"
+
+#: memprof.glade.h:6
+msgid "Adding Skip Regular Expression"
+msgstr "Přidávám přeskakovaný regulární výraz"
+
+#: memprof.glade.h:7
+msgid "Address"
+msgstr "Adresa"
+
+#: memprof.glade.h:8
+msgid "Bytes"
+msgstr "Bytů"
+
+#: memprof.glade.h:9
+msgid "Bytes / Allocation:"
+msgstr "Bytů / alokaci:"
+
+#: memprof.glade.h:10
+msgid "Caller"
+msgstr "Volající"
+
+#: memprof.glade.h:11
+msgid "Callers"
+msgstr "Volající"
+
+#: memprof.glade.h:12
+msgid "Check for Leaks"
+msgstr "Hledat leaky"
+
+#: memprof.glade.h:13
+msgid "Children"
+msgstr "Potomci"
+
+#: memprof.glade.h:14
+msgid "Command Line"
+msgstr "Příkazový řádek"
+
+#: memprof.glade.h:15
+msgid "Command to run on double click in stack trace:"
+msgstr "Příkaz, který spustit po dvojitém kliknutí ve výpisu zásobníku:"
+
+#: memprof.glade.h:16
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
+
+#: memprof.glade.h:17
+msgid "Create Profile"
+msgstr "Vytvořit profil"
+
+#: memprof.glade.h:18
+msgid "Defaults"
+msgstr "Implicitní"
+
+#: memprof.glade.h:19
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr "Vložte regulární výraz pro jména funkcí, které přeskočit při počítání profilů"
+
+#: memprof.glade.h:20
+msgid "Enter pathname to an executable"
+msgstr "Vložte cestu k spustitelnému souboru"
+
+#: memprof.glade.h:21
+msgid "Enter the name of a function to skip when computing profiles"
+msgstr "Vložte jméno funkce, kterou přeskočit při počítání profilů"
+
+#: memprof.glade.h:22
+msgid "File"
+msgstr "Soubor"
+
+#: memprof.glade.h:23
+msgid "Follow _exec()"
+msgstr "Následovat _exec()"
+
+#: memprof.glade.h:24
+msgid "Follow _fork()"
+msgstr "Následovat _fork()"
+
+#: memprof.glade.h:25
+msgid "Function"
+msgstr "Funkce"
+
+#: memprof.glade.h:26
+msgid "Functions to Skip:"
+msgstr "Funkce, které přeskočit:"
+
+#: memprof.glade.h:27
+msgid "Generate _Leak Report"
+msgstr "Generovat seznam _leaků"
+
+#: memprof.glade.h:28
+msgid "Generate _Profile"
+msgstr "Generovat _profil"
+
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr "Zabít"
+
+#: memprof.glade.h:30
+msgid "Kill Program"
+msgstr "Zabít program"
+
+#: memprof.glade.h:31
+msgid "Leak Detection Options"
+msgstr "Volby detekce leaků"
+
+#: memprof.glade.h:32
+msgid "Leaks"
+msgstr "Leaky"
+
+#: memprof.glade.h:33
+msgid "Line"
+msgstr "Řádek"
+
+#: memprof.glade.h:35
+msgid "MemProf - Processes"
+msgstr "MemProf - procesy"
+
+#: memprof.glade.h:36
+msgid "Memory Profiling Tool"
+msgstr "Nástroj na profilování paměti"
+
+#: memprof.glade.h:37
+msgid "PID"
+msgstr "PID"
+
+#: memprof.glade.h:38
+msgid "Preferences"
+msgstr "Nastavení"
+
+#: memprof.glade.h:39
+msgid "Process _Tree"
+msgstr "_Strom procesů"
+
+#: memprof.glade.h:40
+msgid "Profile"
+msgstr "Profil"
+
+#: memprof.glade.h:41
+msgid "Profile Options"
+msgstr "Nastavení profilu"
+
+#: memprof.glade.h:42
+msgid "Regular expressions to Skip:"
+msgstr "Regulární výrazy, které přeskočit:"
+
+#: memprof.glade.h:43
+msgid "Run"
+msgstr "Spustit"
+
+#: memprof.glade.h:44
+msgid "Run Executable"
+msgstr "Spustit spustitelný soubor"
+
+#: memprof.glade.h:45
+msgid "Run Program"
+msgstr "Spustit program"
+
+#: memprof.glade.h:46
+msgid "Save"
+msgstr "Uložit"
+
+#: memprof.glade.h:47
+msgid "Save Report"
+msgstr "Uložit zprávu"
+
+#: memprof.glade.h:48
+msgid "Save _Leak Info..."
+msgstr "Uložit info o _leacích..."
+
+#: memprof.glade.h:49
+msgid "Save _Profile..."
+msgstr "Uložit _profil..."
+
+#: memprof.glade.h:50
+msgid "Self"
+msgstr "Sama"
+
+#: memprof.glade.h:51
+msgid "Size"
+msgstr "Velikost"
+
+#: memprof.glade.h:52
+msgid "Stack Trace"
+msgstr "Výpis zásobníku"
+
+#: memprof.glade.h:53
+msgid "Status"
+msgstr "Stav"
+
+#: memprof.glade.h:54
+msgid "Total"
+msgstr "Celkem"
+
+#: memprof.glade.h:55
+msgid "Total Bytes:"
+msgstr "Celkem bytů:"
+
+#: memprof.glade.h:56
+msgid "_Detach"
+msgstr "_Odpojit"
+
+#: memprof.glade.h:57
+msgid "_File"
+msgstr "_Soubor"
+
+#: memprof.glade.h:58
+msgid "_Help"
+msgstr "_Nápověda"
+
+#: memprof.glade.h:59
+msgid "_Kill"
+msgstr "_Zabít"
+
+#: memprof.glade.h:60
+msgid "_Process"
+msgstr "_Proces"
+
+#: memprof.glade.h:61
+msgid "_Run Program..."
+msgstr "_Spustit program..."
+
+#: memprof.glade.h:62
+msgid "_Settings"
+msgstr "_Nastavení"
+
+#: process.c:854
+msgid "Initial"
+msgstr "Počáteční"
+
+#: process.c:857
+msgid "Starting"
+msgstr "Startuje"
+
+#: process.c:860
+msgid "Running"
+msgstr "Běží"
+
+#: process.c:863
+msgid "Exiting"
+msgstr "Ukončuje se"
+
+#: process.c:866 process.c:869
+msgid "Defunct"
+msgstr "Nefunkční"
+
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Nemohu najít %s"
+
+#: tree.c:91
+msgid "Show"
+msgstr "Ukázat"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "Skrýt"
+
+#: tree.c:101
+msgid "Detach"
+msgstr "Odpojit"
