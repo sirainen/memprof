@@ -11,18 +11,18 @@ msgstr ""
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=GBK\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: leakdetect.c:584
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr "ÎŞ·¨´ò¿ªÊä³öÎÄ¼ş£º%s\n"
+msgstr "æ— æ³•æ‰“å¼€è¾“å‡ºæ–‡ä»¶ï¼š%s\n"
 
 #: main.c:697
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "Ö´ĞĞ¡°%s¡±Ê§°Ü"
+msgstr "æ‰§è¡Œâ€œ%sâ€å¤±è´¥"
 
 #: main.c:858 memprof.glade.h:35
 msgid "MemProf"
@@ -31,59 +31,59 @@ msgstr "MemProf"
 #: main.c:961
 #, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr "ÎŞ·¨ÕÒµ½¡°%s¡±µÄ¿ÉÖ´ĞĞÎÄ¼ş"
+msgstr "æ— æ³•æ‰¾åˆ°â€œ%sâ€çš„å¯æ‰§è¡Œæ–‡ä»¶"
 
 #: main.c:1064
 msgid "Saving is disabled at the moment"
-msgstr "Ä¿Ç°½ûÓÃ±£´æ"
+msgstr "ç›®å‰ç¦ç”¨ä¿å­˜"
 
 #: main.c:1588
 msgid "MemProf Error"
-msgstr "MemProf ´íÎó"
+msgstr "MemProf é”™è¯¯"
 
 #: main.c:1588
 msgid "MemProf Warning"
-msgstr "MemProf ¾¯¸æ"
+msgstr "MemProf è­¦å‘Š"
 
 #: main.c:1968
 msgid "Really detach from finished process?"
-msgstr "ÕæµÄ´ÓÒÑÍê³ÉµÄ½ø³ÌÖĞÍÑÀë£¿"
+msgstr "çœŸçš„ä»å·²å®Œæˆçš„è¿›ç¨‹ä¸­è„±ç¦»ï¼Ÿ"
 
 #: main.c:1970
 msgid "Really detach from running process?"
-msgstr "ÕæµÄ´ÓÕıÔÚÔËĞĞµÄ½ø³ÌÖĞÍÑÀë£¿"
+msgstr "çœŸçš„ä»æ­£åœ¨è¿è¡Œçš„è¿›ç¨‹ä¸­è„±ç¦»ï¼Ÿ"
 
 #: main.c:2000
 msgid "Really kill running process?"
-msgstr "ÕæµÄÒªÉ±ËÀÕıÔÚÔËĞĞµÄ½ø³Ì£¿"
+msgstr "çœŸçš„è¦æ€æ­»æ­£åœ¨è¿è¡Œçš„è¿›ç¨‹ï¼Ÿ"
 
 #: main.c:2037
 msgid "Create new windows for forked processes"
-msgstr "Îª fork ³öµÄ½ø³Ì´´½¨ĞÂ´°¿Ú"
+msgstr "ä¸º fork å‡ºçš„è¿›ç¨‹åˆ›å»ºæ–°çª—å£"
 
 #: main.c:2039
 msgid "Retain windows for processes after exec()"
-msgstr "ÔÚ½ø³ÌÖ´ĞĞÁË exec() ºó±£Áô´°¿Ú"
+msgstr "åœ¨è¿›ç¨‹æ‰§è¡Œäº† exec() åä¿ç•™çª—å£"
 
 #: main.c:2041
 msgid "Type of profiling information to collect"
-msgstr "ÒªÊÕ¼¯µÄĞÅÏ¢µÄÀàĞÍ"
+msgstr "è¦æ”¶é›†çš„ä¿¡æ¯çš„ç±»å‹"
 
 #: main.c:2043
 msgid "Number of samples/sec for time profile (1k=1000)"
-msgstr "Ã¿ÃëÖÓÈ¡ÑùÊı(1k=1000)"
+msgstr "æ¯ç§’é’Ÿå–æ ·æ•°(1k=1000)"
 
 #: main.c:2092
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr "--profile µÄ²ÎÊı±ØĞëÊÇ¡°memory¡±¡¢¡°cycles¡±ºÍ¡°time¡±Ö®Ò»\n"
+msgstr "--profile çš„å‚æ•°å¿…é¡»æ˜¯â€œmemoryâ€ã€â€œcyclesâ€å’Œâ€œtimeâ€ä¹‹ä¸€\n"
 
 #: main.c:2133
 msgid "Cannot find memprof.glade"
-msgstr "ÎŞ·¨ÕÒµ½ memprof.glade"
+msgstr "æ— æ³•æ‰¾åˆ° memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
-msgstr "·ÖÅäÄÚ´æ´ÎÊı£º"
+msgstr "åˆ†é…å†…å­˜æ¬¡æ•°ï¼š"
 
 #: memprof.glade.h:2
 msgid "*"
@@ -103,228 +103,228 @@ msgstr "32k"
 
 #: memprof.glade.h:6
 msgid "<b>Callers</b>"
-msgstr "<b>µ÷ÓÃÕß</b>"
+msgstr "<b>è°ƒç”¨è€…</b>"
 
 #: memprof.glade.h:7
 msgid "<b>Descendants</b>"
-msgstr "<b>ÅÉÉú</b>"
+msgstr "<b>æ´¾ç”Ÿ</b>"
 
 #: memprof.glade.h:8
 msgid "Adding Skip Function"
-msgstr "Ìí¼ÓÒªºöÂÔµÄº¯Êı"
+msgstr "æ·»åŠ è¦å¿½ç•¥çš„å‡½æ•°"
 
 #: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
-msgstr "Ìí¼ÓÒªºöÂÔµÄÕıÔò±í´ïÊ½"
+msgstr "æ·»åŠ è¦å¿½ç•¥çš„æ­£åˆ™è¡¨è¾¾å¼"
 
 #: memprof.glade.h:10
 msgid "Address"
-msgstr "µØÖ·"
+msgstr "åœ°å€"
 
 #: memprof.glade.h:11
 msgid "Bytes / Allocation:"
-msgstr "×Ö½ÚÊı / ·ÖÅäÄÚ´æ¿é£º"
+msgstr "å­—èŠ‚æ•° / åˆ†é…å†…å­˜å—ï¼š"
 
 #: memprof.glade.h:12
 msgid "Caller"
-msgstr "µ÷ÓÃÕß"
+msgstr "è°ƒç”¨è€…"
 
 #: memprof.glade.h:13
 msgid "Check for Leaks"
-msgstr "¼ì²éÄÚ´æĞ¹Â©"
+msgstr "æ£€æŸ¥å†…å­˜æ³„æ¼"
 
 #: memprof.glade.h:14
 msgid "Command Line"
-msgstr "ÃüÁîĞĞ"
+msgstr "å‘½ä»¤è¡Œ"
 
 #: memprof.glade.h:15
 msgid "Command to run on double click in stack trace:"
-msgstr "ÔÚ¶ÑÕ»×·×ÙÖĞË«»÷Ê±Ö´ĞĞµÄÃüÁî£º"
+msgstr "åœ¨å †æ ˆè¿½è¸ªä¸­åŒå‡»æ—¶æ‰§è¡Œçš„å‘½ä»¤ï¼š"
 
 #: memprof.glade.h:16
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
 msgstr ""
-"°æÈ¨ËùÓĞ(C) 1999, 2000, 2001, Red Hat, Inc.\n"
-"°æÈ¨ËùÓĞ(C) 2002, Kristian Rietveld"
+"ç‰ˆæƒæ‰€æœ‰(C) 1999, 2000, 2001, Red Hat, Inc.\n"
+"ç‰ˆæƒæ‰€æœ‰(C) 2002, Kristian Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
-msgstr "´´½¨ÄÚ´æÊ¹ÓÃ·ÖÎö"
+msgstr "åˆ›å»ºå†…å­˜ä½¿ç”¨åˆ†æ"
 
 #: memprof.glade.h:19
 msgid "Defaults"
-msgstr "Ä¬ÈÏ"
+msgstr "é»˜è®¤"
 
 #: memprof.glade.h:20
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr "ÊäÈëÔÚ¼ÆËãÄÚ´æÊ¹ÓÃÇé¿öÊ±ÒªºöÂÔµÄº¯ÊıÃûµÄÕıÔò±í´ïÊ½"
+msgstr "è¾“å…¥åœ¨è®¡ç®—å†…å­˜ä½¿ç”¨æƒ…å†µæ—¶è¦å¿½ç•¥çš„å‡½æ•°åçš„æ­£åˆ™è¡¨è¾¾å¼"
 
 #: memprof.glade.h:21
 msgid "Enter pathname to an executable"
-msgstr "ÊäÈë¿ÉÖ´ĞĞÎÄ¼şµÄÂ·¾¶Ãû"
+msgstr "è¾“å…¥å¯æ‰§è¡Œæ–‡ä»¶çš„è·¯å¾„å"
 
 #: memprof.glade.h:22
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr "ÊäÈëÔÚ¼ÆËãÄÚ´æÊ¹ÓÃÇé¿öÊ±ÒªºöÂÔµÄº¯ÊıÃû"
+msgstr "è¾“å…¥åœ¨è®¡ç®—å†…å­˜ä½¿ç”¨æƒ…å†µæ—¶è¦å¿½ç•¥çš„å‡½æ•°å"
 
 #: memprof.glade.h:23
 msgid "File"
-msgstr "ÎÄ¼ş"
+msgstr "æ–‡ä»¶"
 
 #: memprof.glade.h:24
 msgid "Follow _exec()"
-msgstr "¸úËæ _exec()"
+msgstr "è·Ÿéš _exec()"
 
 #: memprof.glade.h:25
 msgid "Follow _fork()"
-msgstr "¸úËæ _fork()"
+msgstr "è·Ÿéš _fork()"
 
 #: memprof.glade.h:26
 msgid "Function"
-msgstr "º¯Êı"
+msgstr "å‡½æ•°"
 
 #: memprof.glade.h:27
 msgid "Functions to Skip:"
-msgstr "ÒªºöÂÔµÄº¯Êı£º"
+msgstr "è¦å¿½ç•¥çš„å‡½æ•°ï¼š"
 
 #: memprof.glade.h:28
 msgid "Generate _Leak Report"
-msgstr "Éú³ÉÄÚ´æĞ¹Â©±¨¸æ(_L)"
+msgstr "ç”Ÿæˆå†…å­˜æ³„æ¼æŠ¥å‘Š(_L)"
 
 #: memprof.glade.h:29
 msgid "Generate _Profile"
-msgstr "Éú³ÉÄÚ´æÊ¹ÓÃ·ÖÎö(_P)"
+msgstr "ç”Ÿæˆå†…å­˜ä½¿ç”¨åˆ†æ(_P)"
 
 #: memprof.glade.h:30 tree.c:98
 msgid "Kill"
-msgstr "É±ËÀ"
+msgstr "æ€æ­»"
 
 #: memprof.glade.h:31
 msgid "Kill Program"
-msgstr "É±ËÀ³ÌĞò"
+msgstr "æ€æ­»ç¨‹åº"
 
 #: memprof.glade.h:32
 msgid "Leak Detection Options"
-msgstr "Ì½²âÄÚ´æĞ¹Â©Ñ¡Ïî"
+msgstr "æ¢æµ‹å†…å­˜æ³„æ¼é€‰é¡¹"
 
 #: memprof.glade.h:33
 msgid "Leaks"
-msgstr "ÄÚ´æĞ¹Â©"
+msgstr "å†…å­˜æ³„æ¼"
 
 #: memprof.glade.h:34
 msgid "Line"
-msgstr "ĞĞÊı"
+msgstr "è¡Œæ•°"
 
 #: memprof.glade.h:36
 msgid "MemProf - Processes"
-msgstr "MemProf - ½ø³Ì"
+msgstr "MemProf - è¿›ç¨‹"
 
 #: memprof.glade.h:37
 msgid "Memory Profiling Tool"
-msgstr "ÄÚ´æÊ¹ÓÃ·ÖÎö¹¤¾ß"
+msgstr "å†…å­˜ä½¿ç”¨åˆ†æå·¥å…·"
 
 #: memprof.glade.h:38
 msgid "PID"
-msgstr "½ø³ÌºÅ"
+msgstr "è¿›ç¨‹å·"
 
 #: memprof.glade.h:39
 msgid "Preferences"
-msgstr "Ê×Ñ¡Ïî"
+msgstr "é¦–é€‰é¡¹"
 
 #: memprof.glade.h:40
 msgid "Process _Tree"
-msgstr "½ø³ÌÊ÷(_T)"
+msgstr "è¿›ç¨‹æ ‘(_T)"
 
 #: memprof.glade.h:41
 msgid "Profile"
-msgstr "ÄÚ´æÊ¹ÓÃ"
+msgstr "å†…å­˜ä½¿ç”¨"
 
 #: memprof.glade.h:42
 msgid "Profile Options"
-msgstr "ÄÚ´æÊ¹ÓÃ·ÖÎöÑ¡Ïî"
+msgstr "å†…å­˜ä½¿ç”¨åˆ†æé€‰é¡¹"
 
 #: memprof.glade.h:43
 msgid "Regular expressions to Skip:"
-msgstr "ÒªºöÂÔµÄº¯ÊıÃûÕıÔò±í´ïÊ½£º"
+msgstr "è¦å¿½ç•¥çš„å‡½æ•°åæ­£åˆ™è¡¨è¾¾å¼ï¼š"
 
 #: memprof.glade.h:44
 msgid "Reset"
-msgstr "ÖØÖÃ"
+msgstr "é‡ç½®"
 
 #: memprof.glade.h:45
 msgid "Run"
-msgstr "ÔËĞĞ"
+msgstr "è¿è¡Œ"
 
 #: memprof.glade.h:46
 msgid "Run Executable"
-msgstr "ÔËĞĞ¿ÉÖ´ĞĞÎÄ¼ş"
+msgstr "è¿è¡Œå¯æ‰§è¡Œæ–‡ä»¶"
 
 #: memprof.glade.h:47
 msgid "Run Program"
-msgstr "ÔËĞĞ³ÌĞò"
+msgstr "è¿è¡Œç¨‹åº"
 
 #: memprof.glade.h:48
 msgid "Save"
-msgstr "±£´æ"
+msgstr "ä¿å­˜"
 
 #: memprof.glade.h:49
 msgid "Save Report"
-msgstr "±£´æ±¨¸æ"
+msgstr "ä¿å­˜æŠ¥å‘Š"
 
 #: memprof.glade.h:50
 msgid "Save _Leak Info..."
-msgstr "±£´æÄÚ´æĞ¹Â©ĞÅÏ¢(_L)..."
+msgstr "ä¿å­˜å†…å­˜æ³„æ¼ä¿¡æ¯(_L)..."
 
 #: memprof.glade.h:51
 msgid "Save _Profile..."
-msgstr "±£´æÄÚ´æÊ¹ÓÃ·ÖÎö(_P)..."
+msgstr "ä¿å­˜å†…å­˜ä½¿ç”¨åˆ†æ(_P)..."
 
 #: memprof.glade.h:52
 msgid "Size"
-msgstr "´óĞ¡"
+msgstr "å¤§å°"
 
 #: memprof.glade.h:53
 msgid "Stack Trace"
-msgstr "¶ÑÕ»×·×Ù"
+msgstr "å †æ ˆè¿½è¸ª"
 
 #: memprof.glade.h:54
 msgid "Status"
-msgstr "×´Ì¬"
+msgstr "çŠ¶æ€"
 
 #: memprof.glade.h:55
 msgid "Total Bytes:"
-msgstr "×Ö½Ú×ÜÊı£º"
+msgstr "å­—èŠ‚æ€»æ•°ï¼š"
 
 #: memprof.glade.h:56
 msgid "_Detach"
-msgstr "ÍÑÀë(_D)"
+msgstr "è„±ç¦»(_D)"
 
 #: memprof.glade.h:57
 msgid "_File"
-msgstr "ÎÄ¼ş(_F)"
+msgstr "æ–‡ä»¶(_F)"
 
 #: memprof.glade.h:58
 msgid "_Help"
-msgstr "°ïÖú(_H)"
+msgstr "å¸®åŠ©(_H)"
 
 #: memprof.glade.h:59
 msgid "_Kill"
-msgstr "É±ËÀ(_K)"
+msgstr "æ€æ­»(_K)"
 
 #: memprof.glade.h:60
 msgid "_Process"
-msgstr "½ø³Ì(_P)"
+msgstr "è¿›ç¨‹(_P)"
 
 #: memprof.glade.h:61
 msgid "_Run Program..."
-msgstr "ÔËĞĞ³ÌĞò(_R)..."
+msgstr "è¿è¡Œç¨‹åº(_R)..."
 
 #: memprof.glade.h:62
 msgid "_Settings"
-msgstr "ÉèÖÃ(_S)"
+msgstr "è®¾ç½®(_S)"
 
 #: memprof.glade.h:63
 msgid "translator_credits"
@@ -332,73 +332,73 @@ msgstr "He Qiangqiang <carton@linux.net.cn>"
 
 #: process.c:886
 msgid "Initial"
-msgstr "³õÊ¼»¯"
+msgstr "åˆå§‹åŒ–"
 
 #: process.c:889
 msgid "Starting"
-msgstr "ÕıÔÚ¿ªÊ¼"
+msgstr "æ­£åœ¨å¼€å§‹"
 
 #: process.c:892
 msgid "Running"
-msgstr "ÕıÔÚÔËĞĞ"
+msgstr "æ­£åœ¨è¿è¡Œ"
 
 #: process.c:895
 msgid "Exiting"
-msgstr "ÕıÔÚÍË³ö"
+msgstr "æ­£åœ¨é€€å‡º"
 
 #: process.c:898 process.c:901
 msgid "Defunct"
-msgstr "½©Ê¬½ø³Ì"
+msgstr "åƒµå°¸è¿›ç¨‹"
 
 #: server.c:286
 #, c-format
 msgid "Cannot find %s"
-msgstr "ÎŞ·¨ÕÒµ½ %s"
+msgstr "æ— æ³•æ‰¾åˆ° %s"
 
 #: tree.c:91
 msgid "Show"
-msgstr "ÏÔÊ¾"
+msgstr "æ˜¾ç¤º"
 
 #: tree.c:94
 msgid "Hide"
-msgstr "Òş²Ø"
+msgstr "éšè—"
 
 #: tree.c:101
 msgid "Detach"
-msgstr "ÍÑÀë"
+msgstr "è„±ç¦»"
 
 #~ msgid "Really quit MemProf?"
-#~ msgstr "ÕæµÄÒªÍË³ö MemProf£¿"
+#~ msgstr "çœŸçš„è¦é€€å‡º MemProfï¼Ÿ"
 
 #~ msgid "Bytes"
-#~ msgstr "×Ö½ÚÊı"
+#~ msgstr "å­—èŠ‚æ•°"
 
 #~ msgid "Children"
-#~ msgstr "×Ó½ø³Ì"
+#~ msgstr "å­è¿›ç¨‹"
 
 #~ msgid "Self"
-#~ msgstr "×ÔÉí½ø³Ì"
+#~ msgstr "è‡ªèº«è¿›ç¨‹"
 
 #~ msgid "Total"
-#~ msgstr "×ÜºÍ"
+#~ msgstr "æ€»å’Œ"
 
 #~ msgid "Cannot find libmemintercept.so"
-#~ msgstr "ÕÒ²»µ½ libmemintercept.so"
+#~ msgstr "æ‰¾ä¸åˆ° libmemintercept.so"
 
 #~ msgid "Add..."
-#~ msgstr "Ìí¼Ó..."
+#~ msgstr "æ·»åŠ ..."
 
 #~ msgid "Delete"
-#~ msgstr "É¾³ı"
+#~ msgstr "åˆ é™¤"
 
 #~ msgid "_Run..."
-#~ msgstr "ÔËĞĞ(_R)..."
+#~ msgstr "è¿è¡Œ(_R)..."
 
 #~ msgid "Copyright Red Hat, Inc., 1999-2000"
-#~ msgstr "°æÈ¨ËùÓĞ Red Hat, Inc., 1999-2000"
+#~ msgstr "ç‰ˆæƒæ‰€æœ‰ Red Hat, Inc., 1999-2000"
 
 #~ msgid "label37"
 #~ msgstr "label37"
 
 #~ msgid "Add"
-#~ msgstr "Ìí¼Ó"
+#~ msgstr "æ·»åŠ "
