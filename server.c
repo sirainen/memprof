@@ -193,7 +193,8 @@ mp_server_instrument (MPServer *server, char **args)
 
 	pid = fork();
 	if (pid < 0)
-		show_error (ERROR_FATAL, "Cannot fork: %s\n", g_strerror (errno));
+		show_error (NULL, ERROR_FATAL, "Cannot fork: %s\n",
+			    g_strerror (errno));
 
 	if (pid == 0) {		/* Child  */
 		gchar *envstr;
@@ -239,7 +240,8 @@ find_lib_location (void)
 	}
 
 	if (!lib_location)
-		show_error (ERROR_FATAL, _("Cannot find libmemintercept.so"));
+		show_error (NULL, ERROR_FATAL,
+			    _("Cannot find libmemintercept.so"));
 
 	/* Make lib_location absolute */
 

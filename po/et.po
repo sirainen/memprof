@@ -277,7 +277,9 @@ msgstr "Vahelejäetava regulaaravaldise lisamine"
 #: memprof-strings.c:69
 msgid ""
 "Enter a regular expression of function names to skip when computing  profiles"
-msgstr "Sisesta regulaaravaldis, millele vastavad funktsioonid jäetakse profiili arvutamisel vahele"
+msgstr ""
+"Sisesta regulaaravaldis, millele vastavad funktsioonid jäetakse profiili "
+"arvutamisel vahele"
 
 #: memprof-strings.c:70
 msgid "Preferences"

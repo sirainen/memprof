@@ -308,8 +308,7 @@ msgstr "添加要忽略的正则表达式"
 #: memprof-strings.c:82
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr ""
-"输入在计算内存 profile 时要忽略的函数名的正则表达式"
+msgstr "输入在计算内存 profile 时要忽略的函数名的正则表达式"
 
 #: leakdetect.c:587 profile.c:192
 #, c-format

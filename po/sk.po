@@ -275,7 +275,8 @@ msgid "Adding Skip Regular Expression"
 msgstr "Pridanie regulárneho výrazu pre preskakovanie"
 
 #: memprof-strings.c:69
-msgid "Enter a regular expression of function names to skip when computing  profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
 "Zadajte regulárny výraz pre mená funkcií, ktoré sa majú preskakovať pri "
 "výpočte profilov"
@@ -360,4 +361,3 @@ msgstr "Skryť"
 #: tree.c:100
 msgid "Detach"
 msgstr "Odpojiť"
-

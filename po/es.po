@@ -244,7 +244,8 @@ msgstr "Agregar"
 
 #: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr "Ingrese el nombre de una función a ignorar cuando se calculen los perfiles"
+msgstr ""
+"Ingrese el nombre de una función a ignorar cuando se calculen los perfiles"
 
 #: memprof-strings.c:60
 msgid "Run Executable"
@@ -275,7 +276,8 @@ msgid "Adding Skip Regular Expression"
 msgstr "Agregando Expresión Regular Ignorada"
 
 #: memprof-strings.c:69
-msgid "Enter a regular expression of function names to skip when computing  profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
 "Ingrese una expresión regular de nombres de función a ignorar cuando se "
 "calculan los perfiles"
@@ -360,4 +362,3 @@ msgstr "Ocultar"
 #: tree.c:100
 msgid "Detach"
 msgstr "Desconectar"
-

@@ -525,7 +525,8 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 		args[2] = command->str;
 
 		if (gnome_execute_async (NULL, 3, args) == -1) {
-			show_error (ERROR_MODAL, _("Executation of \"%s\" failed"),
+			show_error (pwin->main_window,
+				    ERROR_MODAL, _("Executation of \"%s\" failed"),
 				    command->str);
 		}
 
@@ -648,15 +649,21 @@ void
 exit_cb (GtkWidget *widget)
 {
 	GtkWidget *dialog;
+	gint response;
 
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
-	dialog = gnome_message_box_new (_("Really quit MemProf?"), GNOME_MESSAGE_BOX_QUESTION,
-					GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
+	dialog = gtk_message_dialog_new (GTK_WINDOW (pwin->main_window),
+					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					 GTK_MESSAGE_QUESTION,
+					 GTK_BUTTONS_YES_NO,
+					 _("Really quit MemProf?"));
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 
-	gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
 	
-	if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0)
+	if (response == GTK_RESPONSE_YES)
 		gtk_main_quit ();
 }
 
@@ -788,7 +795,8 @@ run_file (ProcessWindow *pwin, char **args)
 		result = TRUE;
 		
 	} else {
-		show_error (ERROR_MODAL,
+		show_error (pwin->main_window,
+			    ERROR_MODAL,
 			    _("Cannot find executable for \"%s\""),
 			    args[0]);
 		result = FALSE;
@@ -821,7 +829,7 @@ run_cb (GtkWidget *widget)
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (run_dialog),
 					GTK_WINDOW (pwin->main_window));
-	       if (gnome_dialog_run (GNOME_DIALOG (run_dialog)) == 0) {
+	       if (gnome_dialog_run (GNOME_DIALOG (run_dialog)) == 1) {
 		       gchar **args;
 		       char *text;
 		       gboolean result;
@@ -830,7 +838,7 @@ run_cb (GtkWidget *widget)
 		       args = process_parse_exec (text);
 
 		       result = run_file (pwin, args);
-		       
+
 		       g_strfreev (args);
 		       g_free (text);
 
@@ -1007,7 +1015,7 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
 					GTK_WINDOW (property_box));
-	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0) {
+	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 1) {
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
 		       if (strchr (text, ' ')) {
@@ -1105,7 +1113,7 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
 					GTK_WINDOW (property_box));
-	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0) {
+	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 1) {
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 		       
 		       if (strchr (text, ' ')) {
@@ -1234,8 +1242,7 @@ preferences_cb (GtkWidget *widget)
        property_box = gtk_dialog_new_with_buttons ("Preferences",
 						   NULL,
 						   GTK_DIALOG_DESTROY_WITH_PARENT,
-						   "Done",
-						   GTK_RESPONSE_CLOSE,
+						   GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 						   NULL);
        gtk_widget_reparent (glade_xml_get_widget (xml, "notebook2"),
                             GTK_DIALOG (property_box)->vbox);
@@ -1359,7 +1366,6 @@ about_cb (GtkWidget *widget)
        dialog = glade_xml_get_widget (xml, "About");
        g_object_unref (G_OBJECT (xml));
 
-       gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
        gtk_window_set_transient_for (GTK_WINDOW (dialog),
                                      GTK_WINDOW (pwin->main_window));
 
@@ -1367,7 +1373,8 @@ about_cb (GtkWidget *widget)
 }
 
 void 
-show_error (ErrorType error,
+show_error (GtkWidget *parent_window,
+	    ErrorType error,
 	    const gchar *format,
 	    ...)
 {
@@ -1379,11 +1386,12 @@ show_error (ErrorType error,
 	vasprintf (&message, format, args);
 	va_end (args);
 
-	dialog = gnome_message_box_new (message,
-					(error == ERROR_WARNING) ?
-					  GNOME_MESSAGE_BOX_WARNING :
-					  GNOME_MESSAGE_BOX_ERROR,
-					GNOME_STOCK_BUTTON_OK, NULL);
+	dialog = gtk_message_dialog_new (parent_window ? GTK_WINDOW (parent_window) : NULL,
+					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					 (error == ERROR_WARNING) ?
+					   GTK_MESSAGE_QUESTION :
+					   GTK_MESSAGE_WARNING,
+					 GTK_BUTTONS_OK, message);
 	free (message);
 
 	gtk_window_set_title (GTK_WINDOW (dialog),
@@ -1392,14 +1400,8 @@ show_error (ErrorType error,
 
 	if (error == ERROR_WARNING)
 		gtk_widget_show (dialog);
-	else {
-#if 0
-		if (pwin->main_window)
-			gnome_dialog_set_parent (GNOME_DIALOG (dialog),
-						 GTK_WINDOW (pwin->main_window));
-#endif		
-		gnome_dialog_run (GNOME_DIALOG (dialog));
-	}
+	else
+		gtk_dialog_run (GTK_DIALOG (dialog));
 
 	if (error == ERROR_FATAL)
 		exit(1);
@@ -1450,6 +1452,7 @@ process_window_destroy (ProcessWindow *pwin)
 static ProcessWindow *
 process_window_new (void)
 {
+       gchar *fullfilename;
        GladeXML *xml;
        GtkWidget *vpaned;
        ProcessWindow *pwin;
@@ -1469,6 +1472,10 @@ process_window_new (void)
        xml = glade_xml_new (glade_file, "MainWindow", NULL);
 
        pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
+       fullfilename = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "memprof.png", FALSE, NULL);
+       gnome_window_icon_set_from_file (GTK_WINDOW (pwin->main_window),
+					fullfilename);
+       g_free (fullfilename);
 
        gtk_signal_connect (GTK_OBJECT (pwin->main_window), "delete_event",
 			   GTK_SIGNAL_FUNC (hide_and_check_quit), pwin);
@@ -1632,18 +1639,24 @@ process_window_maybe_detach (ProcessWindow *pwin)
 {
 	GtkWidget *dialog;
 	const char *message;
+	gint response;
 
 	if (pwin->process->status == MP_PROCESS_EXITING)
 		message = _("Really detach from finished process?");
 	else
 		message = _("Really detach from running process?");
 
-	
-	dialog = gnome_message_box_new (message, GNOME_MESSAGE_BOX_QUESTION,
-					GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
-	
-	gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
-	if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0)
+	dialog = gtk_message_dialog_new (GTK_WINDOW (pwin->main_window),
+					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+					 GTK_MESSAGE_QUESTION,
+					 GTK_BUTTONS_YES_NO,
+					 message);
+	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
+
+	response = gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
+
+	if (response == GTK_RESPONSE_YES)
 		process_detach (pwin->process);
 }
 
@@ -1655,12 +1668,20 @@ process_window_maybe_kill (ProcessWindow *pwin)
 		process_window_maybe_detach (pwin);
 	else {
 		GtkWidget *dialog;
-		
-		dialog = gnome_message_box_new (_("Really kill running process?"), GNOME_MESSAGE_BOX_QUESTION,
-						GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
-		
-		gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
-		if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0)
+		gint response;
+
+		dialog = gtk_message_dialog_new (GTK_WINDOW (pwin->main_window),
+						 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
+						 GTK_MESSAGE_QUESTION,
+						 GTK_BUTTONS_YES_NO,
+						 _("Really kill running process?"));
+		gtk_dialog_set_default_response (GTK_DIALOG (dialog),
+						 GTK_RESPONSE_YES);
+
+		response = gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+
+		if (response == GTK_RESPONSE_YES)
 			process_kill (pwin->process);
 	}
 }
@@ -1693,14 +1714,14 @@ main(int argc, char **argv)
        };
        poptContext ctx;
 
-       int init_results;
+       GnomeProgram *program;
        const char **startup_args;
        ProcessWindow *initial_window;
 
        /* Set up a handler for SIGCHLD to avoid zombie children
 	*/
        signal (SIGCHLD, sigchld_handler);
-       
+
        bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
        textdomain (GETTEXT_PACKAGE);
 
@@ -1708,17 +1729,24 @@ main(int argc, char **argv)
        bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif
 
-       init_results = gnome_init_with_popt_table (PACKAGE, VERSION,
-						  argc, argv,
-						  memprof_popt_options, 0, &ctx);
+       program = gnome_program_init (PACKAGE, VERSION,
+				     LIBGNOMEUI_MODULE,
+				     argc, argv,
+				     GNOME_PARAM_POPT_TABLE, memprof_popt_options,
+				     NULL);
+
+       g_object_get (G_OBJECT (program),
+		     GNOME_PARAM_POPT_CONTEXT, &ctx,
+		     NULL);
+
        glade_gnome_init ();
 
-       glade_file = "./memprof.glade2";
+       glade_file = "./memprof.glade";
        if (!g_file_exists (glade_file)) {
-	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade2");
+	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
        }
        if (!g_file_exists (glade_file)) {
-	       show_error (ERROR_FATAL, _("Cannot find memprof.glade2"));
+	       show_error (NULL, ERROR_FATAL, _("Cannot find memprof.glade"));
        }
 
        global_server = mp_server_new ();

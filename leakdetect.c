@@ -582,7 +582,9 @@ leaks_print (MPProcess *process, GSList *blocks, gchar *outfile)
 	out = fopen (outfile, "w");
 	if (!out)
 	{
-		show_error (ERROR_MODAL, _("Cannot open output file: %s\n"), g_strerror (errno));
+		show_error (NULL, ERROR_MODAL,
+			    _("Cannot open output file: %s\n"),
+			    g_strerror (errno));
 		return;
 	}
 

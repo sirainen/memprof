@@ -1,24 +1,24 @@
 # memprof translation to Catalan.
 # Copyright (C) 2000 Free Software Foundation, Inc.
-# Softcatal‡ <info@softcatala.org>, 2000.
+# Softcatal√† <info@softcatala.org>, 2000.
 #
-# TraducciÛ per Softcatal‡ <linux@softcatala.org>
+# Traducci√≥ per Softcatal√† <linux@softcatala.org>
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
 "POT-Creation-Date: 2001-03-25 15:09+0200\n"
 "PO-Revision-Date: 2001-03-25 01:36+0100\n"
-"Last-Translator: Softcatal‡ <tradgnome@softcatala.org>\n"
+"Last-Translator: Softcatal√† <tradgnome@softcatala.org>\n"
 "Language-Team: Catalan <linux@softcatala.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "L'execuciÛ de \"%s\" ha fallat"
+msgstr "L'execuci√≥ de \"%s\" ha fallat"
 
 #: main.c:656
 msgid "Really quit MemProf?"
@@ -44,19 +44,19 @@ msgstr "Error del MemProf"
 
 #: main.c:1365
 msgid "MemProf Warning"
-msgstr "AvÌs del MemProf"
+msgstr "Av√≠s del MemProf"
 
 #: main.c:1609
 msgid "Really detach from finished process?"
-msgstr "Esteu segur que voleu desacoblar-vos del procÈs finalitzat?"
+msgstr "Esteu segur que voleu desacoblar-vos del proc√©s finalitzat?"
 
 #: main.c:1611
 msgid "Really detach from running process?"
-msgstr "Esteu segur que voleu desacoblar-vos del procÈs en execuciÛ?"
+msgstr "Esteu segur que voleu desacoblar-vos del proc√©s en execuci√≥?"
 
 #: main.c:1631
 msgid "Really kill running process?"
-msgstr "Segur que voleu finalitzar el procÈs en curs?"
+msgstr "Segur que voleu finalitzar el proc√©s en curs?"
 
 #: main.c:1661
 msgid "Create new windows for forked processes"
@@ -80,11 +80,11 @@ msgstr "Desa el _perfil..."
 
 #: memprof-strings.c:10
 msgid "Save _Leak Info..."
-msgstr "Desa la informaciÛ de _pËrdues de memÚria..."
+msgstr "Desa la informaci√≥ de _p√®rdues de mem√≤ria..."
 
 #: memprof-strings.c:11
 msgid "_Process"
-msgstr "_ProcÈs"
+msgstr "_Proc√©s"
 
 #: memprof-strings.c:12
 msgid "Generate _Profile"
@@ -92,7 +92,7 @@ msgstr "Genera un _perfil"
 
 #: memprof-strings.c:13
 msgid "Generate _Leak Report"
-msgstr "Genera un informe de _pËrdues de memÚria"
+msgstr "Genera un informe de _p√®rdues de mem√≤ria"
 
 #: memprof-strings.c:14
 msgid "_Kill"
@@ -136,11 +136,11 @@ msgstr "Perfil"
 
 #: memprof-strings.c:25
 msgid "Check for Leaks"
-msgstr "Comprova si hi ha pËrdues de memÚria"
+msgstr "Comprova si hi ha p√®rdues de mem√≤ria"
 
 #: memprof-strings.c:26 memprof-strings.c:54
 msgid "Leaks"
-msgstr "PËrdues de memÚria"
+msgstr "P√®rdues de mem√≤ria"
 
 #: memprof-strings.c:27
 msgid "Save Report"
@@ -168,7 +168,7 @@ msgstr "0"
 
 #: memprof-strings.c:33
 msgid "Bytes / Allocation:"
-msgstr "Bytes / AssignaciÛ:"
+msgstr "Bytes / Assignaci√≥:"
 
 #: memprof-strings.c:35
 msgid "Total Bytes:"
@@ -177,7 +177,7 @@ msgstr "Bytes totals:"
 #: memprof-strings.c:37 memprof-strings.c:41 memprof-strings.c:44
 #: memprof-strings.c:51
 msgid "Function"
-msgstr "FunciÛ"
+msgstr "Funci√≥"
 
 #: memprof-strings.c:38
 msgid "Self"
@@ -201,7 +201,7 @@ msgstr "Cridadors"
 
 #: memprof-strings.c:47
 msgid "Address"
-msgstr "AdreÁa"
+msgstr "Adre√ßa"
 
 #: memprof-strings.c:48
 msgid "Size"
@@ -217,7 +217,7 @@ msgstr "Seguiment de la pila"
 
 #: memprof-strings.c:52
 msgid "Line"
-msgstr "LÌnia"
+msgstr "L√≠nia"
 
 #: memprof-strings.c:53
 msgid "File"
@@ -229,7 +229,7 @@ msgstr "Copyright Red Hat, Inc., 1999-2000"
 
 #: memprof-strings.c:56
 msgid "Memory Profiling Tool"
-msgstr "Eina per crear perfils de memÚria"
+msgstr "Eina per crear perfils de mem√≤ria"
 
 #: memprof-strings.c:57
 msgid "Functions to Skip:"
@@ -265,11 +265,11 @@ msgstr "Ordre per executar en fer doble clic al seguiment de la pila:"
 
 #: memprof-strings.c:69
 msgid "Leak Detection Options"
-msgstr "Opcions de detecciÛ de pËrdues de memÚria"
+msgstr "Opcions de detecci√≥ de p√®rdues de mem√≤ria"
 
 #: memprof-strings.c:70
 msgid "Adding Skip Function"
-msgstr "AddiciÛ de la funciÛ d'ignorar"
+msgstr "Addici√≥ de la funci√≥ d'ignorar"
 
 #: memprof-strings.c:71 memprof-strings.c:81
 msgid "Add"
@@ -277,7 +277,7 @@ msgstr "Afegeix"
 
 #: memprof-strings.c:72
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr "IntroduÔu el nom d'una funciÛ per ignorar en processar els perfils"
+msgstr "Introdu√Øu el nom d'una funci√≥ per ignorar en processar els perfils"
 
 #: memprof-strings.c:73
 msgid "Run Executable"
@@ -285,7 +285,7 @@ msgstr "Executa"
 
 #: memprof-strings.c:75
 msgid "Enter pathname to a executable"
-msgstr "IntroduÔu el camÌ a l'executable"
+msgstr "Introdu√Øu el cam√≠ a l'executable"
 
 #: memprof-strings.c:76
 msgid "MemProf - Processes"
@@ -297,7 +297,7 @@ msgstr "PID"
 
 #: memprof-strings.c:78
 msgid "Command Line"
-msgstr "LÌnia d'ordres"
+msgstr "L√≠nia d'ordres"
 
 #: memprof-strings.c:79
 msgid "Status"
@@ -305,13 +305,13 @@ msgstr "Estat"
 
 #: memprof-strings.c:80
 msgid "Adding Skip Regular Expression"
-msgstr "AddiciÛ de l'expressiÛ normal d'ignorar"
+msgstr "Addici√≥ de l'expressi√≥ normal d'ignorar"
 
 #: memprof-strings.c:82
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"IntroduÔu una expressiÛ normal de noms de funciÛ a ignorar en processar els "
+"Introdu√Øu una expressi√≥ normal de noms de funci√≥ a ignorar en processar els "
 "perfils"
 
 #: leakdetect.c:587 profile.c:192
@@ -325,15 +325,15 @@ msgstr "Inicial"
 
 #: process.c:810
 msgid "Starting"
-msgstr "S'est‡ iniciant"
+msgstr "S'est√† iniciant"
 
 #: process.c:813
 msgid "Running"
-msgstr "S'est‡ executant"
+msgstr "S'est√† executant"
 
 #: process.c:816
 msgid "Exiting"
-msgstr "S'est‡ sortint"
+msgstr "S'est√† sortint"
 
 #: process.c:819 process.c:822
 msgid "Defunct"

@@ -2,7 +2,7 @@ SUBDIRS = po
 
 bin_PROGRAMS = memprof
 noinst_PROGRAMS = testmemprof
-pkgdata_DATA = memprof.glade2 leak.xpm gnome-question.png
+pkgdata_DATA = memprof.glade leak.xpm memprof.png
 
 lib_LTLIBRARIES = libmemintercept.la
 
@@ -21,11 +21,6 @@ memprof_SOURCES =	        \
 	server.c		\
 	server.h		\
 	tree.c
-
-# taken from bug-buddy/src/Makefile.am
-memprof.glade2: memprof.glade $(LIBGLADE_CONVERT)
-	$(LIBGLADE_CONVERT) --no-upgrade memprof.glade > memprof.glade.tmp \
-	&& mv memprof.glade.tmp memprof.glade2
 
 memprof_LDADD = $(MEMPROF_LIBS)
 memprof_LDFLAGS = -export-dynamic
@@ -48,7 +43,6 @@ schema_DATA = memprof.schemas
 
 EXTRA_DIST =			\
 	memprof.desktop		\
-	gnome-question.png	\
 	leak.png		\
 	leak.xpm		\
 	memprof.glade	  	\

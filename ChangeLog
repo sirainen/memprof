@@ -1,3 +1,44 @@
+Tue Jun 11 01:22:30 2002  Kristian Rietveld  <kris@gtk.org>
+
+	Finished the GNOME2 port.
+
+	* Makefile.am: install memprof.glade and not memprof.glade2,
+	remove glade file conversion, removed gnome-question.png from
+	EXTRA_DIST
+
+	* acconfig.h: added line for HAVE_BIND_TEXTDOMAIN_CODESET
+
+	* configure.in: check for bind_textdomain_codeset, remove check for
+	libglade-convert
+
+	* main.c (leak_stack_run_commmand), (run_file):
+	fixup call to show_error,
+	(exit_cb), (run_cb), (skip_add_cb), (skip_regexes_add_cb),
+	(show_error), (process_window_maybe_detach),
+	(process_window_maybe_kill): make message dialog use GtkDialog
+	(includes button swap), 
+	(preferences_cb): add nice close stock icon to close button,
+	(about_cb): don't make about dialog modal,
+	(show_error): add parent_window parameter,
+	(process_window_new): give the main window an icon,
+	(main): init using GnomeProgram, load memprof.glade and not	
+	memprof.glade2, fix show_error call
+
+	* memprof.h: add parent_window parameter to show_error.
+	
+	* leakdetect.c (leaks_print): fixup call to show_error
+	* profile.c (profile_write): ditto
+	* server.c (mp_server_instrument), (find_lib_location): ditto
+
+	* memprof.glade: loads of small tweaks, added icons, etc. This is
+	now a glade2 file.
+
+	* po/POTFILES.in: removed memprof-strings.c, added memprof.glade
+
+	* po/*po: converted to UTF8.
+
+	* gnome-question.png, memprof-strings.c: removed
+
 Fri May 17 01:47:55 2002  Kristian Rietveld  <kris@gtk.org>
 
 	* memintercept.c (stack_trace): fix typo (patch from Michael Meeks)

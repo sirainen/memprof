@@ -120,7 +120,7 @@ msgstr "Podążanie za _exec()"
 msgid "Run Program"
 msgstr "Uruchamia program"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Run"
 msgstr "Uruchom"
 
@@ -136,7 +136,7 @@ msgstr "Unicestwij"
 msgid "Create Profile"
 msgstr "Tworzy profil"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Profile"
 msgstr "Profil"
 
@@ -144,7 +144,7 @@ msgstr "Profil"
 msgid "Check for Leaks"
 msgstr "Sprawdza wycieki"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Leaks"
 msgstr "Wycieki"
 
@@ -168,7 +168,7 @@ msgstr "32k"
 msgid "# of Allocations:"
 msgstr "Liczba alokacji:"
 
-#: memprof-strings.c:1 memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "0"
 msgstr "0"
 
@@ -180,7 +180,6 @@ msgstr "Bajtów / alokację:"
 msgid "Total Bytes:"
 msgstr "Ogółem bajtów:"
 
-#: memprof-strings.c:1 memprof-strings.c:1 memprof-strings.c:1
 #: memprof-strings.c:1
 msgid "Function"
 msgstr "Funkcja"
@@ -197,7 +196,7 @@ msgstr "Ogółem"
 msgid "Children"
 msgstr "Funkcje potomne"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Bytes"
 msgstr "Bajty"
 
@@ -241,7 +240,7 @@ msgstr "Narzędzie do profilowania pamięci"
 msgid "Adding Skip Function"
 msgstr "Dodawanie pomijanej funkcji"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Add"
 msgstr "Dodaj"
 
@@ -292,19 +291,19 @@ msgstr "Preferencje"
 msgid "Functions to Skip:"
 msgstr "Pomijane funkcje:"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "label37"
 msgstr "etykieta37"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Add..."
 msgstr "Dodaj..."
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Delete"
 msgstr "Usuń"
 
-#: memprof-strings.c:1 memprof-strings.c:1
+#: memprof-strings.c:1
 msgid "Defaults"
 msgstr "Domyślne"
 
@@ -345,7 +344,7 @@ msgstr "Działający"
 msgid "Exiting"
 msgstr "Kończony"
 
-#: process.c:1 process.c:1
+#: process.c:1
 msgid "Defunct"
 msgstr "Zakończony"
 

@@ -20,6 +20,7 @@
 /*====*/
 
 #include <glib.h>
+#include <gtk/gtkwidget.h>
 #include <stdio.h>
 #include <sys/types.h>
 #include "bfd.h"
@@ -69,9 +70,10 @@ typedef enum {
   ERROR_FATAL
 } ErrorType;
 
-void show_error	(ErrorType error,
+void show_error	(GtkWidget *parent_window,
+		 ErrorType error,
 		 const gchar *format,
-		 ...) G_GNUC_PRINTF (2, 3);
+		 ...) G_GNUC_PRINTF (3, 4);
 
 void     process_map_sections (Map           *map,
 			       SectionFunc    func,

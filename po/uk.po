@@ -10,7 +10,7 @@ msgstr ""
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: main.c:528
@@ -27,8 +27,7 @@ msgstr "Дійсно вийти з MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:699
-#: memprof-strings.c:7
+#: main.c:699 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
@@ -117,8 +116,7 @@ msgstr "Відслідкувати _exec()"
 msgid "Run Program"
 msgstr "Запустити програму"
 
-#: memprof-strings.c:20
-#: memprof-strings.c:61
+#: memprof-strings.c:20 memprof-strings.c:61
 msgid "Run"
 msgstr "Запустити"
 
@@ -126,8 +124,7 @@ msgstr "Запустити"
 msgid "Kill Program"
 msgstr "Знищити програму"
 
-#: memprof-strings.c:22
-#: tree.c:97
+#: memprof-strings.c:22 tree.c:97
 msgid "Kill"
 msgstr "Знищити"
 
@@ -135,8 +132,7 @@ msgstr "Знищити"
 msgid "Create Profile"
 msgstr "Створити профіль"
 
-#: memprof-strings.c:24
-#: memprof-strings.c:46
+#: memprof-strings.c:24 memprof-strings.c:46
 msgid "Profile"
 msgstr "Профіль"
 
@@ -144,8 +140,7 @@ msgstr "Профіль"
 msgid "Check for Leaks"
 msgstr "Перевірка втрат"
 
-#: memprof-strings.c:26
-#: memprof-strings.c:54
+#: memprof-strings.c:26 memprof-strings.c:54
 msgid "Leaks"
 msgstr "Втрати"
 
@@ -169,9 +164,7 @@ msgstr "32К"
 msgid "# of Allocations:"
 msgstr "Кількість розподілів:"
 
-#: memprof-strings.c:32
-#: memprof-strings.c:34
-#: memprof-strings.c:36
+#: memprof-strings.c:32 memprof-strings.c:34 memprof-strings.c:36
 msgid "0"
 msgstr "0"
 
@@ -183,9 +176,7 @@ msgstr "Байтів / Розподіл:"
 msgid "Total Bytes:"
 msgstr "Всього байтів:"
 
-#: memprof-strings.c:37
-#: memprof-strings.c:41
-#: memprof-strings.c:44
+#: memprof-strings.c:37 memprof-strings.c:41 memprof-strings.c:44
 #: memprof-strings.c:51
 msgid "Function"
 msgstr "Функція"
@@ -202,8 +193,7 @@ msgstr "Всього"
 msgid "Children"
 msgstr "Нащадки"
 
-#: memprof-strings.c:42
-#: memprof-strings.c:45
+#: memprof-strings.c:42 memprof-strings.c:45
 msgid "Bytes"
 msgstr "Байт"
 
@@ -247,8 +237,7 @@ msgstr "Засіб профілювання пам'яті"
 msgid "Adding Skip Function"
 msgstr "Додати пропуск функції"
 
-#: memprof-strings.c:58
-#: memprof-strings.c:68
+#: memprof-strings.c:58 memprof-strings.c:68
 msgid "Add"
 msgstr "Додати"
 
@@ -285,8 +274,10 @@ msgid "Adding Skip Regular Expression"
 msgstr "Додати пропуск реґулярного виразу"
 
 #: memprof-strings.c:69
-msgid "Enter a regular expression of function names to skip when computing  profiles"
-msgstr "Введіть реґулярний вираз назв функцій для пропуску під час обрахунку профілів"
+msgid ""
+"Enter a regular expression of function names to skip when computing  profiles"
+msgstr ""
+"Введіть реґулярний вираз назв функцій для пропуску під час обрахунку профілів"
 
 #: memprof-strings.c:70
 msgid "Preferences"
@@ -296,23 +287,19 @@ msgstr "Вподобання"
 msgid "Functions to Skip:"
 msgstr "Функції для пропуску:"
 
-#: memprof-strings.c:72
-#: memprof-strings.c:77
+#: memprof-strings.c:72 memprof-strings.c:77
 msgid "label37"
 msgstr "позначка37"
 
-#: memprof-strings.c:73
-#: memprof-strings.c:78
+#: memprof-strings.c:73 memprof-strings.c:78
 msgid "Add..."
 msgstr "Додати..."
 
-#: memprof-strings.c:74
-#: memprof-strings.c:79
+#: memprof-strings.c:74 memprof-strings.c:79
 msgid "Delete"
 msgstr "Стерти"
 
-#: memprof-strings.c:75
-#: memprof-strings.c:80
+#: memprof-strings.c:75 memprof-strings.c:80
 msgid "Defaults"
 msgstr "Типово"
 
@@ -332,15 +319,10 @@ msgstr "Команда для запуску подвійним клацання
 msgid "Leak Detection Options"
 msgstr "Параметри визначення втрат"
 
-#: leakdetect.c:585
-#: profile.c:202
+#: leakdetect.c:585 profile.c:202
 #, c-format
-msgid ""
-"Cannot open output file: %s\n"
-""
-msgstr ""
-"Неможливо відкрити файл виводу: %s\n"
-""
+msgid "Cannot open output file: %s\n"
+msgstr "Неможливо відкрити файл виводу: %s\n"
 
 #: process.c:814
 msgid "Initial"
@@ -358,8 +340,7 @@ msgstr "Виконання"
 msgid "Exiting"
 msgstr "Вихід"
 
-#: process.c:826
-#: process.c:829
+#: process.c:826 process.c:829
 msgid "Defunct"
 msgstr "Завершений"
 
@@ -378,4 +359,3 @@ msgstr "Прибрати"
 #: tree.c:100
 msgid "Detach"
 msgstr "Відділити"
-
