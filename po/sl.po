@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-09-04 21:35+0200\n"
+"POT-Creation-Date: 2002-03-03 01:01+0100\n"
 "PO-Revision-Date: 2000-06-26 00:00+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:530
+#: main.c:531
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Izvr¹evanje \"%s\" ni uspelo"
 
-#: main.c:656
+#: main.c:657
 msgid "Really quit MemProf?"
 msgstr "Resnièen izhod iz MemProf?"
 
@@ -27,46 +27,46 @@ msgstr "Resnièen izhod iz MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:704 memprof-strings.c:7
+#: main.c:702 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:797
+#: main.c:795
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Ne najdem izvr¹ilne datoteke za\"%s\""
 
-#: main.c:1365
+#: main.c:1367
 msgid "MemProf Error"
 msgstr "MemProf Napaka"
 
-#: main.c:1365
+#: main.c:1367
 msgid "MemProf Warning"
 msgstr "MemProf Opozorilo"
 
-#: main.c:1609
+#: main.c:1613
 msgid "Really detach from finished process?"
 msgstr "Resnièno se odklopi od konèanega procesa?"
 
-#: main.c:1611
+#: main.c:1615
 msgid "Really detach from running process?"
 msgstr "Resnièno se odklopi od procesa v teku?"
 
-#: main.c:1631
+#: main.c:1635
 msgid "Really kill running process?"
 msgstr "Resnièno ubij proces v teku?"
 
-#: main.c:1661
+#: main.c:1665
 msgid "Create new windows for forked processes"
 msgstr "Ustvari nova okna za razvejene procese"
 
-#: main.c:1663
+#: main.c:1667
 msgid "Retain windows for processes after exec()"
 msgstr "Ohrani okna za procese po exec()"
 
-#: main.c:1689
-msgid "Cannot find memprof.glade"
-msgstr "Ne najdem memprof.glade"
+#: main.c:1697
+msgid "Cannot find memprof.glade2"
+msgstr "Ne najdem memprof.glade2"
 
 #: memprof-strings.c:8
 msgid "_Run..."
@@ -112,13 +112,17 @@ msgstr "Sledi _fork()"
 msgid "Follow _exec()"
 msgstr "Sledi _exec()"
 
-#: memprof-strings.c:19 memprof-strings.c:21
+#: memprof-strings.c:19
 msgid "Run Program"
 msgstr "Po¾eni program"
 
 #: memprof-strings.c:20 memprof-strings.c:74
 msgid "Run"
 msgstr "Po¾eni"
+
+#: memprof-strings.c:21
+msgid "Kill Program"
+msgstr "Ubij program"
 
 #: memprof-strings.c:22 tree.c:97
 msgid "Kill"
@@ -307,36 +311,37 @@ msgstr "Dodajam prezrt regularni izraz"
 
 #: memprof-strings.c:82
 msgid ""
-"Enter a regular expression of function names to skip when computing profiles"
+"Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
-"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo profili"
+"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo "
+"profili"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:585 profile.c:201
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Ne morem odpreti izhodne datoteke: %s\n"
 
-#: process.c:806
+#: process.c:814
 msgid "Initial"
 msgstr "Zaèetno"
 
-#: process.c:809
+#: process.c:817
 msgid "Starting"
 msgstr "Zaganjam"
 
-#: process.c:812
+#: process.c:820
 msgid "Running"
 msgstr "Teèe"
 
-#: process.c:815
+#: process.c:823
 msgid "Exiting"
 msgstr "Se zapira"
 
-#: process.c:818 process.c:821
+#: process.c:826 process.c:829
 msgid "Defunct"
 msgstr "Ne deluje"
 
-#: server.c:214
+#: server.c:242
 msgid "Cannot find libmemintercept.so"
 msgstr "Ne najdem libmemintercept.so"
 
