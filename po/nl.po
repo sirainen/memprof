@@ -8,7 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof cvs\n"
-"POT-Creation-Date: 2003-06-19 14:09+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-07-16 15:45+0200\n"
 "PO-Revision-Date: 2003-01-22 10:04+0100\n"
 "Last-Translator: Tino Meinen <a.t.meinen@chello.nl>\n"
 "Language-Team: Dutch <vertaling@nl.linux.org>\n"
@@ -21,69 +22,65 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Kan uitvoerbestand '%s' niet openen\n"
 
-#: main.c:635
+#: main.c:697
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Uitvoering van \"%s\" mislukt"
 
-#: main.c:766
-msgid "Really quit MemProf?"
-msgstr "MemProf echt stoppen?"
-
-#: main.c:812 memprof.glade.h:35
+#: main.c:858 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:915
+#: main.c:961
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kan uitvoerbaar bestand for \"%s\" niet vinden"
 
-#: main.c:1018
+#: main.c:1064
 msgid "Saving is disabled at the moment"
 msgstr ""
 
-#: main.c:1532
+#: main.c:1588
 msgid "MemProf Error"
 msgstr "MemProf fout"
 
-#: main.c:1532
+#: main.c:1588
 msgid "MemProf Warning"
 msgstr "MemProf waarschuwing"
 
-#: main.c:1913
+#: main.c:1968
 msgid "Really detach from finished process?"
 msgstr "Echt ontkoppelen van voltooid proces?"
 
-#: main.c:1915
+#: main.c:1970
 msgid "Really detach from running process?"
 msgstr "Echt ontkoppelen van lopend proces?"
 
-#: main.c:1945
+#: main.c:2000
 msgid "Really kill running process?"
 msgstr "Lopend proces echt afsluiten?"
 
-#: main.c:1982
+#: main.c:2037
 msgid "Create new windows for forked processes"
 msgstr "Maak nieuw venster voor geforkte processen"
 
-#: main.c:1984
+#: main.c:2039
 msgid "Retain windows for processes after exec()"
 msgstr "Behoud vensters voor processen na exec()"
 
-#: main.c:1986
+#: main.c:2041
 msgid "Type of profiling information to collect"
 msgstr "Het soort profileringsinformatie dat wordt verzameld"
 
-#: main.c:1988
+#: main.c:2043
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Het aantal samples/sec voor het tijdprofiel (1k=1000)"
 
-#: main.c:2037
+#: main.c:2092
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr "Het argument van --profile moet zijn: 'memory', 'cycles' of 'time'\n"
 
-#: main.c:2078
+#: main.c:2133
 msgid "Cannot find memprof.glade"
 msgstr "Kan memprof.glade niet vinden"
 
@@ -93,7 +90,7 @@ msgstr "Aantal Allocaties:"
 
 #: memprof.glade.h:2
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: memprof.glade.h:3
 msgid "0"
@@ -262,101 +259,105 @@ msgid "Regular expressions to Skip:"
 msgstr "Reguliere expressie overslaan:"
 
 #: memprof.glade.h:44
-msgid "Run"
-msgstr "Starten"
+msgid "Reset"
+msgstr "Resetten"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:43
+msgid "Run"
+msgstr "Uitvoeren"
+
+#: memprof.glade.h:46
 msgid "Run Executable"
 msgstr "Uitvoerbaar bestand starten"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:45
 msgid "Run Program"
-msgstr "Programma Starten"
+msgstr "Programma uitvoeren"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:46
 msgid "Save"
 msgstr "Opslaan"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save Report"
 msgstr "Rapport opslaan"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Leak Info..."
 msgstr "_Lek-informatie opslaan..."
 
-#: memprof.glade.h:50
+#: memprof.glade.h:51
 msgid "Save _Profile..."
 msgstr "_Profiel opslaan..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:52
 msgid "Size"
 msgstr "Grootte"
 
-#: memprof.glade.h:52
+#: memprof.glade.h:53
 msgid "Stack Trace"
 msgstr "Stack volgen"
 
-#: memprof.glade.h:53
+#: memprof.glade.h:54
 msgid "Status"
 msgstr "Status"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Totaal aantal Bytes:"
 
 # Losmaken is korter dan: Ontkoppelen
-#: memprof.glade.h:55
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr "_Losmaken"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:57
 msgid "_File"
 msgstr "_Bestand"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr "_Hulp"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "_Afsluiten"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr "_Proces"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:61
 msgid "_Run Program..."
 msgstr "Programma _uitvoeren..."
 
-#: memprof.glade.h:61
+#: memprof.glade.h:62
 msgid "_Settings"
 msgstr "_Instellingen"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:63
 msgid "translator_credits"
-msgstr ""
+msgstr "Vincent van Adrighem"
 
-#: process.c:854
+#: process.c:886
 msgid "Initial"
 msgstr "Begin"
 
-#: process.c:857
+#: process.c:889
 msgid "Starting"
 msgstr "Startend"
 
-#: process.c:860
+#: process.c:892
 msgid "Running"
 msgstr "Lopend"
 
-#: process.c:863
+#: process.c:895
 msgid "Exiting"
 msgstr "Stoppend"
 
 # was eerst: Overleden. eigenlijke betekenis: Niet meer bestaand,
 # wordt goed verwoord door: Afgelopen
-#: process.c:866 process.c:869
+#: process.c:898 process.c:901
 msgid "Defunct"
 msgstr "Afgelopen"
 
@@ -376,6 +377,9 @@ msgstr "Verbergen"
 #: tree.c:101
 msgid "Detach"
 msgstr "Ontkoppelen"
+
+#~ msgid "Really quit MemProf?"
+#~ msgstr "MemProf echt stoppen?"
 
 #~ msgid "Bytes"
 #~ msgstr "Bytes"
