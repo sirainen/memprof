@@ -21,7 +21,7 @@ AM_PROG_CC_STDC
 AC_PROG_INSTALL
 
 dnl Initialize gettext
-ALL_LINGUAS="ja"
+ALL_LINGUAS="ja sv"
 AM_GNU_GETTEXT
 
 dnl GNOME checks (not using macros/ directory)
