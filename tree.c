@@ -24,9 +24,20 @@
 #include <gnome.h>
 
 #include "gui.h"
+#include "treeviewutils.h"
+
+static ProcessWindow *iter_get_process_window (GtkTreeIter *iter);
+
+enum {
+	PID_COLUMN,
+	CMDLINE_COLUMN,
+	STATUS_COLUMN,
+	PWIN_COLUMN
+};
 
 static GtkWidget *tree_window;
-static GtkWidget *tree_ctree;
+static GtkWidget *tree_view;
+static GtkTreeStore *store;
 
 extern char *glade_file;
 
@@ -116,27 +127,34 @@ popup_menu (ProcessWindow *pwin, gint button, guint32 time)
 static gboolean
 button_press_cb (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
-	GtkCList *clist = GTK_CLIST (widget);
-	ProcessWindow *pwin;
-	int row, column;
-	
-	if (event->window == clist->clist_window) {
-		if (!gtk_clist_get_selection_info (clist, event->x, event->y, &row, &column))
-			return FALSE;
+	GtkTreeView *tree_view = GTK_TREE_VIEW (widget);
+	GtkTreeModel *model = GTK_TREE_MODEL (store);
+	GtkTreePath *path;
 
-		pwin = gtk_clist_get_row_data (clist, row);
+	if (event->button == 3 &&
+	    event->window == gtk_tree_view_get_bin_window (tree_view) &&
+	    gtk_tree_view_get_path_at_pos (tree_view,
+					   event->x, event->y,
+					   &path, NULL, NULL, NULL)) {
+		GtkTreeIter iter;
 		
-		if (event->button == 1 &&  event->type == GDK_2BUTTON_PRESS) {
-			process_window_show (pwin);
-			return TRUE;
-			
-		} else if (event->button == 3) {
-			popup_menu (pwin, event->button, event->time);
-			return TRUE;
-		}
+		gtk_tree_model_get_iter (model, &iter, path);
+		popup_menu (iter_get_process_window (&iter), event->button, event->time);
 	}
 
 	return FALSE;
+}
+
+static void
+row_activated_cb (GtkTreeView       *tree_view,
+		  GtkTreePath       *path,
+		  GtkTreeViewColumn *column)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL (store);
+	GtkTreeIter iter;
+
+	gtk_tree_model_get_iter (model, &iter, path);
+	process_window_show (iter_get_process_window (&iter));
 }
 
 static void
@@ -147,13 +165,26 @@ ensure_tree_window (void)
 		
 		tree_window = glade_xml_get_widget (xml, "TreeWindow");
 		gtk_window_set_default_size (GTK_WINDOW (tree_window), 400, 300);
-		gtk_signal_connect (GTK_OBJECT (tree_window), "delete_event",
-				    GTK_SIGNAL_FUNC (hide_and_check_quit), NULL);
+		g_signal_connect (tree_window, "delete_event",
+				  G_CALLBACK (hide_and_check_quit), NULL);
 		
-		tree_ctree = glade_xml_get_widget (xml, "TreeWindow-ctree");
+		tree_view = glade_xml_get_widget (xml, "TreeWindow-tree-view");
 
-		gtk_signal_connect (GTK_OBJECT (tree_ctree), "button_press_event",
-				    GTK_SIGNAL_FUNC (button_press_cb), NULL);
+		store = gtk_tree_store_new (4,
+					    G_TYPE_INT,     /* PID_COLUMN */
+					    G_TYPE_STRING,  /* CMDLINE_COLUMN */
+					    G_TYPE_STRING,  /* STATUS_COLUMN */
+					    G_TYPE_POINTER  /* PWIN_COLUMN */);
+		gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
+
+		add_plain_text_column (GTK_TREE_VIEW (tree_view), _("PID"), PID_COLUMN);
+		add_plain_text_column (GTK_TREE_VIEW (tree_view), _("Command Line"), CMDLINE_COLUMN);
+		add_plain_text_column (GTK_TREE_VIEW (tree_view), _("Status"), STATUS_COLUMN);
+
+		g_signal_connect (tree_view, "button_press_event",
+				  G_CALLBACK (button_press_cb), NULL);
+		g_signal_connect (tree_view, "row_activated",
+				  G_CALLBACK (row_activated_cb), NULL);
 	}
 }
 
@@ -166,108 +197,163 @@ tree_window_show (void)
 	gdk_window_show (tree_window->window); /* Raise */
 }
 
-static int
-compare_process (ProcessWindow *window, MPProcess *process)
+static ProcessWindow *
+iter_get_process_window (GtkTreeIter *iter)
 {
-	return process_window_get_process (window) == process ? 0 : 1;
-}
+	GtkTreeModel *model = GTK_TREE_MODEL (store);
+	ProcessWindow *pwin;
+	
+	gtk_tree_model_get (model, iter, PWIN_COLUMN, &pwin, -1);
 
-static GtkCTreeNode *
-find_node_by_process (MPProcess *process)
-{
-	return gtk_ctree_find_by_row_data_custom (GTK_CTREE (tree_ctree), NULL, process,
-						  (GCompareFunc)compare_process);
+	return pwin;
 }
 
 static void
-update_node (GtkCTreeNode *node)
+iter_set_process_window (GtkTreeIter   *iter,
+			 ProcessWindow *pwin)
 {
-	char buffer[32];
-	char *cmdline;
-	char *status;
+	gtk_tree_store_set (store, iter, PWIN_COLUMN, pwin, -1);
+}
+
+static gboolean
+find_by_process_recurse (MPProcess   *process,
+			 GtkTreeIter *iter,
+			 GtkTreeIter *parent)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL (store);
+	GtkTreeIter children;
 	
-	ProcessWindow *pwin = gtk_ctree_node_get_row_data (GTK_CTREE (tree_ctree), node);
+	if (parent) {
+		ProcessWindow *pwin = iter_get_process_window (parent);
+		MPProcess *row_process = process_window_get_process (pwin);
+
+		if (row_process == process) {
+			*iter = *parent;
+			return TRUE;
+		}
+	}
+
+	if (gtk_tree_model_iter_children (model, &children, parent)) {
+		do {
+			if (find_by_process_recurse (process, iter, &children))
+				return TRUE;
+		} while (gtk_tree_model_iter_next (model, &children));
+	}
+
+	return FALSE;
+		
+}
+
+static gboolean
+find_by_process (MPProcess   *process,
+		 GtkTreeIter *iter)
+{
+	return find_by_process_recurse (process, iter, NULL);
+}
+
+static void
+update_process (GtkTreeIter *iter)
+{
+	ProcessWindow *pwin = iter_get_process_window (iter);
 	MPProcess *process = process_window_get_process (pwin);
+	char *cmdline = process_get_cmdline (process);
+	char *status = process_get_status_text (process);
 
-	sprintf(buffer, "%d", process->pid);
-	gtk_ctree_node_set_text (GTK_CTREE (tree_ctree), node, 0, buffer);
-
-	cmdline = process_get_cmdline (process);
-	gtk_ctree_node_set_text (GTK_CTREE (tree_ctree), node, 1, cmdline);
-	g_free (cmdline);
+	gtk_tree_store_set (store, iter,
+			    PID_COLUMN,     (int)process->pid,
+			    CMDLINE_COLUMN, cmdline,
+			    STATUS_COLUMN,  status,
+			    -1);
 	
-	status = process_get_status_text (process);
-	gtk_ctree_node_set_text (GTK_CTREE (tree_ctree), node, 2, status);
+	g_free (cmdline);
 	g_free (status);
 }
 
 static void
 status_changed_cb (MPProcess *process)
 {
-	GtkCTreeNode *node = find_node_by_process (process);
-	update_node (node);
+	GtkTreeIter iter;
+	
+	if (find_by_process (process, &iter))
+		update_process (&iter);
 }
 
 void
 tree_window_add (ProcessWindow *window)
 {
 	MPProcess *process;
-	GtkCTreeNode *parent_node = NULL;
-	GtkCTreeNode *node;
-	static const char *text[3] = { NULL, NULL, NULL };
+	GtkTreeIter *parent = NULL;
+	GtkTreeIter tmp_parent;
+	GtkTreeIter new;
 	
 	ensure_tree_window ();
 
 	process = process_window_get_process (window);
 	if (process->parent) {
-		parent_node = find_node_by_process (process->parent);
-
-		if (parent_node) {
-			gtk_ctree_set_node_info (GTK_CTREE (tree_ctree), parent_node,
-						 "", 0, NULL, NULL, NULL, NULL,
-						 FALSE, TRUE);
-			update_node (parent_node);
-		}
+		if (find_by_process (process, &tmp_parent))
+			parent = &tmp_parent;
 	}
 
-	node = gtk_ctree_insert_node (GTK_CTREE (tree_ctree), parent_node, NULL,
-				      (char **)text, 0, NULL, NULL, NULL, NULL,
-				      TRUE, TRUE);
-	gtk_ctree_node_set_row_data (GTK_CTREE (tree_ctree), node, window);
-	update_node (node);
+	gtk_tree_store_append (store, &new, parent);
+	iter_set_process_window (&new, window);
+	update_process (&new);
 
 	g_signal_connect (G_OBJECT (process), "status_changed",
 			  G_CALLBACK (status_changed_cb), NULL);
 }
 
 static void
-reparent_func (GtkCTree     *ctree,
-	       GtkCTreeNode *node,
-	       gpointer      data)
+copy_subtree (GtkTreeIter  *subtree,
+	      GtkTreeIter  *new_parent)
 {
-	GtkCTreeNode *parent = data;
-	if (node != parent) {
-		GtkCTreeNode *grandparent = GTK_CTREE_ROW (parent)->parent;
-		gtk_ctree_move (ctree, node, grandparent, parent);
+	GtkTreeModel *model = GTK_TREE_MODEL (store);
+	GtkTreeIter new;
+	GtkTreeIter children;
+
+	gtk_tree_store_append (store, &new, new_parent);
+	iter_set_process_window (&new, iter_get_process_window (subtree));
+	update_process (&new);
+
+	if (gtk_tree_model_iter_children (model, &children, subtree)) {
+		do
+			copy_subtree (&children, &new);
+		while (gtk_tree_model_iter_next (model, &children));
+	}
+}
+
+static void
+copy_children_to_grandparent (GtkTreeIter  *parent)
+{
+	GtkTreeModel *model = GTK_TREE_MODEL (store);
+	GtkTreeIter tmp_parent;
+	GtkTreeIter children;
+	GtkTreeIter *grandparent;
+	
+	if (gtk_tree_model_iter_parent (model, &tmp_parent, parent))
+		grandparent = &tmp_parent;
+	else
+		grandparent = NULL;
+	
+	if (gtk_tree_model_iter_children (model, &children, parent)) {
+		do {
+			copy_subtree (&children, grandparent);
+		} while (gtk_tree_model_iter_next (model, &children));
 	}
 }
 
 void
 tree_window_remove (ProcessWindow *window)
 {
-	GtkCTreeNode *node;
+	GtkTreeIter iter;
 	MPProcess *process;
 	
 	ensure_tree_window ();
 
 	process = process_window_get_process (window);
-	node = find_node_by_process (process);
+	find_by_process (process, &iter);
 
-	gtk_ctree_post_recursive_to_depth (GTK_CTREE (tree_ctree), node,
-					   GTK_CTREE_ROW (node)->level + 1,
-					   reparent_func, node);
-
-	gtk_ctree_remove_node (GTK_CTREE (tree_ctree), node);
+	copy_children_to_grandparent (&iter);
+	gtk_tree_store_remove (store, &iter);
 
 	g_signal_handlers_disconnect_by_func (G_OBJECT (process), G_CALLBACK (status_changed_cb), NULL);
 }

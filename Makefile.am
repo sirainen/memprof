@@ -22,6 +22,8 @@ memprof_SOURCES =	        \
 	server.h		\
 	stackstash.c		\
 	stackstash.h		\
+	treeviewutils.c		\
+	treeviewutils.h		\
 	tree.c
 
 memprof_LDADD = $(MEMPROF_LIBS)
