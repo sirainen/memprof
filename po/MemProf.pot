@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2000-05-13 21:42+0200\n"
+"POT-Creation-Date: 2000-06-08 22:51+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: memprof-strings.c:7
+#: main.c:676 memprof-strings.c:7
 msgid "MemProf"
 msgstr ""
 
@@ -28,184 +28,228 @@ msgid "_Run..."
 msgstr ""
 
 #: memprof-strings.c:9
-msgid "Generate Profile"
+msgid "Save _Profile..."
 msgstr ""
 
 #: memprof-strings.c:10
-msgid "Generate Leak Info"
+msgid "Save _Leak Info..."
 msgstr ""
 
 #: memprof-strings.c:11
-msgid "Save Profile..."
+msgid "_Process"
 msgstr ""
 
 #: memprof-strings.c:12
-msgid "Save Leak Info..."
+msgid "Generate _Profile"
 msgstr ""
 
 #: memprof-strings.c:13
-msgid "Follow fork()"
+msgid "Generate _Leak Report"
 msgstr ""
 
 #: memprof-strings.c:14
-msgid "Follow exec()"
+msgid "_Kill"
 msgstr ""
 
 #: memprof-strings.c:15
-msgid "Open File"
+msgid "_Detach"
 msgstr ""
 
-#: memprof-strings.c:16 memprof-strings.c:62
+#: memprof-strings.c:16
+msgid "Process _Tree"
+msgstr ""
+
+#: memprof-strings.c:17
+msgid "Follow _fork()"
+msgstr ""
+
+#: memprof-strings.c:18
+msgid "Follow _exec()"
+msgstr ""
+
+#: memprof-strings.c:19 memprof-strings.c:21
+msgid "Run Program"
+msgstr ""
+
+#: memprof-strings.c:20 memprof-strings.c:70
 msgid "Run"
 msgstr ""
 
-#: memprof-strings.c:17 memprof-strings.c:38
-msgid "Profile"
-msgstr ""
-
-#: memprof-strings.c:18 memprof-strings.c:46
-msgid "Leaks"
-msgstr ""
-
-#: memprof-strings.c:19
-msgid "Save File"
-msgstr ""
-
-#: memprof-strings.c:20
-msgid "Save"
-msgstr ""
-
-#: memprof-strings.c:21
-msgid "0k"
-msgstr ""
-
 #: memprof-strings.c:22
-msgid "32k"
+msgid "Kill"
 msgstr ""
 
 #: memprof-strings.c:23
-msgid "# of Allocations:"
+msgid "Create Profile"
 msgstr ""
 
-#: memprof-strings.c:24 memprof-strings.c:26 memprof-strings.c:28
-msgid "0"
+#: memprof-strings.c:24 memprof-strings.c:46
+msgid "Profile"
 msgstr ""
 
 #: memprof-strings.c:25
-msgid "Bytes / Allocation:"
+msgid "Check for Leaks"
+msgstr ""
+
+#: memprof-strings.c:26 memprof-strings.c:54
+msgid "Leaks"
 msgstr ""
 
 #: memprof-strings.c:27
-msgid "Total Bytes:"
+msgid "Save Report"
 msgstr ""
 
-#: memprof-strings.c:29 memprof-strings.c:33 memprof-strings.c:36
-#: memprof-strings.c:43
-msgid "Function"
+#: memprof-strings.c:28
+msgid "Save"
+msgstr ""
+
+#: memprof-strings.c:29
+msgid "0k"
 msgstr ""
 
 #: memprof-strings.c:30
-msgid "Self"
+msgid "32k"
 msgstr ""
 
 #: memprof-strings.c:31
-msgid "Total"
+msgid "# of Allocations:"
 msgstr ""
 
-#: memprof-strings.c:32
-msgid "Children"
+#: memprof-strings.c:32 memprof-strings.c:34 memprof-strings.c:36
+msgid "0"
 msgstr ""
 
-#: memprof-strings.c:34 memprof-strings.c:37
-msgid "Bytes"
+#: memprof-strings.c:33
+msgid "Bytes / Allocation:"
 msgstr ""
 
 #: memprof-strings.c:35
-msgid "Callers"
+msgid "Total Bytes:"
+msgstr ""
+
+#: memprof-strings.c:37 memprof-strings.c:41 memprof-strings.c:44
+#: memprof-strings.c:51
+msgid "Function"
+msgstr ""
+
+#: memprof-strings.c:38
+msgid "Self"
 msgstr ""
 
 #: memprof-strings.c:39
-msgid "Address"
+msgid "Total"
 msgstr ""
 
 #: memprof-strings.c:40
-msgid "Size"
+msgid "Children"
 msgstr ""
 
-#: memprof-strings.c:41
-msgid "Caller"
+#: memprof-strings.c:42 memprof-strings.c:45
+msgid "Bytes"
 msgstr ""
 
-#: memprof-strings.c:42
-msgid "Stack Trace"
-msgstr ""
-
-#: memprof-strings.c:44
-msgid "Line"
-msgstr ""
-
-#: memprof-strings.c:45
-msgid "File"
+#: memprof-strings.c:43
+msgid "Callers"
 msgstr ""
 
 #: memprof-strings.c:47
-msgid "Copyright Red Hat, Inc., 1999"
+msgid "Address"
 msgstr ""
 
 #: memprof-strings.c:48
-msgid "Memory Profiling Tool"
+msgid "Size"
 msgstr ""
 
 #: memprof-strings.c:49
-msgid "Functions to Skip:"
+msgid "Caller"
 msgstr ""
 
 #: memprof-strings.c:50
-msgid "label37"
-msgstr ""
-
-#: memprof-strings.c:51
-msgid "Add..."
+msgid "Stack Trace"
 msgstr ""
 
 #: memprof-strings.c:52
-msgid "Delete"
+msgid "Line"
 msgstr ""
 
 #: memprof-strings.c:53
-msgid "Defaults"
-msgstr ""
-
-#: memprof-strings.c:54
-msgid "Profile Options"
+msgid "File"
 msgstr ""
 
 #: memprof-strings.c:55
-msgid "Command to run on double click in stack trace:"
+msgid "Copyright Red Hat, Inc., 1999-2000"
 msgstr ""
 
 #: memprof-strings.c:56
-msgid "Leak Detection Options"
+msgid "Memory Profiling Tool"
 msgstr ""
 
 #: memprof-strings.c:57
-msgid "Adding Skip Function"
+msgid "Functions to Skip:"
 msgstr ""
 
 #: memprof-strings.c:58
-msgid "Enter the name of a function to skip when computing  profiles"
+msgid "label37"
 msgstr ""
 
 #: memprof-strings.c:59
-msgid "Add"
+msgid "Add..."
 msgstr ""
 
 #: memprof-strings.c:60
-msgid "Run Executable"
+msgid "Delete"
 msgstr ""
 
 #: memprof-strings.c:61
+msgid "Defaults"
+msgstr ""
+
+#: memprof-strings.c:62
+msgid "Profile Options"
+msgstr ""
+
+#: memprof-strings.c:63
+msgid "Command to run on double click in stack trace:"
+msgstr ""
+
+#: memprof-strings.c:64
+msgid "Leak Detection Options"
+msgstr ""
+
+#: memprof-strings.c:65
+msgid "Adding Skip Function"
+msgstr ""
+
+#: memprof-strings.c:66
+msgid "Enter the name of a function to skip when computing  profiles"
+msgstr ""
+
+#: memprof-strings.c:67
+msgid "Add"
+msgstr ""
+
+#: memprof-strings.c:68
+msgid "Run Executable"
+msgstr ""
+
+#: memprof-strings.c:69
 msgid "Enter pathname to a executable"
+msgstr ""
+
+#: memprof-strings.c:71
+msgid "MemProf - Processes"
+msgstr ""
+
+#: memprof-strings.c:72
+msgid "PID"
+msgstr ""
+
+#: memprof-strings.c:73
+msgid "Command Line"
+msgstr ""
+
+#: memprof-strings.c:74
+msgid "Status"
 msgstr ""
 
 #: leakdetect.c:583 profile.c:191
@@ -213,36 +257,48 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr ""
 
-#: main.c:510
+#: main.c:502
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr ""
 
-#: main.c:636
+#: main.c:628
 msgid "Really quit MemProf?"
 msgstr ""
 
-#: main.c:690
+#: main.c:769
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr ""
 
-#: main.c:1099
+#: main.c:1207
 msgid "MemProf Error"
 msgstr ""
 
-#: main.c:1099
+#: main.c:1207
 msgid "MemProf Warning"
 msgstr ""
 
-#: main.c:1248
+#: main.c:1451
+msgid "Really detach from finished process?"
+msgstr ""
+
+#: main.c:1453
+msgid "Really detach from running process?"
+msgstr ""
+
+#: main.c:1473
+msgid "Really kill running process?"
+msgstr ""
+
+#: main.c:1503
 msgid "Create new windows for forked processes"
 msgstr ""
 
-#: main.c:1250
+#: main.c:1505
 msgid "Retain windows for processes after exec()"
 msgstr ""
 
-#: main.c:1272
+#: main.c:1531
 msgid "Cannot find memprof.glade"
 msgstr ""
