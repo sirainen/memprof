@@ -483,8 +483,8 @@ profile_func_create_caller_list     (ProfileFunc	     *func)
 	top_callee_node = node;
 	for (n = node->parent; n && n->parent != NULL; n = n->parent)
 	{
-	    if (n->symbol == node->symbol &&
-		n->parent->symbol == top_caller_node->symbol)
+	    if (symbol_equal (n->symbol, node->symbol) &&
+		symbol_equal (n->parent->symbol, top_caller_node->symbol))
 	    {
 		top_caller_node = n->parent;
 		top_callee_node = n;
