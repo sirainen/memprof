@@ -1,12 +1,12 @@
 # memprof's Portuguese Translation
 # Copyright (C) 2001 Free Software Foundation, Inc.
-# Duarte Loreto <happyguy_pt@hotmail.com>, 2002
+# Duarte Loreto <happyguy_pt@hotmail.com>, 2002, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.0\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2002-04-01 21:33+0000\n"
+"Project-Id-Version: 2.2\n"
+"POT-Creation-Date: 2003-02-23 03:17+0000\n"
+"PO-Revision-Date: 2003-02-23 03:23+0000\n"
 "Last-Translator: Duarte Loreto <happyguy_pt@hotmail.com>\n"
 "Language-Team: pt <gnome_pt@yahoogroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -18,56 +18,67 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Incapaz de abrir ficheiro de saida: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Falhou a execução de \"%s\""
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Sair mesmo do MemProf?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Incapaz de encontrar executável de \"%s\""
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "Erro MemProf"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "Aviso MemProf"
 
-#: main.c:1666
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "Desligar mesmo de processo terminado?"
 
-#: main.c:1668
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "Desligar mesmo de processo em execução?"
 
-#: main.c:1698
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "Matar mesmo processo em execução?"
 
-#: main.c:1731
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Criar novas janelas para processos forked"
 
-#: main.c:1733
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "Reter janelas para processos após exec()"
 
-#: main.c:1770
-#, fuzzy
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "Tipo de informação de perfil a reunir"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Número de amostras/seg para tempo de perfil (1k=1000)"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Argumento de --profile tem de ser 'memomy', 'cycles' ou 'time'\n"
+
+#: main.c:1837
 msgid "Cannot find memprof.glade"
-msgstr "Incapaz de encontrar memprof.glade2"
+msgstr "Incapaz de encontrar memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
@@ -134,6 +145,8 @@ msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
@@ -141,25 +154,22 @@ msgstr "Criar Perfil"
 
 #: memprof.glade.h:18
 msgid "Defaults"
-msgstr "Defeitos"
+msgstr "Omissões"
 
 #: memprof.glade.h:19
-#, fuzzy
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Introduza uma expressão regular ou nome de função a ignorar ao computar "
+"Introduza uma expressão regular ou nomes de funções a ignorar ao calcular "
 "perfis"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
-msgstr "Introduza caminho para o executável"
+msgstr "Introduza caminho para um executável"
 
 #: memprof.glade.h:21
-#, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr "Introduza o nome de uma função a ignorar ao computar perfis"
+msgstr "Introduza o nome de uma função a ignorar ao calcular perfis"
 
 #: memprof.glade.h:22
 msgid "File"
@@ -298,13 +308,12 @@ msgid "_Detach"
 msgstr "_Desligar"
 
 #: memprof.glade.h:57
-#, fuzzy
 msgid "_File"
-msgstr "Ficheiro"
+msgstr "_Ficheiro"
 
 #: memprof.glade.h:58
 msgid "_Help"
-msgstr ""
+msgstr "_Ajuda"
 
 #: memprof.glade.h:59
 msgid "_Kill"
@@ -315,38 +324,37 @@ msgid "_Process"
 msgstr "_Processo"
 
 #: memprof.glade.h:61
-#, fuzzy
 msgid "_Run Program..."
-msgstr "Executar Aplicação"
+msgstr "E_xecutar Aplicação..."
 
 #: memprof.glade.h:62
-#, fuzzy
 msgid "_Settings"
-msgstr "A Iniciar"
+msgstr "_Definições"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Inicial"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "A Iniciar"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Em Execução"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "A Terminar"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Morto"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Incapaz de encontrar libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Incapaz de encontrar %s"
 
 #: tree.c:91
 msgid "Show"
@@ -359,6 +367,9 @@ msgstr "Esconder"
 #: tree.c:101
 msgid "Detach"
 msgstr "Desligar"
+
+#~ msgid "Cannot find libmemintercept.so"
+#~ msgstr "Incapaz de encontrar libmemintercept.so"
 
 #~ msgid "Add..."
 #~ msgstr "Adicionar..."
