@@ -1,3 +1,9 @@
+Tue Dec 11 21:31:57 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* leakdetect.c (leaks_find): Don't kill -CONT before
+	detaching -- apparently this isn't necessary any
+	more and prevents us from detaching.
+
 Tue Dec 11 20:53:52 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* profile.c (profile_write): Sort child and inherited

@@ -567,9 +567,8 @@ leaks_find (MPProcess *process)
 	g_ptr_array_free (block_arr, TRUE);
 
 	close (memfd);
-	kill (process->pid, SIGCONT);
-
-	ptrace (PTRACE_DETACH, process->pid, 0, 0);
+	if (ptrace (PTRACE_DETACH, process->pid, 0, 0) == -1)
+		g_warning ("Detach failed %s (%d)\n", g_strerror (errno), errno);
 
 	return result;
 }
