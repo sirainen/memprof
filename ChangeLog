@@ -21,6 +21,9 @@
 	libraries without symbols reported under the name of the shared
 	library.  (Fixes #148616)
 	
+	* process.c (prepare_map): Kludge to support position independent
+	executables.  (Fixes #148622)
+
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Add «nb» to ALL_LINGUAS.

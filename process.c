@@ -160,6 +160,12 @@ prepare_map (Map *map)
 		qsort (result->data, result->len, sizeof(Symbol), compare_address);
   
 		map->symbols =result;
+
+		/* Check for position independent executable */
+		if (!map->do_offset && map->symbols->len &&
+		    map->addr > ((Symbol*)map->symbols->data)[map->symbols->len - 1].addr) {
+			map->do_offset = TRUE;
+		}
 	}
 }
 
