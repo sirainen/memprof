@@ -1,3 +1,7 @@
+2002-01-16  Christian Rose  <menthos@menthos.com>
+
+	* sv.po: Updated Swedish translation.
+
 2001-12-13  Wang Jian  <lark@linux.net.cn>
 
 	* zh_CN.po: Added Simplified Chinese translation by
@@ -194,3 +198,4 @@ Thu Nov 18 10:13:44 1999  Owen Taylor  <otaylor@redhat.com>
 1999-11-11 yukihiro nakai <nakai@gnome.gr.jp>
 
 	* ja.po: add japanese translation from rue. satoh
+
