@@ -1,0 +1,369 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FSF-India <locale@gnu.org.in>, 2003.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version:memprof.HEAD\n"
+"POT-Creation-Date: 2003-06-06 04:56+0200\n"
+"PO-Revision-Date: 2003-07-05 10:29+0530\n"
+"Last-Translator: FSF-India <locale@gnu.org.in>\n"
+"Language-Team: Malayalam <locale@gnu.org.in>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: leakdetect.c:584 profile.c:202
+#, c-format
+msgid "Cannot open output file: %s\n"
+msgstr ""
+
+#: main.c:536
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr ""
+
+#: main.c:667
+msgid "Really quit MemProf?"
+msgstr ""
+
+#: main.c:713 memprof.glade.h:34
+msgid "MemProf"
+msgstr ""
+
+#: main.c:807
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr ""
+
+#: main.c:1418
+msgid "MemProf Error"
+msgstr ""
+
+#: main.c:1418
+msgid "MemProf Warning"
+msgstr ""
+
+#: main.c:1672
+msgid "Really detach from finished process?"
+msgstr ""
+
+#: main.c:1674
+msgid "Really detach from running process?"
+msgstr ""
+
+#: main.c:1704
+msgid "Really kill running process?"
+msgstr ""
+
+#: main.c:1741
+msgid "Create new windows for forked processes"
+msgstr ""
+
+#: main.c:1743
+msgid "Retain windows for processes after exec()"
+msgstr ""
+
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr ""
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr ""
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr ""
+
+#: main.c:1837
+msgid "Cannot find memprof.glade"
+msgstr ""
+
+#: memprof.glade.h:1
+msgid "# of Allocations:"
+msgstr ""
+
+#: memprof.glade.h:2
+msgid "0"
+msgstr "0"
+
+#: memprof.glade.h:3
+msgid "0k"
+msgstr ""
+
+#: memprof.glade.h:4
+msgid "32k"
+msgstr ""
+
+#: memprof.glade.h:5
+msgid "Adding Skip Function"
+msgstr ""
+
+#: memprof.glade.h:6
+msgid "Adding Skip Regular Expression"
+msgstr ""
+
+#: memprof.glade.h:7
+msgid "Address"
+msgstr "വിലാസം"
+
+#: memprof.glade.h:8
+msgid "Bytes"
+msgstr "Bytes"
+
+#: memprof.glade.h:9
+msgid "Bytes / Allocation:"
+msgstr ""
+
+#: memprof.glade.h:10
+msgid "Caller"
+msgstr ""
+
+#: memprof.glade.h:11
+msgid "Callers"
+msgstr ""
+
+#: memprof.glade.h:12
+msgid "Check for Leaks"
+msgstr ""
+
+#: memprof.glade.h:13
+msgid "Children"
+msgstr ""
+
+#: memprof.glade.h:14
+msgid "Command Line"
+msgstr "ആജ്ഞമേഘല"
+
+#: memprof.glade.h:15
+msgid "Command to run on double click in stack trace:"
+msgstr ""
+
+#: memprof.glade.h:16
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
+
+#: memprof.glade.h:17
+msgid "Create Profile"
+msgstr ""
+
+#: memprof.glade.h:18
+msgid "Defaults"
+msgstr ""
+
+#: memprof.glade.h:19
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr ""
+
+#: memprof.glade.h:20
+msgid "Enter pathname to an executable"
+msgstr ""
+
+#: memprof.glade.h:21
+msgid "Enter the name of a function to skip when computing profiles"
+msgstr ""
+
+#: memprof.glade.h:22
+#, fuzzy
+msgid "File"
+msgstr "ശേഖരം"
+
+#: memprof.glade.h:23
+msgid "Follow _exec()"
+msgstr ""
+
+#: memprof.glade.h:24
+msgid "Follow _fork()"
+msgstr ""
+
+#: memprof.glade.h:25
+msgid "Function"
+msgstr "ധ‌ര്മ്മം"
+
+#: memprof.glade.h:26
+msgid "Functions to Skip:"
+msgstr ""
+
+#: memprof.glade.h:27
+msgid "Generate _Leak Report"
+msgstr ""
+
+#: memprof.glade.h:28
+msgid "Generate _Profile"
+msgstr ""
+
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr "അവസാനിപ്പിക്കുക"
+
+#: memprof.glade.h:30
+msgid "Kill Program"
+msgstr ""
+
+#: memprof.glade.h:31
+msgid "Leak Detection Options"
+msgstr ""
+
+#: memprof.glade.h:32
+msgid "Leaks"
+msgstr ""
+
+#: memprof.glade.h:33
+msgid "Line"
+msgstr "വരി‌"
+
+#: memprof.glade.h:35
+msgid "MemProf - Processes"
+msgstr ""
+
+#: memprof.glade.h:36
+msgid "Memory Profiling Tool"
+msgstr ""
+
+#: memprof.glade.h:37
+#, fuzzy
+msgid "PID"
+msgstr "പൈ"
+
+#: memprof.glade.h:38
+msgid "Preferences"
+msgstr "മുന്‍ഗണനകള്‍"
+
+#: memprof.glade.h:39
+msgid "Process _Tree"
+msgstr ""
+
+#: memprof.glade.h:40
+msgid "Profile"
+msgstr ""
+
+#: memprof.glade.h:41
+msgid "Profile Options"
+msgstr ""
+
+#: memprof.glade.h:42
+msgid "Regular expressions to Skip:"
+msgstr ""
+
+#: memprof.glade.h:43
+msgid "Run"
+msgstr "പ്രവ‍ര്ത്തിപ്പിക്കുക"
+
+#: memprof.glade.h:44
+msgid "Run Executable"
+msgstr ""
+
+#: memprof.glade.h:45
+msgid "Run Program"
+msgstr "നിര്‍ദ്ദേശം നടപ്പിലാക്കുക"
+
+#: memprof.glade.h:46
+msgid "Save"
+msgstr "സംരംക്ഷിക്കുക"
+
+#: memprof.glade.h:47
+msgid "Save Report"
+msgstr ""
+
+#: memprof.glade.h:48
+msgid "Save _Leak Info..."
+msgstr ""
+
+#: memprof.glade.h:49
+msgid "Save _Profile..."
+msgstr ""
+
+#: memprof.glade.h:50
+msgid "Self"
+msgstr ""
+
+#: memprof.glade.h:51
+msgid "Size"
+msgstr "വലിപ്പം"
+
+#: memprof.glade.h:52
+msgid "Stack Trace"
+msgstr ""
+
+#: memprof.glade.h:53
+msgid "Status"
+msgstr "അവസ്ഥ"
+
+#: memprof.glade.h:54
+msgid "Total"
+msgstr "മൊത്തം"
+
+#: memprof.glade.h:55
+msgid "Total Bytes:"
+msgstr ""
+
+#: memprof.glade.h:56
+msgid "_Detach"
+msgstr ""
+
+#: memprof.glade.h:57
+msgid "_File"
+msgstr "ശേഖരം"
+
+#: memprof.glade.h:58
+msgid "_Help"
+msgstr "സഹായം"
+
+#: memprof.glade.h:59
+msgid "_Kill"
+msgstr ""
+
+#: memprof.glade.h:60
+msgid "_Process"
+msgstr ""
+
+#: memprof.glade.h:61
+msgid "_Run Program..."
+msgstr ""
+
+#: memprof.glade.h:62
+msgid "_Settings"
+msgstr "സജ്ജീകരണം"
+
+#: process.c:854
+msgid "Initial"
+msgstr ""
+
+#: process.c:857
+msgid "Starting"
+msgstr "തുടങ്ങുന്നു"
+
+#: process.c:860
+msgid "Running"
+msgstr "പ്രവ‍ര്ത്തിക്കുന്നു"
+
+#: process.c:863
+#, fuzzy
+msgid "Exiting"
+msgstr "ചിട്ടപ്പെടുത്തുന്നു"
+
+#: process.c:866 process.c:869
+msgid "Defunct"
+msgstr ""
+
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr ""
+
+#: tree.c:91
+msgid "Show"
+msgstr "കാണിക്കുക"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "ഒളിയ്‍ക്കുക"
+
+#: tree.c:101
+msgid "Detach"
+msgstr ""
