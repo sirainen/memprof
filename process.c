@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <signal.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/stat.h>
@@ -826,5 +827,16 @@ process_detach (MPProcess *process)
 			char response = 0;
 			write (fd, &response, 1);
 		}
+	}
+}
+
+void
+process_kill (MPProcess *process)
+{
+	if (process->status == MP_PROCESS_EXITING) {
+		process_detach (process);
+	} else if (process->status != MP_PROCESS_DEFUNCT &&
+		   process->status != MP_PROCESS_INIT) {
+		kill (process->pid, SIGTERM);
 	}
 }

@@ -100,6 +100,7 @@ void  process_run             (MPProcess        *process,
 			       const char       *path,
 			       char            **args);
 void  process_detach          (MPProcess        *process);
+void  process_kill            (MPProcess        *process);
 void  process_exec_reset      (MPProcess        *process);
 void  process_set_status      (MPProcess        *process,
 			       MPProcessStatus   status);

@@ -62,12 +62,20 @@ hide_cb (GtkWidget *widget)
 }
 
 static void
-detach_cb (GtkWidget *widget)
+tree_detach_cb (GtkWidget *widget)
 {
 	ProcessWindow *pwin = get_process_window (widget);
 	MPProcess *process = process_window_get_process (pwin);
 
 	process_detach (process);
+}
+
+static void
+tree_kill_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = get_process_window (widget);
+
+	process_window_maybe_kill (pwin);
 }
 
 static void
@@ -87,7 +95,10 @@ popup_menu (ProcessWindow *pwin, gint button, guint32 time)
 		gtk_menu_append (GTK_MENU (menu), hide_item);
 		
 		gtk_menu_append (GTK_MENU (menu),
-				 make_menu_item (_("Detach"), GTK_SIGNAL_FUNC (detach_cb)));
+				 make_menu_item (_("Kill"), GTK_SIGNAL_FUNC (tree_kill_cb)));
+
+		gtk_menu_append (GTK_MENU (menu),
+				 make_menu_item (_("Detach"), GTK_SIGNAL_FUNC (tree_detach_cb)));
 	}
 
 	if (process_window_visible (pwin)) {

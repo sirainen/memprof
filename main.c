@@ -770,6 +770,16 @@ run_cb (GtkWidget *widget)
 }
 
 void
+kill_cb (GtkWidget *widget)
+{
+       ProcessWindow *pwin = pwin_from_widget (widget);
+
+       if (pwin->process) {
+	       process_window_maybe_kill (pwin);
+       }
+}
+
+void
 detach_cb (GtkWidget *widget)
 {
        ProcessWindow *pwin = pwin_from_widget (widget);
@@ -1431,6 +1441,24 @@ hide_and_check_quit (GtkWidget *window)
 	check_quit ();
 
 	return TRUE;
+}
+
+
+void
+process_window_maybe_kill (ProcessWindow *pwin)
+{
+	if (pwin->process->status == MP_PROCESS_RUNNING) {
+		GtkWidget *dialog;
+		
+		dialog = gnome_message_box_new (_("Kill running process?"), GNOME_MESSAGE_BOX_QUESTION,
+						GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
+		
+		gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
+		if (gnome_dialog_run (GNOME_DIALOG (dialog)) != 0)
+			return;
+	}
+
+	process_kill (pwin->process);
 }
 
 

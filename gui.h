@@ -33,5 +33,7 @@ MPProcess *process_window_get_process (ProcessWindow *pwin);
 void       process_window_show        (ProcessWindow *pwin);
 void       process_window_hide        (ProcessWindow *pwin);
 
+void       process_window_maybe_kill  (ProcessWindow *pwin);
+
 gboolean hide_and_check_quit (GtkWidget *window);
 void     check_quit          (void);
