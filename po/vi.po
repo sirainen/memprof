@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof VERSION\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2002-07-26 15:36+0700\n"
+"POT-Creation-Date: 2002-09-18 04:42+0200\n"
+"PO-Revision-Date: 2002-09-19 22:21+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,53 +17,65 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Không thể mở tập tin xuất: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Thất bại thực hiện \"%s\""
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Thực sự muốn thoát khỏi MemProf?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Không thể tìm chương trình \"%s\""
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "Lỗi MemProf"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "Cảnh báo MemProf"
 
-#: main.c:1666
+#: main.c:1678
 msgid "Really detach from finished process?"
 msgstr "Thật sự muốn tách khỏi tiến trình đã hoàn tất?"
 
-#: main.c:1668
+#: main.c:1680
 msgid "Really detach from running process?"
 msgstr "Thật sự muốn tách khỏi tiến trình đang chạy?"
 
-#: main.c:1698
+#: main.c:1710
 msgid "Really kill running process?"
 msgstr "Thật sự muốn buộc chấm dứt tiến trình đang chạy?"
 
-#: main.c:1731
+#: main.c:1747
 msgid "Create new windows for forked processes"
 msgstr "Tạo cửa sổ mới cho tiến trình bị fork"
 
-#: main.c:1733
+#: main.c:1749
 msgid "Retain windows for processes after exec()"
 msgstr "Vẫn giữ cửa sổ cho tiến trình sau khi exec()"
 
-#: main.c:1770
+#: main.c:1751
+msgid "Type of profiling information to collect"
+msgstr "Loại thông tin profile cần thu thập"
+
+#: main.c:1753
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Số mẫu/giây cho profile thời gian (1k=1000)"
+
+#: main.c:1802
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Đối số của --profile phải là hoặc 'memory', hoặc 'cycles', hoặc 'time'\n"
+
+#: main.c:1843
 msgid "Cannot find memprof.glade"
 msgstr "Không thể tìm thấy memprof.glade"
 
@@ -149,9 +161,8 @@ msgid ""
 msgstr "Nhập biểu thức chính quy cho tên hàm cần bỏ qua khi tính profile"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
-msgstr "Nhập đường dẫn chương trình"
+msgstr "Nhập đường dẫn chương trình cần thực hiện"
 
 #: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
@@ -317,29 +328,30 @@ msgstr "_Chạy chương trình..."
 msgid "_Settings"
 msgstr "_Thiết lập"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Ban đầu"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Đang khởi động"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Đang chạy"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Đang thoát"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Không tồn tại"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Không thể tìm libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Không thể tìm thấy %s"
 
 #: tree.c:91
 msgid "Show"
@@ -352,6 +364,9 @@ msgstr "Ẩn"
 #: tree.c:101
 msgid "Detach"
 msgstr "Tách ra"
+
+#~ msgid "Cannot find libmemintercept.so"
+#~ msgstr "Không thể tìm libmemintercept.so"
 
 #~ msgid "Add..."
 #~ msgstr "Thêm..."
