@@ -271,7 +271,7 @@ stack_trace (MIInfo *info)
 	
 	while (sp) {
 		if (n - 2 == STACK_MAX_SIZE) {
-			fprintf (stderr, "Stack to large for atomic write, truncating!\n");
+			fprintf (stderr, "Stack too large for atomic write, truncating!\n");
 			break;
 		/* Skip over __libc_malloc and hook */
 		} else if (n > 1) {

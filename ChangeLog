@@ -1,3 +1,7 @@
+Fri May 17 01:47:55 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* memintercept.c (stack_trace): fix typo (patch from Michael Meeks)
+
 2002-05-14  Pablo Saratxaga  <pablo@mandrakesoft.com>
 
 	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS
