@@ -1,3 +1,7 @@
+2001-02-26  Carlos Perelló Marín <carlos@gnome-db.org>
+
+	* configure.in (ALL_LINGUAS): Added es.
+
 Fri Feb  9 14:54:08 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Another attempt at 0.4.1. 
