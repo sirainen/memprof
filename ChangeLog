@@ -1,3 +1,7 @@
+2000-08-10  Pablo Saratxaga <pablo@mandrakesoft.com>
+
+	* configure.in,po/ca.po: added Catalan file
+
 2000-08-05  Martin Baulig  <baulig@suse.de>
 
 	* main.c: Added regex-based exclusion of functions.

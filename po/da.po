@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-07-07 16:19-0400\n"
+"POT-Creation-Date: 2000-08-10 19:34+0200\n"
 "PO-Revision-Date: 2000-05-29 23:17+02:00\n"
 "Last-Translator: Keld Simonsen <keld@dkuug.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
@@ -19,7 +19,7 @@ msgstr ""
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:676 memprof-strings.c:7
+#: main.c:704 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
@@ -71,7 +71,7 @@ msgstr "Følg _exec()"
 msgid "Run Program"
 msgstr "Kør program"
 
-#: memprof-strings.c:20 memprof-strings.c:70
+#: memprof-strings.c:20 memprof-strings.c:74
 msgid "Run"
 msgstr "Kør"
 
@@ -188,118 +188,135 @@ msgstr "Hukommelsesprofilering"
 msgid "Functions to Skip:"
 msgstr "Skip funktioner:"
 
-#: memprof-strings.c:58
+#: memprof-strings.c:58 memprof-strings.c:63
 msgid "label37"
 msgstr "etiket37"
 
-#: memprof-strings.c:59
+#: memprof-strings.c:59 memprof-strings.c:64
 msgid "Add..."
 msgstr "Tilføj..."
 
-#: memprof-strings.c:60
+#: memprof-strings.c:60 memprof-strings.c:65
 msgid "Delete"
 msgstr "Slet"
 
-#: memprof-strings.c:61
+#: memprof-strings.c:61 memprof-strings.c:66
 msgid "Defaults"
 msgstr "Standardværdier"
 
 #: memprof-strings.c:62
+#, fuzzy
+msgid "Regular expressions to Skip:"
+msgstr "Skip funktioner:"
+
+#: memprof-strings.c:67
 msgid "Profile Options"
 msgstr "Profileringvalg"
 
-#: memprof-strings.c:63
+#: memprof-strings.c:68
 msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skal køres på \"stack trace\""
 
-#: memprof-strings.c:64
+#: memprof-strings.c:69
 msgid "Leak Detection Options"
 msgstr "Lækage detekteringsvalg"
 
-#: memprof-strings.c:65
+#: memprof-strings.c:70
 msgid "Adding Skip Function"
 msgstr "Tilføjer skip funktion"
 
-#: memprof-strings.c:66
+#: memprof-strings.c:71 memprof-strings.c:81
+msgid "Add"
+msgstr "Tilføj"
+
+#: memprof-strings.c:72
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr ""
 "Indtast navnet på en funktion der skal overspringes ved beregning af profiler"
 
-#: memprof-strings.c:67
-msgid "Add"
-msgstr "Tilføj"
-
-#: memprof-strings.c:68
+#: memprof-strings.c:73
 msgid "Run Executable"
 msgstr "Kør eksekverbar fil"
 
-#: memprof-strings.c:69
+#: memprof-strings.c:75
 msgid "Enter pathname to a executable"
 msgstr "Indtast sti til eksekverbar fil"
 
-#: memprof-strings.c:71
+#: memprof-strings.c:76
 msgid "MemProf - Processes"
 msgstr "MemProf processer"
 
-#: memprof-strings.c:72
+#: memprof-strings.c:77
 msgid "PID"
 msgstr "PID"
 
-#: memprof-strings.c:73
+#: memprof-strings.c:78
 msgid "Command Line"
 msgstr "Kommandolinje"
 
-#: memprof-strings.c:74
+#: memprof-strings.c:79
 msgid "Status"
 msgstr "Status"
 
-#: leakdetect.c:586 profile.c:191
+#: memprof-strings.c:80
+#, fuzzy
+msgid "Adding Skip Regular Expression"
+msgstr "Tilføjer skip funktion"
+
+#: memprof-strings.c:82
+#, fuzzy
+msgid ""
+"Enter a regular expression of function names to skipwhen computing  profiles"
+msgstr ""
+"Indtast navnet på en funktion der skal overspringes ved beregning af profiler"
+
+#: leakdetect.c:587 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åbne filen: %s\n"
 
-#: main.c:502
+#: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Udførelse af %s fejlede"
 
-#: main.c:628
+#: main.c:656
 msgid "Really quit MemProf?"
 msgstr "Virkelig afslut MemProf?"
 
-#: main.c:769
+#: main.c:797
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kunne ikke udførbar fil for \"%s\""
 
-#: main.c:1207
+#: main.c:1365
 msgid "MemProf Error"
 msgstr "MemProf fejl"
 
-#: main.c:1207
+#: main.c:1365
 msgid "MemProf Warning"
 msgstr "MemProf-advarsel"
 
-#: main.c:1451
+#: main.c:1609
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig frigøre fra afsluttede proces?"
 
-#: main.c:1453
+#: main.c:1611
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig frigøre fra kørende proces?"
 
-#: main.c:1473
+#: main.c:1631
 msgid "Really kill running process?"
 msgstr "Vil du virkelig dræbe kørende proces"
 
-#: main.c:1503
+#: main.c:1661
 msgid "Create new windows for forked processes"
 msgstr "Opret nye vinduer for nye processer"
 
-#: main.c:1505
+#: main.c:1663
 msgid "Retain windows for processes after exec()"
 msgstr "Behold vinduer for processer efter exec()"
 
-#: main.c:1531
+#: main.c:1689
 msgid "Cannot find memprof.glade"
 msgstr "Kan ikke finde memprof.glade"
