@@ -1368,11 +1368,21 @@ about_cb (GtkWidget *widget)
 
        gtk_window_set_transient_for (GTK_WINDOW (dialog),
                                      GTK_WINDOW (pwin->main_window));
+       g_object_set (G_OBJECT (dialog), "version", VERSION, NULL);
 
        gtk_widget_show (dialog);
 }
 
-void 
+static void
+show_error_response (GtkDialog *dialog,
+		     gint       response_id,
+		     gpointer   user_data)
+{
+	if (response_id == GTK_RESPONSE_OK)
+		gtk_widget_destroy (dialog);
+}
+
+void
 show_error (GtkWidget *parent_window,
 	    ErrorType error,
 	    const gchar *format,
@@ -1381,27 +1391,31 @@ show_error (GtkWidget *parent_window,
 	va_list args;
 	char *message;
 	GtkWidget *dialog;
-	
+
 	va_start (args, format);
 	vasprintf (&message, format, args);
 	va_end (args);
 
 	dialog = gtk_message_dialog_new (parent_window ? GTK_WINDOW (parent_window) : NULL,
-					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-					 (error == ERROR_WARNING) ?
-					   GTK_MESSAGE_QUESTION :
+					 GTK_DIALOG_DESTROY_WITH_PARENT,
+					 (error == ERROR_FATAL) ?
+					   GTK_MESSAGE_ERROR :
 					   GTK_MESSAGE_WARNING,
 					 GTK_BUTTONS_OK, message);
 	free (message);
 
 	gtk_window_set_title (GTK_WINDOW (dialog),
-			      (error == ERROR_WARNING) ?
+			      (error == ERROR_FATAL) ?
 			      _("MemProf Error") : _("MemProf Warning"));
 
-	if (error == ERROR_WARNING)
+	if (error == ERROR_WARNING) {
 		gtk_widget_show (dialog);
-	else
+		g_signal_connect (dialog, "response",
+				  G_CALLBACK (show_error_response), NULL);
+	} else {
 		gtk_dialog_run (GTK_DIALOG (dialog));
+		gtk_widget_destroy (dialog);
+	}
 
 	if (error == ERROR_FATAL)
 		exit(1);
@@ -1786,7 +1800,7 @@ main(int argc, char **argv)
        if (startup_args)
 	       run_file (initial_window, (char **)startup_args);
        poptFreeContext (ctx);
-       
+
        gtk_main ();
 
        return 0;

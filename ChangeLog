@@ -1,3 +1,15 @@
+Tue Jul 16 01:17:10 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* main.c (about_cb): set version number in about dialog,
+	(show_error_response): new function,
+	(show_error): destroy message dialog after showing it, get message	
+	types right.
+
+	* memprof.glade: rename "Execute" menu item to "Run Program" to
+	maintain consistency with the toolbar item, don't set the
+	toolbar-style, so it follows the user-defined setting, remove
+	statusbar from main window as it was unused.
+
 Tue Jun 11 01:22:30 2002  Kristian Rietveld  <kris@gtk.org>
 
 	Finished the GNOME2 port.

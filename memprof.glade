@@ -46,12 +46,18 @@
 
                         <child>
                           <widget class="GtkImageMenuItem" id="run">
+                            <property name="label" translatable="yes">_Run Program...</property>
                             <property name="visible">yes</property>
-			    <property name="label">gtk-execute</property>
-                            <property name="use_stock">yes</property>
                             <property name="use_underline">yes</property>
 
                             <signal name="activate" handler="run_cb" />
+
+                            <child internal-child="image">
+                              <widget class="GtkImage" id="convertwidget1">
+                                <property name="stock">gtk-execute</property>
+                                <property name="visible">yes</property>
+                              </widget>
+                            </child>
                           </widget>
                         </child>
 
@@ -326,7 +332,6 @@
               <widget class="GtkToolbar" id="toolbar1">
                 <property name="border_width">1</property>
                 <property name="orientation">GTK_ORIENTATION_HORIZONTAL</property>
-                <property name="toolbar-style">GTK_TOOLBAR_BOTH</property>
                 <property name="visible">yes</property>
 
                 <child>
@@ -1132,7 +1137,7 @@
       <widget class="GnomeAppBar" id="appbar1">
         <property name="visible">no</property>
         <property name="has_progress">no</property>
-        <property name="has_status">yes</property>
+        <property name="has_status">no</property>
       </widget>
       <packing>
         <property name="padding">0</property>
