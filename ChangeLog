@@ -1,3 +1,12 @@
+Fri Dec 19 00:00:30 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* profile.c: Don't assume that symbols can be compared by
+	comparing their addresses.
+	* memprof.h: declare functions
+	* process.c (symbol_equal, symbol_hash, symbol_copy, symbol_free):
+	new functions
+	(process_locate_symbol): make returned Symbol const
+
 Sun Sep 21 11:02:27 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* main.c: Open the toplevel node in the descendants tree.
