@@ -1,6 +1,6 @@
 #!/bin/sh
 
-xgettext --default-domain=evolution --directory=.. \
+xgettext --default-domain=MemProf --directory=.. \
   --add-comments --keyword=_ --keyword=N_ \
   --files-from=./POTFILES.in \
 && test ! -f MemProf.po \
