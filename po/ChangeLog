@@ -1,3 +1,9 @@
+2001-03-20  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* az.po: Added Azeri file
+	* es.po: removed it, it was unmantained and empty
+	* {et,fr,hu,pl,sl}.po: corrected headers
+
 2001-03-06  Christian Meyer  <chrisime@gnome.org>
 
 	* de.po: Revised.

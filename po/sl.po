@@ -5,12 +5,12 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-09-04 21:35+0200\n"
+"POT-Creation-Date: 2001-03-22 02:27+0100\n"
 "PO-Revision-Date: 2000-06-26 00:00+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ios8859-2\n"
+"Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: main.c:530
@@ -309,34 +309,35 @@ msgstr "Dodajam prezrt regularni izraz"
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo profili"
+"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo "
+"profili"
 
-#: leakdetect.c:587 profile.c:191
+#: leakdetect.c:587 profile.c:192
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Ne morem odpreti izhodne datoteke: %s\n"
 
-#: process.c:806
+#: process.c:807
 msgid "Initial"
 msgstr "Zaèetno"
 
-#: process.c:809
+#: process.c:810
 msgid "Starting"
 msgstr "Zaganjam"
 
-#: process.c:812
+#: process.c:813
 msgid "Running"
 msgstr "Teèe"
 
-#: process.c:815
+#: process.c:816
 msgid "Exiting"
 msgstr "Se zapira"
 
-#: process.c:818 process.c:821
+#: process.c:819 process.c:822
 msgid "Defunct"
 msgstr "Ne deluje"
 
-#: server.c:214
+#: server.c:238
 msgid "Cannot find libmemintercept.so"
 msgstr "Ne najdem libmemintercept.so"
 
