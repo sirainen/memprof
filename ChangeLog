@@ -1,3 +1,7 @@
+Mon Jun  5 10:46:32 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Add de to ALL_LINGUAS.
+
 Sun May 28 15:22:51 2000  Fatih Demir	<kabalak@gmx.net>
 	
 	* configure.in: Added tr to ALL_LINGUAS.
