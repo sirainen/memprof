@@ -79,4 +79,4 @@ gchar *s = N_("Command Line");
 gchar *s = N_("Status");
 gchar *s = N_("Adding Skip Regular Expression");
 gchar *s = N_("Add");
-gchar *s = N_("Enter a regular expression of function names to skip when computing  profiles");
+gchar *s = N_("Enter a regular expression of function names to skip when computing profiles");
