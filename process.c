@@ -50,6 +50,7 @@ static guint process_signals[LAST_SIGNAL] = { 0 };
 static void mp_process_class_init (MPProcessClass *class);
 static void mp_process_init (MPProcess *process);
 static void mp_process_finalize (GtkObject *object);
+static void process_reinit (MPProcess *process);
 
 #define MP_PAGE_SIZE 4096
 
@@ -429,8 +430,8 @@ process_duplicate (MPProcess *process)
 	return new_process;
 }
 
-void
-process_exec_reset (MPProcess *process)
+static void
+process_reinit (MPProcess *process)
 {
 	process_stop_input (process);
 
@@ -461,7 +462,12 @@ process_exec_reset (MPProcess *process)
 	
 	/* FIXME: leak */
 	process->command_queue = NULL;
+}
 
+void
+process_exec_reset (MPProcess *process)
+{
+	process_reinit (process);
 	gtk_signal_emit (GTK_OBJECT (process), process_signals[RESET]);
 }
 
@@ -726,7 +732,7 @@ mp_process_finalize (GtkObject *object)
 {
 	MPProcess *process = MP_PROCESS (object);
 
-	process_exec_reset (process);
+	process_reinit (process);
 	
 	g_free (process->program_name);
 }
