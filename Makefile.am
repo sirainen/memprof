@@ -38,6 +38,7 @@ EXTRA_DIST =			\
 	leak.png		\
 	leak.xpm		\
 	memprof.glade	  	\
+	memprof.spec		\
 	memprof-strings.c
 
 Developmentdir = $(datadir)/gnome/apps/Development

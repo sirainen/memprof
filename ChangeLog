@@ -1,3 +1,7 @@
+Wed Oct 27 16:22:03 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* Released 0.3.0
+
 Wed Oct 27 15:17:08 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* process.c (input_func): Remove a bunch of duplicate

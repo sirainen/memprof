@@ -9,8 +9,26 @@ Requirements
   - gnome-libs  
   - libglade
 
- For the backend memprof currently requires:
+ For the backend, memprof currently requires:
 
   - Linux (kernel version 2.2 will work better)
   - GNU libc (2.0 or 2.1 will work, but 2.0 may produce warnings 
               when compiling)
+
+Install
+=======
+
+./configure
+make
+make install
+
+License
+=======
+
+Memprof is Copyright Red Hat Inc, 1999, and licensed
+under the terms of the GNU General Public License.
+See the file COPYING for details.
+
+
+
+

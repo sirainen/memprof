@@ -1,4 +1,5 @@
 Makefile*
 stamp-cat-id
 cat-id-tbl.c
+memprof.pot
 POTFILES
