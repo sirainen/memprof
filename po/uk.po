@@ -5,20 +5,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-02-28 12:19+0200\n"
-"PO-Revision-Date: 2002-02-28 11:24+0200\n"
+"POT-Creation-Date: 2002-04-11 10:26+0300\n"
+"PO-Revision-Date: 2002-04-11 09:29+0200\n"
 "Last-Translator: Yuriy Syrota <yuri@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:531
+#: main.c:528
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "Виконання \"%s\" не вдалось"
+msgstr "Збій виконання \"%s\""
 
-#: main.c:657
+#: main.c:654
 msgid "Really quit MemProf?"
 msgstr "Дійсно вийти з MemProf?"
 
@@ -27,45 +27,45 @@ msgstr "Дійсно вийти з MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:702
+#: main.c:699
 #: memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:795
+#: main.c:792
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Неможливо знайти програму для \"%s\""
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Error"
 msgstr "Помилка MemProf"
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Warning"
 msgstr "Попередження MemProf"
 
-#: main.c:1613
+#: main.c:1637
 msgid "Really detach from finished process?"
 msgstr "Від'єднати від завершеного процесу?"
 
-#: main.c:1615
+#: main.c:1639
 msgid "Really detach from running process?"
 msgstr "Від'єднати від запущеного процесу?"
 
-#: main.c:1635
+#: main.c:1659
 msgid "Really kill running process?"
 msgstr "Знищити запущений процес?"
 
-#: main.c:1665
+#: main.c:1689
 msgid "Create new windows for forked processes"
 msgstr "Створити нове вікно для породженого процесу"
 
-#: main.c:1667
+#: main.c:1691
 msgid "Retain windows for processes after exec()"
 msgstr "Зберігати вікна для процесів після exec()"
 
-#: main.c:1697
+#: main.c:1721
 msgid "Cannot find memprof.glade2"
 msgstr "Не вдалось знайти memprof.glade2"
 
@@ -118,7 +118,7 @@ msgid "Run Program"
 msgstr "Запустити програму"
 
 #: memprof-strings.c:20
-#: memprof-strings.c:74
+#: memprof-strings.c:61
 msgid "Run"
 msgstr "Запустити"
 
@@ -244,92 +244,96 @@ msgid "Memory Profiling Tool"
 msgstr "Засіб профілювання пам'яті"
 
 #: memprof-strings.c:57
-msgid "Functions to Skip:"
-msgstr "Функції для пропуску:"
-
-#: memprof-strings.c:58
-#: memprof-strings.c:63
-msgid "label37"
-msgstr "позначка37"
-
-#: memprof-strings.c:59
-#: memprof-strings.c:64
-msgid "Add..."
-msgstr "Додати..."
-
-#: memprof-strings.c:60
-#: memprof-strings.c:65
-msgid "Delete"
-msgstr "Стерти"
-
-#: memprof-strings.c:61
-#: memprof-strings.c:66
-msgid "Defaults"
-msgstr "Типово"
-
-#: memprof-strings.c:62
-msgid "Regular expressions to Skip:"
-msgstr "Реґулярні вирази для пропуску:"
-
-#: memprof-strings.c:67
-msgid "Profile Options"
-msgstr "Параметри профілю"
-
-#: memprof-strings.c:68
-msgid "Command to run on double click in stack trace:"
-msgstr "Команда для запуску подвійним клацанням у відслідковувані стеку:"
-
-#: memprof-strings.c:69
-msgid "Leak Detection Options"
-msgstr "Параметри визначення втрат"
-
-#: memprof-strings.c:70
 msgid "Adding Skip Function"
 msgstr "Додати пропуск функції"
 
-#: memprof-strings.c:71
-#: memprof-strings.c:81
+#: memprof-strings.c:58
+#: memprof-strings.c:68
 msgid "Add"
 msgstr "Додати"
 
-#: memprof-strings.c:72
+#: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr "Введіть назву функції для пропуску при вирахуванні профілю"
 
-#: memprof-strings.c:73
+#: memprof-strings.c:60
 msgid "Run Executable"
 msgstr "Запустити програму"
 
-#: memprof-strings.c:75
+#: memprof-strings.c:62
 msgid "Enter pathname to a executable"
 msgstr "Введіть шлях до програми"
 
-#: memprof-strings.c:76
+#: memprof-strings.c:63
 msgid "MemProf - Processes"
 msgstr "MemProf - Процеси"
 
-#: memprof-strings.c:77
+#: memprof-strings.c:64
 msgid "PID"
 msgstr "PID"
 
-#: memprof-strings.c:78
+#: memprof-strings.c:65
 msgid "Command Line"
 msgstr "Командний рядок"
 
-#: memprof-strings.c:79
+#: memprof-strings.c:66
 msgid "Status"
 msgstr "Стан"
 
-#: memprof-strings.c:80
+#: memprof-strings.c:67
 msgid "Adding Skip Regular Expression"
 msgstr "Додати пропуск реґулярного виразу"
 
-#: memprof-strings.c:82
+#: memprof-strings.c:69
 msgid "Enter a regular expression of function names to skip when computing  profiles"
 msgstr "Введіть реґулярний вираз назв функцій для пропуску під час обрахунку профілів"
 
+#: memprof-strings.c:70
+msgid "Preferences"
+msgstr "Вподобання"
+
+#: memprof-strings.c:71
+msgid "Functions to Skip:"
+msgstr "Функції для пропуску:"
+
+#: memprof-strings.c:72
+#: memprof-strings.c:77
+msgid "label37"
+msgstr "позначка37"
+
+#: memprof-strings.c:73
+#: memprof-strings.c:78
+msgid "Add..."
+msgstr "Додати..."
+
+#: memprof-strings.c:74
+#: memprof-strings.c:79
+msgid "Delete"
+msgstr "Стерти"
+
+#: memprof-strings.c:75
+#: memprof-strings.c:80
+msgid "Defaults"
+msgstr "Типово"
+
+#: memprof-strings.c:76
+msgid "Regular expressions to Skip:"
+msgstr "Реґулярні вирази для пропуску:"
+
+#: memprof-strings.c:81
+msgid "Profile Options"
+msgstr "Параметри профілю"
+
+#: memprof-strings.c:82
+msgid "Command to run on double click in stack trace:"
+msgstr "Команда для запуску подвійним клацанням у відслідковувані стеку:"
+
+#: memprof-strings.c:83
+msgid "Leak Detection Options"
+msgstr "Параметри визначення втрат"
+
 #: leakdetect.c:585
-#: profile.c:201
+#: profile.c:202
 #, c-format
 msgid ""
 "Cannot open output file: %s\n"
