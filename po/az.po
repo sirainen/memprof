@@ -5,13 +5,14 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3.0\n"
-"POT-Creation-Date: 2001-03-22 02:27+0100\n"
-"PO-Revision-Date: 2001-03-09 15:21+0200\n"
-"Last-Translator: Vasif Ismailoglu MD >azerb_linux@hotmail.com>\n"
-"Language-Team: Azerbaijani Turkish\n"
+"POT-Creation-Date: 2001-05-02 12:48+0200\n"
+"PO-Revision-Date: 2001-04-28 01:37GMT\n"
+"Last-Translator: \n"
+"Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.8\n"
 
 #: main.c:530
 #, c-format
@@ -250,9 +251,8 @@ msgid "Defaults"
 msgstr "Əsas qiymətlər"
 
 #: memprof-strings.c:62
-#, fuzzy
 msgid "Regular expressions to Skip:"
-msgstr "Nəzərə alınmayacaq funksiya:"
+msgstr "Nəzərə alınmayacaq qaydalı ifadə:"
 
 #: memprof-strings.c:67
 msgid "Profile Options"
@@ -306,17 +306,15 @@ msgid "Status"
 msgstr "Vəziyyət"
 
 #: memprof-strings.c:80
-#, fuzzy
 msgid "Adding Skip Regular Expression"
-msgstr "Nəzərə Alınmayacaq Funksiya Əlavə Edilir"
+msgstr "Nəzərə Alınmayacaq Qaydalı İfadə Əlavə Edilir"
 
 #: memprof-strings.c:82
-#, fuzzy
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Profiller üstündə işlərkən nəzərə alınmayacaq bir funksiyanın "
-"adını bildir"
+"Profiller üstündə işlərkən nəzərə alınmayacaq funksiya qaydalı "
+"ifadəsi girin"
 
 #: leakdetect.c:587 profile.c:192
 #, c-format
@@ -325,40 +323,36 @@ msgstr "Nəticə faylı %s'ni aça bilmədim\n"
 
 #: process.c:807
 msgid "Initial"
-msgstr ""
+msgstr "Başlanğıc"
 
 #: process.c:810
 msgid "Starting"
-msgstr ""
+msgstr "Başladılır"
 
 #: process.c:813
-#, fuzzy
 msgid "Running"
-msgstr "Çalıştır"
+msgstr "İıə Sal"
 
 #: process.c:816
 msgid "Exiting"
-msgstr ""
+msgstr "Çıxılır"
 
 #: process.c:819 process.c:822
-#, fuzzy
 msgid "Defunct"
-msgstr "Əsas qiymətlər"
+msgstr "Defunksiya"
 
 #: server.c:238
-#, fuzzy
 msgid "Cannot find libmemintercept.so"
-msgstr "memprof.glade'i tapa bilmədim"
+msgstr "libmemintercept.so tapıla bilmir"
 
 #: tree.c:90
 msgid "Show"
-msgstr ""
+msgstr "Göstər"
 
 #: tree.c:93
 msgid "Hide"
-msgstr ""
+msgstr "Gizlət"
 
 #: tree.c:100
-#, fuzzy
 msgid "Detach"
-msgstr "_Əlavə Et"
+msgstr "Ayır"
