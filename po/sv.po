@@ -1,15 +1,15 @@
 # Swedish messages for memprof.
-# Copyright (C) 1999, 2000, 2001, 2002 Free Software Foundation, Inc.
+# Copyright (C) 1999, 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
 # Martin Norbäck <d95mback@dtek.chalmers.se>, 1999.
-# Christian Rose <menthos@menthos.com>, 2000, 2001, 2002.
+# Christian Rose <menthos@menthos.com>, 2000, 2001, 2002, 2003.
 #
 # $Id$
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2003-06-19 14:09+0200\n"
-"PO-Revision-Date: 2002-10-30 00:43+0100\n"
+"POT-Creation-Date: 2003-07-11 21:42+0200\n"
+"PO-Revision-Date: 2003-07-11 21:43+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,71 +21,67 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Kan inte öppna utmatningsfil: %s\n"
 
-#: main.c:635
+#: main.c:697
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Körning av \"%s\" misslyckades"
 
-#: main.c:766
-msgid "Really quit MemProf?"
-msgstr "Verkligen avsluta MemProf?"
-
-#: main.c:812 memprof.glade.h:35
+#: main.c:858 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:915
+#: main.c:961
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kan inte hitta programfil för \"%s\""
 
-#: main.c:1018
+#: main.c:1064
 msgid "Saving is disabled at the moment"
-msgstr ""
+msgstr "Sparande är inaktiverat för tillfället"
 
-#: main.c:1532
+#: main.c:1588
 msgid "MemProf Error"
 msgstr "MemProf-fel"
 
-#: main.c:1532
+#: main.c:1588
 msgid "MemProf Warning"
 msgstr "MemProf-varning"
 
-#: main.c:1913
+#: main.c:1968
 msgid "Really detach from finished process?"
 msgstr "Verkligen lösgöra från avslutad process?"
 
-#: main.c:1915
+#: main.c:1970
 msgid "Really detach from running process?"
 msgstr "Verkligen lösgöra från körande process?"
 
-#: main.c:1945
+#: main.c:2000
 msgid "Really kill running process?"
 msgstr "Verkligen döda körande process?"
 
-#: main.c:1982
+#: main.c:2037
 msgid "Create new windows for forked processes"
 msgstr "Skapa nya fönster för grenade processer"
 
-#: main.c:1984
+#: main.c:2039
 msgid "Retain windows for processes after exec()"
 msgstr "Bibehåll fönster för processer efter exec()"
 
-#: main.c:1986
+#: main.c:2041
 msgid "Type of profiling information to collect"
 msgstr "Typ av profileringsinformation att inhämta"
 
-#: main.c:1988
+#: main.c:2043
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Antal sampel/sekund för tidsprofil (1k=1000)"
 
-#: main.c:2037
+#: main.c:2092
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr ""
 "Argument till --profile måste vara ett av \"memory\", \"cycles\" eller \"time"
 "\"\n"
 
-#: main.c:2078
+#: main.c:2133
 msgid "Cannot find memprof.glade"
 msgstr "Kan inte hitta memprof.glade"
 
@@ -95,7 +91,7 @@ msgstr "Antal allokeringar:"
 
 #: memprof.glade.h:2
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: memprof.glade.h:3
 msgid "0"
@@ -110,13 +106,12 @@ msgid "32k"
 msgstr "32k"
 
 #: memprof.glade.h:6
-#, fuzzy
 msgid "<b>Callers</b>"
-msgstr "Anropare"
+msgstr "<b>Anropare</b>"
 
 #: memprof.glade.h:7
 msgid "<b>Descendants</b>"
-msgstr ""
+msgstr "<b>Avkomlingar</b>"
 
 #: memprof.glade.h:8
 msgid "Adding Skip Function"
@@ -151,13 +146,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skall köras vid dubbelklickning på stackvisningen:"
 
 #: memprof.glade.h:16
-#, fuzzy
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
 msgstr ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -263,98 +257,105 @@ msgid "Regular expressions to Skip:"
 msgstr "Reguljära uttryck som ska hoppas över:"
 
 #: memprof.glade.h:44
+msgid "Reset"
+msgstr "Återställ"
+
+#: memprof.glade.h:45
 msgid "Run"
 msgstr "Kör"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Executable"
 msgstr "Kör program"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Run Program"
 msgstr "Kör program"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save"
 msgstr "Spara"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save Report"
 msgstr "Spara rapport"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Leak Info..."
 msgstr "Spara _läckageinformation..."
 
-#: memprof.glade.h:50
+#: memprof.glade.h:51
 msgid "Save _Profile..."
 msgstr "Spara _profil..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:52
 msgid "Size"
 msgstr "Storlek"
 
-#: memprof.glade.h:52
+#: memprof.glade.h:53
 msgid "Stack Trace"
 msgstr "Stackvisning"
 
-#: memprof.glade.h:53
+#: memprof.glade.h:54
 msgid "Status"
 msgstr "Status"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Totalt antal byte:"
 
-#: memprof.glade.h:55
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr "_Lösgör"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:57
 msgid "_File"
 msgstr "_Arkiv"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "_Döda"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr "_Process"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:61
 msgid "_Run Program..."
 msgstr "_Kör program..."
 
-#: memprof.glade.h:61
+#: memprof.glade.h:62
 msgid "_Settings"
 msgstr "_Inställningar"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:63
 msgid "translator_credits"
 msgstr ""
+"Christian Rose\n"
+"Martin Norbäck\n"
+"Skicka synpunkter på översättningen till sv@li.org"
 
-#: process.c:854
+#: process.c:886
 msgid "Initial"
 msgstr "Initialt"
 
-#: process.c:857
+#: process.c:889
 msgid "Starting"
 msgstr "Startar"
 
-#: process.c:860
+#: process.c:892
 msgid "Running"
 msgstr "Kör"
 
-#: process.c:863
+#: process.c:895
 msgid "Exiting"
 msgstr "Avslutar"
 
-#: process.c:866 process.c:869
+#: process.c:898 process.c:901
 msgid "Defunct"
 msgstr "Död"
 
@@ -374,6 +375,18 @@ msgstr "Dölj"
 #: tree.c:101
 msgid "Detach"
 msgstr "Lösgör"
+
+#~ msgid "Callers"
+#~ msgstr "Anropare"
+
+#~ msgid "Descendants"
+#~ msgstr "Avkomlingar"
+
+#~ msgid "Descendant"
+#~ msgstr "Avkomling"
+
+#~ msgid "Really quit MemProf?"
+#~ msgstr "Verkligen avsluta MemProf?"
 
 #~ msgid "Bytes"
 #~ msgstr "Byte"
