@@ -1,87 +1,86 @@
+# translation of memprof.HEAD.es.po to Spanish
 # Memprof' Spanish Translation
 # Copyright (C) 2000-2002 GNOME Foundation, Inc.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>, 2002.
+# Francisco Javier F. Serrador <serrador@arrakis.es>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Memprof 0.1\n"
-"POT-Creation-Date: 2003-06-19 14:09+0200\n"
-"PO-Revision-Date: 2002-07-19 16:19GMT-03:00\n"
-"Last-Translator: Pablo del Campo <pablodc@bigfoot.com>\n"
-"Language-Team: Español <traductores@es.gnome.org>\n"
+"Project-Id-Version: memprof.HEAD.es\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-07-13 13:22+0200\n"
+"PO-Revision-Date: 2003-07-13 19:24+0200\n"
+"Last-Translator: Francisco Javier F. Serrador <serrador@arrakis.es>\n"
+"Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0.1\n"
 
 #: leakdetect.c:584
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "No se puede abrir el archivo de salida: %s\n"
 
-#: main.c:635
+#: main.c:697
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "La ejecución de «%s» ha fallado"
 
-#: main.c:766
-msgid "Really quit MemProf?"
-msgstr "¿Realmente salir de MemProf?"
-
-#: main.c:812 memprof.glade.h:35
+#: main.c:858 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:915
+#: main.c:961
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "No se puede encontrar el ejecutable para «%s»"
 
-#: main.c:1018
+#: main.c:1064
 msgid "Saving is disabled at the moment"
-msgstr ""
+msgstr "Guardar está desactivado por el momento"
 
-#: main.c:1532
+#: main.c:1588
 msgid "MemProf Error"
 msgstr "Error de MemProf"
 
-#: main.c:1532
+#: main.c:1588
 msgid "MemProf Warning"
 msgstr "Advertencia de MemProf"
 
-#: main.c:1913
+#: main.c:1968
 msgid "Really detach from finished process?"
 msgstr "¿Realmente desconectarse de los procesos terminados?"
 
-#: main.c:1915
+#: main.c:1970
 msgid "Really detach from running process?"
 msgstr "¿Realmente desconectarse de los procesos ejecutándose?"
 
-#: main.c:1945
+#: main.c:2000
 msgid "Really kill running process?"
 msgstr "¿Realmente matar los procesos ejecutándose?"
 
-#: main.c:1982
+#: main.c:2037
 msgid "Create new windows for forked processes"
 msgstr "Crear nuevas ventanas para los procesos ejecutados (forked processes)"
 
-#: main.c:1984
+#: main.c:2039
 msgid "Retain windows for processes after exec()"
 msgstr "Retener las ventanas para procesos después de exec()"
 
-#: main.c:1986
+#: main.c:2041
 msgid "Type of profiling information to collect"
 msgstr "Tipo de información del perfil a recolectar"
 
-#: main.c:1988
+#: main.c:2043
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Cantidad de muestras/seg para perfil de tiempo (1k=1000)"
 
-#: main.c:2037
+#: main.c:2092
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr "El argumento de --profile debe ser «memory», «cycles» o «time»\n"
 
-#: main.c:2078
+#: main.c:2133
 msgid "Cannot find memprof.glade"
 msgstr "No se puede encontrar memprof.glade"
 
@@ -91,7 +90,7 @@ msgstr "# de Asignaciones:"
 
 #: memprof.glade.h:2
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: memprof.glade.h:3
 msgid "0"
@@ -106,13 +105,12 @@ msgid "32k"
 msgstr "32k"
 
 #: memprof.glade.h:6
-#, fuzzy
 msgid "<b>Callers</b>"
-msgstr "Llamadores"
+msgstr "<b>Llamadores</b>"
 
 #: memprof.glade.h:7
 msgid "<b>Descendants</b>"
-msgstr ""
+msgstr "<b>Descendientes</b>"
 
 #: memprof.glade.h:8
 msgid "Adding Skip Function"
@@ -147,13 +145,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Comando a ejecutar al hacer doble clic sobre la pila de ejecución:"
 
 #: memprof.glade.h:16
-#, fuzzy
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
 msgstr ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -164,8 +161,7 @@ msgid "Defaults"
 msgstr "Predeterminados"
 
 #: memprof.glade.h:20
-msgid ""
-"Enter a regular expression of function names to skip when computing profiles"
+msgid "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Ingrese una expresión regular de nombres de función a ignorar cuando se "
 "calculan los perfiles"
@@ -176,8 +172,7 @@ msgstr "Ingrese la ruta hacia un ejecutable"
 
 #: memprof.glade.h:22
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr ""
-"Ingrese el nombre de una función a ignorar cuando se calculan los perfiles"
+msgstr "Ingrese el nombre de una función a ignorar cuando se calculan los perfiles"
 
 #: memprof.glade.h:23
 msgid "File"
@@ -260,98 +255,102 @@ msgid "Regular expressions to Skip:"
 msgstr "Expresiones regulares a ignorar:"
 
 #: memprof.glade.h:44
+msgid "Reset"
+msgstr "Restablecer"
+
+#: memprof.glade.h:45
 msgid "Run"
 msgstr "Ejecutar"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Executable"
 msgstr "Ejecutar ejecutable"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Run Program"
 msgstr "Ejecutar programa"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save"
 msgstr "Guardar"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save Report"
 msgstr "Guardar reporte"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Leak Info..."
 msgstr "Guardar información de la _pérdida..."
 
-#: memprof.glade.h:50
+#: memprof.glade.h:51
 msgid "Save _Profile..."
 msgstr "Guardar _perfil..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:52
 msgid "Size"
 msgstr "Tamaño"
 
-#: memprof.glade.h:52
+#: memprof.glade.h:53
 msgid "Stack Trace"
 msgstr "Pila de ejecución"
 
-#: memprof.glade.h:53
+#: memprof.glade.h:54
 msgid "Status"
 msgstr "Estado"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Bytes totales:"
 
-#: memprof.glade.h:55
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr "_Desconectar"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:57
 msgid "_File"
 msgstr "_Archivo"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr "A_yuda"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "_Matar"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr "_Procesos"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:61
 msgid "_Run Program..."
 msgstr "E_jecutar programa..."
 
-#: memprof.glade.h:61
+#: memprof.glade.h:62
 msgid "_Settings"
 msgstr "_Preferencias"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:63
 msgid "translator_credits"
-msgstr ""
+msgstr "Pablo Gonzalo del Campo <pablodc@bigfoot.com>, 2002."
 
-#: process.c:854
+#: process.c:886
 msgid "Initial"
 msgstr "Inicial"
 
-#: process.c:857
+#: process.c:889
 msgid "Starting"
 msgstr "Comenzando"
 
-#: process.c:860
+#: process.c:892
 msgid "Running"
 msgstr "Ejecutando"
 
-#: process.c:863
+#: process.c:895
 msgid "Exiting"
 msgstr "Saliendo"
 
-#: process.c:866 process.c:869
+#: process.c:898 process.c:901
 msgid "Defunct"
 msgstr "Defunct"
 
@@ -371,6 +370,9 @@ msgstr "Ocultar"
 #: tree.c:101
 msgid "Detach"
 msgstr "Desconectar"
+
+#~ msgid "Really quit MemProf?"
+#~ msgstr "¿Realmente salir de MemProf?"
 
 #~ msgid "Bytes"
 #~ msgstr "Bytes"
@@ -404,3 +406,4 @@ msgstr "Desconectar"
 
 #~ msgid "label37"
 #~ msgstr "label37"
+
