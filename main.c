@@ -59,23 +59,11 @@ struct _ProcessWindow {
 	GtkWidget *total_bytes_label;
 
 	GtkWidget *profile_func_tree_view;
-	GtkTreeViewColumn *profile_func_column0;
-	GtkTreeViewColumn *profile_func_column1;
-	GtkTreeViewColumn *profile_func_column2;
-
 	GtkWidget *profile_caller_tree_view;
-	GtkTreeViewColumn *profile_caller_column0;
-	GtkTreeViewColumn *profile_caller_column1;
-	GtkTreeViewColumn *profile_caller_column2;
-	
 	GtkWidget *profile_descendants_tree_view;
-	GtkTreeViewColumn *profile_descendants_column0;
-	GtkTreeViewColumn *profile_descendants_column1;
-	GtkTreeViewColumn *profile_descendants_column2;
-	GtkTreeViewColumn *profile_descendants_column3;
 
-	GtkWidget *leak_block_clist;
-	GtkWidget *leak_stack_clist;
+	GtkWidget *leak_block_tree_view;
+	GtkWidget *leak_stack_tree_view;
 
 	GtkWidget *usage_max_label;
 	GtkWidget *usage_canvas;
@@ -93,6 +81,41 @@ struct _ProcessWindow {
 
 	gboolean follow_fork : 1;
 	gboolean follow_exec : 1;
+};
+
+enum {
+	PROFILE_FUNC_NAME,
+	PROFILE_FUNC_SELF,
+	PROFILE_FUNC_TOTAL,
+	PROFILE_FUNC_FUNC
+};
+
+enum {
+	PROFILE_CALLER_NAME,
+	PROFILE_CALLER_SELF,
+	PROFILE_CALLER_TOTAL,
+	PROFILE_CALLER_SYMBOL
+};
+
+enum {
+	PROFILE_DESCENDANTS_NAME,
+	PROFILE_DESCENDANTS_SELF,
+	PROFILE_DESCENDANTS_NONRECURSE,
+	PROFILE_DESCENDANTS_TOTAL,
+	PROFILE_DESCENDANTS_SYMBOL
+};
+
+enum {
+	LEAK_BLOCK_ADDR,
+	LEAK_BLOCK_SIZE,
+	LEAK_BLOCK_CALLER,
+	LEAK_BLOCK_BLOCK,
+};
+
+enum {
+	LEAK_STACK_NAME,
+	LEAK_STACK_LINE,
+	LEAK_STACK_FILE
 };
 
 char *glade_file;
@@ -132,6 +155,62 @@ get_widget (GladeXML   *glade,
   return widget;
 }
 
+
+/************************************************************
+ * GtkTreeView utilities
+ ************************************************************/
+
+static void
+column_set_sort_id (GtkTreeViewColumn *column,
+		    int                column_id)
+{
+	g_object_set_data (G_OBJECT (column),
+			   "mi-saved-sort-column", GINT_TO_POINTER (column_id));
+	gtk_tree_view_column_set_sort_column_id (column, column_id);
+}
+
+static void
+tree_view_unset_sort_ids (GtkTreeView *tree_view)
+{
+	GList *columns = gtk_tree_view_get_columns (tree_view);
+	GList *l;
+
+	for (l = columns; l; l = l->next) {
+		gtk_tree_view_column_set_sort_column_id (l->data, -1);
+	}
+
+	g_list_free (columns);
+}
+
+static void
+tree_view_set_sort_ids (GtkTreeView *tree_view)
+{
+	GList *columns = gtk_tree_view_get_columns (tree_view);
+	GList *l;
+
+	for (l = columns; l; l = l->next) {
+		int column_id = GPOINTER_TO_INT (g_object_get_data (l->data, "mi-saved-sort-column"));
+		gtk_tree_view_column_set_sort_column_id (l->data, column_id);
+	}
+
+	g_list_free (columns);
+}
+
+static int
+list_iter_get_index (GtkTreeModel *model,
+	       GtkTreeIter  *iter)
+{
+	GtkTreePath *path = gtk_tree_model_get_path (model,iter);
+	int result;
+	
+	g_assert (path);
+	g_assert (gtk_tree_path_get_depth (path) == 1);
+	result = gtk_tree_path_get_indices (path)[0];
+	gtk_tree_path_free (path);
+
+	return result;
+
+}
 
 /************************************************************
  * Status Page 
@@ -253,15 +332,14 @@ profile_func_list_goto_symbol (ProcessWindow *pwin, Symbol *symbol)
 	GtkTreeIter iter;
 	gboolean found = FALSE;
 
-	function_list = gtk_tree_view_get_model (
-		GTK_TREE_VIEW (pwin->profile_func_tree_view));
+	function_list = gtk_tree_view_get_model (GTK_TREE_VIEW (pwin->profile_func_tree_view));
 
 	if (gtk_tree_model_get_iter_first (function_list, &iter)) {
 		do {
 			ProfileFunc *func;
 
 			gtk_tree_model_get (function_list, &iter,
-					    3, &func,
+					    PROFILE_FUNC_FUNC, &func,
 					    -1);
 
 			if (func->node->symbol == symbol) {
@@ -296,7 +374,7 @@ profile_descendants_row_activated (GtkTreeView *treeview,
 	if (!gtk_tree_model_get_iter (descendants_store, &iter, path))
 		return;
 
-	gtk_tree_model_get (descendants_store, &iter, 4, &desc_symbol, -1);
+	gtk_tree_model_get (descendants_store, &iter, PROFILE_DESCENDANTS_SYMBOL, &desc_symbol, -1);
 
 	profile_func_list_goto_symbol (pwin, desc_symbol);
 }
@@ -338,11 +416,11 @@ add_node (GtkTreeStore *store, int n_samples,
 		name = "???";
 
 	gtk_tree_store_set (store, &iter,
-			    0, name,
-			    1, 100 * (double)node->self/n_samples,
-			    2, 100 * (double)node->non_recursion/n_samples,
-			    3, 100 * (double)node->total/n_samples,
-			    4, node->symbol,
+			    PROFILE_DESCENDANTS_NAME, name,
+			    PROFILE_DESCENDANTS_SELF, 100 * (double)node->self/n_samples,
+			    PROFILE_DESCENDANTS_NONRECURSE, 100 * (double)node->non_recursion/n_samples,
+			    PROFILE_DESCENDANTS_TOTAL, 100 * (double)node->total/n_samples,
+			    PROFILE_DESCENDANTS_SYMBOL, node->symbol,
 			    -1);
 
 	for (i = 0; i < node->children->len; ++i)
@@ -368,15 +446,19 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 	gtk_tree_selection_get_selected (selection, (GtkTreeModel **)&store, &selected);
 
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &selected,
-			    3, &func,
+			    PROFILE_FUNC_FUNC, &func,
 			    -1);
 
 	was_sorted = get_sort_info (GTK_TREE_VIEW (pwin->profile_descendants_tree_view),
 				    &old_sort_column, &old_sort_type);
 	
 	/* fill descendants tree */
-	tree_store = gtk_tree_store_new (
-		5, G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_POINTER);
+	tree_store = gtk_tree_store_new (5,
+					 G_TYPE_STRING,
+					 G_TYPE_DOUBLE,
+					 G_TYPE_DOUBLE,
+					 G_TYPE_DOUBLE,
+					 G_TYPE_POINTER);
 
 	descendant_tree = profile_func_create_descendant_tree (func);
 
@@ -398,9 +480,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 	g_object_unref (G_OBJECT (tree_store));
 
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column0, 0);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column1, 1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column2, 2);
+	tree_view_set_sort_ids (GTK_TREE_VIEW (pwin->profile_descendants_tree_view));
 
 	profile_descendant_tree_free (descendant_tree);
 
@@ -410,10 +490,8 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 	list_store = gtk_list_store_new (4, G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_POINTER);
 
- 	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column0, -1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column1, -1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column2, -1);
-
+	tree_view_unset_sort_ids (GTK_TREE_VIEW (pwin->profile_caller_tree_view));
+	
 	caller_list = profile_func_create_caller_list (func);
 
 	for (i = 0; i < caller_list->len; ++i) {
@@ -432,17 +510,15 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 			
 		gtk_list_store_append (list_store, &iter);
 		gtk_list_store_set (list_store, &iter,
-				    0, name,
-				    1, 100 * (double)caller->self / n_samples,
-				    2, 100 * (double)caller->total / n_samples,
-				    3, caller->node? caller->node->symbol : GINT_TO_POINTER (-1),
+				    PROFILE_CALLER_NAME, name,
+				    PROFILE_CALLER_SELF, 100 * (double)caller->self / n_samples,
+				    PROFILE_CALLER_TOTAL, 100 * (double)caller->total / n_samples,
+				    PROFILE_CALLER_SYMBOL, caller->node ? caller->node->symbol : GINT_TO_POINTER (-1),
 				    -1);
 	}
 	profile_caller_list_free (caller_list);
 
- 	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column0, 0);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column1, 1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column2, 2);
+	tree_view_set_sort_ids (GTK_TREE_VIEW (pwin->profile_caller_tree_view));
 
 	gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_caller_tree_view),
 				 GTK_TREE_MODEL (list_store));
@@ -485,9 +561,7 @@ profile_fill (ProcessWindow *pwin)
 		GTK_TREE_MODEL (store));
 
 	/* inserting in a ListStore is O(n) when sorting ... */
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column0, -1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column1, -1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column2, -1);
+	tree_view_unset_sort_ids (GTK_TREE_VIEW (pwin->profile_func_tree_view));
 
 	for (i = 0; i < pwin->profile->functions->len; ++i) {
 		GtkTreeIter iter;
@@ -505,16 +579,14 @@ profile_fill (ProcessWindow *pwin)
 			name = "???";
 		
 		gtk_list_store_set (store, &iter,
-				    0, name,
-				    1, 100 * (double)func->self / n_samples,
-				    2, 100 * (double)func->total / n_samples,
-				    3, func,
+				    PROFILE_FUNC_NAME, name,
+				    PROFILE_FUNC_SELF, 100 * (double)func->self / n_samples,
+				    PROFILE_FUNC_TOTAL, 100 * (double)func->total / n_samples,
+				    PROFILE_FUNC_FUNC, func,
 				    -1);
 	}
 	
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column0, 0);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column1, 1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column2, 2);
+	tree_view_set_sort_ids (GTK_TREE_VIEW (pwin->profile_func_tree_view));
 
 	if (was_sorted) {
 		gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), old_sort_column,
@@ -537,23 +609,37 @@ profile_fill (ProcessWindow *pwin)
  * GUI for leak detection
  ************************************************************/
 
-static void
-leak_block_select_row (GtkWidget     *widget,
-		       gint           row,
-		       gint           column,
-		       GdkEvent      *event,
-		       ProcessWindow *pwin)
+static Block *
+leak_block_get_selected (ProcessWindow *pwin)
 {
-	Block *block = gtk_clist_get_row_data (GTK_CLIST (widget), row);
+	GtkTreeSelection *selection;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	Block *block =  NULL;
+
+	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (pwin->leak_block_tree_view));
+	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+		gtk_tree_model_get (model, &iter, LEAK_BLOCK_BLOCK, &block, -1);
+
+	return block;
+}
+
+static void
+leak_block_selection_changed (GtkTreeSelection *selection,
+			      ProcessWindow    *pwin)
+{
+	GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (pwin->leak_stack_tree_view));
+	GtkListStore *store = GTK_LIST_STORE (model);
+	Block *block = leak_block_get_selected (pwin);
 	StackElement *stack;
 
+	gtk_list_store_clear (store);
+	
 	if (block == NULL)
 		return;
 
-	gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
 	for (stack = block->stack; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent) {
-		char *data[3];
-		char buf[32];
+		GtkTreeIter iter;
 		const char *filename;
 		char *functionname;
 		unsigned int line;
@@ -566,32 +652,33 @@ leak_block_select_row (GtkWidget     *widget,
 			line = 0;
 		}
 		
-		data[0] = functionname;
-		
-		g_snprintf(buf, 32, "%d", line);
-		data[1] = buf;
-		
-		data[2] = (char *)filename;
-
-		gtk_clist_append (GTK_CLIST (pwin->leak_stack_clist), data);
-		free (data[0]);
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter,
+				    LEAK_STACK_NAME, functionname,
+				    LEAK_STACK_LINE,  line,
+				    LEAK_STACK_FILE, filename,
+				    -1);
 	}
-		
 }
 
 static void
-leaks_fill (ProcessWindow *pwin, GtkCList *clist)
+leaks_fill (ProcessWindow *pwin)
 {
-	gint row;
 	GSList *tmp_list;
+	GtkTreeModel *model;
+	GtkListStore *store;
 
-	gtk_clist_clear (clist);
+	model = gtk_tree_view_get_model (GTK_TREE_VIEW (pwin->leak_block_tree_view));
+	store = GTK_LIST_STORE (model);
+
+	gtk_list_store_clear (store);
+
 	tmp_list = pwin->leaks;
 	while (tmp_list) {
-		char *data[3];
-		char buf[32];
 		const char *filename;
 		char *functionname = NULL;
+		GtkTreeIter iter;
+
 		unsigned int line;
 		
 		Block *block = tmp_list->data;
@@ -618,7 +705,7 @@ leaks_fill (ProcessWindow *pwin, GtkCList *clist)
 
 				for (tmp_list = skip_regexes; tmp_list != NULL; tmp_list = tmp_list->next) {
 					regex_t regex;
-
+					
 					regcomp (&regex, tmp_list->data, 0);
 
 					if (!regexec (&regex, functionname, 0, NULL, 0)) {
@@ -637,27 +724,19 @@ leaks_fill (ProcessWindow *pwin, GtkCList *clist)
 		}
 		if (!functionname)
 			functionname = g_strdup ("(\x3f\x3f\x3f)");
-		
-		g_snprintf(buf, 32, "%p", block->addr);
-		data[0] = g_strdup (buf);
-		
-		g_snprintf(buf, 32, "%d", block->size);
-		data[1] = g_strdup (buf);
 
-		data[2] = functionname;
-		
-		row = gtk_clist_append (clist, data);
-		gtk_clist_set_row_data (clist, row, block);
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter,
+				    LEAK_BLOCK_ADDR, block->addr,
+				    LEAK_BLOCK_SIZE,  block->size,
+				    LEAK_BLOCK_CALLER, functionname,
+				    LEAK_BLOCK_BLOCK, block,
+				    -1);
 
-		g_free (data[0]);
-		g_free (data[1]);
-		free (data[2]);
+		g_free (functionname);
 		
 		tmp_list = tmp_list->next;
 	}
-
-	if (clist->rows > 0)
-		leak_block_select_row (GTK_WIDGET (clist), 0, 0, NULL, pwin);
 }
 
 static void
@@ -717,37 +796,24 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 	}
 }
 
-static gboolean
-leak_stack_button_press (GtkWidget      *widget,
-			 GdkEventButton *event,
-			 ProcessWindow  *pwin)
+static void
+leak_stack_row_activated (GtkTreeView   *tree_view,
+			  GtkTreePath   *path,
+			  int            column,
+			  ProcessWindow *pwin)
 {
-	if (event->window == GTK_CLIST (widget)->clist_window &&
-	    event->type == GDK_2BUTTON_PRESS) {
-		int my_row;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+	int frame;
+	Block *block;
 
-		if (!gtk_clist_get_selection_info (GTK_CLIST (widget),
-						   event->x, event->y,
-						   &my_row, NULL))
-			return FALSE;
+	model = gtk_tree_view_get_model (tree_view);
+	gtk_tree_model_get_iter (model, &iter, path);
+	frame = list_iter_get_index (model, &iter);
 
-		if (my_row != -1) {
-			Block *block;
-			gint block_row;
-
-			g_return_val_if_fail (GTK_CLIST (pwin->leak_block_clist)->selection, FALSE);
-
-			block_row = GPOINTER_TO_INT (GTK_CLIST (pwin->leak_block_clist)->selection->data);
-			block = gtk_clist_get_row_data (GTK_CLIST (pwin->leak_block_clist), block_row);
-
-			leak_stack_run_command (pwin, block, my_row);
-		}
-
-		g_signal_stop_emission_by_name (G_OBJECT (widget), "button_press_event");
-		return TRUE;
-	}
-	
-	return FALSE;
+	block = leak_block_get_selected (pwin);
+	if (block)
+		leak_stack_run_command (pwin, block, frame);
 }
 
 
@@ -879,6 +945,13 @@ status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 	}
 }
 
+static void
+list_view_clear (GtkTreeView *tree_view)
+{
+	GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (tree_view));
+	gtk_list_store_clear (GTK_LIST_STORE (model));
+}
+
 static void 
 process_window_reset (ProcessWindow *pwin)
 {
@@ -886,12 +959,9 @@ process_window_reset (ProcessWindow *pwin)
 		profile_free (pwin->profile);
 		pwin->profile = NULL;
 
-		gtk_tree_view_set_model (
-			GTK_TREE_VIEW (pwin->profile_func_tree_view), NULL);
-		gtk_tree_view_set_model (
-			GTK_TREE_VIEW (pwin->profile_caller_tree_view), NULL);
-		gtk_tree_view_set_model (
-			GTK_TREE_VIEW (pwin->profile_descendants_tree_view), NULL);
+		gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_func_tree_view), NULL);
+		gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_caller_tree_view), NULL);
+		gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_descendants_tree_view), NULL);
 
 		gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_func_tree_view), FALSE);
 		gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_caller_tree_view), FALSE);
@@ -901,8 +971,8 @@ process_window_reset (ProcessWindow *pwin)
 	if (pwin->leaks) {
 		g_slist_free (pwin->leaks);
 		pwin->leaks = NULL;
-		gtk_clist_clear (GTK_CLIST (pwin->leak_block_clist));
-		gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
+		list_view_clear (GTK_TREE_VIEW (pwin->leak_block_tree_view));
+		list_view_clear (GTK_TREE_VIEW (pwin->leak_stack_tree_view));
 	}
 	
 	pwin->usage_max = 32*1024;
@@ -1133,7 +1203,7 @@ generate_leak_cb (GtkWidget *widget)
 			tmp_list = tmp_list->next;
 		}
 		
-		leaks_fill (pwin, GTK_CLIST (pwin->leak_block_clist));
+		leaks_fill (pwin);
 		gtk_notebook_set_page (GTK_NOTEBOOK (pwin->main_notebook), 1);
 
 		process_start_input (pwin->process);
@@ -1278,22 +1348,6 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        gtk_widget_destroy (dialog);
 }
 
-static int
-iter_get_index (GtkTreeModel *model,
-	       GtkTreeIter  *iter)
-{
-	GtkTreePath *path = gtk_tree_model_get_path (model,iter);
-	int result;
-	
-	g_assert (path);
-	g_assert (gtk_tree_path_get_depth (path) == 1);
-	result = gtk_tree_path_get_indices (path)[0];
-	gtk_tree_path_free (path);
-
-	return result;
-
-}
-
 static void
 skip_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
 {
@@ -1303,7 +1357,7 @@ skip_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkTreeIter iter;
 
 	if (gtk_tree_selection_get_selected (skip_selection, &skip_model, &iter)) {
-		int selected_row = iter_get_index (skip_model, &iter);
+		int selected_row = list_iter_get_index (skip_model, &iter);
 		GSList *tmp_list;
 		
 		gtk_list_store_remove (GTK_LIST_STORE (skip_model), &iter);
@@ -1411,7 +1465,7 @@ skip_regexes_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkTreeIter iter;
 
 	if (gtk_tree_selection_get_selected (regexes_selection, &regexes_model, &iter)) {
-		int selected_row = iter_get_index (regexes_model, &iter);
+		int selected_row = list_iter_get_index (regexes_model, &iter);
 		GSList *tmp_list;
 		
 		gtk_list_store_remove (GTK_LIST_STORE (regexes_model), &iter);
@@ -1758,11 +1812,12 @@ add_two_digit_column (GtkTreeView *view, const gchar *title, gint model_column, 
 	column_info->column = model_column;
 	column_info->pwin = pwin;
 	
-	gtk_tree_view_column_set_cell_data_func (
-		column, renderer, double_to_text, column_info, g_free);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
+						 double_to_text, column_info, g_free);
 
 	gtk_tree_view_append_column (view, column);
-
+	column_set_sort_id (column, model_column);
+	
 	return column;
 }
 
@@ -1773,11 +1828,49 @@ add_plain_text_column (GtkTreeView *view, const gchar *title, gint model_column)
 	GtkTreeViewColumn *column;
 
 	renderer = gtk_cell_renderer_text_new ();
-	column = gtk_tree_view_column_new_with_attributes (
-		title, renderer, "text", model_column, NULL);
+	column = gtk_tree_view_column_new_with_attributes (title, renderer,
+							   "text", model_column,
+							   NULL);
 	gtk_tree_view_column_set_resizable (column, TRUE);
 	gtk_tree_view_append_column (view, column);
+	column_set_sort_id (column, model_column);
 
+	return column;
+}
+
+static void
+pointer_to_text (GtkTreeViewColumn *tree_column,
+		 GtkCellRenderer *cell, GtkTreeModel *tree_model,
+		 GtkTreeIter *iter, gpointer data)
+{
+	gpointer p;
+	gchar *text;
+	int column = GPOINTER_TO_INT (data);
+
+	gtk_tree_model_get (tree_model, iter, column, &p, -1);
+	text = g_strdup_printf ("%p", p);
+        g_object_set (cell, "text", text, NULL);
+        g_free (text);
+}
+
+static GtkTreeViewColumn *
+add_pointer_column (GtkTreeView *view, const gchar *title, gint model_column)
+{
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+
+	renderer = gtk_cell_renderer_text_new ();
+
+	column = gtk_tree_view_column_new ();
+	gtk_tree_view_column_set_title  (column, title);
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_resizable (column, TRUE);
+	gtk_tree_view_column_set_cell_data_func (column, renderer,
+						 pointer_to_text, GINT_TO_POINTER (model_column), NULL);
+
+	gtk_tree_view_append_column (view, column);
+	column_set_sort_id (column, model_column);
+	
 	return column;
 }
 
@@ -1786,13 +1879,9 @@ setup_profile_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
 	GtkTreeSelection *selection;
 	
-	pwin->profile_func_column0 = add_plain_text_column (tree_view, "Name", 0);
-	pwin->profile_func_column1 = add_two_digit_column (tree_view, "Self", 1, pwin);
-	pwin->profile_func_column2 = add_two_digit_column (tree_view, "Total", 2, pwin);
-
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column0, 0);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column1, 1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column2, 2);
+	add_plain_text_column (tree_view, "Name", PROFILE_FUNC_NAME);
+	add_two_digit_column (tree_view, "Self", PROFILE_FUNC_SELF, pwin);
+	add_two_digit_column (tree_view, "Total", PROFILE_FUNC_TOTAL, pwin);
 
 	selection = gtk_tree_view_get_selection (tree_view);
 	g_signal_connect (selection, "changed", G_CALLBACK (profile_selection_changed), pwin);
@@ -1803,13 +1892,9 @@ setup_profile_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 static void
 setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
-	pwin->profile_descendants_column0 = add_plain_text_column (tree_view, "Name", 0);
-	pwin->profile_descendants_column1 = add_two_digit_column (tree_view, "Self", 1, pwin);
-	pwin->profile_descendants_column2 = add_two_digit_column (tree_view, "Cummulative", 2, pwin);
-
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column0, 0);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column1, 1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column2, 2);
+	add_plain_text_column (tree_view, "Name", PROFILE_DESCENDANTS_NAME);
+	add_two_digit_column (tree_view, "Self", PROFILE_DESCENDANTS_SELF, pwin);
+	add_two_digit_column (tree_view, "Cumulative", PROFILE_DESCENDANTS_NONRECURSE, pwin);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_descendants_tree_view), FALSE);
 
@@ -1822,18 +1907,56 @@ setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view
 static void
 setup_profile_caller_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
-	pwin->profile_caller_column0 = add_plain_text_column (tree_view, "Name", 0);
-	pwin->profile_caller_column1 = add_two_digit_column (tree_view, "Self", 1, pwin);
-	pwin->profile_caller_column2 = add_two_digit_column (tree_view, "Total", 2, pwin);
+	add_plain_text_column (tree_view, "Name", PROFILE_CALLER_NAME);
+	add_two_digit_column (tree_view, "Self", PROFILE_CALLER_SELF, pwin);
+	add_two_digit_column (tree_view, "Total", PROFILE_CALLER_TOTAL, pwin);
 	
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column0, 0);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column1, 1);
-	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column2, 2);
-
 	g_signal_connect (G_OBJECT (tree_view), "row-activated",
 			  G_CALLBACK (profile_caller_row_activated), pwin);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
+}
+
+static void
+setup_leak_block_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
+{
+	GtkTreeSelection *selection = gtk_tree_view_get_selection (tree_view);
+	GtkListStore *store;
+
+	store = gtk_list_store_new (4,
+				    G_TYPE_POINTER,
+				    G_TYPE_INT,
+				    G_TYPE_STRING,
+				    G_TYPE_POINTER);
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
+	
+	add_pointer_column (tree_view, "Address", LEAK_BLOCK_ADDR);
+	add_plain_text_column (tree_view, "Size", LEAK_BLOCK_SIZE);
+	add_plain_text_column (tree_view, "Caller", LEAK_BLOCK_CALLER);
+	
+	g_signal_connect (selection, "changed",
+			  GTK_SIGNAL_FUNC (leak_block_selection_changed), pwin);
+}
+
+static void
+setup_leak_stack_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
+{
+	GtkListStore *store;
+	
+	store = gtk_list_store_new (3,
+				    G_TYPE_STRING,
+				    G_TYPE_INT,
+				    G_TYPE_STRING);
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
+	
+	add_plain_text_column (tree_view, "Function", LEAK_STACK_NAME);
+	add_plain_text_column (tree_view, "Line", LEAK_STACK_LINE);
+	add_plain_text_column (tree_view, "File", LEAK_STACK_FILE);
+
+	g_signal_connect (tree_view, "row-activated",
+			  GTK_SIGNAL_FUNC (leak_stack_row_activated), pwin);
 }
 
 static ProcessWindow *
@@ -1901,18 +2024,13 @@ process_window_new (void)
 	setup_profile_descendants_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_descendants_tree_view));
 	setup_profile_caller_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_caller_tree_view));
 
-	/* leak clists */
-	pwin->leak_block_clist = get_widget (xml, "leak-block-clist");
-	pwin->leak_stack_clist =  get_widget (xml, "leak-stack-clist");
+	/* leak tree views */
+	pwin->leak_block_tree_view = get_widget (xml, "leak-block-tree-view");
+	pwin->leak_stack_tree_view =  get_widget (xml, "leak-stack-tree-view");
 	
-	gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 0, 250);
-	gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 2, 500);
-	
-	gtk_signal_connect (GTK_OBJECT (pwin->leak_block_clist), "select_row",
-			    GTK_SIGNAL_FUNC (leak_block_select_row), pwin);
-	gtk_signal_connect (GTK_OBJECT (pwin->leak_stack_clist), "button_press_event",
-			    GTK_SIGNAL_FUNC (leak_stack_button_press), pwin);
-	
+	setup_leak_block_tree_view (pwin, GTK_TREE_VIEW (pwin->leak_block_tree_view));
+	setup_leak_stack_tree_view (pwin, GTK_TREE_VIEW (pwin->leak_stack_tree_view));
+
 	pwin->usage_max_label = get_widget (xml, "usage-max-label");
 	pwin->usage_canvas = get_widget (xml, "usage-canvas");
 	

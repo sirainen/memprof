@@ -77,7 +77,7 @@ static ThreadInfo threads[MAX_THREADS];
 static char *socket_path = NULL;
 static unsigned int seqno = 0;
 
-#define ENABLE_DEBUG
+#undef ENABLE_DEBUG
 
 #ifdef ENABLE_DEBUG
 #define MI_DEBUG(arg) mi_debug arg
