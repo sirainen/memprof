@@ -118,6 +118,21 @@ static GladeXML *pref_dialog_xml = NULL; /* We save this around, so we can preve
 static MPProfileType profile_type;
 
 
+/* Helper function to print a clear error message if there
+ * is a problem looking up a particular widget
+ */
+static GtkWidget *
+get_widget (GladeXML   *glade,
+	    const char *name)
+{
+  GtkWidget *widget = glade_xml_get_widget (glade, name);
+  if (!widget)
+    g_error ("Cannot lookup %s\n", name);
+
+  return widget;
+}
+
+
 /************************************************************
  * Status Page 
  ************************************************************/
@@ -978,12 +993,12 @@ run_cb (GtkWidget *widget)
        ProcessWindow *pwin = pwin_from_widget (widget);
        
        xml = glade_xml_new (glade_file, "RunDialog", NULL);
-       run_dialog = glade_xml_get_widget (xml, "RunDialog");
-       entry = glade_xml_get_widget (xml, "RunDialog-entry");
+       run_dialog = get_widget (xml, "RunDialog");
+       entry = get_widget (xml, "RunDialog-entry");
 
        gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
 				  GTK_SIGNAL_FUNC (gtk_widget_activate),
-				  GTK_OBJECT (glade_xml_get_widget (xml, "RunDialog-run")));
+				  GTK_OBJECT (get_widget (xml, "RunDialog-run")));
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1158,14 +1173,47 @@ reset_profile_cb (GtkWidget *widget)
 }
 
 static void
-skip_fill (GtkWidget *clist)
+string_view_init (GtkTreeView *tree_view)
 {
+	GtkListStore *store = gtk_list_store_new (1, G_TYPE_STRING);
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+
+	gtk_tree_view_set_model (tree_view, GTK_TREE_MODEL (store));
+
+	column = gtk_tree_view_column_new ();
+
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_attributes (column, renderer, "text", 0, NULL);
+
+	gtk_tree_view_append_column (tree_view, column);
+}
+
+static void
+string_view_fill (GtkTreeView *tree_view,
+		  GSList      *strings)
+{
+	GtkTreeModel *model = gtk_tree_view_get_model (tree_view);
+	GtkListStore *store = GTK_LIST_STORE (model);
 	GSList *tmp_list;
 
-	gtk_clist_clear (GTK_CLIST (clist));
+	gtk_list_store_clear (store);
+	
+	for (tmp_list = strings; tmp_list != NULL; tmp_list = tmp_list->next) {
+		GtkTreeIter iter;
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, tmp_list->data, -1);
+	}
+}
 
-	for (tmp_list = skip_funcs; tmp_list != NULL; tmp_list = tmp_list->next)
-		gtk_clist_append (GTK_CLIST (clist), (gchar **)&tmp_list->data);
+static void
+skip_fill (void)
+{
+	if (pref_dialog_xml) {
+		GtkWidget *tree_view = get_widget (pref_dialog_xml, "skip-tree-view");
+		string_view_fill (GTK_TREE_VIEW (tree_view), skip_funcs);
+	}
 }
 
 static void
@@ -1176,16 +1224,17 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkWidget *entry;
        char *text;
 
-       GtkWidget *skip_clist = glade_xml_get_widget (preferences_xml, "skip-clist");
-       GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
+       GtkWidget *skip_tree_view = get_widget (preferences_xml, "skip-tree-view");
+       GtkTreeModel *skip_model = gtk_tree_view_get_model (GTK_TREE_VIEW (skip_tree_view));
+       GtkWidget *property_box = get_widget (preferences_xml, "Preferences");
 
        xml = glade_xml_new (glade_file, "SkipAddDialog", NULL);
-       dialog = glade_xml_get_widget (xml, "SkipAddDialog");
-       entry = glade_xml_get_widget (xml, "SkipAddDialog-entry");
+       dialog = get_widget (xml, "SkipAddDialog");
+       entry = get_widget (xml, "SkipAddDialog-entry");
 
        gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
 				  GTK_SIGNAL_FUNC (gtk_widget_activate),
-				  GTK_OBJECT (glade_xml_get_widget (xml, "SkipAddDialog-add")));
+				  GTK_OBJECT (get_widget (xml, "SkipAddDialog-add")));
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1206,11 +1255,16 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 			       gnome_dialog_run (GNOME_DIALOG (error));
 			       g_free (text);
 		       } else {
-			       gtk_clist_append (GTK_CLIST (skip_clist), &text);
+			       GtkTreeIter iter;
+			       gtk_list_store_append (GTK_LIST_STORE (skip_model), &iter);
+			       gtk_list_store_set (GTK_LIST_STORE (skip_model), &iter,
+						   0, text,
+						   -1);
 
-			       skip_funcs = g_slist_append (skip_funcs,
-							    g_strdup (text));
-			       gconf_client_set_list (gconf_client_get_default (), "/apps/memprof/skip_funcs", GCONF_VALUE_STRING, skip_funcs, NULL);
+			       skip_funcs = g_slist_append (skip_funcs, g_strdup (text));
+			       gconf_client_set_list (gconf_client_get_default (),
+						      "/apps/memprof/skip_funcs",
+						      GCONF_VALUE_STRING, skip_funcs, NULL);
 
 			       g_free (text);
 
@@ -1224,16 +1278,36 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        gtk_widget_destroy (dialog);
 }
 
+static int
+iter_get_index (GtkTreeModel *model,
+	       GtkTreeIter  *iter)
+{
+	GtkTreePath *path = gtk_tree_model_get_path (model,iter);
+	int result;
+	
+	g_assert (path);
+	g_assert (gtk_tree_path_get_depth (path) == 1);
+	result = gtk_tree_path_get_indices (path)[0];
+	gtk_tree_path_free (path);
+
+	return result;
+
+}
+
 static void
 skip_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
 {
-       GtkWidget *clist = glade_xml_get_widget (preferences_xml, "skip-clist");
+       GtkWidget *skip_tree_view = get_widget (preferences_xml, "skip-tree-view");
+       GtkTreeSelection *skip_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (skip_tree_view));
+       GtkTreeModel *skip_model;
+       GtkTreeIter iter;
 
-	if (GTK_CLIST (clist)->selection) {
+	if (gtk_tree_selection_get_selected (skip_selection, &skip_model, &iter)) {
+		int selected_row = iter_get_index (skip_model, &iter);
 		GSList *tmp_list;
-		gint selected_row = GPOINTER_TO_INT (GTK_CLIST (clist)->selection->data);
-		gtk_clist_remove (GTK_CLIST (clist), selected_row);
-
+		
+		gtk_list_store_remove (GTK_LIST_STORE (skip_model), &iter);
+		
 		tmp_list = g_slist_nth (skip_funcs, selected_row);
 		g_free (tmp_list->data);
 		skip_funcs = g_slist_delete_link (skip_funcs, tmp_list);
@@ -1257,14 +1331,12 @@ skip_defaults_cb (GtkWidget *widget, GladeXML *preferences_xml)
 }
 
 static void
-skip_regexes_fill (GtkWidget *clist)
+skip_regexes_fill (void)
 {
-	GSList *tmp_list;
-
-	gtk_clist_clear (GTK_CLIST (clist));
-
-	for (tmp_list = skip_regexes; tmp_list != NULL; tmp_list = tmp_list->next)
-		gtk_clist_append (GTK_CLIST (clist), (gchar **)&tmp_list->data);
+	if (pref_dialog_xml) {
+		GtkWidget *tree_view = get_widget (pref_dialog_xml, "skip-regexes-tree-view");
+		string_view_fill (GTK_TREE_VIEW (tree_view), skip_regexes);
+	}
 }
 
 static void
@@ -1275,16 +1347,17 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkWidget *entry;
        char *text;
 
-       GtkWidget *skip_regexes_clist = glade_xml_get_widget (preferences_xml, "skip-regexes-clist");
-       GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
+       GtkWidget *regexes_tree_view = get_widget (preferences_xml, "skip-tree-view");
+       GtkTreeModel *regexes_model = gtk_tree_view_get_model (GTK_TREE_VIEW (regexes_tree_view));
+       GtkWidget *property_box = get_widget (preferences_xml, "Preferences");
 
        xml = glade_xml_new (glade_file, "SkipRegexesAddDialog", NULL);
-       dialog = glade_xml_get_widget (xml, "SkipRegexesAddDialog");
-       entry = glade_xml_get_widget (xml, "SkipRegexesAddDialog-entry");
+       dialog = get_widget (xml, "SkipRegexesAddDialog");
+       entry = get_widget (xml, "SkipRegexesAddDialog-entry");
 
        gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
 				  GTK_SIGNAL_FUNC (gtk_widget_activate),
-				  GTK_OBJECT (glade_xml_get_widget (xml, "SkipRegexesAddDialog-add")));
+				  GTK_OBJECT (get_widget (xml, "SkipRegexesAddDialog-add")));
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1305,11 +1378,17 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 			       gnome_dialog_run (GNOME_DIALOG (error));
 			       g_free (text);
 		       } else {
-			       gtk_clist_append (GTK_CLIST (skip_regexes_clist), &text);
+			       GtkTreeIter iter;
+			       gtk_list_store_append (GTK_LIST_STORE (regexes_model), &iter);
+			       gtk_list_store_set (GTK_LIST_STORE (regexes_model), &iter,
+						   0, text,
+						   -1);
 
 			       skip_regexes = g_slist_append (skip_regexes,
 							      g_strdup (text));
-			       gconf_client_set_list (gconf_client_get_default (), "/apps/memprof/skip_regexes", GCONF_VALUE_STRING, skip_regexes, NULL);
+			       gconf_client_set_list (gconf_client_get_default (),
+						      "/apps/memprof/skip_regexes",
+						      GCONF_VALUE_STRING, skip_regexes, NULL);
 
 			       g_free (text);
 
@@ -1326,13 +1405,17 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 static void
 skip_regexes_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
 {
-       GtkWidget *clist = glade_xml_get_widget (preferences_xml, "skip-regexes-clist");
+       GtkWidget *regexes_tree_view = get_widget (preferences_xml, "skip-regexes-tree-view");
+       GtkTreeSelection *regexes_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (regexes_tree_view));
+       GtkTreeModel *regexes_model;
+       GtkTreeIter iter;
 
-	if (GTK_CLIST (clist)->selection) {
+	if (gtk_tree_selection_get_selected (regexes_selection, &regexes_model, &iter)) {
+		int selected_row = iter_get_index (regexes_model, &iter);
 		GSList *tmp_list;
-		gint selected_row = GPOINTER_TO_INT (GTK_CLIST (clist)->selection->data);
-		gtk_clist_remove (GTK_CLIST (clist), selected_row);
-
+		
+		gtk_list_store_remove (GTK_LIST_STORE (regexes_model), &iter);
+		
 		tmp_list = g_slist_nth (skip_regexes, selected_row);
 		g_free (tmp_list->data);
 		skip_regexes = g_slist_delete_link (skip_regexes, tmp_list);
@@ -1399,7 +1482,7 @@ void
 preferences_cb (GtkWidget *widget)
 {
        static GtkWidget *property_box = NULL;
-       GtkWidget *skip_clist, *skip_regexes_clist;
+       GtkWidget *skip_tree_view, *regexes_tree_view;
        GtkWidget *stack_command_entry;
        GtkWidget *button;
        GladeXML *xml;
@@ -1414,20 +1497,24 @@ preferences_cb (GtkWidget *widget)
 
        pref_dialog_xml = glade_xml_new (glade_file, "Preferences", NULL);
        xml = pref_dialog_xml;
-       skip_clist = glade_xml_get_widget (xml, "skip-clist");
-       skip_regexes_clist = glade_xml_get_widget (xml, "skip-regexes-clist");
-       stack_command_entry = glade_xml_get_widget (xml, "stack-command-entry");
+       
+       stack_command_entry = get_widget (xml, "stack-command-entry");
 
        property_box = gtk_dialog_new_with_buttons ("Preferences",
 						   NULL,
 						   GTK_DIALOG_DESTROY_WITH_PARENT,
 						   GTK_STOCK_CLOSE, GTK_RESPONSE_CLOSE,
 						   NULL);
-       gtk_widget_reparent (glade_xml_get_widget (xml, "notebook2"),
+       gtk_widget_reparent (get_widget (xml, "notebook2"),
                             GTK_DIALOG (property_box)->vbox);
 
-       skip_fill (skip_clist);
-       skip_regexes_fill (skip_regexes_clist);
+       skip_tree_view = get_widget (xml, "skip-tree-view");
+       string_view_init (GTK_TREE_VIEW (skip_tree_view));
+       skip_fill ();
+
+       regexes_tree_view = get_widget (xml, "skip-regexes-tree-view");
+       string_view_init (GTK_TREE_VIEW (regexes_tree_view));
+       skip_regexes_fill ();
 
        gtk_entry_set_text (GTK_ENTRY (stack_command_entry), stack_command);
        g_signal_connect (G_OBJECT (stack_command_entry), "activate",
@@ -1435,23 +1522,23 @@ preferences_cb (GtkWidget *widget)
        g_signal_connect (G_OBJECT (stack_command_entry), "focus_out_event",
 			 G_CALLBACK (stack_command_entry_focus_out), NULL);
 
-       button = glade_xml_get_widget (xml, "skip-add-button");
+       button = get_widget (xml, "skip-add-button");
        g_signal_connect (G_OBJECT (button), "clicked",
 			 G_CALLBACK (skip_add_cb), xml);
-       button = glade_xml_get_widget (xml, "skip-delete-button");
+       button = get_widget (xml, "skip-delete-button");
        g_signal_connect (G_OBJECT (button), "clicked",
 			 G_CALLBACK (skip_delete_cb), xml);
-       button = glade_xml_get_widget (xml, "skip-defaults-button");
+       button = get_widget (xml, "skip-defaults-button");
        g_signal_connect (G_OBJECT (button), "clicked",
 			 G_CALLBACK (skip_defaults_cb), xml);
 
-       button = glade_xml_get_widget (xml, "skip-regexes-add-button");
+       button = get_widget (xml, "skip-regexes-add-button");
        g_signal_connect (G_OBJECT (button), "clicked",
 			 G_CALLBACK (skip_regexes_add_cb), xml);
-       button = glade_xml_get_widget (xml, "skip-regexes-delete-button");
+       button = get_widget (xml, "skip-regexes-delete-button");
        g_signal_connect (G_OBJECT (button), "clicked",
 			 G_CALLBACK (skip_regexes_delete_cb), xml);
-       button = glade_xml_get_widget (xml, "skip-regexes-defaults-button");
+       button = get_widget (xml, "skip-regexes-defaults-button");
        g_signal_connect (G_OBJECT (button), "clicked",
 			 G_CALLBACK (skip_regexes_defaults_cb), xml);
 
@@ -1471,27 +1558,20 @@ preferences_list_notify (GConfClient *client,
 			 GConfEntry *entry,
 			 gpointer user_data)
 {
-	if (!strcmp(gconf_entry_get_key (entry), "/apps/memprof/skip_funcs")) {
+	const gchar *key = gconf_entry_get_key (entry);
+	
+	if (strcmp (key, "/apps/memprof/skip_funcs") == 0) {
 		if (skip_funcs)
 			g_slist_free (skip_funcs);
-		skip_funcs = gconf_client_get_list (client,
-						    "/apps/memprof/skip_funcs",
+		skip_funcs = gconf_client_get_list (client, key,
 						    GCONF_VALUE_STRING, NULL);
-
-		if (pref_dialog_xml) {
-			GtkWidget *clist = glade_xml_get_widget (pref_dialog_xml, "skip-clist");
-			skip_fill (clist);
-		}
-	} else if (!strcmp (gconf_entry_get_key (entry), "/apps/memprof/skip_regexes")) {
+		skip_fill ();
+	} else if (strcmp (key, "/apps/memprof/skip_regexes") == 0) {
 		if (skip_regexes)
 			g_slist_free (skip_regexes);
-		skip_regexes = gconf_client_get_list (client, "/apps/memprof/skip_regexes",
+		skip_regexes = gconf_client_get_list (client, key,
 						      GCONF_VALUE_STRING, NULL);
-
-		if (pref_dialog_xml) {
-			GtkWidget *clist = glade_xml_get_widget (pref_dialog_xml, "skip-regexes-clist");
-			skip_regexes_fill (clist);
-		}
+		skip_regexes_fill ();
 	}
 }
 
@@ -1510,7 +1590,7 @@ preferences_stack_command_notify (GConfClient *client,
 	if (pref_dialog_xml && stack_command) {
 		GtkWidget *e;
 
-		e = glade_xml_get_widget (pref_dialog_xml, "stack-command-entry");
+		e = get_widget (pref_dialog_xml, "stack-command-entry");
 		gtk_entry_set_text (GTK_ENTRY (e), stack_command);
 	}
 }
@@ -1542,7 +1622,7 @@ about_cb (GtkWidget *widget)
        ProcessWindow *pwin = pwin_from_widget (widget);
 	
        xml = glade_xml_new (glade_file, "About", NULL);
-       dialog = glade_xml_get_widget (xml, "About");
+       dialog = get_widget (xml, "About");
        g_object_unref (G_OBJECT (xml));
 
        gtk_window_set_transient_for (GTK_WINDOW (dialog),
@@ -1779,7 +1859,7 @@ process_window_new (void)
 	
 	xml = glade_xml_new (glade_file, "MainWindow", NULL);
 	
-	pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
+	pwin->main_window = get_widget (xml, "MainWindow");
 	fullfilename = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "memprof.png", FALSE, NULL);
 	gnome_window_icon_set_from_file (GTK_WINDOW (pwin->main_window),
 					 fullfilename);
@@ -1795,35 +1875,35 @@ process_window_new (void)
 				  "process-window",
 				  pwin, (GDestroyNotify)process_window_free);
 	
-	pwin->main_notebook = glade_xml_get_widget (xml, "main-notebook");
+	pwin->main_notebook = get_widget (xml, "main-notebook");
 	
 	pwin->follow_fork = default_follow_fork;
 	pwin->follow_exec = default_follow_exec;
 	
-	menuitem = glade_xml_get_widget (xml, "follow-fork");
+	menuitem = get_widget (xml, "follow-fork");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_fork);
-	menuitem = glade_xml_get_widget (xml, "follow-exec");
+	menuitem = get_widget (xml, "follow-exec");
 	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_exec);
 	
-	pwin->n_allocations_label = glade_xml_get_widget (xml, "n-allocations-label");
-	pwin->bytes_per_label = glade_xml_get_widget (xml, "bytes-per-label");
-	pwin->total_bytes_label = glade_xml_get_widget (xml, "total-bytes-label");
+	pwin->n_allocations_label = get_widget (xml, "n-allocations-label");
+	pwin->bytes_per_label = get_widget (xml, "bytes-per-label");
+	pwin->total_bytes_label = get_widget (xml, "total-bytes-label");
 
-	pwin->profile_status_label = glade_xml_get_widget (xml, "profile-status-label");
+	pwin->profile_status_label = get_widget (xml, "profile-status-label");
 	
 	/* setup profile tree views */
-	pwin->profile_func_tree_view = glade_xml_get_widget (xml, "profile-func-tree-view");
+	pwin->profile_func_tree_view = get_widget (xml, "profile-func-tree-view");
 	pwin->profile_descendants_tree_view =
-		glade_xml_get_widget (xml, "profile-descendants-tree-view");
-	pwin->profile_caller_tree_view = glade_xml_get_widget (xml, "profile-caller-tree-view");
+		get_widget (xml, "profile-descendants-tree-view");
+	pwin->profile_caller_tree_view = get_widget (xml, "profile-caller-tree-view");
 
 	setup_profile_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_func_tree_view));
 	setup_profile_descendants_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_descendants_tree_view));
 	setup_profile_caller_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_caller_tree_view));
 
 	/* leak clists */
-	pwin->leak_block_clist = glade_xml_get_widget (xml, "leak-block-clist");
-	pwin->leak_stack_clist =  glade_xml_get_widget (xml, "leak-stack-clist");
+	pwin->leak_block_clist = get_widget (xml, "leak-block-clist");
+	pwin->leak_stack_clist =  get_widget (xml, "leak-stack-clist");
 	
 	gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 0, 250);
 	gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 2, 500);
@@ -1833,8 +1913,8 @@ process_window_new (void)
 	gtk_signal_connect (GTK_OBJECT (pwin->leak_stack_clist), "button_press_event",
 			    GTK_SIGNAL_FUNC (leak_stack_button_press), pwin);
 	
-	pwin->usage_max_label = glade_xml_get_widget (xml, "usage-max-label");
-	pwin->usage_canvas = glade_xml_get_widget (xml, "usage-canvas");
+	pwin->usage_max_label = get_widget (xml, "usage-max-label");
+	pwin->usage_canvas = get_widget (xml, "usage-canvas");
 	
 	set_white_bg (pwin->usage_canvas);
 	gtk_signal_connect (GTK_OBJECT (pwin->usage_canvas), "size_allocate",
@@ -1869,30 +1949,30 @@ process_window_new (void)
 						   "fill_color", NULL,
 						   NULL);
 	
-	vpaned = glade_xml_get_widget (xml, "profile-vpaned");
+	vpaned = get_widget (xml, "profile-vpaned");
 	gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
-	hpaned = glade_xml_get_widget (xml, "profile-hpaned");
+	hpaned = get_widget (xml, "profile-hpaned");
 	gtk_paned_set_position (GTK_PANED (hpaned), 150);
 	
-	vpaned = glade_xml_get_widget (xml, "leaks-vpaned");
+	vpaned = get_widget (xml, "leaks-vpaned");
 	gtk_paned_set_position (GTK_PANED (vpaned), 150);
 	
 	/* If profiling time, not memory, hide all GUI related to leak
 	 * detection.
 	 */
 	if (profile_type != MP_PROFILE_MEMORY) {
-		gtk_widget_hide (glade_xml_get_widget (xml, "leaks-vpaned"));
-		gtk_widget_hide (glade_xml_get_widget (xml, "toolbar-leaks-button"));
-		gtk_widget_hide (glade_xml_get_widget (xml, "save-leak-info"));
-		gtk_widget_hide (glade_xml_get_widget (xml, "generate-leak-report"));
-		gtk_widget_hide (glade_xml_get_widget (xml, "allocation-bar"));
+		gtk_widget_hide (get_widget (xml, "leaks-vpaned"));
+		gtk_widget_hide (get_widget (xml, "toolbar-leaks-button"));
+		gtk_widget_hide (get_widget (xml, "save-leak-info"));
+		gtk_widget_hide (get_widget (xml, "generate-leak-report"));
+		gtk_widget_hide (get_widget (xml, "allocation-bar"));
 		gtk_notebook_set_show_tabs (
-			GTK_NOTEBOOK (glade_xml_get_widget (xml, "main-notebook")), FALSE);
+			GTK_NOTEBOOK (get_widget (xml, "main-notebook")), FALSE);
 	}
 	else {
-		gtk_widget_hide (glade_xml_get_widget (xml, "profile-status-label"));
-		gtk_widget_hide (glade_xml_get_widget (xml, "reset-profile-button"));
+		gtk_widget_hide (get_widget (xml, "profile-status-label"));
+		gtk_widget_hide (get_widget (xml, "reset-profile-button"));
 	}
 	
 	glade_xml_signal_autoconnect (xml);

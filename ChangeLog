@@ -1,3 +1,11 @@
+Sat Sep 20 11:28:43 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* main.c (process_window_new): Use a helper function to check
+	all calls to glade_xml_get_widget().
+
+	* main.c memprof.glade: Convert preferences dialog from GtkTreeView
+	to GtkCList.
+
 Sat Sep 20 10:52:06 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* intercept.c): Switch to atexit() as the primary means 
