@@ -1662,6 +1662,7 @@
     <widget>
       <class>GnomeFileEntry</class>
       <name>fileentry1</name>
+      <history_id>RunDialog</history_id>
       <max_saved>10</max_saved>
       <directory>False</directory>
       <modal>False</modal>
@@ -1856,7 +1857,7 @@
 	<widget>
 	  <class>GtkLabel</class>
 	  <name>label55</name>
-	  <label>Enter a regular expression of function names to skipwhen computing  profiles</label>
+	  <label>Enter a regular expression of function names to skip when computing  profiles</label>
 	  <justify>GTK_JUSTIFY_CENTER</justify>
 	  <wrap>True</wrap>
 	  <xalign>0.5</xalign>

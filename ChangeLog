@@ -1,3 +1,12 @@
+2000-10-11  Almer S. Tigelaar  <almer1@dds.nl>
+
+	* memprof.glade: Add history id for the run dialog, this way
+	previously run files will be remembered and don't have to be
+	re-entered everytime.
+
+	* memprof-strings.c: Fix the typo previously found by Kjartan
+	Maraas on 2000-08-21 in the glade file.
+
 2000-09-08  Szabolcs BAN <shooby@gnome.hu>
 
 	* configure.in,po/hu.po: Added Hungarian translations from 
