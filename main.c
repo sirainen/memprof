@@ -1174,8 +1174,10 @@ generate_leak_cb (GtkWidget *widget)
 	if (pwin->process) {
 		process_stop_input (pwin->process);
 
-		if (pwin->leaks)
-			g_slist_free (pwin->leaks);
+		while (pwin->leaks) {
+			block_unref(pwin->leaks->data);
+			pwin->leaks = g_slist_delete_link(pwin->leaks, pwin->leaks);
+		}
 		pwin->leaks = leaks_find (pwin->process);
 
 		pwin->usage_leaked = 0;

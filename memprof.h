@@ -82,6 +82,8 @@ void show_error	(GtkWidget *parent_window,
 		 const gchar *format,
 		 ...) G_GNUC_PRINTF (3, 4);
 
+void block_unref (Block *block);
+
 void     process_map_sections (Map           *map,
 			       SectionFunc    func,
 			       gpointer       user_data);

@@ -42,6 +42,7 @@ prepare_block (Block *block, gpointer data)
 
 	g_assert (!(block->flags & BLOCK_IS_ROOT));
 	block->flags &= ~BLOCK_MARKED;
+	block->refcount++;
 	g_ptr_array_add (arr, block);
 }
 
@@ -218,6 +219,7 @@ add_stack_root (MPProcess *process, GSList *block_list,
 			Block *block;
 			
 			block = g_new (Block, 1);
+			block->refcount = 1;
 			block->flags = BLOCK_IS_ROOT;
 			block->addr = (void *)end_stack;
 			if (start_stack > map->addr &&
@@ -265,6 +267,7 @@ process_data_root (void *addr, guint size, gpointer user_data)
 	Block *block;
   
 	block = g_new (Block, 1);
+	block->refcount = 1;
 	block->flags = BLOCK_IS_ROOT;
 	block->addr = addr;
 	block->size = size;
@@ -376,93 +379,6 @@ scan_block (pid_t pid, int memfd, GSList *block_list,
 	return block_list;
 }
 
-#if 0
-static GSList *
-scan_block (int memfd, GSList *block_list,
-	    GPtrArray *block_arr, Block *block)
-{
-	void **mem;
-	gint i;
-	gint count;
-	void *addr;
-
-	addr = mmap (NULL, block->size, PROT_READ, MAP_SHARED, memfd, (off_t)block->addr);
-	if (addr == (void *)-1)	{
-		g_warning ("Cannot mmap block %p: %s\n", block->addr,
-			   g_strerror (errno));
-		return block_list;
-	}
-
-	mem = (void **)addr;
-  
-#if 0  
-	if (lseek (memfd, (guint)block->addr, SEEK_SET) == (off_t)-1) {
-		g_warning ("Error seeking to block at %p: %s\n", block->addr,
-			   g_strerror (errno));
-		goto out;
-	}
-
-	count = read (memfd, (char *)mem, block->size);
-	if (count < 0) {
-		g_warning ("Error reading block at %p: %s\n", block->addr,
-			   g_strerror (errno));
-		goto out;
-	}
-	else if (count != block->size)
-		g_warning ("Short read for block at %p (%u/%u)\n",
-			   block->addr, count, block->size);
-#endif
-
-	block_list = scan_block_contents (block_arr, block_list,
-					  block, addr);
-
-	munmap (addr, block->size);
-
-	return block_list;
-}
-
-static GSList *
-scan_block (int memfd, GSList *block_list,
-	    GPtrArray *block_arr, Block *block)
-{
-	void **mem;
-	gint i;
-	gint count;
-	void *addr;
-
-	addr = mmap (NULL, block->size, PROT_READ, MAP_SHARED, memfd, (off_t)block->addr);
-	if (addr == (void *)-1)	{
-		g_warning ("Cannot mmap block %p: %s\n", block->addr,
-			   g_strerror (errno));
-		return block_list;
-	}
-
-	mem = (void **)addr;
-  
-	if (lseek (memfd, (guint)block->addr, SEEK_SET) == (off_t)-1) {
-		g_warning ("Error seeking to block at %p: %s\n", block->addr,
-			   g_strerror (errno));
-		goto out;
-	}
-
-	count = read (memfd, (char *)mem, block->size);
-	if (count < 0) {
-		g_warning ("Error reading block at %p: %s\n", block->addr,
-			   g_strerror (errno));
-		goto out;
-	}
-	else if (count != block->size)
-		g_warning ("Short read for block at %p (%u/%u)\n",
-			   block->addr, count, block->size);
-
-	block_list = scan_block_contents (block_arr, block_list,
-					  block, addr);
-
-	g_free (addr);
-	return block_list;
-}
-#endif
-
 GSList *
 leaks_find (MPProcess *process)
 {
@@ -545,8 +461,11 @@ leaks_find (MPProcess *process)
 
 	for (i=0; i<block_arr->len; i++) {
 		Block *block = block_arr->pdata[i];
-		if (!(block->flags & BLOCK_MARKED))
+		if (!(block->flags & BLOCK_MARKED)) {
 			result = g_slist_prepend (result, block);
+		} else {
+			block_unref(block);
+		}
 	}
 
 	tmp_list = clones;
@@ -562,7 +481,7 @@ leaks_find (MPProcess *process)
 	 */
 	g_list_free (clones);
   
-	g_ptr_array_free (block_arr, TRUE);
+	g_ptr_array_free (block_arr, FALSE);
 
 	close (memfd);
 	if (ptrace (PTRACE_DETACH, process->pid, 0, 0) == -1)

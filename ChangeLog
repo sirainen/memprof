@@ -5,6 +5,13 @@
 	* process.c (input_func): Keep processing while buffers still have
 	data.
 
+	* leakdetect.c (leaks_find, process_data_root, add_stack_root) 
+	(prepare_block): 
+	* process.c (block_unref): 
+	* main.c (generate_leak_cb): 
+	Fix invalid freeing of blocks in the leak detection code.  (Fixes
+	#97756)
+	
 2004-09-03  John Gardiner Myers  <jgmyers@proofpoint.com>
 
 	* intercept.c (clone __clone clone_thunk): Add extra arguments to

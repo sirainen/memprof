@@ -107,7 +107,7 @@ unqueue_command (MPProcess *process, MIInfo *info, StackElement **stack)
  * Block Manipulation
  ************************************************************/
 
-static void
+void
 block_unref (Block *block)
 {
 	block->refcount--;
