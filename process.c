@@ -585,8 +585,9 @@ process_init (void)
   char *path;
 
   static const char *directories[] = {
+    ".libs",
     ".",
-    DATADIR,
+    LIBDIR,
     NULL
   };
 

@@ -2,7 +2,6 @@ SUBDIRS = intl po
 
 bin_PROGRAMS = memprof
 noinst_PROGRAMS = testmemprof
-
 pkgdata_DATA = memprof.glade leak.xpm gnome-question.png
 
 lib_LTLIBRARIES = libmemintercept.la
@@ -25,12 +24,12 @@ libmemintercept_la_SOURCES =    \
 	memintercept.c		\
 	memintercept.h
 
-libmemintercept_la_LDFLAGS = -avoid-version -module
-libmemintercept_la_LIBS =
+libmemintercept_la_LDFLAGS = -module -avoid-version
 
 INCLUDES = 					   \
 	$(MEMPROF_CFLAGS) 			   \
 	-DDATADIR=\"$(pkgdatadir)\"		   \
+	-DLIBDIR=\"$(libdir)\"			   \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
 
 EXTRA_DIST =			\

@@ -1,0 +1,10 @@
+Wed Oct 20 18:46:22 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (process_init): Look in libdir, not pkgdatadir
+	for libmemintercept.so
+
+	* process.c (process_init): Look in .libs for libmemintercept.so
+	so things work in the non-installed case.
+
+	* configure.in (MEMPROF_LIBS): Use right -l flags when
+	checking for -lbfd.
