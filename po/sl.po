@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-03-03 01:01+0100\n"
+"POT-Creation-Date: 2002-04-23 12:12+0200\n"
 "PO-Revision-Date: 2000-06-26 00:00+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-2\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:531
+#: main.c:528
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Izvr¹evanje \"%s\" ni uspelo"
 
-#: main.c:657
+#: main.c:654
 msgid "Really quit MemProf?"
 msgstr "Resnièen izhod iz MemProf?"
 
@@ -27,44 +27,44 @@ msgstr "Resnièen izhod iz MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:702 memprof-strings.c:7
+#: main.c:699 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:795
+#: main.c:792
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Ne najdem izvr¹ilne datoteke za\"%s\""
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Error"
 msgstr "MemProf Napaka"
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Warning"
 msgstr "MemProf Opozorilo"
 
-#: main.c:1613
+#: main.c:1637
 msgid "Really detach from finished process?"
 msgstr "Resnièno se odklopi od konèanega procesa?"
 
-#: main.c:1615
+#: main.c:1639
 msgid "Really detach from running process?"
 msgstr "Resnièno se odklopi od procesa v teku?"
 
-#: main.c:1635
+#: main.c:1659
 msgid "Really kill running process?"
 msgstr "Resnièno ubij proces v teku?"
 
-#: main.c:1665
+#: main.c:1689
 msgid "Create new windows for forked processes"
 msgstr "Ustvari nova okna za razvejene procese"
 
-#: main.c:1667
+#: main.c:1691
 msgid "Retain windows for processes after exec()"
 msgstr "Ohrani okna za procese po exec()"
 
-#: main.c:1697
+#: main.c:1721
 msgid "Cannot find memprof.glade2"
 msgstr "Ne najdem memprof.glade2"
 
@@ -116,7 +116,7 @@ msgstr "Sledi _exec()"
 msgid "Run Program"
 msgstr "Po¾eni program"
 
-#: memprof-strings.c:20 memprof-strings.c:74
+#: memprof-strings.c:20 memprof-strings.c:61
 msgid "Run"
 msgstr "Po¾eni"
 
@@ -234,89 +234,93 @@ msgid "Memory Profiling Tool"
 msgstr "Orodje za profiliranje pomnilnika"
 
 #: memprof-strings.c:57
-msgid "Functions to Skip:"
-msgstr "Funkcije, ki se prezro:"
-
-#: memprof-strings.c:58 memprof-strings.c:63
-msgid "label37"
-msgstr "label37"
-
-#: memprof-strings.c:59 memprof-strings.c:64
-msgid "Add..."
-msgstr "Dodaj..."
-
-#: memprof-strings.c:60 memprof-strings.c:65
-msgid "Delete"
-msgstr "Zbri¹i"
-
-#: memprof-strings.c:61 memprof-strings.c:66
-msgid "Defaults"
-msgstr "Privzeto"
-
-#: memprof-strings.c:62
-msgid "Regular expressions to Skip:"
-msgstr "Regularni izrazi, ki se prezro:"
-
-#: memprof-strings.c:67
-msgid "Profile Options"
-msgstr "Mo¾nosti profila"
-
-#: memprof-strings.c:68
-msgid "Command to run on double click in stack trace:"
-msgstr "Ukaz, ki naj se po¾ene ob dvojnem klinu na sledi sklada:"
-
-#: memprof-strings.c:69
-msgid "Leak Detection Options"
-msgstr "Mo¾nosti zaznave pu¹èanja"
-
-#: memprof-strings.c:70
 msgid "Adding Skip Function"
 msgstr "Dodajam prezrto funkcijo"
 
-#: memprof-strings.c:71 memprof-strings.c:81
+#: memprof-strings.c:58 memprof-strings.c:68
 msgid "Add"
 msgstr "Dodaj"
 
-#: memprof-strings.c:72
+#: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr "Vpi¹ite funkcijo, ki naj se prezre, ko se raèunajo profili"
 
-#: memprof-strings.c:73
+#: memprof-strings.c:60
 msgid "Run Executable"
 msgstr "Po¾eni izvr¹ilno datoteko"
 
-#: memprof-strings.c:75
+#: memprof-strings.c:62
 msgid "Enter pathname to a executable"
 msgstr "Vpi¹ite datoteko za izvr¹itev"
 
-#: memprof-strings.c:76
+#: memprof-strings.c:63
 msgid "MemProf - Processes"
 msgstr "MemProf - Procesi"
 
-#: memprof-strings.c:77
+#: memprof-strings.c:64
 msgid "PID"
 msgstr "PID"
 
-#: memprof-strings.c:78
+#: memprof-strings.c:65
 msgid "Command Line"
 msgstr "Ukazna vrstica"
 
-#: memprof-strings.c:79
+#: memprof-strings.c:66
 msgid "Status"
 msgstr "Stanje"
 
-#: memprof-strings.c:80
+#: memprof-strings.c:67
 msgid "Adding Skip Regular Expression"
 msgstr "Dodajam prezrt regularni izraz"
 
-#: memprof-strings.c:82
+#: memprof-strings.c:69
 msgid ""
 "Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
 "Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo "
 "profili"
 
-#: leakdetect.c:585 profile.c:201
+#: memprof-strings.c:70
+msgid "Preferences"
+msgstr "Nastavitve"
+
+#: memprof-strings.c:71
+msgid "Functions to Skip:"
+msgstr "Funkcije, ki se prezro:"
+
+#: memprof-strings.c:72 memprof-strings.c:77
+msgid "label37"
+msgstr "label37"
+
+#: memprof-strings.c:73 memprof-strings.c:78
+msgid "Add..."
+msgstr "Dodaj..."
+
+#: memprof-strings.c:74 memprof-strings.c:79
+msgid "Delete"
+msgstr "Zbri¹i"
+
+#: memprof-strings.c:75 memprof-strings.c:80
+msgid "Defaults"
+msgstr "Privzeto"
+
+#: memprof-strings.c:76
+msgid "Regular expressions to Skip:"
+msgstr "Regularni izrazi, ki se prezro:"
+
+#: memprof-strings.c:81
+msgid "Profile Options"
+msgstr "Mo¾nosti profila"
+
+#: memprof-strings.c:82
+msgid "Command to run on double click in stack trace:"
+msgstr "Ukaz, ki naj se po¾ene ob dvojnem klinu na sledi sklada:"
+
+#: memprof-strings.c:83
+msgid "Leak Detection Options"
+msgstr "Mo¾nosti zaznave pu¹èanja"
+
+#: leakdetect.c:585 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Ne morem odpreti izhodne datoteke: %s\n"
