@@ -257,11 +257,6 @@ find_lib_location (MPServer *server)
 	const char **dirname;
 	const char *basename;
 
-	if (server->profile_type == MP_PROFILE_MEMORY)
-		basename = "libmemintercept.so";
-	else
-		basename = "libspeedintercept.so";
-
 	static const char *directories[] = {
 		".libs",
 		".",
@@ -270,6 +265,11 @@ find_lib_location (MPServer *server)
 	};
 
 	char *lib_location;
+	
+	if (server->profile_type == MP_PROFILE_MEMORY)
+		basename = "libmemintercept.so";
+	else
+		basename = "libspeedintercept.so";
 	
 	lib_location = NULL;
 	for (dirname = directories; *dirname; dirname++) {

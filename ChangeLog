@@ -1,3 +1,8 @@
+2002-09-10  James Henstridge  <james@daa.com.au>
+
+	* server.c (find_lib_location): variable definitions need to go at
+	the top of the function.
+
 Thu Sep  5 14:54:33 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* Makefile.am server.c: Move libmemintercept.so into
