@@ -435,11 +435,14 @@ MPProcess *
 process_duplicate (MPProcess *process)
 {
 	MPProcess *new_process = process_new (process->server);
-	GHashTable *new_block_table = get_block_table(new_process);
 
-	g_hash_table_foreach (process->block_table,
-			      process_duplicate_block,
-			      new_block_table);
+	if (process->block_table) {
+		GHashTable *new_block_table = get_block_table(new_process);
+
+		g_hash_table_foreach (process->block_table,
+				      process_duplicate_block,
+				      new_block_table);
+	}
 
 	new_process->bytes_used = process->bytes_used;
 	new_process->n_allocations = process->n_allocations;
