@@ -59,10 +59,14 @@ Development_DATA = memprof.desktop
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = memprof.png
 
+DISTCLEANFILES =		\
+	intltool-extract	\
+	intltool-merge		\
+	intltool-update
 
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) \
-	gconftool-2 --makefile-install-rule $(schema_DATA)
+	$(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 
 .PHONY: copyrights
 

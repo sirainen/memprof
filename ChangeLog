@@ -1,3 +1,10 @@
+Sun Aug 11 15:02:48 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* Makefile.am: add intltool-{extract,merge,update} to DISTCLEANFILES,
+	get gconf schemas installation rule right.
+
+	* configure.in: add some lines to detect gconftool-2.
+
 Sat Aug 10 14:15:06 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* memprof.spec.in: Cleanups, one few fixes.
