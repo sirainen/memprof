@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2002-09-07 17:48+0200\n"
-"PO-Revision-Date: 2002-09-07 17:50+0200\n"
+"POT-Creation-Date: 2002-11-17 18:30+0100\n"
+"PO-Revision-Date: 2002-11-17 18:33+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -44,51 +44,51 @@ msgstr "Kunne ikke finde kørbar fil for '%s'"
 
 #: main.c:1418
 msgid "MemProf Error"
-msgstr "Hukommelsesprofileringsfejl"
+msgstr "Hukommelsesprofilering - fejl"
 
 #: main.c:1418
 msgid "MemProf Warning"
-msgstr "Hukommelsesprofileringsadvarsel"
+msgstr "Hukommelsesprofilering - advarsel"
 
-#: main.c:1678
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig frigøre den afsluttede proces?"
 
-#: main.c:1680
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig frigøre den kørende proces?"
 
-#: main.c:1710
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "Vil du virkelig dræbe den kørende proces?"
 
-#: main.c:1747
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Opret nye vinduer for fraspaltede processer"
 
-#: main.c:1749
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "Behold vinduer for processer efter exec()"
 
-#: main.c:1751
+#: main.c:1745
 msgid "Type of profiling information to collect"
 msgstr "Type af profileringsoplysninger der skal indsamles"
 
-#: main.c:1753
+#: main.c:1747
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Antal prøver/sek. for tidsprofilering (1k=1000)"
 
-#: main.c:1802
+#: main.c:1796
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr "Parameteren til --profile skal være 'memory', 'cycles' eller 'time'\n"
 
-#: main.c:1843
+#: main.c:1837
 msgid "Cannot find memprof.glade"
 msgstr "Kan ikke finde memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
-msgstr "Antal allokeringer:"
+msgstr "Antal allokeringer: "
 
 #: memprof.glade.h:2
 msgid "0"
@@ -120,7 +120,7 @@ msgstr "Byte"
 
 #: memprof.glade.h:9
 msgid "Bytes / Allocation:"
-msgstr "Byte/allokering:"
+msgstr "Byte/allokering: "
 
 #: memprof.glade.h:10
 msgid "Caller"
@@ -232,7 +232,7 @@ msgstr "Hukommelsesprofilering - processer"
 
 #: memprof.glade.h:36
 msgid "Memory Profiling Tool"
-msgstr "Hukommelsesprofilering"
+msgstr "Værktøj til hukommelsesprofilering."
 
 #: memprof.glade.h:37
 msgid "PID"
@@ -288,7 +288,7 @@ msgstr "Gem _profil..."
 
 #: memprof.glade.h:50
 msgid "Self"
-msgstr "Selv"
+msgstr "Egen"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -296,7 +296,7 @@ msgstr "Størrelse"
 
 #: memprof.glade.h:52
 msgid "Stack Trace"
-msgstr "Stakefterfølgning"
+msgstr "Stakudskrift"
 
 #: memprof.glade.h:53
 msgid "Status"
@@ -308,7 +308,7 @@ msgstr "Totalt"
 
 #: memprof.glade.h:55
 msgid "Total Bytes:"
-msgstr "Totalt antal byte:"
+msgstr "Totalt antal byte: "
 
 #: memprof.glade.h:56
 msgid "_Detach"
@@ -374,9 +374,3 @@ msgstr "Skjul"
 #: tree.c:101
 msgid "Detach"
 msgstr "Frigør"
-
-#~ msgid "Add..."
-#~ msgstr "Tilføj..."
-
-#~ msgid "Delete"
-#~ msgstr "Slet"
