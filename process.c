@@ -60,7 +60,7 @@ static void process_reinit (MPProcess *process);
  */
 typedef struct {
 	MIInfo info;
-	void **stack;
+	StackElement *stack;
 } Command;
 
 static gint
@@ -74,7 +74,7 @@ queue_compare (gconstpointer a, gconstpointer b)
 }
 
 static void
-queue_command (MPProcess *process, MIInfo *info, void **stack)
+queue_command (MPProcess *process, MIInfo *info, StackElement *stack)
 {
 	Command *command = g_new (Command, 1);
 	command->info = *info;
@@ -84,7 +84,7 @@ queue_command (MPProcess *process, MIInfo *info, void **stack)
 }
 
 static gboolean
-unqueue_command (MPProcess *process, MIInfo *info, void ***stack)
+unqueue_command (MPProcess *process, MIInfo *info, StackElement **stack)
 {
 	Command *command = process->command_queue->data;
 	GList *tmp_list;
@@ -112,10 +112,7 @@ block_unref (Block *block)
 {
 	block->refcount--;
 	if (block->refcount == 0)
-	{
-		g_free (block->stack);
 		g_free (block);
-	}
 }
  
 /************************************************************
@@ -355,16 +352,15 @@ process_find_line (MPProcess *process, void *address,
 }
 
 void
-process_dump_stack (MPProcess *process, FILE *out, gint stack_size, void **stack)
+process_dump_stack (MPProcess *process, FILE *out, StackElement *stack)
 {
-	int i;
-	for (i=0; i<stack_size; i++)
+	for (; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent)
 	{
 		const char *filename;
 		char *functionname;
 		unsigned int line;
       
-		if (process_find_line (process, stack[i],
+		if (process_find_line (process, stack->address,
 				       &filename, &functionname, &line)) {
 			if (filename)
 				fprintf(out, "\t%s(): %s:%u\n", functionname, filename, line);
@@ -372,8 +368,7 @@ process_dump_stack (MPProcess *process, FILE *out, gint stack_size, void **stack
 				fprintf(out, "\t%s()\n", functionname);
 			free (functionname);
 		} else
-			fprintf(out, "\t[%p]\n", stack[i]);
-
+			fprintf(out, "\t[%p]\n", stack->address);
 	}
 }
 
@@ -462,12 +457,38 @@ process_reinit (MPProcess *process)
 		process->bad_pages = NULL;
 	}
 
-	g_hash_table_foreach (process->block_table, process_free_block, NULL);
-	g_hash_table_destroy (process->block_table);
-	process->block_table = g_hash_table_new (g_direct_hash, NULL);
-	
+	if (process->block_table) {
+		g_hash_table_foreach (process->block_table, process_free_block, NULL);
+		g_hash_table_destroy (process->block_table);
+		process->block_table = NULL;
+	}
+
+	if (process->stack_stash) {
+		stack_stash_free (process->stack_stash);
+		process->stack_stash = NULL;
+	}
+
 	/* FIXME: leak */
 	process->command_queue = NULL;
+}
+
+static GHashTable *
+get_block_table (MPProcess *process)
+{
+	if (!process->block_table)
+		process->block_table = g_hash_table_new (g_direct_hash, NULL);
+
+	return process->block_table;
+		
+}
+
+static StackStash *
+get_stack_stash (MPProcess *process)
+{
+	if (!process->stack_stash)
+		process->stack_stash = stack_stash_new ();
+
+	return process->stack_stash;
 }
 
 void
@@ -478,8 +499,9 @@ process_exec_reset (MPProcess *process)
 }
 
 static void
-process_command (MPProcess *process, MIInfo *info, void **stack)
+process_command (MPProcess *process, MIInfo *info, StackElement *stack)
 {
+	GHashTable *block_table;
 	Block *block;
 
 	if (info->any.seqno != process->seqno) {
@@ -504,14 +526,16 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 		break;
 		
 	default: /* MALLOC / REALLOC / FREE */
+		block_table = get_block_table (process);
+		
 		if (info->alloc.old_ptr != NULL) {
-			block = g_hash_table_lookup (process->block_table, info->alloc.old_ptr);
+			block = g_hash_table_lookup (block_table, info->alloc.old_ptr);
 			if (!block) {
 				g_warning ("Block %p not found (pid=%d)!\n", info->alloc.old_ptr, process->pid);
-				process_dump_stack (process, stderr, info->alloc.stack_size, stack);
+				process_dump_stack (process, stderr, stack);
 			}
 			else {
-				g_hash_table_remove (process->block_table, info->alloc.old_ptr);
+				g_hash_table_remove (block_table, info->alloc.old_ptr);
 				process->bytes_used -= block->size;
 				block_unref (block);
 				
@@ -527,23 +551,20 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 		 * process->n_allocations/bytes_used a little difficult.
 		 */
 
-		if (info->alloc.new_ptr && !g_hash_table_lookup (process->block_table, info->alloc.new_ptr)) {
+		if (info->alloc.new_ptr && !g_hash_table_lookup (block_table, info->alloc.new_ptr)) {
 			block = g_new (Block, 1);
 			block->refcount = 1;
 			
 			block->flags = 0;
 			block->addr = info->alloc.new_ptr;
 			block->size = info->alloc.size;
-			block->stack_size = info->alloc.stack_size;
 			block->stack = stack;
 			
 			process->n_allocations++;
 			process->bytes_used += info->alloc.size;
 
-			g_hash_table_insert (process->block_table, info->alloc.new_ptr, block);
+			g_hash_table_insert (block_table, info->alloc.new_ptr, block);
 		}
-		else
-			g_free (stack);
 	}
 
 	while (process->command_queue && unqueue_command (process, info, &stack))
@@ -571,13 +592,17 @@ input_func (GIOChannel  *source,
 		
 		return FALSE;
 	} else {
-		void **stack = NULL;
+		StackElement *stack = NULL;
 
 		if (info.operation == MI_MALLOC ||
 		    info.operation == MI_REALLOC ||
 		    info.operation == MI_FREE) {
-			stack = g_new (void *, info.alloc.stack_size);
-			g_io_channel_read (source, (char *)stack, sizeof(void *) * info.alloc.stack_size, &count);
+			void **stack_buffer = NULL;
+			StackStash *stash = get_stack_stash (input_process);
+			
+			stack_buffer = g_alloca (sizeof (void *) * info.alloc.stack_size);
+			g_io_channel_read (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count);
+			stack = stack_stash_store (stash, stack_buffer, info.alloc.stack_size);
 
 		} else if (info.operation == MI_EXIT) {
 			process_set_status (input_process, MP_PROCESS_EXITING);
@@ -727,7 +752,8 @@ mp_process_init (MPProcess *process)
   
 	process->bytes_used = 0;
 	process->n_allocations = 0;
-	process->block_table = g_hash_table_new (g_direct_hash, NULL);
+	process->block_table = NULL;
+	process->stack_stash = NULL;
 
 	process->program_name = NULL;
 	process->input_channel = NULL;
@@ -892,3 +918,33 @@ process_kill (MPProcess *process)
 		kill (process->pid, SIGTERM);
 	}
 }
+
+typedef struct {
+	MPProcessBlockForeachFunc foreach_func;
+	gpointer data;
+} BlockForeachInfo;
+
+static void
+block_table_foreach_func (gpointer key,
+			  gpointer value,
+			  gpointer data)
+{
+	BlockForeachInfo *info = data;
+
+	info->foreach_func (value, info->data);
+}
+
+void
+process_block_foreach (MPProcess                 *process,
+		       MPProcessBlockForeachFunc  foreach_func,
+		       gpointer                   data)
+{
+	GHashTable *block_table = get_block_table (process);
+	BlockForeachInfo info;
+
+	info.foreach_func = foreach_func;
+	info.data = data;
+
+	g_hash_table_foreach (block_table, block_table_foreach_func, &info);
+}
+

@@ -8,7 +8,10 @@ void *a()
 
 void *b()
 {
-  return a();
+  void *result = a();
+  free (malloc(1000));
+
+  return result;
 }
 
 int main()

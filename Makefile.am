@@ -20,6 +20,8 @@ memprof_SOURCES =	        \
 	profile.h		\
 	server.c		\
 	server.h		\
+	stackstash.c		\
+	stackstash.h		\
 	tree.c
 
 memprof_LDADD = $(MEMPROF_LIBS)

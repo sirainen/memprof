@@ -53,6 +53,9 @@ typedef enum {
 	MP_PROCESS_DETACHED	/* we now ignore this child */
 } MPProcessStatus;
 
+typedef void (*MPProcessBlockForeachFunc) (Block    *block,
+					   gpointer  data);
+
 struct _MPProcess
 {
 	GObject parent_instance;
@@ -77,6 +80,8 @@ struct _MPProcess
 	GList *map_list;
 	GList *bad_pages;
 	GHashTable *block_table;
+
+	StackStash *stack_stash;
 	
 	GList *command_queue;
 	
@@ -123,12 +128,15 @@ gboolean    process_find_line       (MPProcess          *process,
 				     unsigned int       *line);
 void        process_dump_stack      (MPProcess          *process,
 				     FILE               *out,
-				     gint                stack_size,
-				     void              **stack);
+				     StackElement       *stack);
 Symbol *    process_locate_symbol   (MPProcess          *process,
 				     guint               addr);
 
 char **     process_parse_exec      (const char         *exec_string);
 char *      process_find_exec       (char              **args);
+
+void  process_block_foreach (MPProcess                *process,
+			     MPProcessBlockForeachFunc foreach_func,
+			     gpointer                  data);
 
 #endif /* __PROCESS_H__ */

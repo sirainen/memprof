@@ -36,9 +36,8 @@
 #include "process.h"
 
 static void
-prepare_block (gpointer key, gpointer value, gpointer data)
+prepare_block (Block *block, gpointer data)
 {
-	Block *block = value;
 	GPtrArray *arr = data;
 
 	g_assert (!(block->flags & BLOCK_IS_ROOT));
@@ -226,7 +225,6 @@ add_stack_root (MPProcess *process, GSList *block_list,
 				block->size = start_stack - end_stack;
 			else
 				block->size = map->addr + map->size - end_stack;
-			block->stack_size = 0;
 			block->stack = NULL;
 
 			return g_slist_prepend (block_list, block);
@@ -270,7 +268,6 @@ process_data_root (void *addr, guint size, gpointer user_data)
 	block->flags = BLOCK_IS_ROOT;
 	block->addr = addr;
 	block->size = size;
-	block->stack_size = 0;
 	block->stack = NULL;
 
 	*block_list = g_slist_prepend (*block_list, block);
@@ -510,7 +507,7 @@ leaks_find (MPProcess *process)
 	 */
 
 	block_arr = g_ptr_array_new ();
-	g_hash_table_foreach (process->block_table, prepare_block, block_arr);
+	process_block_foreach (process, prepare_block, block_arr);
 
 	qsort (block_arr->pdata, block_arr->len, sizeof (Block *),
 	       compare_blocks);
@@ -594,7 +591,7 @@ leaks_print (MPProcess *process, GSList *blocks, gchar *outfile)
 		Block *block = tmp_list->data;
       
 		fprintf (out, "Leaked %p (%u bytes)\n", block->addr, block->size);
-		process_dump_stack (process, out, block->stack_size, block->stack);
+		process_dump_stack (process, out, block->stack);
 
 		tmp_list = tmp_list->next;
 	}

@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <sys/types.h>
 #include "bfd.h"
+#include "stackstash.h"
 
 #ifndef __MEMPROF_H__
 #define __MEMPROF_H__
@@ -38,8 +39,7 @@ typedef struct {
   guint flags;
   void *addr;
   guint size;
-  gint stack_size;
-  void **stack;
+  StackElement *stack;
 
   gint refcount;
 } Block;

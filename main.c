@@ -367,20 +367,20 @@ leak_block_select_row (GtkWidget     *widget,
 		       ProcessWindow *pwin)
 {
 	Block *block = gtk_clist_get_row_data (GTK_CLIST (widget), row);
-	int i;
+	StackElement *stack;
 
 	if (block == NULL)
 		return;
 
 	gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
-	for (i = 0; i < block->stack_size; i++) {
+	for (stack = block->stack; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent) {
 		char *data[3];
 		char buf[32];
 		const char *filename;
 		char *functionname;
 		unsigned int line;
 		
-		if (!process_find_line (pwin->process, block->stack[i],
+		if (!process_find_line (pwin->process, stack->address,
 					&filename, &functionname, &line)) {
 			/* 0x3f == '?' -- suppress trigraph warnings */
 			functionname = g_strdup ("(\x3f\x3f\x3f)");
@@ -415,12 +415,12 @@ leaks_fill (ProcessWindow *pwin, GtkCList *clist)
 		const char *filename;
 		char *functionname = NULL;
 		unsigned int line;
-		int frame;
 		
 		Block *block = tmp_list->data;
+		StackElement *stack;
 
-		for (frame = 0 ; frame < block->stack_size ; frame++) {
-			if (process_find_line (pwin->process, block->stack[frame],
+		for (stack = block->stack; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent) {
+			if (process_find_line (pwin->process, stack->address,
 					       &filename, &functionname, &line)) {
 				GSList *tmp_list;
 
@@ -489,7 +489,11 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 	char *functionname;
 	unsigned int line;
 
-	if (process_find_line (pwin->process, block->stack[frame],
+	StackElement *stack = block->stack;
+	while (frame--)
+		stack = stack->parent;
+
+	if (process_find_line (pwin->process, stack->address,
 			       &filename, &functionname, &line)) {
 		
 		GString *command = g_string_new (NULL);

@@ -57,21 +57,20 @@ add_bytes_to_ref (GList *reflist, ProfileFunc *function, guint bytes)
 }
 
 static void
-add_block_to_functions (gpointer key, gpointer value, gpointer data)
+add_block_to_functions (Block *block, gpointer data)
 {
-  Block *block = value;
   ProfileFunc *last_function = NULL;
-  int i;
+  StackElement *stack;
 
   Profile *profile = data;
   gboolean first = TRUE;
 
-  for (i=0; i<block->stack_size; i++)
+  for (stack = block->stack; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent)
     {
       Symbol *symbol;
       ProfileFunc *function;
       
-      symbol = process_locate_symbol (profile->process, (guint)block->stack[i]);
+      symbol = process_locate_symbol (profile->process, (guint)stack->address);
       if (symbol)
 	{
 	  if (g_hash_table_lookup (profile->skip_hash, symbol->name))
@@ -142,7 +141,7 @@ profile_create (MPProcess *process,
   /* Go through all blocks, and add up memory
    */
   profile->function_hash = g_hash_table_new (g_direct_hash, NULL);
-  g_hash_table_foreach (process->block_table, add_block_to_functions, profile);
+  process_block_foreach (process, add_block_to_functions, profile);
 
   /* Make a sorted list of functions
    */

@@ -1,3 +1,14 @@
+Sat Aug 17 14:54:46 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* stackstash.[ch] Makefile.am: Data structure for storing
+	stack traces in a tree.
+
+	* leakdetect.c main.c memprof.h process.[ch] profile.c:
+	Switch MemProf over to using StackStash.
+
+	* testmemprof.c: Defeat tail-function optimization
+	that was producing confusing stack traces.
+
 2002-08-13  Alexander Larsson  <alexl@redhat.com>
 
 	* memintercept-utils.c (mi_debug):
