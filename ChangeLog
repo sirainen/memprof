@@ -1,3 +1,7 @@
+2000-10-18  Christophe Merlet  <christophe@merlet.net>
+
+	* memprof.desktop: Added French strings.
+
 2000-10-14  Almer S. Tigelaar  <almer1@dds.nl>
 
 	* configure.in: Add 'nl' to ALL_LINGUAS.

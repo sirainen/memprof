@@ -1,15 +1,17 @@
 [Desktop Entry]
 Name=MemProf
-Name[pt_BR]=MemProf
 Name[da]=MemProf
+Name[fr]=MemProf
 Name[no]=MemProf
+Name[pt_BR]=MemProf
 Name[sv]=MemProf
 Name[uk]=MemProf
 Comment=Memory Profiling tool
-Comment[pt_BR]=Ferramenta de 
 Comment[da]=VФrktЬj til hukommelsesprofilering
+Comment[fr]=Outil de profilage de memoire
 Comment[it]=Strumento di profilo della memoria
 Comment[no]=VerktЬy for minneprofilering
+Comment[pt_BR]=Ferramenta de 
 Comment[sv]=Minnesprofileringsverktyg
 Comment[uk]=Зас╕б проф╕лювання пам'ят╕
 Exec=memprof
