@@ -1,7 +1,8 @@
 /* -*- mode: C; c-file-style: "linux" -*- */
 
 /* MemProf -- memory profiler and leak detector
- * Copyright (C) 1999 Red Hat, Inc.
+ * Copyright 1999, 2000, 2001, Red Hat, Inc.
+ * Copyright 2002, Kristian Rietveld
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by

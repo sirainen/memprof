@@ -1,3 +1,15 @@
+Tue Jul 16 01:43:30 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* copyright-header, bfdutils.c, gui.h, inode.c, leakdetect.[ch],
+	main.c, memintercept.[ch], memprof.h, process.[ch], profile.[ch],
+	server.[ch], tree.c: update copyrights
+
+	* configure.in: version already to 0.5.0.
+
+	* memprof.glade: update copyrights in about window
+
+	* AUTHORS: add myself.
+
 Tue Jul 16 01:17:10 2002  Kristian Rietveld  <kris@gtk.org>
 
 	* main.c (about_cb): set version number in about dialog,

@@ -1150,8 +1150,8 @@
     <property name="visible">no</property>
     <property name="logo">memprof.png</property>
     <property name="name" translatable="yes">MemProf</property>
-    <property name="copyright" translatable="yes">Copyright Red Hat, Inc., 1999-2000</property>
-    <property name="authors">Owen Taylor &lt;otaylor@redhat.com&gt;
+    <property name="copyright" translatable="yes">Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld</property>
+    <property name="authors">Owen Taylor &lt;otaylor@redhat.com&gt;&#13;Kristian Rietveld &lt;kris@gtk.org&gt;
 </property>
     <property name="comments" translatable="yes">Memory Profiling Tool</property>
   </widget>
