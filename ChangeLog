@@ -1,3 +1,7 @@
+2002-05-14  Pablo Saratxaga  <pablo@mandrakesoft.com>
+
+	* configure.in: Added Vietnamese (vi) to ALL_LINGUAS
+
 Tue Mar 12 18:59:11 2002  Kristian Rietveld  <kris@gtk.org>
 
 	Summary: support for gconf
