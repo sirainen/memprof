@@ -210,6 +210,7 @@ mi_debug (const char *format,
 	  ...)
 {
 	static int fd = -1;
+	va_list va;
 
 	if (fd < 0) {
 #if 0
@@ -219,7 +220,6 @@ mi_debug (const char *format,
 #endif		
 	}
 	
-	va_list va;
 
 	mi_printf (fd, "memintercept (%P): ");
 

@@ -1,3 +1,8 @@
+2002-08-13  Alexander Larsson  <alexl@redhat.com>
+
+	* memintercept-utils.c (mi_debug):
+	Move va_list variable declaration to top of function.
+
 Sat Aug 10 23:38:52 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* memintercept-utils.[ch] Makefile.am: Split off part of 
