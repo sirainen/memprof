@@ -497,69 +497,10 @@ input_func (GIOChannel  *source,
 	  return TRUE;
 	}
 
-      switch (info.operation)
+      block = NULL;
+		
+      if (info.old_ptr != NULL)
 	{
-	case MI_MALLOC:
-	  process->bytes_used += info.size;
-	  process->n_allocations++;
-	  block = g_new (Block, 1);
-	  block->flags = 0;
-	  block->addr = info.new_ptr;
-	  block->size = info.size;
-	  block->stack_size = info.stack_size;
-	  block->stack = stack;
-	  g_hash_table_insert (process->block_table, info.new_ptr, block);
-	  break;
-
-	case MI_REALLOC:
-	  if (info.old_ptr == NULL)
-	    {
-	      process->bytes_used += info.size;
-	      block = g_new (Block, 1);
-	    }
-	  else
-	    {
-	      block = g_hash_table_lookup (process->block_table, info.old_ptr);
-	      if (!block)
-		{
-		  g_warning ("Block %p not found!\n", info.old_ptr);
-		  process_dump_stack (process, stderr, info.stack_size, stack);
-
-		  block = g_new (Block, 1);
-		  block->flags = 0;
-
-		  process->bytes_used += info.size;
-		}
-	      else
-		{
-		  g_free (block->stack);
-		  g_hash_table_remove (process->block_table, info.old_ptr);
-		  process->n_allocations--;
-	      
-		  process->bytes_used += info.size - block->size;
-		}
-	    }
-
-	  if (info.new_ptr)
-	    {
-	      block->addr = info.new_ptr;
-	      block->size = info.size;
-	      block->stack_size = info.stack_size;
-	      block->stack = stack;
-	      process->n_allocations++;
-	      
-	      g_hash_table_insert (process->block_table, info.new_ptr, block);
-	    }
-	  else
-	    {
-	      process->n_allocations--;
-	      g_free (block);
-	      g_free (stack);
-	    }
-	    
-	  break;
-
-	case MI_FREE:
 	  block = g_hash_table_lookup (process->block_table, info.old_ptr);
 	  if (!block)
 	    {
@@ -568,15 +509,35 @@ input_func (GIOChannel  *source,
 	    }
 	  else
 	    {
+	      g_free (block->stack);
+	      g_hash_table_remove (process->block_table, info.old_ptr);
+	      
 	      process->bytes_used -= block->size;
 	      process->n_allocations--;
-	      g_free (block->stack);
-	      g_free (block);
-	      g_free (stack);
-	      
-	      g_hash_table_remove (process->block_table, info.old_ptr);
-	      break;
 	    }
+	}
+
+      if (info.new_ptr)
+	{
+	  if (!block)
+	    block = g_new (Block, 1);
+	  
+	  block->flags = 0;
+	  block->addr = info.new_ptr;
+	  block->size = info.size;
+	  block->stack_size = info.stack_size;
+	  block->stack = stack;
+	  
+	  process->n_allocations++;
+	  process->bytes_used += info.size;
+	  
+	  g_hash_table_insert (process->block_table, info.new_ptr, block);
+	}
+      else
+	{
+	  if (block)
+	    g_free (block);
+	  g_free (stack);
 	}
     }
   

@@ -1,3 +1,11 @@
+Wed Oct 27 15:17:08 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (input_func): Remove a bunch of duplicate
+	code - we don't need separate malloc/realloc/free cases.
+
+	* process.c (input_func): Fix stupid unitialized
+	variable.
+
 Wed Oct 27 12:26:02 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* memintercept.c: Reindent to linux style

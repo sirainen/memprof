@@ -39,6 +39,7 @@ prepare_block (gpointer key, gpointer value, gpointer data)
   Block *block = value;
   GPtrArray *arr = data;
 
+  g_assert (!(block->flags & BLOCK_IS_ROOT));
   block->flags &= ~BLOCK_MARKED;
   g_ptr_array_add (arr, block);
 }
