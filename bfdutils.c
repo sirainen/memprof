@@ -274,6 +274,7 @@ read_bfd (Map *map)
 
 	separate_debug_file = find_separate_debug_file (map->abfd);
 	if (separate_debug_file) {
+		bfd_close (map->abfd);
 		map->abfd = open_bfd (separate_debug_file);
 		if (!map->abfd)
 			return FALSE;
