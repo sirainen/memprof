@@ -1,11 +1,11 @@
 # Translation of memprof to Croatiann
 # Copyright (C) Croatiann team
-# Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,
+# Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Hrvoje Spoljar <spole@x.pbf.hr>,Jerko Škifić <skific@riteh.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0\n"
-"POT-Creation-Date: 2004-02-01 17:11+0100\n"
-"PO-Revision-Date: 2004-02-05 23:51+CET\n"
+"POT-Creation-Date: 2004-03-20 14:59+0100\n"
+"PO-Revision-Date: 2004-03-20 14:59+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -147,11 +147,11 @@ msgstr ""
 
 #: memprof.glade.h:8
 msgid "Adding Skip Function"
-msgstr ""
+msgstr "Dodaj funkciju za izostavljanje"
 
 #: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
-msgstr ""
+msgstr "Dodaj izostavljanje regularnih izraza"
 
 #: memprof.glade.h:10
 msgid "Bytes / Allocation:"
@@ -217,7 +217,7 @@ msgstr "Ubij"
 
 #: memprof.glade.h:26
 msgid "Kill Program"
-msgstr ""
+msgstr "Prekini program"
 
 #: memprof.glade.h:27
 msgid "Leak Detection Options"
@@ -268,7 +268,6 @@ msgid "Run Executable"
 msgstr ""
 
 #: memprof.glade.h:40
-#, fuzzy
 msgid "Run Program"
 msgstr "Pokreni program"
 
