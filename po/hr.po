@@ -1,11 +1,11 @@
 # Translation of memprof to Croatian
 # Copyright (C) Croatian team
-# Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,
+# Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0\n"
 "POT-Creation-Date: 2003-11-06 18:12+0100\n"
-"PO-Revision-Date: 2003-11-10 16:54+CET\n"
+"PO-Revision-Date: 2003-12-30 18:34+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -138,7 +138,7 @@ msgstr "U redu"
 
 #: memprof.glade.h:5
 msgid "32k"
-msgstr ""
+msgstr "32k"
 
 #: memprof.glade.h:6
 msgid "<b>Callers</b>"
@@ -345,7 +345,7 @@ msgstr "Izvodi se"
 
 #: process.c:895
 msgid "Exiting"
-msgstr ""
+msgstr "Izlazim"
 
 #: process.c:898 process.c:901
 msgid "Defunct"
