@@ -1,16 +1,16 @@
 # memprof fr.po
-# Copyright (C) 1999 Free Software Foundation, Inc.
+# Copyright (C) 1999-2001 Free Software Foundation, Inc.
 # Vincent Renardias <vincent@ldsol.com>, 1999
 # Martin Quinson <mquinson@ens-lyon.fr>, 2000
-# Christophe Merlet (RedFox) <christophe@merlet.net>, 2000. 
+# maintainer: Christophe Merlet (RedFox) <redfox@eikonex.org>, 2000-2001.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2001-02-09 15:11-0500\n"
-"PO-Revision-Date: 2000-10-18 18:12+02:00\n"
-"Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
-"Language-Team: GNOME French Team <gnomefr@gnomefr.traduc.org>\n"
+"Project-Id-Version: memprof 0.4.1\n"
+"POT-Creation-Date: 2001-10-28 14:11+0100\n"
+"PO-Revision-Date: 2001-10-28 14:08+0100\n"
+"Last-Translator: Christophe Merlet (RedFox) <redfox@eikonex.org>\n"
+"Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=ISO-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -18,7 +18,7 @@ msgstr ""
 #: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "L'exécution de \"%s\" a échoué"
+msgstr "L'exécution de « %s » a échoué"
 
 #: main.c:656
 msgid "Really quit MemProf?"
@@ -36,7 +36,7 @@ msgstr "MemProf"
 #: main.c:797
 #, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr "Ne peut trouver un exécutable pour \"%s\""
+msgstr "Ne peut trouver un exécutable pour « %s »"
 
 #: main.c:1365
 msgid "MemProf Error"
@@ -278,7 +278,7 @@ msgstr "Ajouter"
 #: memprof-strings.c:72
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr ""
-"Entrer le nom d'une fonction à ne pas compter quand on calcule les profils"
+"Saisir le nom d'une fonction à ne pas compter quand on calcule les profils"
 
 #: memprof-strings.c:73
 msgid "Run Executable"
@@ -312,7 +312,7 @@ msgstr "Ajouter une expression régulière à ignorer"
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Entrer une expression régulière de noms de fonctions à ignorer quand on "
+"Saisir une expression régulière de noms de fonctions à ignorer quand on "
 "calcule les profils"
 
 #: leakdetect.c:587 profile.c:192
