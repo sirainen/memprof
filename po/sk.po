@@ -1,28 +1,30 @@
 # translation of memprof.HEAD.sk.po to Slovak
 # translation of sk.po to Slovak
 # memprof Slovak translation.
-# Copyright (C) 2002,2003 Free Software Foundation, Inc.
+# Copyright (C) 2002, 2003, 2005 Free Software Foundation, Inc.
 # Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2002,2003.
-# Stanislav ViπÚovsk˝ <visnovsky@nenya.ms.mff.cuni.cz>, 2002.
+# Stanislav Vi≈°≈àovsk√Ω <visnovsky@nenya.ms.mff.cuni.cz>, 2002.
 # Stanislav Visnovsky <visnovsky@kde.org>, 2003.
+# Marcel Telka <marcel@telka.sk>, 2005.
+#
+# $Id$
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: memprof.HEAD.sk\n"
+"Project-Id-Version: memprof\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-09-23 13:05+0200\n"
-"PO-Revision-Date: 2003-09-24 08:53+0200\n"
-"Last-Translator: Stanislav Visnovsky <visnovsky@kde.org>\n"
-"Language-Team: Slovak <sk-i18n@linux.sk>\n"
+"POT-Creation-Date: 2005-03-06 14:49+0100\n"
+"PO-Revision-Date: 2005-03-06 14:50+0100\n"
+"Last-Translator: Marcel Telka <marcel@telka.sk>\n"
+"Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=ISO-8859-2\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.2\n"
 
-#: leakdetect.c:584
+#: leakdetect.c:503
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr "Nepodarilo sa otvoriª v˝stupn˝ s˙bor %s\n"
+msgstr "Nepodarilo sa otvori≈• v√Ωstupn√Ω s√∫bor %s\n"
 
 #: main.c:777
 #, c-format
@@ -36,99 +38,99 @@ msgstr "MemProf"
 #: main.c:1028
 #, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr "Nepodarilo sa n·jsª spustiteµn˝ s˙bor \"%s\""
+msgstr "Nepodarilo sa n√°js≈• spustiteƒæn√Ω s√∫bor \"%s\""
 
 #: main.c:1131
 msgid "Saving is disabled at the moment"
-msgstr "Ukladanie je moment·lne zak·zanÈ"
+msgstr "Ukladanie je moment√°lne zak√°zan√©"
 
-#: main.c:1704
+#: main.c:1708
 msgid "MemProf Error"
 msgstr "Chyba MemProf"
 
-#: main.c:1704
+#: main.c:1708
 msgid "MemProf Warning"
 msgstr "Varovanie MemProf"
 
-#: main.c:1773 main.c:1786 main.c:1801
+#: main.c:1777 main.c:1790 main.c:1805
 msgid "Name"
 msgstr "Meno"
 
-#: main.c:1774 main.c:1787 main.c:1802
+#: main.c:1778 main.c:1791 main.c:1806
 msgid "Self"
 msgstr "Self"
 
-#: main.c:1775 main.c:1803
+#: main.c:1779 main.c:1807
 msgid "Total"
 msgstr "Celkom"
 
-#: main.c:1788
+#: main.c:1792
 msgid "Cumulative"
-msgstr "S˙hrn"
+msgstr "S√∫hrn"
 
-#: main.c:1825
+#: main.c:1829
 msgid "Address"
 msgstr "Adresa"
 
-#: main.c:1826
+#: main.c:1830
 msgid "Size"
-msgstr "Veµkosª"
+msgstr "Veƒækos≈•"
 
-#: main.c:1827
+#: main.c:1831
 msgid "Caller"
-msgstr "Volaj˙ci"
+msgstr "Volaj√∫ci"
 
-#: main.c:1845
+#: main.c:1849
 msgid "Function"
 msgstr "Funkcia"
 
-#: main.c:1846
+#: main.c:1850
 msgid "Line"
 msgstr "Riadok"
 
-#: main.c:1847
+#: main.c:1851
 msgid "File"
-msgstr "S˙bor"
+msgstr "S√∫bor"
 
-#: main.c:2057
+#: main.c:2061
 msgid "Really detach from finished process?"
-msgstr "Naozaj odpojiª od dokonËenÈho procesu?"
+msgstr "Naozaj odpoji≈• od dokonƒçen√©ho procesu?"
 
-#: main.c:2059
+#: main.c:2063
 msgid "Really detach from running process?"
-msgstr "Naozaj odpojiª od beæiaceho procesu?"
+msgstr "Naozaj odpoji≈• od be≈æiaceho procesu?"
 
-#: main.c:2089
+#: main.c:2093
 msgid "Really kill running process?"
-msgstr "Naozaj zabiª beæiaci proces?"
-
-#: main.c:2126
-msgid "Create new windows for forked processes"
-msgstr "Vytvoriª novÈ okn· pre procesy vytvorenÈ pomocou fork"
-
-#: main.c:2128
-msgid "Retain windows for processes after exec()"
-msgstr "Zachovaª okn· pre procesy po volanÌ exec()"
+msgstr "Naozaj zabi≈• be≈æiaci proces?"
 
 #: main.c:2130
-msgid "Type of profiling information to collect"
-msgstr "Typ zhromaæÔovanej profilovacej inform·cie"
+msgid "Create new windows for forked processes"
+msgstr "Vytvori≈• nov√© okn√° pre procesy vytvoren√© pomocou fork"
 
 #: main.c:2132
+msgid "Retain windows for processes after exec()"
+msgstr "Zachova≈• okn√° pre procesy po volan√≠ exec()"
+
+#: main.c:2134
+msgid "Type of profiling information to collect"
+msgstr "Typ zhroma≈æƒèovanej profilovacej inform√°cie"
+
+#: main.c:2136
 msgid "Number of samples/sec for time profile (1k=1000)"
-msgstr "PoËet vzoriek za sekundu pre Ëasov˝ profil (1k = 1000)"
+msgstr "Poƒçet vzoriek za sekundu pre ƒçasov√Ω profil (1k = 1000)"
 
-#: main.c:2181
-msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr "Argument pre --profile musÌ byª 'memory', 'cycles' alebo 'time'\n"
+#: main.c:2185
+msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
+msgstr "Argument pre --profile mus√≠ by≈• 'memory', 'cycles' alebo 'time'\n"
 
-#: main.c:2222
+#: main.c:2226
 msgid "Cannot find memprof.glade"
-msgstr "Nepodarilo sa n·jsª memprof.glade"
+msgstr "Nepodarilo sa n√°js≈• memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
-msgstr "PoËet alik·ciÌ:"
+msgstr "Poƒçet alik√°ci√≠:"
 
 #: memprof.glade.h:2
 msgid "*"
@@ -148,11 +150,11 @@ msgstr "32k"
 
 #: memprof.glade.h:6
 msgid "<b>Callers</b>"
-msgstr "<b>Volaj˙ci</b>"
+msgstr "<b>Volaj√∫ci</b>"
 
 #: memprof.glade.h:7
 msgid "<b>Descendants</b>"
-msgstr "<b>NasledovnÌci</b>"
+msgstr "<b>Nasledovn√≠ci</b>"
 
 #: memprof.glade.h:8
 msgid "Adding Skip Function"
@@ -160,19 +162,19 @@ msgstr "Pridanie preskakovanej funkcie"
 
 #: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
-msgstr "Pridanie regul·rneho v˝razu pre preskakovanie"
+msgstr "Pridanie regul√°rneho v√Ωrazu pre preskakovanie"
 
 #: memprof.glade.h:10
 msgid "Bytes / Allocation:"
-msgstr "Bajtov / alok·ciÌ:"
+msgstr "Bajtov / alok√°ci√≠:"
 
 #: memprof.glade.h:11
 msgid "Check for Leaks"
-msgstr "Kontrolovaª ˙niky"
+msgstr "Kontrolova≈• √∫niky"
 
 #: memprof.glade.h:12
 msgid "Command to run on double click in stack trace:"
-msgstr "PrÌkaz spustenÌ pri dvojitom kliknutÌ na z·znam z·sobnÌka:"
+msgstr "Pr√≠kaz spusten√≠ pri dvojitom kliknut√≠ na z√°znam z√°sobn√≠ka:"
 
 #: memprof.glade.h:13
 msgid ""
@@ -184,61 +186,62 @@ msgstr ""
 
 #: memprof.glade.h:15
 msgid "Create Profile"
-msgstr "Vytvoriª profil"
+msgstr "Vytvori≈• profil"
 
 #: memprof.glade.h:16
 msgid "Defaults"
-msgstr "©tandardnÈ"
+msgstr "≈†tandardn√©"
 
 #: memprof.glade.h:17
-msgid "Enter a regular expression of function names to skip when computing profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Zadajte regul·rny v˝raz pre men· funkciÌ, ktorÈ sa maj˙ preskakovaª pri "
-"v˝poËte profilov"
+"Zadajte regul√°rny v√Ωraz pre men√° funkci√≠, ktor√© sa maj√∫ preskakova≈• pri "
+"v√Ωpoƒçte profilov"
 
 #: memprof.glade.h:18
 msgid "Enter pathname to an executable"
-msgstr "Zadajte cestu a meno spustiteµnÈho s˙boru"
+msgstr "Zadajte cestu a meno spustiteƒæn√©ho s√∫boru"
 
 #: memprof.glade.h:19
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr "Zadajte meno funkcie, ktor˙ chcete preskakovaª pri v˝poËte profilov"
+msgstr "Zadajte meno funkcie, ktor√∫ chcete preskakova≈• pri v√Ωpoƒçte profilov"
 
 #: memprof.glade.h:20
 msgid "Follow _exec()"
-msgstr "Sledovaª _exec()"
+msgstr "Sledova≈• _exec()"
 
 #: memprof.glade.h:21
 msgid "Follow _fork()"
-msgstr "Sledovaª _fork()"
+msgstr "Sledova≈• _fork()"
 
 #: memprof.glade.h:22
 msgid "Functions to Skip:"
-msgstr "PreskakovanÈ funkcie:"
+msgstr "Preskakovan√© funkcie:"
 
 #: memprof.glade.h:23
 msgid "Generate _Leak Report"
-msgstr "Generovaª spr·vu o ˙_nikoch"
+msgstr "Generova≈• spr√°vu o √∫_nikoch"
 
 #: memprof.glade.h:24
 msgid "Generate _Profile"
-msgstr "Generovaª _profil"
+msgstr "Generova≈• _profil"
 
 #: memprof.glade.h:25 tree.c:109
 msgid "Kill"
-msgstr "Zabiª"
+msgstr "Zabi≈•"
 
 #: memprof.glade.h:26
 msgid "Kill Program"
-msgstr "Zabiª program"
+msgstr "Zabi≈• program"
 
 #: memprof.glade.h:27
 msgid "Leak Detection Options"
-msgstr "Moænosti detekcie ˙nikov"
+msgstr "Mo≈ænosti detekcie √∫nikov"
 
 #: memprof.glade.h:28
 msgid "Leaks"
-msgstr "⁄niky"
+msgstr "√öniky"
 
 #: memprof.glade.h:30
 msgid "MemProf - Processes"
@@ -246,7 +249,7 @@ msgstr "MemProf - Procesy"
 
 #: memprof.glade.h:31
 msgid "Memory Profiling Tool"
-msgstr "N·stroj pre profilovanie pam‰ti"
+msgstr "N√°stroj pre profilovanie pam√§ti"
 
 #: memprof.glade.h:32
 msgid "Preferences"
@@ -262,47 +265,47 @@ msgstr "Profil"
 
 #: memprof.glade.h:35
 msgid "Profile Options"
-msgstr "Moænosti profilu"
+msgstr "Mo≈ænosti profilu"
 
 #: memprof.glade.h:36
 msgid "Regular expressions to Skip:"
-msgstr "Regul·rne v˝razy pre preskakovanÈ:"
+msgstr "Regul√°rne v√Ωrazy pre preskakovan√©:"
 
 #: memprof.glade.h:37
 msgid "Reset"
-msgstr "Resetovaª"
+msgstr "Resetova≈•"
 
 #: memprof.glade.h:38
 msgid "Run"
-msgstr "Spustiª"
+msgstr "Spusti≈•"
 
 #: memprof.glade.h:39
 msgid "Run Executable"
-msgstr "Spustiª program"
+msgstr "Spusti≈• program"
 
 #: memprof.glade.h:40
 msgid "Run Program"
-msgstr "Spustiª program"
+msgstr "Spusti≈• program"
 
 #: memprof.glade.h:41
 msgid "Save"
-msgstr "Uloæiª"
+msgstr "Ulo≈æi≈•"
 
 #: memprof.glade.h:42
 msgid "Save Report"
-msgstr "Uloæiª spr·vu"
+msgstr "Ulo≈æi≈• spr√°vu"
 
 #: memprof.glade.h:43
 msgid "Save _Leak Info..."
-msgstr "Uloæiª info o ˙_nikoch..."
+msgstr "Ulo≈æi≈• info o √∫_nikoch..."
 
 #: memprof.glade.h:44
 msgid "Save _Profile..."
-msgstr "Uloæiª _profil..."
+msgstr "Ulo≈æi≈• _profil..."
 
 #: memprof.glade.h:45
 msgid "Stack Trace"
-msgstr "Z·znam z·sobnÌka"
+msgstr "Z√°znam z√°sobn√≠ka"
 
 #: memprof.glade.h:46
 msgid "Total Bytes:"
@@ -310,19 +313,19 @@ msgstr "Celkom bajtov:"
 
 #: memprof.glade.h:47
 msgid "_Detach"
-msgstr "_Odpojiª"
+msgstr "_Odpoji≈•"
 
 #: memprof.glade.h:48
 msgid "_File"
-msgstr "_S˙bor"
+msgstr "_S√∫bor"
 
 #: memprof.glade.h:49
 msgid "_Help"
-msgstr "_PomocnÌk"
+msgstr "_Pomocn√≠k"
 
 #: memprof.glade.h:50
 msgid "_Kill"
-msgstr "_Zabiª"
+msgstr "_Zabi≈•"
 
 #: memprof.glade.h:51
 msgid "_Process"
@@ -330,7 +333,7 @@ msgstr "_Proces"
 
 #: memprof.glade.h:52
 msgid "_Run Program..."
-msgstr "_Spustiª program..."
+msgstr "_Spusti≈• program..."
 
 #: memprof.glade.h:53
 msgid "_Settings"
@@ -338,44 +341,44 @@ msgstr "Nas_tavenia"
 
 #: memprof.glade.h:54
 msgid "translator_credits"
-msgstr "Stanislav ViπÚovsk˝"
+msgstr "Stanislav Vi≈°≈àovsk√Ω"
 
-#: process.c:886
+#: process.c:902
 msgid "Initial"
-msgstr "PoËiatoËn˝"
+msgstr "Poƒçiatoƒçn√Ω"
 
-#: process.c:889
+#: process.c:905
 msgid "Starting"
-msgstr "Sp˙πªaj˙ci sa"
+msgstr "Sp√∫≈°≈•aj√∫ci sa"
 
-#: process.c:892
+#: process.c:908
 msgid "Running"
-msgstr "Beæiaci"
+msgstr "Be≈æiaci"
 
-#: process.c:895
+#: process.c:911
 msgid "Exiting"
-msgstr "KonËiaci"
+msgstr "Konƒçiaci"
 
-#: process.c:898 process.c:901
+#: process.c:914 process.c:917
 msgid "Defunct"
-msgstr "NefunkËn˝"
+msgstr "Nefunkƒçn√Ω"
 
 #: server.c:288
 #, c-format
 msgid "Cannot find %s"
-msgstr "Nepodarilo sa n·jsª %s"
+msgstr "Nepodarilo sa n√°js≈• %s"
 
 #: tree.c:102
 msgid "Show"
-msgstr "Zobraziª"
+msgstr "Zobrazi≈•"
 
 #: tree.c:105
 msgid "Hide"
-msgstr "Skryª"
+msgstr "Skry≈•"
 
 #: tree.c:112
 msgid "Detach"
-msgstr "Odpojiª"
+msgstr "Odpoji≈•"
 
 #: tree.c:180
 msgid "PID"
@@ -383,9 +386,8 @@ msgstr "PID"
 
 #: tree.c:181
 msgid "Command Line"
-msgstr "PrÌkazov˝ riadok"
+msgstr "Pr√≠kazov√Ω riadok"
 
 #: tree.c:182
 msgid "Status"
 msgstr "Stav"
-
