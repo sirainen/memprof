@@ -1,3 +1,7 @@
+Sun May 28 15:22:51 2000  Fatih Demir	<kabalak@gmx.net>
+	
+	* configure.in: Added tr to ALL_LINGUAS.
+
 Fri May 26 12:55:35 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* bfdutils.c (find_line): For a sufficiently screwed up
