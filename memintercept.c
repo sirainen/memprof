@@ -30,6 +30,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
+#include <stdarg.h>
 #include "memintercept.h"
 
 #include <pthread.h>
@@ -71,7 +72,7 @@ static char starter_mem[STARTER_SIZE];
 int starter_alloced = 0;
 int starter_last = 0;
 
-/* #define DEBUG */
+#undef ENABLE_DEBUG
 
 #define MI_LOCK() pthread_mutex_lock (&malloc_mutex);
 #define MI_UNLOCK() pthread_mutex_unlock (&malloc_mutex);
@@ -87,9 +88,9 @@ abort_unitialized (const char *call)
 	abort();
 }
 
-#ifdef DEBUG
+#ifdef ENABLE_DEBUG
 static void
-write_num (unsigned long num)
+write_unsigned (unsigned long num, unsigned int radix)
 {
 	char buffer[64];
 	unsigned long tmp;
@@ -101,29 +102,131 @@ write_num (unsigned long num)
 		return;
 	} 
 
-	write (2, "0x", 2);
+	if (radix == 16)
+		write (2, "0x", 2);
+	else if (radix == 8)
+		write (2, "0", 2);
 	
 	n = 0;
 	tmp = num;
 	while (tmp) {
-		tmp /= 16;
+		tmp /= radix;
 		n++;
 	}
 
 	i = n;
 	while (num) {
 		i--;
-		c = (num % 16);
+		c = (num % radix);
 		if (c < 10)
 			buffer[i] = c + '0';
 		else
 			buffer[i] = c + 'a' - 10;
-		num /= 16;
+		num /= radix;
 	}
 
 	write (2, buffer, n);
 }
-#endif /* DEBUG */
+
+static void
+write_signed (long num, unsigned int radix)
+{
+	if (num < 0) {
+		write (2, "-", 1);
+		num = -num;
+	}
+
+	write_unsigned (num, radix);
+}
+
+static void
+debug (const char *format, ...)
+{
+	const char *p, *q;
+	int argi;
+	size_t argsize;
+	const void *argp;
+	const char *args = NULL;
+	long argl = 0;
+	va_list va;
+	
+	va_start (va, format);
+
+	p = q = format;
+	while ((p = strchr (p, '%'))) {
+		int is_size = 0;
+			
+		write (2, q, p - q);
+		q = p + 2;
+
+	again:
+		switch (*(p + 1)) {
+		case 'z':
+			is_size = 1;
+			q++;
+			p++;
+			goto again;
+		case 'd':
+		case 'u':
+		case 'x':
+			if (is_size) {
+				argsize = va_arg (va, size_t);
+				argl = argsize;
+			} else {
+				argi = va_arg (va, int);
+				argl = argi;
+			}
+			break;
+		case 'p':
+			argp = va_arg (va, void *);
+			argl = (long)argp;
+			break;
+		case 's':
+			args = va_arg (va, const char *);
+			break;
+		}
+
+		switch (*(p + 1)) {
+		case '%':
+			write (2, "%", 1);
+			break;
+		case 'z':
+			is_size = 1;
+			q++;
+			p++;
+			goto again;
+			break;
+		case 'P':
+			write_signed (getpid(), 10);
+			break;
+		case 'd':
+			write_signed (argl, 10);
+			break;
+		case 'u':
+			write_unsigned (argl, 10);
+			break;
+		case 'p':
+		case 'x':
+			write_unsigned (argl, 16);
+			break;
+		case 's':
+			write (2, args, strlen (args));
+			break;
+		case 0:
+			q--;
+			break;
+		}
+		p = q;
+	}
+
+	va_end (va);
+
+	write (2, q, strlen (q));
+}
+#define DEBUG(arg) debug arg
+#else /* !ENABLE_DEBUG */
+#define DEBUG(arg) (void)0
+#endif /* ENABLE_DEBUG */
 
 static int
 write_all (int fd, void *buf, int total)
@@ -217,6 +320,8 @@ new_process (pid_t old_pid, MIOperation operation)
 		/* Stop tracing */
 		tracing = 0;
 		close (outfd);
+		DEBUG (("PID %d", getpid()));
+		write (2, " STOP\n", 6);
 		putenv ("_MEMPROF_SOCKET=");
 	}
 
@@ -227,7 +332,7 @@ static void
 memprof_init ()
 {
 	int old_errno = errno;
-	
+
 	socket_path = getenv ("_MEMPROF_SOCKET");
 	
 	if (!socket_path) {
@@ -235,6 +340,8 @@ memprof_init ()
 		exit(1);
 	}
 
+	DEBUG (("PID %d, _MEMPROF_SOCKET = %s\n", getpid(), socket_path));
+	
 	if (socket_path[0] == '\0') /* tracing off */
 		tracing = 0;
 	else
@@ -320,17 +427,7 @@ __libc_malloc (size_t size)
 			starter_alloced += size;
 		}
 
-#ifdef DEBUG
-		{
-			static const char msg[] = "Starter malloc: ";
-		
-			write (2, msg, sizeof (msg));
-			write_num ((unsigned long)result);
-			write (2, " (", 2);
-			write_num (size);
-			write (2, ")\n", 2);
-		}
-#endif /* DEBUG	*/
+		DEBUG (("Starter malloc: %p (%zu)\n", result, size));
 		
 		return result;
 	}
@@ -458,20 +555,13 @@ __libc_free (void *ptr)
 	if ((ptr >= (void *)starter_mem &&
 	     ptr < (void *)(starter_mem + starter_alloced))) {
 		/* Freeing memory allocated from starter pool */
-#ifdef DEBUG		
-		static const char msg[] = "Starter free: ";
-		
-		write (2, msg, sizeof (msg));
-		write_num ((unsigned long)ptr);
-#endif /* DEBUG */
+		DEBUG (("Starter free: %p", ptr));
 
 		if (ptr == starter_mem + starter_last)
 			starter_alloced = starter_last;
-#ifdef DEBUG
 		else
-			write (2, " (ignored)", 10);
-		write (2, "\n", 1);
-#endif /* DEBUG	*/
+			DEBUG ((" (ignored"));
+		DEBUG (("\n"));
 		return;
 	}
 

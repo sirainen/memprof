@@ -1380,7 +1380,7 @@ show_error_response (GtkDialog *dialog,
 		     gpointer   user_data)
 {
 	if (response_id == GTK_RESPONSE_OK)
-		gtk_widget_destroy (dialog);
+		gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
 void
