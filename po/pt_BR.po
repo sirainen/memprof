@@ -1,12 +1,15 @@
+# memprof: translation to Brazilian Portuguese (pt_BR)
 # Copyright (C) 2000 Free Software Foundation, Inc.
-# #Ariel Bressan da Silva <ariel@conectiva.com.br>, 2000.
+# This file is distributed under the same license as the memprof package.
+# Ariel Bressan da Silva <ariel@conectiva.com.br>, 2000.
+# Alexandre Folle de Menezes <afmenez@terra.com.br>, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2000-11-21 17:03-02:00\n"
-"Last-Translator: Ariel Bressan da Silva <ariel@conectiva.com.br>\n"
+"POT-Creation-Date: 2003-01-31 03:56+0100\n"
+"PO-Revision-Date: 2003-01-31 04:15-0300\n"
+"Last-Translator: Alexandre Folle de Menezes <afmenez@terra.com.br>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar.conectiva.com.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -17,59 +20,71 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Não pode abrir arquivo de saída: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Execução de \"%s\" falhou"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Realmente sair do MemProf?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Não pode encontrar executável para \"%s\""
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "Erro de MemProf"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "Aviso MemProf"
 
-#: main.c:1666
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "Realmente desvincular do processo acabado?"
 
-#: main.c:1668
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "Realmente desvincular do processo em execução?"
 
-#: main.c:1698
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "Realmente matar o processo em execução?"
 
-#: main.c:1731
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Criar novas janelas para os processos bifurcados"
 
-#: main.c:1733
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "Reter as janelas para processo após exec()"
 
-#: main.c:1770
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "Tipo de informação de amostragem a coletar"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Número de amostras/segundo para amostragem de tempo (1k=1000)"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Argumento do --profile deve ser 'memory', 'cycles, ou 'time'\n"
+
+#: main.c:1837
 msgid "Cannot find memprof.glade"
 msgstr "Não pode encontrar memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
-msgstr "# de alocações"
+msgstr "# de Alocações:"
 
 #: memprof.glade.h:2
 msgid "0"
@@ -77,7 +92,7 @@ msgstr "0"
 
 #: memprof.glade.h:3
 msgid "0k"
-msgstr "Ok"
+msgstr "0k"
 
 #: memprof.glade.h:4
 msgid "32k"
@@ -132,6 +147,8 @@ msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
@@ -145,19 +162,17 @@ msgstr "Padrões"
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Acrescentar uma expressão regular de nomes de funções para Skip "
-"quandocomputando perfis"
+"Digite uma expressão regular de nomes de função para pular quando "
+"computandoamostragens"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
-msgstr "Acrescentar nome do caminho a um executável"
+msgstr "Digite o caminho para um executável"
 
 #: memprof.glade.h:21
-#, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr ""
-"Acrescentar o nome de uma função para para Skip quando computando perfis"
+"Digite o nome de uma função para para pular quando computando amostragens"
 
 #: memprof.glade.h:22
 msgid "File"
@@ -192,9 +207,8 @@ msgid "Kill"
 msgstr "Matar"
 
 #: memprof.glade.h:30
-#, fuzzy
 msgid "Kill Program"
-msgstr "Executar programa"
+msgstr "Matar programa"
 
 #: memprof.glade.h:31
 msgid "Leak Detection Options"
@@ -222,7 +236,7 @@ msgstr "PID"
 
 #: memprof.glade.h:38
 msgid "Preferences"
-msgstr ""
+msgstr "Preferências"
 
 #: memprof.glade.h:39
 msgid "Process _Tree"
@@ -297,13 +311,12 @@ msgid "_Detach"
 msgstr "_Destacar"
 
 #: memprof.glade.h:57
-#, fuzzy
 msgid "_File"
-msgstr "Arquivo"
+msgstr "_Arquivo"
 
 #: memprof.glade.h:58
 msgid "_Help"
-msgstr ""
+msgstr "_Ajuda"
 
 #: memprof.glade.h:59
 msgid "_Kill"
@@ -314,38 +327,37 @@ msgid "_Process"
 msgstr "_Processo"
 
 #: memprof.glade.h:61
-#, fuzzy
 msgid "_Run Program..."
-msgstr "Executar programa"
+msgstr "E_xecutar programa..."
 
 #: memprof.glade.h:62
-#, fuzzy
 msgid "_Settings"
-msgstr "Iniciando"
+msgstr "_Configuraçãoes"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Inicial"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Iniciando"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Executando"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Saindo"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Morto"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Não pode encontrar libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Impossível encontrar %s"
 
 #: tree.c:91
 msgid "Show"
@@ -359,20 +371,23 @@ msgstr "Ocultar"
 msgid "Detach"
 msgstr "Destacar"
 
-#~ msgid "Add..."
-#~ msgstr "Adicionar..."
+msgid "Cannot find libmemintercept.so"
+msgstr "Não pode encontrar libmemintercept.so"
 
-#~ msgid "Delete"
-#~ msgstr "Excluir"
+msgid "Add..."
+msgstr "Adicionar..."
 
-#~ msgid "_Run..."
-#~ msgstr "_Executar..."
+msgid "Delete"
+msgstr "Excluir"
 
-#~ msgid "Copyright Red Hat, Inc., 1999-2000"
-#~ msgstr "Copyright Red Hat, Inc., 1999-2000"
+msgid "_Run..."
+msgstr "_Executar..."
 
-#~ msgid "label37"
-#~ msgstr "rótulo137"
+msgid "Copyright Red Hat, Inc., 1999-2000"
+msgstr "Copyright Red Hat, Inc., 1999-2000"
 
-#~ msgid "Add"
-#~ msgstr "Adicionar"
+msgid "label37"
+msgstr "rótulo137"
+
+msgid "Add"
+msgstr "Adicionar"
