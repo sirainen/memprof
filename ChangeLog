@@ -1,3 +1,7 @@
+2000-02-21  Lauris Kaplinski  <lauris@ariman.ee>
+
+       * configure.in: Added et to ALL_LINGUAS
+	
 Tue Jan  4 02:41:28 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* README: Added note telling Debian users about more
