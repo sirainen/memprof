@@ -2,15 +2,24 @@
 
 	* intercept.c (clone __clone clone_thunk): Add extra arguments to
 	clone intercept functions.  (Fixes #122460)
+
 	* process.c (process_read_maps): 
 	* leakdetect.c (read_stack_maps): 
 	Parse device numbers as hex.  Fix from Ian McKellar.  (Fixes #120457)
+
 	* main.c (main): Fix typo.  (Fixes #139682)
+
 	* intercept.c (memprof_init): Make a copy of the socket path so we
 	don't rely on the profiled program leaving the environment alone.
 	(Fixes #148603)
+
 	* process.c (process_duplicate): When following fork, create the
 	copy block hash table before trying to insert into it.  (Fixes #148606)
+
+	* memprof.h:
+	* process.c (process_locate_symbol): Addresses within shared
+	libraries without symbols reported under the name of the shared
+	library.  (Fixes #148616)
 	
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 

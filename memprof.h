@@ -45,6 +45,7 @@ typedef struct {
 } Block;
 
 typedef struct {
+  /* Initial members of this struct must be identical to that of Symbol */
   guint addr;
   guint size;
   gchar *name;

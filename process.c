@@ -293,7 +293,7 @@ process_locate_symbol (MPProcess *process, guint addr)
 		return NULL;
 
 	if (!map->symbols || (map->symbols->len == 0))
-		return NULL;
+		return (Symbol*)map;
   
 	if (map->do_offset)
 		addr -= map->addr;
