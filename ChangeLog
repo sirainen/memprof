@@ -1,3 +1,9 @@
+2001-01-23  Simos Xenitellis  <simos@hellug.gr>
+
+	* configure.in: Added el to ALL_LINGUAS.
+
+	* memprof.desktop: Added Greek translation. 
+
 2000-11-07 Elliot Lee <sopwith@redhat.com>
 	* process.c: Initialize variable to NULL to avoid some funky crash.
 

@@ -2,6 +2,7 @@
 Name=MemProf
 Name[sl]=MemProf
 Name[da]=MemProf
+Name[el]=MemProf
 Name[fr]=MemProf
 Name[no]=MemProf
 Name[pt_BR]=MemProf
@@ -10,6 +11,7 @@ Name[uk]=MemProf
 Comment=Memory Profiling tool
 Comment[sl]=Orodje za profiliranje pomnilnika
 Comment[da]=Vζrktψj til hukommelsesprofilering
+Comment[el]=Εργαλείο Κατατόμησης Μνήμης
 Comment[fr]=Outil de profilage de memoire
 Comment[it]=Strumento di profilo della memoria
 Comment[no]=Verktψy for minneprofilering
