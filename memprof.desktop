@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=MemProf
+Comment=Memory Profiling tool
+Exec=memprof
+Terminal=0
+Type=Application

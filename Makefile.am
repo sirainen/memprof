@@ -33,8 +33,12 @@ INCLUDES = 					   \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
 
 EXTRA_DIST =			\
+	memprof.desktop		\
 	gnome-question.png	\
 	leak.png		\
 	leak.xpm		\
 	memprof.glade	  	\
 	memprof-strings.c
+
+Developmentdir = $(datadir)/gnome/apps/Development
+Development_DATA = memprof.desktop
