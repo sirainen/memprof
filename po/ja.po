@@ -1,14 +1,15 @@
 # memprof ja.po
-# Copyright (C) 1999,2000 Free Software Foundation, Inc.
+# Copyright (C) 1999,2000, 2003 Free Software Foundation, Inc.
 # Riue. SATOH <riue@gnome.gr.jp>, 1999.
 # Yukihiro Nakai <nakai@gnome.gr.jp>, 2000.
+# KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: memprof CVS\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2000-10-04 21:51+09:00\n"
-"Last-Translator: Yukihiro Nakai <nakai@gnome.gr.jp>\n"
+"Project-Id-Version: memprof HEAD\n"
+"POT-Creation-Date: 2003-03-21 16:44+0900\n"
+"PO-Revision-Date: 2003-03-17 22:25+0900\n"
+"Last-Translator: KAMAGASAKO Masatoshi <emerald@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -19,53 +20,67 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "出力ファイルが開きません: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "\"%s\" が実行できません"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "MemProfを終了してよろしいですか?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "実行ファイルが見つかりません: %s"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "MemProf エラー"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "MemProf 警告"
 
-#: main.c:1666
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "終了したプロセスを切り離してよろしいですか?"
 
-#: main.c:1668
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "実行中のプロセスを切り離してよろしいですか?"
 
-#: main.c:1698
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "実行中のプロセスを強制終了してよろしいですか?"
 
-#: main.c:1731
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "forkされたプロセスの新規ウィンドウを作成"
 
-#: main.c:1733
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "exec()後のプロセスのウィンドウの保持"
 
-#: main.c:1770
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "修正すべきプロファイリング情報の型"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "時間プロファイルで使用する毎秒のサンプル数 (1k=1000)"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr ""
+"--profile の引数は、'memory', 'cycle', 'time' のうちのいずれかでなければなり"
+"ません\n"
+
+#: main.c:1837
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade が見つかりません"
 
@@ -134,6 +149,8 @@ msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002 Kristian "
+"Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
@@ -150,12 +167,10 @@ msgstr ""
 "プロファイルを作成する時にスキップする関数名の正規表現を入力してください"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
 msgstr "実行ファイルのパス名を入力して下さい"
 
 #: memprof.glade.h:21
-#, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "プロファイル取得時にスキップする関数名を入力して下さい"
 
@@ -192,9 +207,8 @@ msgid "Kill"
 msgstr "強制終了"
 
 #: memprof.glade.h:30
-#, fuzzy
 msgid "Kill Program"
-msgstr "プログラムの実行"
+msgstr "プログラムの強制終了"
 
 #: memprof.glade.h:31
 msgid "Leak Detection Options"
@@ -222,7 +236,7 @@ msgstr "プロセスID"
 
 #: memprof.glade.h:38
 msgid "Preferences"
-msgstr ""
+msgstr "設定"
 
 #: memprof.glade.h:39
 msgid "Process _Tree"
@@ -297,13 +311,12 @@ msgid "_Detach"
 msgstr "切り離し(_D)"
 
 #: memprof.glade.h:57
-#, fuzzy
 msgid "_File"
-msgstr "ファイル"
+msgstr "ファイル(_F)"
 
 #: memprof.glade.h:58
 msgid "_Help"
-msgstr ""
+msgstr "ヘルプ(_H)"
 
 #: memprof.glade.h:59
 msgid "_Kill"
@@ -314,38 +327,37 @@ msgid "_Process"
 msgstr "プロセス(_P)"
 
 #: memprof.glade.h:61
-#, fuzzy
 msgid "_Run Program..."
-msgstr "プログラムの実行"
+msgstr "プログラムの実行(_R)..."
 
 #: memprof.glade.h:62
-#, fuzzy
 msgid "_Settings"
-msgstr "開始"
+msgstr "設定(_S)"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "初期"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "開始"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "実行"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "終了"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "ゾンビ"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "libmemintercept.soが見つかりません"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "%s が見つかりません"
 
 #: tree.c:91
 msgid "Show"
@@ -358,6 +370,9 @@ msgstr "表示しない"
 #: tree.c:101
 msgid "Detach"
 msgstr "切り離し"
+
+#~ msgid "Cannot find libmemintercept.so"
+#~ msgstr "libmemintercept.soが見つかりません"
 
 #~ msgid "Add..."
 #~ msgstr "追加..."
