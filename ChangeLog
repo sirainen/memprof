@@ -1,3 +1,6 @@
+2000-11-07 Elliot Lee <sopwith@redhat.com>
+	* process.c: Initialize variable to NULL to avoid some funky crash.
+
 2000-10-31  Zbigniew Chyla  <cyba@gnome.pl>
 
 	* configure.in: Added pl to ALL_LINGUAS.

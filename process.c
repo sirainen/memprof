@@ -830,7 +830,7 @@ process_get_cmdline (MPProcess *process)
 {
 	char *fname;
 	char *result;
-	char *tmp;
+	char *tmp = NULL;
 	int n = 0;
 	FILE *in = NULL;
 
