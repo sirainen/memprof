@@ -40,10 +40,14 @@ EXTRA_DIST =			\
 	leak.xpm		\
 	memprof.glade	  	\
 	memprof.spec		\
+	memprof.png         \
 	memprof-strings.c
 
 Developmentdir = $(datadir)/gnome/apps/Development
 Development_DATA = memprof.desktop
+
+pixmapsdir = $(datadir)/pixmaps
+pixmaps_DATA = memprof.png
 
 .PHONY: copyrights
 
