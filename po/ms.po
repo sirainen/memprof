@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof HEAD\n"
-"POT-Creation-Date: 2002-06-14 00:58+0800\n"
+"POT-Creation-Date: 2002-08-11 15:31+0200\n"
 "PO-Revision-Date: 2002-03-06 09:06+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: ms <sebol@ikhlas.com>\n"
@@ -13,98 +13,98 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:529
+#: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Perlaksanaan \"%s\" gagal"
 
-#: main.c:660
+#: main.c:661
 msgid "Really quit MemProf?"
 msgstr "Benar-benar keluar MemProf?"
 
-#: main.c:706 memprof.glade.h:36
+#: main.c:707 memprof.glade.h:36
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:800
+#: main.c:801
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Gagal menjumpai bolehlaksana bagi \"%s\""
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Error"
 msgstr "Ralat Memprof"
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Warning"
 msgstr "Amaran MemProf"
 
-#: main.c:1645
+#: main.c:1660
 msgid "Really detach from finished process?"
 msgstr "Benar-benar lerai dari proses ditamatkan?"
 
-#: main.c:1647
+#: main.c:1662
 msgid "Really detach from running process?"
 msgstr "Benar-benar lerai dari proses terlaksana?"
 
-#: main.c:1677
+#: main.c:1692
 msgid "Really kill running process?"
 msgstr "Benar-benar bunuh proses terlaksana?"
 
-#: main.c:1710
+#: main.c:1725
 msgid "Create new windows for forked processes"
 msgstr "Cipta tetingkap baru bagi proses disepit"
 
-#: main.c:1712
+#: main.c:1727
 msgid "Retain windows for processes after exec()"
 msgstr "Kekalkan tetingkap bagi proses selepas exec()"
 
-#: main.c:1749
+#: main.c:1764
 msgid "Cannot find memprof.glade"
 msgstr "Gagal menjumpai memprof.glade"
 
-#: leakdetect.c:586 profile.c:202
+#: leakdetect.c:587 profile.c:203
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Tak dapat buka fail output: %s\n"
 
-#: process.c:814
+#: process.c:815
 msgid "Initial"
 msgstr "Awalam"
 
-#: process.c:817
+#: process.c:818
 msgid "Starting"
 msgstr "Memulakan"
 
-#: process.c:820
+#: process.c:821
 msgid "Running"
 msgstr "Terlaksana"
 
-#: process.c:823
+#: process.c:824
 msgid "Exiting"
 msgstr "Keluar"
 
-#: process.c:826 process.c:829
+#: process.c:827 process.c:830
 msgid "Defunct"
 msgstr "Defunct"
 
-#: server.c:244
+#: server.c:245
 msgid "Cannot find libmemintercept.so"
 msgstr "Gagal menjumpai libmemintercept.so"
 
-#: tree.c:90
+#: tree.c:91
 msgid "Show"
 msgstr "Papar"
 
-#: tree.c:93
+#: tree.c:94
 msgid "Hide"
 msgstr "Sorok"
 
-#: memprof.glade.h:31 tree.c:97
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Bunuh"
 
-#: tree.c:100
+#: tree.c:101
 msgid "Detach"
 msgstr "Leraikan"
 
@@ -173,8 +173,10 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Arahan untuk dilaksanakan pada dwi-klik pada surihan tindanan:"
 
 #: memprof.glade.h:17
-msgid "Copyright Red Hat, Inc., 1999-2000"
-msgstr "Hakcipta Red Hat, Inc., 1999-2000"
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -352,8 +354,16 @@ msgid "_Process"
 msgstr "_Proses"
 
 #: memprof.glade.h:63
+#, fuzzy
+msgid "_Run Program..."
+msgstr "Laksanakan Program"
+
+#: memprof.glade.h:64
 msgid "_Settings"
 msgstr "_Tetapan"
+
+#~ msgid "Copyright Red Hat, Inc., 1999-2000"
+#~ msgstr "Hakcipta Red Hat, Inc., 1999-2000"
 
 #~ msgid "_Run..."
 #~ msgstr "_Laksanakan..."

@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof (cvs)\n"
-"POT-Creation-Date: 2002-08-11 01:30+0200\n"
+"POT-Creation-Date: 2002-08-11 15:31+0200\n"
 "PO-Revision-Date: 2002-08-11 01:40+0100\n"
 "Last-Translator: Christian Neumair <christian-neumair@web.de>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -23,8 +23,7 @@ msgstr "Ausführen von »%s« fehlgeschlagen"
 msgid "Really quit MemProf?"
 msgstr "MemProf wirklich beenden?"
 
-#: main.c:707
-#: memprof.glade.h:36
+#: main.c:707 memprof.glade.h:36
 msgid "MemProf"
 msgstr "MemProf"
 
@@ -65,8 +64,7 @@ msgstr "Fenster für Prozesse nach exec() behalten"
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade konnte nicht gefunden werden"
 
-#: leakdetect.c:587
-#: profile.c:203
+#: leakdetect.c:587 profile.c:203
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Die Ausgabedatei konnte nicht geöffnet werden: %s\n"
@@ -87,8 +85,7 @@ msgstr "Läuft"
 msgid "Exiting"
 msgstr "Beenden"
 
-#: process.c:827
-#: process.c:830
+#: process.c:827 process.c:830
 #, fuzzy
 msgid "Defunct"
 msgstr "Verstorben"
@@ -105,8 +102,7 @@ msgstr "Zeigen"
 msgid "Hide"
 msgstr "Verbergen"
 
-#: tree.c:98
-#: memprof.glade.h:31
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Töten"
 
@@ -179,8 +175,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Bei einem Doppelklick im Stack-Trace auszuführender Befehl:"
 
 #: memprof.glade.h:17
-msgid "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
-msgstr "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -195,8 +195,11 @@ msgid "Delete"
 msgstr "Löschen"
 
 #: memprof.glade.h:21
-msgid "Enter a regular expression of function names to skip when computing profiles"
-msgstr "Geben Sie einen regulären Ausdruck von Funktionsnamen ein, die beim Erstellen des Profil übersprungen werden sollen"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr ""
+"Geben Sie einen regulären Ausdruck von Funktionsnamen ein, die beim "
+"Erstellen des Profil übersprungen werden sollen"
 
 #: memprof.glade.h:22
 msgid "Enter pathname to a executable"
@@ -204,7 +207,9 @@ msgstr "Einen Pfadnamen zu einer ausführbaren Datei eingeben"
 
 #: memprof.glade.h:23
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr "Geben Sie den Namen einer Funktion ein, die beim Erstellen eines Profiles übersprungen werden soll"
+msgstr ""
+"Geben Sie den Namen einer Funktion ein, die beim Erstellen eines Profiles "
+"übersprungen werden soll"
 
 #: memprof.glade.h:24
 msgid "File"
@@ -361,4 +366,3 @@ msgstr "Programm _ausführen..."
 #: memprof.glade.h:64
 msgid "_Settings"
 msgstr "_Einstellungen"
-

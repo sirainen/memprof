@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof VERSION\n"
-"POT-Creation-Date: 2002-07-26 04:41+0200\n"
+"POT-Creation-Date: 2002-08-11 15:31+0200\n"
 "PO-Revision-Date: 2002-07-26 15:36+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -99,7 +99,7 @@ msgstr "Hiện"
 msgid "Hide"
 msgstr "Ẩn"
 
-#: memprof.glade.h:31 tree.c:98
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Buộc chấm dứt"
 
@@ -175,7 +175,9 @@ msgstr "Lệnh cần chạy khi nhấp đúp vào Stack trace:"
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
-msgstr "Bản quyền 1999, 2000, 2001, Red Hat, Inc.&#13;Bản quyền 2002, Kristian Rietveld"
+msgstr ""
+"Bản quyền 1999, 2000, 2001, Red Hat, Inc.&#13;Bản quyền 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"

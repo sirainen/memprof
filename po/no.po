@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4\n"
-"POT-Creation-Date: 2002-07-16 10:02+0200\n"
+"POT-Creation-Date: 2002-08-11 15:31+0200\n"
 "PO-Revision-Date: 2002-07-16 10:04+0200\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
@@ -100,7 +100,7 @@ msgstr "Vis"
 msgid "Hide"
 msgstr "Skjul"
 
-#: memprof.glade.h:31 tree.c:98
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Drep"
 
@@ -176,7 +176,9 @@ msgstr "Kommando som skal kjøres ved dobbeltklikk i stack trace:"
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
-msgstr "Opphavsrett 1999, 2000, 2001, Red Hat, Inc.&#13;Opphavsrett 2002, Kristian Rietveld"
+msgstr ""
+"Opphavsrett 1999, 2000, 2001, Red Hat, Inc.&#13;Opphavsrett 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -193,7 +195,9 @@ msgstr "Slett"
 #: memprof.glade.h:21
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr "Skriv inn et regulært uttrykk med funksjonsnavn som ikke skal tas med under beregning av profiler"
+msgstr ""
+"Skriv inn et regulært uttrykk med funksjonsnavn som ikke skal tas med under "
+"beregning av profiler"
 
 #: memprof.glade.h:22
 msgid "Enter pathname to a executable"

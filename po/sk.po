@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
-"POT-Creation-Date: 2002-07-16 07:50+0200\n"
+"POT-Creation-Date: 2002-08-11 15:31+0200\n"
 "PO-Revision-Date: 2002-07-16 07:50+0200\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
@@ -196,7 +196,8 @@ msgid "Delete"
 msgstr "Odstrániť"
 
 #: memprof.glade.h:21
-msgid "Enter a regular expression of function names to skip when computing profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Zadajte regulárny výraz pre mená funkcií, ktoré sa majú preskakovať pri "
 "výpočte profilov"
@@ -376,4 +377,3 @@ msgstr "Nas_tavenia"
 
 #~ msgid "label37"
 #~ msgstr "label37"
-
