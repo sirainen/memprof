@@ -1,3 +1,14 @@
+Tue May 23 20:06:57 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * process.c main.c memprof.glade: Start of support for detaching from
+	running or exited processes.
+
+	* tree.c main.c gui.h: Add popup menu to tree for show/hide/detach.
+
+Tue May 23 18:47:54 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* memintercept.c: Avoid overwriting errno.
+
 Tue May 23 16:40:17 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* process.[ch]: Add functions to get the command line and 

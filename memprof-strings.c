@@ -15,6 +15,7 @@ gchar *s = N_("Follow fork()");
 gchar *s = N_("Follow exec()");
 gchar *s = N_("Open File");
 gchar *s = N_("Run");
+gchar *s = N_("Detach");
 gchar *s = N_("Profile");
 gchar *s = N_("Leaks");
 gchar *s = N_("Save File");

@@ -28,6 +28,10 @@ void tree_window_add    (ProcessWindow *window);
 void tree_window_remove (ProcessWindow *window);
 
 MPProcess *process_window_get_process (ProcessWindow *pwin);
-void       process_window_show_hide   (ProcessWindow *pwin);
+gboolean   process_window_visible     (ProcessWindow *pwin);
+MPProcess *process_window_get_process (ProcessWindow *pwin);
+void       process_window_show        (ProcessWindow *pwin);
+void       process_window_hide        (ProcessWindow *pwin);
 
 gboolean hide_and_check_quit (GtkWidget *window);
+void     check_quit          (void);

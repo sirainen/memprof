@@ -96,6 +96,30 @@ GSList *process_windows = NULL;
  * Status Page 
  ************************************************************/
 
+static void
+update_bars (ProcessWindow *pwin)
+{
+	gint bytes_used;
+
+	if (pwin->process)
+		bytes_used = pwin->process->bytes_used;
+	else
+		bytes_used = 0;
+	
+	gnome_canvas_item_set (pwin->usage_current_bar,
+			       "x2", ((double)pwin->usage_canvas->allocation.width *
+				      (double)bytes_used / pwin->usage_max),
+			       NULL);
+	gnome_canvas_item_set (pwin->usage_high_bar,
+			       "x2", ((double)pwin->usage_canvas->allocation.width *
+				      (double)pwin->usage_high / pwin->usage_max),
+			       NULL);
+	gnome_canvas_item_set (pwin->usage_leak_bar,
+			       "x2", ((double)pwin->usage_canvas->allocation.width *
+				      (double)pwin->usage_leaked / pwin->usage_max),
+			       NULL);
+}
+
 static gboolean
 update_status (gpointer data)
 {
@@ -129,19 +153,8 @@ update_status (gpointer data)
 	}
 
 	pwin->usage_high = MAX (pwin->process->bytes_used, pwin->usage_high);
-	
-	gnome_canvas_item_set (pwin->usage_current_bar,
-			       "x2", ((double)pwin->usage_canvas->allocation.width *
-				      (double)pwin->process->bytes_used / pwin->usage_max),
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_high_bar,
-			       "x2", ((double)pwin->usage_canvas->allocation.width *
-				      (double)pwin->usage_high / pwin->usage_max),
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_leak_bar,
-			       "x2", ((double)pwin->usage_canvas->allocation.width *
-				      (double)pwin->usage_leaked / pwin->usage_max),
-			       NULL);
+
+	update_bars (pwin);
 	
 	return TRUE;
 }
@@ -618,18 +631,37 @@ exit_cb (GtkWidget *widget)
 static void
 status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 {
-	char *status = ""; /* Quiet GCC */
-	char *title;
-	char *cmdline;
+	if (process->status == MP_PROCESS_DEFUNCT) {
 
-	status = process_get_status_text (process);
-	cmdline = process_get_cmdline (process);
-	
-	title = g_strdup_printf ("%s - %s (%d) - %s", _("MemProf"), cmdline, process->pid, status);
-	gtk_window_set_title (GTK_WINDOW (pwin->main_window), title);
-	g_free (title);
-	g_free (status);
-	g_free (cmdline);
+		tree_window_remove (pwin);
+
+		if (g_slist_length (process_windows) > 1)
+			process_window_destroy (pwin);
+		else { 
+			gtk_object_unref (GTK_OBJECT (pwin->process));
+			pwin->process = NULL;
+			pwin->usage_max = 32*1024;
+			pwin->usage_high = 0;
+			pwin->usage_leaked = 0;
+
+			gtk_window_set_title (GTK_WINDOW (pwin->main_window), "MemProf");
+			update_bars (pwin);
+			
+			if (pwin->status_update_timeout) {
+				g_source_remove (pwin->status_update_timeout);
+				pwin->status_update_timeout = 0;
+			}
+		}
+		
+	} else {
+		char *status  = process_get_status_text (process);
+		char *cmdline = process_get_cmdline (process);
+		char *title = g_strdup_printf ("%s - %s (%d) - %s", _("MemProf"), cmdline, process->pid, status);
+		gtk_window_set_title (GTK_WINDOW (pwin->main_window), title);
+		g_free (title);
+		g_free (status);
+		g_free (cmdline);
+	}
 }
 
 static void
@@ -735,6 +767,16 @@ run_cb (GtkWidget *widget)
        }
 
        gtk_widget_destroy (run_dialog);
+}
+
+void
+detach_cb (GtkWidget *widget)
+{
+       ProcessWindow *pwin = pwin_from_widget (widget);
+
+       if (pwin->process) {
+	       process_detach (pwin->process);
+       }
 }
 
 void
@@ -1156,8 +1198,9 @@ process_window_destroy (ProcessWindow *pwin)
 {
 	if (pwin->status_update_timeout)
 		g_source_remove (pwin->status_update_timeout);
-	
+
 	gtk_widget_destroy (pwin->main_window);
+	check_quit ();
 }
 
 static ProcessWindow *
@@ -1344,31 +1387,49 @@ process_window_get_process (ProcessWindow *pwin)
 	return pwin->process;
 }
 
-void
-process_window_show_hide (ProcessWindow *pwin)
+gboolean
+process_window_visible (ProcessWindow *pwin)
 {
-	if (!GTK_WIDGET_VISIBLE (pwin->main_window))
+	return GTK_WIDGET_VISIBLE (pwin->main_window);
+}
+
+void
+process_window_show (ProcessWindow *pwin)
+{
+	if (!process_window_visible (pwin))
 		gtk_widget_show (pwin->main_window);
-	else {
+	else
+		gdk_window_show (pwin->main_window->window);
+}
+
+void
+process_window_hide (ProcessWindow *pwin)
+{
+	if (process_window_visible (pwin)) 
 		hide_and_check_quit (pwin->main_window);
+}
+
+void
+check_quit (void)
+{
+	GList *toplevels;
+	
+	toplevels = gtk_container_get_toplevels ();
+	while (toplevels) {
+		if (GTK_WIDGET_VISIBLE (toplevels->data))
+			return;
+		toplevels = toplevels->next;
 	}
+
+	gtk_main_quit ();
 }
 
 gboolean
 hide_and_check_quit (GtkWidget *window)
 {
-	GList *toplevels;
-	
 	gtk_widget_hide (window);
+	check_quit ();
 
-	toplevels = gtk_container_get_toplevels ();
-	while (toplevels) {
-		if (GTK_WIDGET_VISIBLE (toplevels->data))
-			return TRUE;
-		toplevels = toplevels->next;
-	}
-
-	gtk_main_quit ();
 	return TRUE;
 }
 

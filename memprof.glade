@@ -310,6 +310,19 @@
 	<widget>
 	  <class>GtkButton</class>
 	  <child_name>Toolbar:button</child_name>
+	  <name>button25</name>
+	  <signal>
+	    <name>clicked</name>
+	    <handler>detach_cb</handler>
+	    <last_modification_time>Tue, 23 May 2000 21:07:40 GMT</last_modification_time>
+	  </signal>
+	  <label>Detach</label>
+	  <stock_pixmap>GNOME_STOCK_PIXMAP_REMOVE</stock_pixmap>
+	</widget>
+
+	<widget>
+	  <class>GtkButton</class>
+	  <child_name>Toolbar:button</child_name>
 	  <name>button4</name>
 	  <signal>
 	    <name>clicked</name>

@@ -796,6 +796,9 @@ process_get_cmdline (MPProcess *process)
 	int n = 0;
 	FILE *in = NULL;
 
+	if (process->status == MP_PROCESS_DEFUNCT)
+		return g_strdup ("");
+	
 	fname = g_strdup_printf ("/proc/%d/cmdline", process->pid);
 	in = fopen (fname, "r");
 	if (!in) {
@@ -811,4 +814,17 @@ process_get_cmdline (MPProcess *process)
 	fclose (in);
 
 	return result;
+}
+
+void
+process_detach (MPProcess *process)
+{
+	if (process->status != MP_PROCESS_DEFUNCT) {
+		int fd = g_io_channel_unix_get_fd (process->input_channel);
+
+		if (process->status == MP_PROCESS_EXITING) {
+			char response = 0;
+			write (fd, &response, 1);
+		}
+	}
 }

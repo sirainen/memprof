@@ -29,20 +29,103 @@ static GtkWidget *tree_ctree;
 
 extern char *glade_file;
 
+static GtkWidget *
+make_menu_item (const char *label, GtkSignalFunc cb)
+{
+	GtkWidget *menu_item = gtk_menu_item_new_with_label (label);
+	gtk_signal_connect (GTK_OBJECT (menu_item), "activate", cb, NULL);
+	gtk_widget_show (menu_item);
+	
+	return menu_item;
+}
+
+static ProcessWindow *
+get_process_window (GtkWidget *menu_item)
+{
+	return gtk_object_get_data (GTK_OBJECT (menu_item->parent), "process-window");
+}
+
 static void
+show_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = get_process_window (widget);
+
+	process_window_show (pwin);
+}
+
+static void
+hide_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = get_process_window (widget);
+
+	process_window_hide (pwin);
+}
+
+static void
+detach_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = get_process_window (widget);
+	MPProcess *process = process_window_get_process (pwin);
+
+	process_detach (process);
+}
+
+static void
+popup_menu (ProcessWindow *pwin, gint button, guint32 time)
+{
+	static GtkWidget *menu = NULL;
+	static GtkWidget *show_item = NULL;
+	static GtkWidget *hide_item = NULL;
+
+	if (!menu) {
+		menu = gtk_menu_new ();
+
+		show_item = make_menu_item (_("Show"), GTK_SIGNAL_FUNC (show_cb));
+		gtk_menu_append (GTK_MENU (menu), show_item);
+
+		hide_item = make_menu_item (_("Hide"), GTK_SIGNAL_FUNC (hide_cb));
+		gtk_menu_append (GTK_MENU (menu), hide_item);
+		
+		gtk_menu_append (GTK_MENU (menu),
+				 make_menu_item (_("Detach"), GTK_SIGNAL_FUNC (detach_cb)));
+	}
+
+	if (process_window_visible (pwin)) {
+		gtk_widget_set_sensitive (show_item, FALSE);
+		gtk_widget_set_sensitive (hide_item, TRUE);
+	} else {
+		gtk_widget_set_sensitive (show_item, TRUE);
+		gtk_widget_set_sensitive (hide_item, FALSE);
+	}
+	
+	gtk_object_set_data (GTK_OBJECT (menu), "process-window", pwin);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, button, time);
+}
+
+static gboolean
 button_press_cb (GtkWidget *widget, GdkEventButton *event, gpointer data)
 {
 	GtkCList *clist = GTK_CLIST (widget);
 	ProcessWindow *pwin;
 	int row, column;
 	
-	if (event->window == clist->clist_window &&
-	    event->type == GDK_2BUTTON_PRESS &&
-	    gtk_clist_get_selection_info (clist, event->x, event->y, &row, &column)) {
+	if (event->window == clist->clist_window) {
+		if (!gtk_clist_get_selection_info (clist, event->x, event->y, &row, &column))
+			return FALSE;
 
 		pwin = gtk_clist_get_row_data (clist, row);
-		process_window_show_hide (pwin);
+		
+		if (event->button == 1 &&  event->type == GDK_2BUTTON_PRESS) {
+			process_window_show (pwin);
+			return TRUE;
+			
+		} else if (event->button == 3) {
+			popup_menu (pwin, event->button, event->time);
+			return TRUE;
+		}
 	}
+
+	return FALSE;
 }
 
 static void
@@ -59,7 +142,7 @@ ensure_tree_window (void)
 		tree_ctree = glade_xml_get_widget (xml, "TreeWindow-ctree");
 
 		gtk_signal_connect (GTK_OBJECT (tree_ctree), "button_press_event",
-				    button_press_cb, NULL);
+				    GTK_SIGNAL_FUNC (button_press_cb), NULL);
 	}
 }
 
@@ -146,8 +229,34 @@ tree_window_add (ProcessWindow *window)
 			    GTK_SIGNAL_FUNC (status_changed_cb), NULL);
 }
 
+static void
+reparent_func (GtkCTree     *ctree,
+	       GtkCTreeNode *node,
+	       gpointer      data)
+{
+	GtkCTreeNode *parent = data;
+	if (node != parent) {
+		GtkCTreeNode *grandparent = GTK_CTREE_ROW (parent)->parent;
+		gtk_ctree_move (ctree, node, grandparent, parent);
+	}
+}
+
 void
 tree_window_remove (ProcessWindow *window)
 {
+	GtkCTreeNode *node;
+	MPProcess *process;
+	
 	ensure_tree_window ();
+
+	process = process_window_get_process (window);
+	node = find_node_by_process (process);
+
+	gtk_ctree_post_recursive_to_depth (GTK_CTREE (tree_ctree), node,
+					   GTK_CTREE_ROW (node)->level + 1,
+					   reparent_func, node);
+
+	gtk_ctree_remove_node (GTK_CTREE (tree_ctree), node);
+
+	gtk_signal_disconnect_by_func (GTK_OBJECT (process), GTK_SIGNAL_FUNC (status_changed_cb), NULL);
 }

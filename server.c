@@ -313,8 +313,9 @@ control_func (GIOChannel  *source,
 	switch (info.operation) {
 	case MI_FORK:
 		parent_process = mp_server_find_process (server, info.fork.pid);
-		if (parent_process && !parent_process->follow_fork)
+		if (parent_process && !parent_process->follow_fork) {
 			goto out; /* Return negative response */
+		}
 
 		/* Fall through */
 	case MI_NEW:
@@ -331,6 +332,11 @@ control_func (GIOChannel  *source,
 
 		if (!process) {
 			parent_process = mp_server_find_process (server, info.fork.pid);
+			if (!parent_process) {
+				g_warning ("Unexpected connection from %d", info.fork.new_pid);
+				goto out;
+			}
+			
 			process = process_duplicate (parent_process);
 			process->pid = info.fork.new_pid;
 			mp_server_add_process (server, process);

@@ -70,6 +70,7 @@ int starter_alloced = 0;
 #define MI_LOCK() pthread_mutex_lock (&malloc_mutex);
 #define MI_UNLOCK() pthread_mutex_unlock (&malloc_mutex);
 
+#if 0
 static void
 write_num (int num)
 {
@@ -82,22 +83,33 @@ write_num (int num)
 	c = '\n';
 	write (2, &c, 1);
 }
+#endif
 
-static void
+static int
 write_all (int fd, void *buf, int total)
 {
 	int count;
 	int written = 0;
 
 	while (written < total) {
-		count = write (fd, buf + written, total - written);
-		if (count <= 0) {
-			write (2, "FARG", 4);
-			_exit(1);
+		/* Use send() to avoid EPIPE errors */
+		count = send (fd, buf + written, total - written, MSG_NOSIGNAL);
+		if (count < 0) {
+			if (errno != EINTR)
+				goto error;
+		} else {
+			if (count == 0)
+				goto error;
+			written += count;
 		}
-
-		written += count;
 	}
+
+	return 1;
+
+ error:
+	tracing = 0;
+	close (fd);
+	return 0;
 }
 
 static void
@@ -109,6 +121,7 @@ new_process (pid_t old_pid, MIOperation operation)
 	char response;
 	int outfd;
 	int i, count;
+	int old_errno = errno;
 
 	memset (&addr, 0, sizeof(addr));
 	
@@ -120,7 +133,7 @@ new_process (pid_t old_pid, MIOperation operation)
 
 	outfd = socket (PF_UNIX, SOCK_STREAM, 0);
 	if (outfd < 0) {
-			write (2, "FROG", 4);
+			write (2, "FRUG", 4);
 			_exit(1);
 	}
 	
@@ -149,21 +162,30 @@ new_process (pid_t old_pid, MIOperation operation)
 	}
 	pids[i] = info.fork.new_pid;
 
-	write_all (outfd, &info, sizeof (MIInfo));
-
-	count = read (outfd, &response, 1);
+	if (!write_all (outfd, &info, sizeof (MIInfo)))
+		count = 0;
+	else {
+		while (1) {
+			count = read (outfd, &response, 1);
+			if (count >= 0 || errno != EINTR)
+				break;
+		}
+	}
 
 	if (count != 1 || !response) {
 		/* Stop tracing */
 		tracing = 0;
-		putenv ("_MEMPROF_SOCKET=");
-		
+		close (outfd);
 	}
+
+	errno = old_errno;
 }
 
 static void 
 memprof_init ()
 {
+	int old_errno = errno;
+	
 	socket_path = getenv ("_MEMPROF_SOCKET");
 	
 	if (!socket_path) {
@@ -175,6 +197,8 @@ memprof_init ()
 		tracing = 0;
 	else
 		new_process (0, MI_NEW);
+
+	errno = old_errno;
 }
 
 #define OUT_BUF_SIZE 4096
@@ -188,9 +212,10 @@ stack_trace (MIInfo *info)
 	static char outbuf[OUT_BUF_SIZE];
 	void **stack_buffer = NULL;
 	int i;
+	int old_errno = errno;
 	
 	MIInfo *outinfo;
-
+	
 	outinfo = (MIInfo *)outbuf;
 	memcpy (outbuf, info, sizeof(MIInfo));
 	stack_buffer = (void **)(outbuf + sizeof(MIInfo));
@@ -228,6 +253,8 @@ stack_trace (MIInfo *info)
 	}
 
 	write_all (outfds[i], outbuf, sizeof (MIInfo) + outinfo->alloc.stack_size * sizeof(void *));
+
+	errno = old_errno;
 }
 
 void *
@@ -258,12 +285,14 @@ __libc_malloc (size_t size)
 
 	result = (*old_malloc) (size);
 
-	info.alloc.operation = MI_MALLOC;
-	info.alloc.old_ptr = NULL;
-	info.alloc.new_ptr = result;
-	info.alloc.size = size;
+	if (tracing) {
+		info.alloc.operation = MI_MALLOC;
+		info.alloc.old_ptr = NULL;
+		info.alloc.new_ptr = result;
+		info.alloc.size = size;
 	
-	stack_trace (&info);
+		stack_trace (&info);
+	}
 		
 	MI_UNLOCK ();
 	
@@ -289,12 +318,14 @@ __libc_memalign (size_t boundary, size_t size)
 
 	result = (*old_memalign) (boundary, size);
 
-	info.alloc.operation = MI_MALLOC;
-	info.alloc.old_ptr = NULL;
-	info.alloc.new_ptr = result;
-	info.alloc.size = size;
+	if (tracing) {
+		info.alloc.operation = MI_MALLOC;
+		info.alloc.old_ptr = NULL;
+		info.alloc.new_ptr = result;
+		info.alloc.size = size;
 	
-	stack_trace (&info);
+		stack_trace (&info);
+	}
 
 	MI_UNLOCK ();
 	
@@ -335,13 +366,15 @@ __libc_realloc (void *ptr, size_t size)
 		memprof_init();
 	
 	result = (*old_realloc) (ptr, size);
+
+	if (tracing) {
+		info.alloc.operation = MI_REALLOC;
+		info.alloc.old_ptr = ptr;
+		info.alloc.new_ptr = result;
+		info.alloc.size = size;
 	
-	info.alloc.operation = MI_REALLOC;
-	info.alloc.old_ptr = ptr;
-	info.alloc.new_ptr = result;
-	info.alloc.size = size;
-	
-	stack_trace (&info);
+		stack_trace (&info);
+	}
 
 	MI_UNLOCK ();
 	
@@ -365,13 +398,15 @@ __libc_free (void *ptr)
 		memprof_init();
 
 	(*old_free) (ptr);
-	
-	info.alloc.operation = MI_FREE;
-	info.alloc.old_ptr = ptr;
-	info.alloc.new_ptr = NULL;
-	info.alloc.size = 0;
 
-	stack_trace (&info);
+	if (tracing) {
+		info.alloc.operation = MI_FREE;
+		info.alloc.old_ptr = ptr;
+		info.alloc.new_ptr = NULL;
+		info.alloc.size = 0;
+
+		stack_trace (&info);
+	}
 
 	MI_UNLOCK ();
 }
@@ -405,7 +440,13 @@ execve (const char *filename,
 	char *const envp[])
 {
 	if (tracing) {
-		fprintf (stderr, "Execing: %s!\n", filename);
+		/* Nothing */
+	} else {
+		int i;
+
+		for (i=0; envp[i]; i++)
+			if (strncmp (envp[i], "_MEMPROF_SOCKET=", 16) == 0)
+				envp[i][16] = '\0';
 	}
 	return (*old_execve) (filename, argv, envp);
 }
@@ -462,6 +503,7 @@ _exit (int status)
 	if (tracing) {
 		MIInfo info;
 		int i;
+		int count;
 		char response;
 		info.any.operation = MI_EXIT;
 		info.any.seqno = seqno;
@@ -470,12 +512,15 @@ _exit (int status)
 		for (i=0; pids[i] && i<MAX_THREADS; i++)
 			if (pids[i] == info.any.pid)
 				break;
-		
-		write_all (outfds[i], &info, sizeof (MIInfo));
 
-		/* Wait for a response before really exiting
-		 */
-		read (outfds[i], &response, 1);
+		if (write_all (outfds[i], &info, sizeof (MIInfo)))
+			/* Wait for a response before really exiting
+			 */
+			while (1) {
+				count = read (outfds[i], &response, 1);
+				if (count >= 0 || errno != EINTR)
+					break;
+			}
 	}
 	
 	(*old__exit) (status);
@@ -495,4 +540,3 @@ static void initialize ()
 	old_clone = dlsym(RTLD_NEXT, "__clone");
 	old__exit = dlsym(RTLD_NEXT, "_exit");
 }
-
