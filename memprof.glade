@@ -996,7 +996,7 @@
   <name>About</name>
   <visible>False</visible>
   <modal>True</modal>
-  <copyright>Copyright Red Hat, Inc., 1999</copyright>
+  <copyright>Copyright Red Hat, Inc., 1999-2000</copyright>
   <authors>Owen Taylor &lt;otaylor@redhat.com&gt;
 </authors>
   <comments>Memory Profiling Tool</comments>

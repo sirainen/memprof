@@ -21,6 +21,7 @@
 
 #include <glib.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include "bfd.h"
 
 #ifndef __MEMPROF_H__
@@ -83,6 +84,13 @@ gboolean find_line            (Map           *map,
 			       const char   **filename,
 			       char         **functionname,
 			       unsigned int  *line);
+
+
+/* Convert a device / inode pair into a file. Not needed for kernel-2.2 or greater.
+ */
+gchar *locate_inode (dev_t        device,
+		     ino_t        inode);
+void   read_inode   (const gchar *path);
 
 #endif /* __MEMPROF_H__ */
 

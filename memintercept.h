@@ -32,7 +32,8 @@ typedef enum {
 	MI_EXEC,
 	MI_NEW,
 	MI_FORK,
-	MI_CLONE
+	MI_CLONE,
+	MI_EXIT
 } MIOperation;
 
 struct _MIInfoAny {

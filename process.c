@@ -24,44 +24,38 @@
 #include <errno.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include <sys/un.h>
 #include <sys/stat.h>
 #include <sys/wait.h>
-#include <unistd.h>
 #include <sys/sysmacros.h>
-#include <dirent.h>
-#include <gtk/gtk.h>
+
+#include <gtk/gtksignal.h>
+
 #include <libgnome/libgnome.h>
 
 #include "memintercept.h"
 #include "memprof.h"
 #include "process.h"
+#include "server.h"
 
+enum {
+	STATUS_CHANGED,
+	LAST_SIGNAL
+};
+static guint process_signals[LAST_SIGNAL] = { 0 };
+
+static void mp_process_class_init (MPProcessClass *class);
+static void mp_process_init (MPProcess *process);
+
+#define PAGE_SIZE 4096
+
+/* Code to keep a queue of commands read
+ */
 typedef struct {
 	MIInfo info;
 	void **stack;
 } Command;
 
-typedef struct {
-	dev_t device;
-	ino_t inode;
-	gchar *name;
-} Inode;
-
-GHashTable *inode_table = NULL;
-char *lib_location = NULL;
-
-#define SOCKET_TEMPLATE "memprof.XXXXXX"
-static char *socket_path = NULL;
-
-/* Socket to accept connections from new processes */
-static int socket_fd;
-
-static ProcessCreateFunc create_func;
-
-#define PAGE_SIZE 4096
-
-gint
+static gint
 queue_compare (gconstpointer a, gconstpointer b)
 {
 	const Command *commanda = a;
@@ -71,7 +65,7 @@ queue_compare (gconstpointer a, gconstpointer b)
 		(commanda->info.any.seqno > commandb->info.any.seqno  ? 1 : 0));
 }
 
-void
+static void
 queue_command (MPProcess *process, MIInfo *info, void **stack)
 {
 	Command *command = g_new (Command, 1);
@@ -81,7 +75,7 @@ queue_command (MPProcess *process, MIInfo *info, void **stack)
 	process->command_queue = g_list_insert_sorted (process->command_queue, command, queue_compare);
 }
 
-gboolean
+static gboolean
 unqueue_command (MPProcess *process, MIInfo *info, void ***stack)
 {
 	Command *command = process->command_queue->data;
@@ -99,128 +93,6 @@ unqueue_command (MPProcess *process, MIInfo *info, void ***stack)
 		return TRUE;
 	} else
 		return FALSE;
-}
-
-/************************************************************
- * Code to keep track of current processes
- ************************************************************/
-
-/* It would be faster to implement this as a flat array with a
- * binary search, but this is easier as a first pass
- */
-GHashTable *pid_table = NULL;
-
-static MPProcess *
-process_table_find (pid_t pid)
-{
-	if (pid_table) {
-		return g_hash_table_lookup (pid_table, GUINT_TO_POINTER (pid));
-	} else {
-		return NULL;
-	}
-}
-
-static void
-process_table_add (MPProcess *process)
-{
-	if (!pid_table)
-		pid_table = g_hash_table_new (g_direct_hash, NULL);
-
-	g_hash_table_insert (pid_table, GUINT_TO_POINTER (process->pid), process);
-}
-
-static void
-process_table_remove (MPProcess *process)
-{
-	g_return_if_fail (pid_table != NULL);
-
-	g_hash_table_remove (pid_table, GUINT_TO_POINTER (process->pid));
-}
-
-/************************************************************
- * Inode finding code - not needed for kernel 2.2 or greater
- ************************************************************/
-
-static guint
-inode_hash (gconstpointer data)
-{
-	return (((Inode *)data)->device + (((Inode *)data)->inode << 11));
-}
-
-static gint
-inode_compare (gconstpointer a, gconstpointer b)
-{
-	return ((((Inode *)a)->device == ((Inode *)b)->device) &&
-		(((Inode *)a)->inode == ((Inode *)b)->inode));
-}
-
-static void
-read_inode (const gchar *path)
-{
-	struct stat stbuf;
-
-	g_return_if_fail (path != NULL);
-
-	if (!inode_table)
-		inode_table = g_hash_table_new (inode_hash, inode_compare);
-
-	if (!stat (path, &stbuf)) {
-		Inode *inode = g_new (Inode, 1);
-		inode->device = stbuf.st_dev;
-		inode->inode = stbuf.st_ino;
-		if (!g_hash_table_lookup (inode_table, inode)) {
-			inode->name = g_strdup (path);
-			g_hash_table_insert (inode_table, inode, inode);
-		} else
-			g_free (inode);
-	}
-}
-
-static void
-read_inodes ()
-{
-	static const char *directories[] = {
-		"/lib",
-		"/usr/lib",
-		"/usr/X11R6/lib",
-		"/usr/local/lib",
-		"/opt/gnome/lib",
-		NULL
-	};
-
-	const char **dirname;
-
-	for (dirname = directories; *dirname; dirname++)
-	{
-		DIR *dir = opendir (*dirname);
-      
-		if (dir) {
-			struct dirent *ent;
-			while ((ent = readdir (dir))) {
-				gchar buf[1024];
-				snprintf(buf, 1024-1, "%s/%s", *dirname, ent->d_name);
-				read_inode (buf);
-			}
-	  
-			closedir (dir);
-		}
-	}
-}
-
-gchar *
-locate_inode (dev_t device, ino_t inode)
-{
-	Inode lookup;
-	Inode *result;
-
-	lookup.device = device;
-	lookup.inode = inode;
-
-	result = g_hash_table_lookup (inode_table, &lookup);
-	if (result)
-		return result->name;
-	else
-		return NULL;
 }
 
 /************************************************************
@@ -518,36 +390,6 @@ process_sections (MPProcess *process, SectionFunc func, gpointer user_data)
  ************************************************************/
 
 static void
-instrument (MPProcess *process, char **args)
-{
-	int pid;
-
-	/* pipe (fds); */
-
-	pid = fork();
-	if (pid < 0)
-		show_error (ERROR_FATAL, "Cannot fork: %s\n", g_strerror (errno));
-
-	if (pid == 0) {		/* Child  */
-		gchar *envstr;
-      
-		envstr = g_strdup_printf ("%s=%s", "_MEMPROF_SOCKET", socket_path);
-		putenv (envstr);
-
-		envstr = g_strdup_printf ("%s=%s", "LD_PRELOAD", lib_location);
-		putenv (envstr);
-
-		execvp (args[0], args);
-
-		g_warning ("Cannot run program: %s", g_strerror (errno));
-		_exit(1);
-	}
-
-	process->pid = pid;
-	process_table_add (process);
-}
-
-static void
 process_free_block (gpointer key, gpointer value, gpointer data)
 {
 	block_unref (value);
@@ -567,7 +409,7 @@ process_duplicate_block (gpointer key, gpointer value, gpointer data)
 MPProcess *
 process_duplicate (MPProcess *process)
 {
-	MPProcess *new_process = process_new ();
+	MPProcess *new_process = process_new (process->server);
 
 	g_hash_table_foreach (process->block_table,
 			      process_duplicate_block,
@@ -580,7 +422,7 @@ process_duplicate (MPProcess *process)
 	return new_process;
 }
 
-static void
+void
 process_exec_reset (MPProcess *process)
 {
 	process_stop_input (process);
@@ -614,93 +456,6 @@ process_exec_reset (MPProcess *process)
 	process->command_queue = NULL;
 }
 
-/* Input func to receive new process connections */
-static gboolean 
-control_func (GIOChannel  *source,
-	      GIOCondition condition,
-	      gpointer     data)
-{
-	int newfd;
-	MIInfo info;
-	MPProcess *process = NULL;
-	MPProcess *parent_process;
-	int count;
-	char response = 0;
-
-	newfd = accept (socket_fd, NULL, 0);
-	if (newfd < 0) {
-		g_warning ("accept: %s\n", g_strerror (errno));
-		goto out;
-	}
-
-	count = read (newfd, &info, sizeof(info));
-	if (count < sizeof(info)) {
-		g_warning ("short read from new process\n");
-		goto out;
-	}
-
-	switch (info.operation) {
-	case MI_FORK:
-		parent_process = process_table_find (info.fork.pid);
-		if (parent_process && !parent_process->follow_fork)
-			goto out; /* Return negative response */
-
-		/* Fall through */
-	case MI_NEW:
-		process = process_table_find (info.fork.new_pid);
-		if (process) {
-			if (process->follow_exec) {
-				process = (*create_func) (NULL, info.fork.new_pid);
-				process_table_add (process); /* Overwrites old process */
-				
-			} else
-				process_exec_reset (process);
-		}
-
-		if (!process) {
-			parent_process = process_table_find (info.fork.pid);
-			process = (*create_func) (parent_process, info.fork.new_pid);
-			process_table_add (process);
-		}
-		
-		break;
-	case MI_CLONE:
-		parent_process = process_table_find (info.fork.pid);
-		process = process_new ();
-		
-		process->clone_of = parent_process;
-		process->pid = info.fork.new_pid;
-
-		process_table_add (process);
-
-		while (parent_process->clone_of)
-			parent_process = parent_process->clone_of;
-			
-		break;
-		
-	case MI_MALLOC:
-	case MI_REALLOC:
-	case MI_FREE:
-	case MI_EXEC:
-		g_assert_not_reached ();
-	}
-
-	if (process) {
-		process->input_channel = g_io_channel_unix_new (newfd);
-		process_start_input (process);
-		response = 1;
-	}
-
- out:
-	if (newfd >= 0) {
-		write (newfd, &response, 1);
-		if (!response)
-			close (newfd);
-	}
-
-	return TRUE;
-}
-
 static void
 process_command (MPProcess *process, MIInfo *info, void **stack)
 {
@@ -710,6 +465,7 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 	case MI_MALLOC:
 	case MI_FREE:
 	case MI_REALLOC:
+	case MI_EXIT:
 		break;
 	default:
 		abort();
@@ -730,6 +486,10 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 	case MI_CLONE:
 	case MI_EXEC:
 		g_assert_not_reached ();
+
+	case MI_EXIT:
+		process_set_status (process, MP_PROCESS_EXITING);
+		break;
 		
 	default: /* MALLOC / REALLOC / FREE */
 		if (info->alloc.old_ptr != NULL) {
@@ -785,10 +545,11 @@ input_func (GIOChannel  *source,
 	if (count == 0) {
 		g_io_channel_unref (input_process->input_channel);
 		input_process->input_channel = NULL;
-		
+
 		waitpid (input_process->pid, NULL, 0);
 
-		process_table_remove (input_process);
+		mp_server_remove_process (input_process->server, input_process);
+		process_set_status (input_process, MP_PROCESS_DEFUNCT);
 		
 		return FALSE;
 	} else {
@@ -833,94 +594,10 @@ process_start_input (MPProcess *process)
 	g_return_if_fail (process != NULL);
   
 	if (!process->input_tag && process->input_channel)
-		process->input_tag = g_io_add_watch_full (process->input_channel, G_PRIORITY_LOW, G_IO_IN, input_func, process, NULL);
-}
-
-void process_cleanup (void)
-{
-	if (socket_path)
-		unlink (socket_path);
-}
-
-void
-process_init (ProcessCreateFunc cfunc)
-{
-	const char **dirname;
-	char *path;
-	GIOChannel *channel;
-	struct sockaddr_un addr;
-	int addrlen;
-
-	static const char *directories[] = {
-		".libs",
-		".",
-		LIBDIR,
-		NULL
-	};
-
-	create_func = cfunc;
-  
-	read_inodes ();
-
-	for (dirname = directories; *dirname; dirname++) {
-		path = g_concat_dir_and_file (*dirname, "libmemintercept.so");
-		if (!access (path, R_OK)) {
-			lib_location = path;
-			break;
-		}
-		g_free (path);
-	}
-
-	if (!lib_location)
-		show_error (ERROR_FATAL, _("Cannot find libmemintercept.so"));
-
-	/* Make lib_location absolute */
-
-	if (lib_location[0] != '/') {
-		char *wd = g_get_current_dir();
-		char *newloc = g_strconcat (wd, "/", lib_location, NULL);
-		g_free (lib_location);
-		lib_location = newloc;
-		g_free (wd);
-	}
-
-	/* Create a control socket */
-
-	memset (&addr, 0, sizeof(addr));
-
-	addr.sun_family = AF_UNIX;
-
-	socket_fd = socket (PF_UNIX, SOCK_STREAM, 0);
-	if (socket_fd < 0)
-		g_error ("socket: %s\n", g_strerror (errno));
-
- retry:
-	if (socket_path)
-		g_free (socket_path);
-
-	socket_path = g_concat_dir_and_file (g_get_tmp_dir(), SOCKET_TEMPLATE);
-	mktemp (socket_path);
-
-	strncpy (addr.sun_path, socket_path, sizeof (addr.sun_path));
-	addrlen = sizeof(addr.sun_family) + strlen (addr.sun_path);
-	if (addrlen > sizeof (addr))
-		addrlen = sizeof(addr);
-
-	if (bind (socket_fd, &addr, addrlen) < 0) {
-		if (errno == EADDRINUSE)
-			goto retry;
-		else
-			g_error ("bind: %s\n", g_strerror (errno));
-	}
-
-	g_atexit (process_cleanup);
-
-	if (listen (socket_fd, 8) < 0)
-		g_error ("listen: %s\n", g_strerror (errno));
-
-	channel = g_io_channel_unix_new (socket_fd);
-	g_io_add_watch (channel, G_IO_IN | G_IO_HUP, control_func, NULL);
-	g_io_channel_unref (channel);
+		process->input_tag = g_io_add_watch_full (process->input_channel,
+							  G_PRIORITY_LOW,
+							  G_IO_IN | G_IO_HUP,
+							  input_func, process, NULL);
 }
 
 char *
@@ -960,13 +637,54 @@ process_parse_exec (const char *exec_string)
 	return g_strsplit (exec_string, " ", -1);
 }
 
-MPProcess *
-process_new (void)
+GtkType
+mp_process_get_type (void)
 {
-	MPProcess *process;
-	
-	process = g_new0 (MPProcess, 1);
+  static GtkType process_type = 0;
 
+  if (!process_type)
+    {
+      static const GtkTypeInfo process_info =
+      {
+	"MPProcess",
+	sizeof (MPProcess),
+	sizeof (MPProcessClass),
+	(GtkClassInitFunc) mp_process_class_init,
+	(GtkObjectInitFunc) mp_process_init,
+        /* reserved_1 */ NULL,
+	/* reserved_2 */ NULL,
+	(GtkClassInitFunc) NULL,
+      };
+
+      process_type = gtk_type_unique (GTK_TYPE_OBJECT, &process_info);
+    }
+
+  return process_type;
+}
+
+static void
+mp_process_class_init (MPProcessClass *class)
+{
+	GtkObjectClass *object_class;
+
+	object_class = GTK_OBJECT_CLASS (class);
+	
+	process_signals[STATUS_CHANGED] =
+		gtk_signal_new ("status_changed",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (MPProcessClass, status_changed),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
+
+	gtk_object_class_add_signals (object_class, process_signals, LAST_SIGNAL);
+}
+
+static void
+mp_process_init (MPProcess *process)
+{
+	process->status = MP_PROCESS_INIT;
+	process->pid = 0;
 	process->clone_of = NULL;
   
 	process->bytes_used = 0;
@@ -982,7 +700,17 @@ process_new (void)
 
 	process->follow_fork = FALSE;
 	process->follow_exec = FALSE;
-	
+}
+
+MPProcess *
+process_new (MPServer *server)
+{
+	MPProcess *process;
+
+	process = gtk_type_new (mp_process_get_type ());
+
+	process->server = server;
+
 	return process;
 }
 
@@ -1006,38 +734,25 @@ process_run (MPProcess *process, const char *path, char **args)
 	process->program_name = g_strdup (path);
 	read_inode (path);
 
-	instrument (process, args);
+	process->pid = mp_server_instrument (process->server, args);
+	mp_server_add_process (process->server, process);
+
+	process_set_status (process, MP_PROCESS_STARTING);
   
 	process_start_input (process);
-}
-
-typedef struct {
-	MPProcess *parent;
-	GList *result;
-} CloneInfo;
-
-static void
-add_clone (gpointer key, MPProcess *process, CloneInfo *ci)
-{
-	MPProcess *parent = process;
-	while (parent->clone_of)
-		parent = parent->clone_of;
-
-	if (parent == ci->parent)
-		ci->result = g_list_prepend (ci->result, process);
 }
 
 GList *
 process_get_clones (MPProcess *process)
 {
-	GList *result = NULL;
-	CloneInfo ci;
-
-	ci.parent = process;
-	ci.result = NULL;
-	
-	g_hash_table_foreach (pid_table, (GHFunc)add_clone, &ci);
-
-	return ci.result;
+	return mp_server_get_process_clones (process->server, process);
 }
-     
+
+void
+process_set_status (MPProcess *process, MPProcessStatus status)
+{
+	if (process->status != status) {
+		process->status = status;
+		gtk_signal_emit (GTK_OBJECT (process), process_signals[STATUS_CHANGED]);
+	}
+}

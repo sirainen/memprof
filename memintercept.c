@@ -50,6 +50,7 @@ static void *(*old_calloc) (size_t nmemb, size_t size);
 static void *(*old_memalign) (size_t boundary, size_t size);
 static void * (*old_realloc) (void *ptr, size_t size);
 static void (*old_free) (void *ptr);
+static void (*old__exit) (int status);
 
 #define MAX_THREADS 128
 
@@ -236,7 +237,7 @@ __libc_malloc (size_t size)
 	MIInfo info;
 
 	if (!old_malloc) {
-		/* oh s*** we are being called at initialization and
+		/* oh s*** we are being called at initialization and can't
 		 * depend upon anything!
 		 */
 		size = (size + 3) & ~3;
@@ -388,8 +389,6 @@ fork (void)
 		int pid;
 		int old_pid = getpid();
 		
-		fprintf (stderr, "forking!\n");
-
 		pid = (*old_fork) ();
 
 		if (!pid) /* New child process */
@@ -457,6 +456,31 @@ int __clone (int (*fn) (void *arg),
 		return (*old_clone) (fn, child_stack, flags, arg);
 }
 
+void
+_exit (int status)
+{
+	if (tracing) {
+		MIInfo info;
+		int i;
+		char response;
+		info.any.operation = MI_EXIT;
+		info.any.seqno = seqno;
+		info.any.pid = getpid();
+		
+		for (i=0; pids[i] && i<MAX_THREADS; i++)
+			if (pids[i] == info.any.pid)
+				break;
+		
+		write_all (outfds[i], &info, sizeof (MIInfo));
+
+		/* Wait for a response before really exiting
+		 */
+		read (outfds[i], &response, 1);
+	}
+	
+	(*old__exit) (status);
+}
+
 static void initialize () __attribute__ ((constructor));
 
 static void initialize () 
@@ -469,5 +493,6 @@ static void initialize ()
 	old_execve = dlsym(RTLD_NEXT, "execve");
 	old_fork = dlsym(RTLD_NEXT, "fork");
 	old_clone = dlsym(RTLD_NEXT, "__clone");
+	old__exit = dlsym(RTLD_NEXT, "_exit");
 }
 

@@ -26,53 +26,85 @@
 #include <glib.h>
 #include <unistd.h>
 
+#include <gtk/gtkobject.h>
+
 #include "memprof.h"
 
-typedef struct _MPProcess MPProcess;
+#define MP_TYPE_PROCESS            (mp_process_get_type ())
+#define MP_PROCESS(obj)            (GTK_CHECK_CAST ((obj), MP_TYPE_PROCESS, MPProcess))
+#define MP_PROCESS_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_PROCESS, MPProcessClass))
+#define MP_IS_PROCESS(obj)         (GTK_CHECK_TYPE ((obj), MP_TYPE_PROCESS))
+#define MP_IS_PROCESS_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), MP_TYPE_PROCESS))
+#define MP_PROCESS_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), MP_TYPE_PROCESS, MPProcessClass))
 
-typedef MPProcess *(*ProcessCreateFunc) (MPProcess *parent, pid_t pid);
+/* forward declaration */
+typedef struct _MPServer MPServer;
+
+typedef struct _MPProcess MPProcess;
+typedef struct _MPProcessClass MPProcessClass;
+
+typedef enum {
+	MP_PROCESS_INIT,	/* Newly created */
+	MP_PROCESS_STARTING,	/* Run child, waiting for it to connect */
+	MP_PROCESS_RUNNING,	/* Child is running */
+	MP_PROCESS_EXITING,	/* _exit() has been called in child */
+	MP_PROCESS_DEFUNCT	/* child no longer exists */
+} MPProcessStatus;
 
 struct _MPProcess
 {
-  pid_t pid;
-  gchar *program_name;
+	GtkObject parent_instance;
 
-  MPProcess *clone_of;
-  guint seqno;	
+	MPProcessStatus status;
 	
-  guint bytes_used;
-  guint n_allocations;
+	pid_t pid;
+	gchar *program_name;
 
-  gint input_tag;
-  GIOChannel *input_channel;
-
-  GList *map_list;
-  GList *bad_pages;
-  GHashTable *block_table;
-
-  GList *command_queue;
-
-  gboolean follow_fork;
-  gboolean follow_exec;
+	MPServer *server;
 	
-  ProcessCreateFunc create_func;
+	MPProcess *clone_of;
+	guint seqno;	
+	
+	guint bytes_used;
+	guint n_allocations;
+	
+	gint input_tag;
+	GIOChannel *input_channel;
+	
+	GList *map_list;
+	GList *bad_pages;
+	GHashTable *block_table;
+	
+	GList *command_queue;
+	
+	gboolean follow_fork;
+	gboolean follow_exec;
 };
 
-void        process_init            (ProcessCreateFunc   cfunc);
-MPProcess * process_new             (void);
+struct _MPProcessClass {
+	GtkObjectClass parent_class;
+
+	void (*status_changed) (MPProcess *process);
+};
+
+GtkType     mp_process_get_type     (void);
+MPProcess * process_new             (MPServer           *server);
+MPProcess * process_duplicate       (MPProcess          *process);
 void        process_set_follow_fork (MPProcess          *process,
 				     gboolean            follow_fork);
 void        process_set_follow_exec (MPProcess          *process,
 				     gboolean            follow_exec);
-void        process_run             (MPProcess          *process,
-				     const char         *path,
-				     char              **args);
-MPProcess * process_duplicate       (MPProcess          *process);
+
+void process_run        (MPProcess        *process,
+			 const char       *path,
+			 char            **args);
+void process_exec_reset (MPProcess        *process);
+void process_set_status (MPProcess        *process,
+			 MPProcessStatus   status);
+
 void        process_sections        (MPProcess          *process,
 				     SectionFunc         func,
 				     gpointer            user_data);
-char **     process_parse_exec      (const char         *exec_string);
-char *      process_find_exec       (char              **args);
 GList *     process_get_clones      (MPProcess          *process);
 void        process_start_input     (MPProcess          *process);
 void        process_stop_input      (MPProcess          *process);
@@ -87,5 +119,8 @@ void        process_dump_stack      (MPProcess          *process,
 				     void              **stack);
 Symbol *    process_locate_symbol   (MPProcess          *process,
 				     guint               addr);
+
+char **     process_parse_exec      (const char         *exec_string);
+char *      process_find_exec       (char              **args);
 
 #endif /* __PROCESS_H__ */

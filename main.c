@@ -32,6 +32,7 @@
 #include "memprof.h"
 #include "process.h"
 #include "profile.h"
+#include "server.h"
 
 typedef struct _ProcessWindow ProcessWindow;
 
@@ -76,6 +77,8 @@ char *glade_file;
 #define DEFAULT_SKIP "g_malloc g_malloc0 g_realloc g_strdup strdup strndup"
 #define DEFAULT_STACK_COMMAND "emacsclient -n +%l \"%f\""
 
+MPServer *global_server;
+
 static ProcessWindow *process_window_new (void);
 static void process_window_destroy (ProcessWindow *pwin);
 
@@ -87,7 +90,7 @@ static gboolean default_follow_exec = FALSE;
 
 char *stack_command;
 
-GList *process_windows = NULL;
+GSList *process_windows = NULL;
 
 
 /************************************************************
@@ -644,28 +647,59 @@ exit_cb (GtkWidget *widget)
 		gtk_main_quit ();
 }
 
-static MPProcess *
-create_child_process (MPProcess *parent_process, pid_t pid)
+static void
+status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 {
-	ProcessWindow *pwin = process_window_new ();
-	if (parent_process)
-		pwin->process = process_duplicate (parent_process);
-	else
-		pwin->process = process_new ();
+	const char *status = ""; /* Quiet GCC */
+	char *title;
+
+	switch (process->status) {
+	case MP_PROCESS_INIT:
+		status = _("Initial");
+		break;
+	case MP_PROCESS_STARTING:
+		status = _("Starting");
+		break;
+	case MP_PROCESS_RUNNING:
+		status = _("Running");
+		break;
+	case MP_PROCESS_EXITING:
+		status = _("Exiting");
+		break;
+	case MP_PROCESS_DEFUNCT:
+		status = _("Defunct");
+		break;
+	}
+
+	title = g_strdup_printf ("%s - %d - %s", _("MemProf"), process->pid, status);
+	gtk_window_set_title (GTK_WINDOW (pwin->main_window), title);
+	g_free (title);
+}
+
+static void
+init_process (ProcessWindow *pwin, MPProcess *process)
+{
+	pwin->process = process;
 
 	process_set_follow_fork (pwin->process, pwin->follow_fork);
 	process_set_follow_exec (pwin->process, pwin->follow_exec);
-	
-	pwin->process->pid = pid;
 	
 	pwin->status_update_timeout =
 		g_timeout_add (100,
 			       update_status,
 			       pwin);
 
-	gtk_widget_show (pwin->main_window);
+	gtk_signal_connect (GTK_OBJECT (process), "status_changed",
+			    GTK_SIGNAL_FUNC (status_changed_cb), pwin);
+}
+
+static void
+process_created_cb (MPServer *server, MPProcess *process)
+{
+	ProcessWindow *pwin = process_window_new ();
 	
-	return pwin->process;
+	init_process (pwin, process);
+	gtk_widget_show (pwin->main_window);
 }
 
 static gboolean
@@ -680,16 +714,11 @@ run_file (ProcessWindow *pwin, char **args)
 	path = process_find_exec (args);
 	
 	if (path) {
-		pwin->process = process_new ();
-		process_set_follow_fork (pwin->process, pwin->follow_fork);
-		process_set_follow_exec (pwin->process, pwin->follow_exec);
-		process_run (pwin->process, path, args);
-		
-		if (!pwin->status_update_timeout)
-			pwin->status_update_timeout =
-				g_timeout_add (100,
-					       update_status,
-					       pwin);
+		MPProcess *process = process_new (global_server);
+		process_run (process, path, args);
+
+		init_process (pwin, process);
+
 		result = TRUE;
 		
 	} else {
@@ -1300,9 +1329,11 @@ main(int argc, char **argv)
 	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
        }
 
-       process_init(create_child_process);
-
-       initial_window = process_window_new();
+       global_server = mp_server_new ();
+       gtk_signal_connect (GTK_OBJECT (global_server), "process_created",
+			   GTK_SIGNAL_FUNC (process_created_cb), NULL);
+       
+       initial_window = process_window_new ();
 
        gnome_config_get_vector ("/MemProf/Options/skip_funcs=" DEFAULT_SKIP,
 				&n_skip_funcs, &skip_funcs);

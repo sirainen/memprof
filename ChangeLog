@@ -1,3 +1,13 @@
+Tue May 23 14:19:44 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* server.[ch] process.[ch]: Add process and server GtkObject's
+	with signals for process creation, status changes, exit.
+
+	* memintercept.[ch] process.c: Trap _exit() and wait for a
+	response from the server. Add a MI_EXIT command.
+
+	* inode.c: Separate out the inode-finding code from process.c
+	
 Tue May 23 05:05:10 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* main.c process.c memintercept.c: Hook up the follow-fork
