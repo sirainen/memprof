@@ -1,3 +1,9 @@
+Thu Jul  6 10:52:42 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* leakdetect.c (find_block): Handle case where no
+	blocks at all exist. (Problem pointed out by
+	Christof Petig.)
+
 2000-06-27  Yuri Syrota  <rasta@renome.rovno.ua>
 
 	* configure.in: Add "uk" to ALL_LINGUAS.

@@ -288,6 +288,9 @@ find_block (GPtrArray *block_arr, void *addr)
 	Block **data;
 	guint first, middle, last;
 
+	if (block_arr->len == 0)
+		return NULL;
+	
 	first = 0;
 	last = block_arr->len - 1;
 	middle = last;
