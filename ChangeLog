@@ -1,3 +1,7 @@
+2005-03-04  Abel Cheung  <maddog@linuxhall.org>
+
+	* configure.in: Added "mk" "zh_TW" to ALL_LINGUAS.
+
 2004-09-13  John Myers  <jgmyers@localhost.localdomain>
 
 2004-09-13  John Gardiner Myers  <jgmyers@proofpoint.com>
