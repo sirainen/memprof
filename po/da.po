@@ -11,106 +11,106 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2002-06-18 01:03+0200\n"
-"PO-Revision-Date: 2002-06-18 01:04+0200\n"
+"POT-Creation-Date: 2002-07-17 11:51+0200\n"
+"PO-Revision-Date: 2002-07-17 11:52+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:529
+#: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Kørsel af '%s' mislykkedes"
 
-#: main.c:660
+#: main.c:661
 msgid "Really quit MemProf?"
 msgstr "Vil du virkelig afslutte Hukommelsesprofilering?"
 
-#: main.c:706 memprof.glade.h:36
+#: main.c:707 memprof.glade.h:36
 msgid "MemProf"
 msgstr "Hukommelsesprofilering"
 
-#: main.c:800
+#: main.c:801
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kunne ikke finde kørbar fil for '%s'"
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Error"
 msgstr "Hukommelsesprofileringsfejl"
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Warning"
 msgstr "Hukommelsesprofileringsadvarsel"
 
-#: main.c:1645
+#: main.c:1660
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig frigøre den afsluttede proces?"
 
-#: main.c:1647
+#: main.c:1662
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig frigøre den kørende proces?"
 
-#: main.c:1677
+#: main.c:1692
 msgid "Really kill running process?"
 msgstr "Vil du virkelig dræbe den kørende proces?"
 
-#: main.c:1710
+#: main.c:1725
 msgid "Create new windows for forked processes"
 msgstr "Opret nye vinduer for fraspaltede processer"
 
-#: main.c:1712
+#: main.c:1727
 msgid "Retain windows for processes after exec()"
 msgstr "Behold vinduer for processer efter exec()"
 
-#: main.c:1749
+#: main.c:1764
 msgid "Cannot find memprof.glade"
 msgstr "Kan ikke finde memprof.glade"
 
-#: leakdetect.c:586 profile.c:202
+#: leakdetect.c:587 profile.c:203
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åbne filen: %s\n"
 
-#: process.c:814
+#: process.c:815
 msgid "Initial"
 msgstr "Begyndelse"
 
-#: process.c:817
+#: process.c:818
 msgid "Starting"
 msgstr "Starter"
 
-#: process.c:820
+#: process.c:821
 msgid "Running"
 msgstr "Kører"
 
-#: process.c:823
+#: process.c:824
 msgid "Exiting"
 msgstr "Afslutter"
 
-#: process.c:826 process.c:829
+#: process.c:827 process.c:830
 msgid "Defunct"
 msgstr "Ude af drift"
 
-#: server.c:244
+#: server.c:245
 msgid "Cannot find libmemintercept.so"
 msgstr "Kan ikke finde libmemintercept.so"
 
-#: tree.c:90
+#: tree.c:91
 msgid "Show"
 msgstr "Vis"
 
-#: tree.c:93
+#: tree.c:94
 msgid "Hide"
 msgstr "Skjul"
 
-#: tree.c:97 memprof.glade.h:31
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Dræb"
 
-#: tree.c:100
+#: tree.c:101
 msgid "Detach"
 msgstr "Frigør"
 
@@ -179,8 +179,10 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skal køres ved dobbelklik i stakefterfølgning:"
 
 #: memprof.glade.h:17
-msgid "Copyright Red Hat, Inc., 1999-2000"
-msgstr "Copyright © Red Hat, Inc., 1999-2000"
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -359,5 +361,9 @@ msgid "_Process"
 msgstr "_Proces"
 
 #: memprof.glade.h:63
+msgid "_Run Program..."
+msgstr "_Kør program"
+
+#: memprof.glade.h:64
 msgid "_Settings"
 msgstr "_Indstillinger"
