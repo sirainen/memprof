@@ -31,7 +31,9 @@ libmemintercept_la_SOURCES =    \
 	memintercept.c		\
 	memintercept.h		\
 	memintercept-utils.c	\
-	memintercept-utils.h
+	memintercept-utils.h	\
+	stack-frame.c		\
+	stack-frame.h
 
 libmemintercept_la_LDFLAGS = -module -avoid-version
 libmemintercept_la_LIBADD = -ldl

@@ -32,9 +32,6 @@
 typedef struct _StackElement StackElement;
 typedef struct _StackStash StackStash;
 
-/* Doesn't matter, just for ANSI C compliance */
-#define STACK_STASH_MAX_CHILDREN 1024
-
 struct _StackElement
 {
 	/* Address from stack trace */
@@ -47,9 +44,8 @@ struct _StackElement
 	void *parent;
 	
 	int n_children;
-	
-	/* Allocated to length n_children, and sorted by children[i]->address */
-	StackElement *children[STACK_STASH_MAX_CHILDREN];
+
+	StackElement **children;
 };
 
 #define STACK_ELEMENT_IS_ROOT(element) ((element)->parent == NULL)

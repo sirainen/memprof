@@ -78,7 +78,8 @@ AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE")
 ALL_LINGUAS="az ca da de el es et fr hu it ja ko ms nl no pl pt pt_BR ru sk sl sv tr uk vi zh_CN"
 AM_GLIB_GNU_GETTEXT
 
-AC_CHECK_FUNCS(bind_textdomain_codeset)
+AC_HAVE_HEADERS(execinfo.h)
+AC_CHECK_FUNCS(bind_textdomain_codeset backtrace)
 
 
 dnl Remember ACLOCAL_FLAGS for automatic reautogen.

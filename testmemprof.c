@@ -18,8 +18,10 @@ int main()
 {
   char *block;
 
+  free (malloc(1000));
   block = b();
   block = malloc(1000);
+  block = b();
   free(block);
 
   return 0;

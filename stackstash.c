@@ -30,6 +30,7 @@
 static size_t test_unique_bytes = 0;
 static size_t test_bytes_used = 0;
 static int test_nodes_used = 0;
+static int test_n_singletons = 0;
 #endif
 
 struct _StackStash {
@@ -37,13 +38,15 @@ struct _StackStash {
 };
 
 static StackElement *
-stack_element_new (int n_children)
+stack_element_new (void)
 {
-	StackElement *element = g_malloc (G_STRUCT_OFFSET (StackElement, children) + n_children * sizeof (StackElement *));
-	element->n_children = n_children;
+	StackElement *element = g_new (StackElement, 1);
+
+	element->n_children = 0;
+	element->children = NULL;
 
 #ifdef BUILD_TEST_CASE	
-	test_bytes_used += G_STRUCT_OFFSET (StackElement, children) + n_children * sizeof (StackElement *);
+	test_bytes_used += sizeof (StackElement);
 	test_nodes_used++;
 #endif
 
@@ -54,56 +57,50 @@ static void
 stack_element_free (StackElement *element)
 {
 #ifdef BUILD_TEST_CASE	
-	test_bytes_used -= G_STRUCT_OFFSET (StackElement, children) + element->n_children * sizeof (StackElement *);
+	test_bytes_used -= element->n_children * sizeof (StackElement *);
+	test_bytes_used -= sizeof (StackElement);
 	test_nodes_used--;
 #endif
 	
+	g_free (element->children);
 	g_free (element);
 }
 
 static void
-copy_children_and_insert (StackElement *new,
-			  StackElement *old,
-			  StackElement *child)
+insert_child (StackElement *element,
+	      StackElement *child)
 {
-	StackElement **old_child = old->children;
-	StackElement **new_child = new->children;
-	int n_children = old->n_children;
-	gpointer child_address = child->address;
+	StackElement **old_children;
+	StackElement **old_child, **new_child;
+	int n_children = element->n_children;
 
-	while (n_children && (*old_child)->address < child_address) {
-		*new_child = *old_child;
-		(*new_child)->parent = new;
-		new_child++;
-		old_child++;
+	element->n_children = n_children + 1;
+
+	old_children = element->children;
+	element->children = g_new (StackElement *, n_children + 1);
+
+	old_child = old_children;
+	new_child = element->children;
+		
+	while (n_children && (*old_child)->address < child->address) {
+		*new_child++ = *old_child++;
 		n_children--;
 	}
-	*new_child = child;
-	child->parent = new;
-	new_child++;
+	*new_child++ = child;
 	while (n_children) {
-		*new_child = *old_child;
-		(*new_child)->parent = new;
-		new_child++;
-		old_child++;
+		*new_child++ = *old_child++;
 		n_children--;
 	}
-}
+	
+	g_free (old_children);
 
-static void
-replace_child (StackElement *parent,
-	       StackElement *old_child,
-	       StackElement *new_child)
-{
-	StackElement **child = parent->children;
-
-	while (TRUE) {
-		if (*child == old_child) {
-			*child = new_child;
-			return;
-		}
-		child++;
-	}
+#ifdef BUILD_TEST_CASE
+	if (element->n_children == 1)
+		test_n_singletons++;
+	else if (element->n_children == 2)
+		test_n_singletons--;
+	test_bytes_used += sizeof (StackElement *);
+#endif
 }
 
 StackStash *
@@ -111,7 +108,7 @@ stack_stash_new (void)
 {
 	StackStash *stash = g_new (StackStash, 1);
 
-	stash->root = stack_element_new (0);
+	stash->root = stack_element_new ();
 	stash->root->parent = NULL;
 	stash->root->address = NULL;
 
@@ -124,7 +121,6 @@ stack_stash_store (StackStash *stash,
 		   int         n_addresses)
 {
 	StackElement *current;
-	gboolean first_new;
 	
 	current = stash->root;
 	
@@ -151,30 +147,13 @@ stack_stash_store (StackStash *stash,
 		n_addresses--;
 	}
 
-	first_new = TRUE;
 	while (n_addresses) {
-		StackElement *next = stack_element_new (n_addresses == 1 ? 0 : 1);
+		StackElement *next = stack_element_new ();
 		next->address = addresses[n_addresses - 1];
+		next->parent = current;
+
+		insert_child (current, next);
 		
-		if (first_new) {
-			StackElement *new_current = stack_element_new (current->n_children + 1);
-			new_current->parent = current->parent;
-			new_current->address = current->address;
-
-			copy_children_and_insert (new_current, current, next);
-			
-			if (current == stash->root)
-				stash->root = new_current;
-			else
-				replace_child (new_current->parent, current, new_current);
-
-			stack_element_free (current);
-			first_new = FALSE;
-		} else {
-			current->children[0] = next;
-			next->parent = current;
-		}
-
 		current = next;
 		n_addresses--;
 	}
@@ -186,6 +165,7 @@ static void
 free_element_recurse (StackElement *element)
 {
 	int i;
+	
 	for (i = 0; i < element->n_children; i++)
 		free_element_recurse (element->children[i]);
 
@@ -302,10 +282,10 @@ int main (void)
 	}
 
 	g_timer_stop (timer);
-	g_print ("Inserted %d stacktraces, %zd bytes (unique: %d/%zd):\n\t%g seconds, using %zd bytes, %d nodes\n",
+	g_print ("Inserted %d stacktraces, %zd bytes (unique: %d/%zd):\n\t%g seconds, using %zd bytes, %d nodes, %d nodes with one child\n",
 		 n_traces, len,
 		 n_unique, test_unique_bytes,
-		 g_timer_elapsed (timer, NULL), test_bytes_used, test_nodes_used);
+		 g_timer_elapsed (timer, NULL), test_bytes_used, test_nodes_used, test_n_singletons);
 
 	/* Now verify the inserted traces
 	 */

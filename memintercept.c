@@ -32,6 +32,7 @@
 
 #include "memintercept.h"
 #include "memintercept-utils.h"
+#include "stack-frame.h"
 
 #include <sys/socket.h>
 #include <sys/types.h>
@@ -106,6 +107,7 @@ allocate_thread (pid_t pid)
 	}
 	
 	mi_debug ("Can't find free thread slot");
+	tracing = 0;
 	_exit(1);
 
 	return NULL;
@@ -148,7 +150,8 @@ find_thread (pid_t pid)
 			return thread;
 		}
 
-	mi_debug ("Thread not found");
+	mi_debug ("Thread not found\n");
+	tracing = 0;
 	_exit(1);
 
 	return NULL;
@@ -227,15 +230,18 @@ new_process (ThreadInfo *thread,
 	outfd = socket (PF_UNIX, SOCK_STREAM, 0);
 	if (outfd < 0) {
 		mi_perror ("error creating socket");
+		tracing = 0;
 		_exit(1);
 	}
 	
 	if (connect (outfd, (struct sockaddr *)&addr, addrlen) < 0) {
 		mi_perror ("Error connecting to memprof");
+		tracing = 0;
 		_exit (1);
 	}
 	if (fcntl (outfd, F_SETFD, FD_CLOEXEC) < 0) {
 		mi_perror ("error calling fcntl");
+		tracing = 0;
 		_exit(1);
 	}
 
@@ -306,59 +312,31 @@ check_init ()
 	return 1;
 }
 
-#define OUT_BUF_SIZE 4096
-#define STACK_MAX_SIZE ((OUT_BUF_SIZE - sizeof (MIInfo)) / sizeof(void *))
-
 static void
-stack_trace (MIInfo *info)
+write_stack (int      n_frames,
+	     void   **frames,
+	     void    *data)
 {
-	int n = 0;
-	void **sp;
-	char outbuf[OUT_BUF_SIZE];
-	void **stack_buffer = NULL;
+	MIInfo *info = data;
 	ThreadInfo *thread;
 	int old_errno = errno;
-	
-	MIInfo *outinfo;
-	
-	outinfo = (MIInfo *)outbuf;
-	memcpy (outbuf, info, sizeof(MIInfo));
-	stack_buffer = (void **)(outbuf + sizeof(MIInfo));
-	
-	/* Stack frame is:
-	 * (0) pointer to previous stack frame
-	 * (1) calling function address
-	 * (2) first argument
-	 * (3) ...
-	 */
-	sp = (void **)&info - 2;
-	
-	while (sp) {
-		if (n - 2 == STACK_MAX_SIZE) {
-			mi_printf (2, "libmemintercept.so: Stack too large, truncating!\n");
-			break;
-		/* Skip over __libc_malloc and hook */
-		} else if (n > 1) {
-			stack_buffer[n - 2] = *(sp + 1);
-		}
-		sp = *sp;
-		n++;
-	}
 
-	outinfo->alloc.stack_size = n - 2;
-	outinfo->alloc.pid = getpid();
-	outinfo->alloc.seqno = seqno++;
+	info->alloc.stack_size = n_frames;
+	info->alloc.pid = getpid();
+	info->alloc.seqno = seqno++;
 
-	thread = find_thread (outinfo->alloc.pid);
+	thread = find_thread (info->alloc.pid);
 	
-	if (!mi_write (thread->outfd, outbuf, sizeof (MIInfo) + outinfo->alloc.stack_size * sizeof(void *)))
+	if (!mi_write (thread->outfd, info, sizeof (MIInfo)) ||
+	    !mi_write (thread->outfd, frames, n_frames * sizeof(void *)))
 		stop_tracing (thread->outfd);
 
 	errno = old_errno;
 }
 
-void *
-__libc_malloc (size_t size)
+#if 0
+static void *
+do_malloc (size_t size, int to_skip)
 {
 	void *result;
 	MIInfo info;
@@ -373,21 +351,52 @@ __libc_malloc (size_t size)
 		info.alloc.old_ptr = NULL;
 		info.alloc.new_ptr = result;
 		info.alloc.size = size;
-	
-		stack_trace (&info);
+
+		mi_call_with_backtrace (to_skip + 1, write_stack, &info);
 	}
 		
 	return result;
 }
 
 void *
-malloc (size_t size)
+__libc_malloc (size_t size)
 {
-	return __libc_malloc (size);
+	return do_malloc (size, 1);
 }
 
 void *
-__libc_memalign (size_t boundary, size_t size)
+malloc (size_t size)
+{
+	return do_malloc (size, 1);
+}
+
+static void *
+do_calloc (size_t nmemb, size_t size)
+{
+	int total = nmemb * size;
+	void *result = do_malloc (total, 2);
+
+	if (result)
+		memset (result, 0, total);
+	
+	return result;
+}
+
+
+void *
+__libc_calloc (size_t nmemb, size_t size)
+{
+	return do_calloc (nmemb, size);
+}
+
+void *
+calloc (size_t nmemb, size_t size)
+{
+	return do_calloc (nmemb, size);
+}
+
+static void *
+do_memalign (size_t boundary, size_t size)
 {
 	void *result;
 	MIInfo info;
@@ -403,38 +412,26 @@ __libc_memalign (size_t boundary, size_t size)
 		info.alloc.new_ptr = result;
 		info.alloc.size = size;
 	
-		stack_trace (&info);
+		mi_call_with_backtrace (2, write_stack, &info);
 	}
 
 	return result;
 }
 
 void *
+__libc_memalign (size_t boundary, size_t size)
+{
+	return do_memalign (boundary, size);
+}
+
+void *
 memalign (size_t boundary, size_t size)
 {
-	return __libc_memalign (boundary, size);
+	return do_memalign (boundary, size);
 }
 
-void *
-__libc_calloc (size_t nmemb, size_t size)
-{
-	int total = nmemb * size;
-	void *result = __libc_malloc (total);
-
-	if (result)
-		memset (result, 0, total);
-	
-	return result;
-}
-
-void *
-calloc (size_t nmemb, size_t size)
-{
-	return __libc_calloc (nmemb, size);
-}
-
-void *
-__libc_realloc (void *ptr, size_t size)
+static void *
+do_realloc (void *ptr, size_t size)
 {
 	void *result;
 	MIInfo info;
@@ -450,20 +447,26 @@ __libc_realloc (void *ptr, size_t size)
 		info.alloc.new_ptr = result;
 		info.alloc.size = size;
 	
-		stack_trace (&info);
+		mi_call_with_backtrace (2, write_stack, &info);
 	}
 
 	return result;
 }
-     
+
+void *
+__libc_realloc (void *ptr, size_t size)
+{
+	return do_realloc (ptr, size);
+}
+
 void *
 realloc (void *ptr, size_t size)
 {
-	return __libc_realloc (ptr, size);
+	return do_realloc (ptr, size);
 }
 
-void
-__libc_free (void *ptr)
+static void
+do_free (void  *ptr)
 {
 	MIInfo info;
 
@@ -478,15 +481,22 @@ __libc_free (void *ptr)
 		info.alloc.new_ptr = NULL;
 		info.alloc.size = 0;
 
-		stack_trace (&info);
+		mi_call_with_backtrace (2, write_stack, &info);
 	}
+}
+
+void
+__libc_free (void *ptr)
+{
+	do_free (ptr);
 }
 
 void
 free (void *ptr)
 {
-	__libc_free (ptr);
+	do_free (ptr);
 }
+#endif
 
 int
 __fork (void)

@@ -1,3 +1,20 @@
+Mon Aug 19 14:12:28 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* stackstash.[ch]: Get rid of the "allocate everything
+	in one block" optimization, since that caused problems
+	if we want to be able to keep pointers to interior
+	nodes of the tree.
+
+	* Makefile.am stack-frame.[ch]: Add John Harper's
+	stack trace code from eazel-tools/prof, since it is
+	cleaner/nicer than what we were using, with some
+	modifications for accurate stack traces from signal
+	handlers.
+
+	* memintercept.c: Use stack-frame.[ch], deal with
+	differing stack frame depths from different code
+	paths to the place where we make the stack trace.
+
 Sat Aug 17 15:33:36 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* stackstash.c (stack_element_free): Fix accounting
