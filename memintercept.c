@@ -334,7 +334,6 @@ write_stack (int      n_frames,
 	errno = old_errno;
 }
 
-#if 0
 static void *
 do_malloc (size_t size, int to_skip)
 {
@@ -496,7 +495,6 @@ free (void *ptr)
 {
 	do_free (ptr);
 }
-#endif
 
 int
 __fork (void)
