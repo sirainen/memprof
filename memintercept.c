@@ -170,14 +170,15 @@ memprof_init ()
 	new_process (0, MI_NEW);
 }
 
-#define STACK_MAX_SIZE ((PIPE_BUF - sizeof (MIInfo)) / sizeof(void *))
+#define OUT_BUF_SIZE 4096
+#define STACK_MAX_SIZE ((OUT_BUF_SIZE - sizeof (MIInfo)) / sizeof(void *))
 
 static void
 stack_trace (MIInfo *info)
 {
 	int n = 0;
 	void **sp;
-	static char outbuf[PIPE_BUF];
+	static char outbuf[OUT_BUF_SIZE];
 	void **stack_buffer = NULL;
 	int i;
 	

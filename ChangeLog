@@ -1,3 +1,12 @@
+Sat Nov 20 17:14:40 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* bfdutils.c (process_map_sections): Try accessing
+	section->_cooked_size to deal with bug(?) in older
+	binutils.
+
+	* memintercept.c (STACK_MAX_SIZE): Change PIPE_BUF to
+	#define constant since we no longer use pipes.
+
 Sat Nov 20 10:40:48 1999  Owen Taylor  <otaylor@redhat.com>
 
         [ Sync CVS with my current tree. This commit destabilizes
