@@ -8,6 +8,8 @@ Requirements
   - GTK+        
   - gnome-libs  
   - libglade
+    (Debian users need both the libglade-dev and libglade-gnome0-dev
+     packages)
 
  For the backend, memprof currently requires:
 

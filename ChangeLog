@@ -1,3 +1,10 @@
+Tue Jan  4 02:41:28 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* README: Added note telling Debian users about more
+	splitty	little packages they need.
+
+	* configure.in (MEMPROF_LIBS): Added check for -lglade-gnome
+
 Sat Nov 20 17:14:40 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* bfdutils.c (process_map_sections): Try accessing

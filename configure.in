@@ -48,6 +48,10 @@ AC_SUBST(MEMPROF_CFLAGS)
 
 MEMPROF_LIBS=`gnome-config --libs gnomeui libglade`
 
+AC_CHECK_LIB(glade-gnome, glade_gnome_init,:,
+    AC_MSG_ERROR([*** libglade and libglade-gnome are required to compile MemProf]), $MEMPROF_LIBS)
+
+
 AC_CHECK_LIB(iberty, cplus_demangle,:, 
   AC_CHECK_LIB(iberty, cplus_demangle_opname, LIBS="$LIBS -ldl",
     AC_MSG_ERROR([*** libiberty required to compile MemProf]), -ldl))
