@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3.0\n"
 "POT-Creation-Date: 2000-09-10 12:31+0200\n"
-"PO-Revision-Date: 2000-09-10 12:49+0200\n"
+"PO-Revision-Date: 2000-09-11 01:58+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -79,7 +79,7 @@ msgstr "Spara _profil..."
 
 #: memprof-strings.c:10
 msgid "Save _Leak Info..."
-msgstr "Spara _läckinformation..."
+msgstr "Spara _läckageinformation..."
 
 #: memprof-strings.c:11
 msgid "_Process"
@@ -91,7 +91,7 @@ msgstr "Skapa _profil"
 
 #: memprof-strings.c:13
 msgid "Generate _Leak Report"
-msgstr "Skapa _läckrapport"
+msgstr "Skapa _läckagerapport"
 
 #: memprof-strings.c:14
 msgid "_Kill"
@@ -151,7 +151,7 @@ msgstr "Spara"
 
 #: memprof-strings.c:29
 msgid "0k"
-msgstr "Ok"
+msgstr "0k"
 
 #: memprof-strings.c:30
 msgid "32k"
@@ -232,7 +232,7 @@ msgstr "Minnesprofileringsverktyg"
 
 #: memprof-strings.c:57
 msgid "Functions to Skip:"
-msgstr "Funktioner som skall ignoreras:"
+msgstr "Funktioner som ska hoppas över:"
 
 #: memprof-strings.c:58 memprof-strings.c:63
 msgid "label37"
@@ -264,7 +264,7 @@ msgstr "Kommando som skall köras vid dubbelklickning på stackvisningen:"
 
 #: memprof-strings.c:69
 msgid "Leak Detection Options"
-msgstr "Läckdetektionsalternativ"
+msgstr "Läckagedetektionsalternativ"
 
 #: memprof-strings.c:70
 msgid "Adding Skip Function"
