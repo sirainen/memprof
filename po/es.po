@@ -1,24 +1,25 @@
 # Memprof' Spanish Translation
 # Copyright (C) 2000-2002 GNOME Foundation, Inc.
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>, 2002.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: Memprof 0.1\n"
-"POT-Creation-Date: 2002-03-05 23:41+0100\n"
-"PO-Revision-Date: 2002-03-04 18:09-0300\n"
+"POT-Creation-Date: 2002-05-12 01:17+0200\n"
+"PO-Revision-Date: 2002-05-12 21:43GMT\n"
 "Last-Translator: Pablo Gonzalo del Campo <pablodc@bigfoot.com>\n"
-"Language-Team: Spanish <traductores@es.gnome.org>\n"
+"Language-Team: español <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 0.9.6\n"
 
-#: main.c:531
+#: main.c:528
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "La ejecución de \"%s\" a ha fallado\t"
+msgstr "La ejecución de \"%s\" a ha fallado"
 
-#: main.c:657
+#: main.c:654
 msgid "Really quit MemProf?"
 msgstr "¿Realmente salir de MemProf?"
 
@@ -27,44 +28,44 @@ msgstr "¿Realmente salir de MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:702 memprof-strings.c:7
+#: main.c:699 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:795
+#: main.c:792
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "No puedo encontrar el ejecutable para \"%s\""
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Error"
 msgstr "Error de MemProf"
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Warning"
 msgstr "Advertencia de MemProf"
 
-#: main.c:1613
+#: main.c:1637
 msgid "Really detach from finished process?"
 msgstr "¿Realmente desconectarse de los procesos terminados?"
 
-#: main.c:1615
+#: main.c:1639
 msgid "Really detach from running process?"
 msgstr "¿Realmente desconectarse de los procesos ejecutándose?"
 
-#: main.c:1635
+#: main.c:1659
 msgid "Really kill running process?"
 msgstr "¿Realmente matar los procesos ejecutándose?"
 
-#: main.c:1665
+#: main.c:1689
 msgid "Create new windows for forked processes"
 msgstr "Crear nuevas ventanas para los procesos ejecutados (forked processes)"
 
-#: main.c:1667
+#: main.c:1691
 msgid "Retain windows for processes after exec()"
 msgstr "Retener las ventanas para procesos después de exec()"
 
-#: main.c:1697
+#: main.c:1721
 msgid "Cannot find memprof.glade2"
 msgstr "No puedo encontrar memprof.glade2"
 
@@ -116,7 +117,7 @@ msgstr "Seguir _exec()"
 msgid "Run Program"
 msgstr "Ejecutar Programa"
 
-#: memprof-strings.c:20 memprof-strings.c:74
+#: memprof-strings.c:20 memprof-strings.c:61
 msgid "Run"
 msgstr "Ejecutar"
 
@@ -234,93 +235,95 @@ msgid "Memory Profiling Tool"
 msgstr "Herramienta de Control de Memoria"
 
 #: memprof-strings.c:57
-msgid "Functions to Skip:"
-msgstr "Funciones a Ignorar:"
-
-#: memprof-strings.c:58 memprof-strings.c:63
-msgid "label37"
-msgstr "label37"
-
-#: memprof-strings.c:59 memprof-strings.c:64
-msgid "Add..."
-msgstr "Agregar..."
-
-#: memprof-strings.c:60 memprof-strings.c:65
-msgid "Delete"
-msgstr "Borrar"
-
-#: memprof-strings.c:61 memprof-strings.c:66
-msgid "Defaults"
-msgstr "Omisión"
-
-#: memprof-strings.c:62
-msgid "Regular expressions to Skip:"
-msgstr "Expresiones regulares a ignorar:"
-
-#: memprof-strings.c:67
-msgid "Profile Options"
-msgstr "Optiones de Perfil"
-
-#: memprof-strings.c:68
-msgid "Command to run on double click in stack trace:"
-msgstr "Comando a ejecutar al hacer doble click sobre la stack trace:"
-
-#: memprof-strings.c:69
-msgid "Leak Detection Options"
-msgstr "Opciones de detección de Leak"
-
-#: memprof-strings.c:70
 msgid "Adding Skip Function"
-msgstr "Agregando Funcion Ignorada"
+msgstr "Agregando Función Ignorada"
 
-#: memprof-strings.c:71 memprof-strings.c:81
+#: memprof-strings.c:58 memprof-strings.c:68
 msgid "Add"
 msgstr "Agregar"
 
-#: memprof-strings.c:72
+#: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr ""
-"Ingrese el nombre de una función a ignorar cuando se calculen los perfiles"
+msgstr "Ingrese el nombre de una función a ignorar cuando se calculen los perfiles"
 
-#: memprof-strings.c:73
+#: memprof-strings.c:60
 msgid "Run Executable"
 msgstr "Ejecutar Programa"
 
-#: memprof-strings.c:75
+#: memprof-strings.c:62
 msgid "Enter pathname to a executable"
 msgstr "Ingrese la ruta hacia un ejecutable"
 
-#: memprof-strings.c:76
+#: memprof-strings.c:63
 msgid "MemProf - Processes"
 msgstr "Procesos de MemProf"
 
-#: memprof-strings.c:77
+#: memprof-strings.c:64
 msgid "PID"
 msgstr "PID"
 
-#: memprof-strings.c:78
+#: memprof-strings.c:65
 msgid "Command Line"
 msgstr "Línea de comando"
 
-#: memprof-strings.c:79
+#: memprof-strings.c:66
 msgid "Status"
 msgstr "Estado"
 
-#: memprof-strings.c:80
+#: memprof-strings.c:67
 msgid "Adding Skip Regular Expression"
-msgstr "Agregando Expresion Regular Ignorada"
+msgstr "Agregando Expresión Regular Ignorada"
 
-#: memprof-strings.c:82
-msgid ""
-"Enter a regular expression of function names to skip when computing  profiles"
+#: memprof-strings.c:69
+msgid "Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
-"Ingrese una expresion regular de nombres de función a ignorar cuando se "
+"Ingrese una expresión regular de nombres de función a ignorar cuando se "
 "calculan los perfiles"
 
-#: leakdetect.c:585 profile.c:201
+#: memprof-strings.c:70
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: memprof-strings.c:71
+msgid "Functions to Skip:"
+msgstr "Funciones a Ignorar:"
+
+#: memprof-strings.c:72 memprof-strings.c:77
+msgid "label37"
+msgstr "label37"
+
+#: memprof-strings.c:73 memprof-strings.c:78
+msgid "Add..."
+msgstr "Agregar..."
+
+#: memprof-strings.c:74 memprof-strings.c:79
+msgid "Delete"
+msgstr "Borrar"
+
+#: memprof-strings.c:75 memprof-strings.c:80
+msgid "Defaults"
+msgstr "Omisión"
+
+#: memprof-strings.c:76
+msgid "Regular expressions to Skip:"
+msgstr "Expresiones regulares a ignorar:"
+
+#: memprof-strings.c:81
+msgid "Profile Options"
+msgstr "Opciones de Perfil"
+
+#: memprof-strings.c:82
+msgid "Command to run on double click in stack trace:"
+msgstr "Comando a ejecutar al hacer doble clic sobre la stack trace:"
+
+#: memprof-strings.c:83
+msgid "Leak Detection Options"
+msgstr "Opciones de detección de Leak"
+
+#: leakdetect.c:585 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr "No puedo abrar el archivo de salida: %s\n"
+msgstr "No puedo abrir el archivo de salida: %s\n"
 
 #: process.c:814
 msgid "Initial"
@@ -357,3 +360,4 @@ msgstr "Ocultar"
 #: tree.c:100
 msgid "Detach"
 msgstr "Desconectar"
+
