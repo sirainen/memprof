@@ -32,7 +32,7 @@
 #include <sys/wait.h>
 #include <sys/sysmacros.h>
 
-#include <gtk/gtksignal.h>
+#include <glib-object.h>
 
 #include <libgnome/libgnome.h>
 
@@ -50,7 +50,7 @@ static guint process_signals[LAST_SIGNAL] = { 0 };
 
 static void mp_process_class_init (MPProcessClass *class);
 static void mp_process_init (MPProcess *process);
-static void mp_process_finalize (GtkObject *object);
+static void mp_process_finalize (GObject *object);
 static void process_reinit (MPProcess *process);
 
 #define MP_PAGE_SIZE 4096
@@ -469,7 +469,7 @@ void
 process_exec_reset (MPProcess *process)
 {
 	process_reinit (process);
-	gtk_signal_emit (GTK_OBJECT (process), process_signals[RESET]);
+	g_signal_emit_by_name (process, "reset");
 }
 
 static void
@@ -654,56 +654,62 @@ process_parse_exec (const char *exec_string)
 	return g_strsplit (exec_string, " ", -1);
 }
 
-GtkType
+GType
 mp_process_get_type (void)
 {
-  static GtkType process_type = 0;
+	static GType process_type = 0;
 
-  if (!process_type)
-    {
-      static const GtkTypeInfo process_info =
-      {
-	"MPProcess",
-	sizeof (MPProcess),
-	sizeof (MPProcessClass),
-	(GtkClassInitFunc) mp_process_class_init,
-	(GtkObjectInitFunc) mp_process_init,
-        /* reserved_1 */ NULL,
-	/* reserved_2 */ NULL,
-	(GtkClassInitFunc) NULL,
-      };
+	if (!process_type) {
+		static const GTypeInfo process_info = {
+			sizeof (MPProcessClass),
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) mp_process_class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (MPProcess),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) mp_process_init
+		};
 
-      process_type = gtk_type_unique (GTK_TYPE_OBJECT, &process_info);
-    }
+		process_type = g_type_register_static (G_TYPE_OBJECT,
+						       "MPProcess",
+						       &process_info, 0);
+	}
 
-  return process_type;
+	return process_type;
 }
 
 static void
 mp_process_class_init (MPProcessClass *class)
 {
-	GtkObjectClass *object_class;
+	static gboolean initialized = FALSE;
 
-	object_class = GTK_OBJECT_CLASS (class);
-	
-	process_signals[STATUS_CHANGED] =
-		gtk_signal_new ("status_changed",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (MPProcessClass, status_changed),
-				gtk_marshal_NONE__NONE,
-				GTK_TYPE_NONE, 0);
+	GObjectClass *o_class = G_OBJECT_CLASS (class);
 
-	process_signals[RESET] =
-		gtk_signal_new ("reset",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (MPProcessClass, reset),
-				gtk_marshal_NONE__NONE,
-				GTK_TYPE_NONE, 0);
+	o_class->finalize = mp_process_finalize;
 
-	gtk_object_class_add_signals (object_class, process_signals, LAST_SIGNAL);
-	object_class->finalize = mp_process_finalize;
+	if (!initialized) {
+		process_signals[STATUS_CHANGED] =
+			g_signal_new ("status_changed",
+			              MP_TYPE_PROCESS,
+			              G_SIGNAL_RUN_LAST,
+			              G_STRUCT_OFFSET (MPProcessClass, status_changed),
+			              NULL, NULL,
+			              g_cclosure_marshal_VOID__VOID,
+			              G_TYPE_NONE, 0);
+		
+		process_signals[RESET] =
+			g_signal_new ("reset",
+			              MP_TYPE_PROCESS,
+			              G_SIGNAL_RUN_LAST,
+			              G_STRUCT_OFFSET (MPProcessClass, reset),
+				      NULL, NULL,
+			              g_cclosure_marshal_VOID__VOID,
+			              G_TYPE_NONE, 0);
+
+		initialized = TRUE;
+	}
 }
 
 static void
@@ -727,12 +733,11 @@ mp_process_init (MPProcess *process)
 	process->follow_fork = FALSE;
 	process->follow_exec = FALSE;
 
-	gtk_object_ref (GTK_OBJECT (process));
-	gtk_object_sink (GTK_OBJECT (process));
+	g_object_ref (G_OBJECT (process));
 }
 
 static void 
-mp_process_finalize (GtkObject *object)
+mp_process_finalize (GObject *object)
 {
 	MPProcess *process = MP_PROCESS (object);
 
@@ -747,7 +752,7 @@ process_new (MPServer *server)
 {
 	MPProcess *process;
 
-	process = gtk_type_new (mp_process_get_type ());
+	process = g_type_create_instance (MP_TYPE_PROCESS);
 
 	process->server = server;
 
@@ -793,7 +798,7 @@ process_set_status (MPProcess *process, MPProcessStatus status)
 {
 	if (process->status != status) {
 		process->status = status;
-		gtk_signal_emit (GTK_OBJECT (process), process_signals[STATUS_CHANGED]);
+		g_signal_emit_by_name (process, "status_changed", NULL);
 	}
 }
 

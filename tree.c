@@ -142,7 +142,7 @@ static void
 ensure_tree_window (void)
 {
 	if (!tree_window) {
-		GladeXML *xml = glade_xml_new (glade_file, "TreeWindow");
+		GladeXML *xml = glade_xml_new (glade_file, "TreeWindow", NULL);
 		
 		tree_window = glade_xml_get_widget (xml, "TreeWindow");
 		gtk_window_set_default_size (GTK_WINDOW (tree_window), 400, 300);
@@ -235,8 +235,8 @@ tree_window_add (ProcessWindow *window)
 	gtk_ctree_node_set_row_data (GTK_CTREE (tree_ctree), node, window);
 	update_node (node);
 
-	gtk_signal_connect (GTK_OBJECT (process), "status_changed",
-			    GTK_SIGNAL_FUNC (status_changed_cb), NULL);
+	g_signal_connect (G_OBJECT (process), "status_changed",
+			  G_CALLBACK (status_changed_cb), NULL);
 }
 
 static void
@@ -268,5 +268,5 @@ tree_window_remove (ProcessWindow *window)
 
 	gtk_ctree_remove_node (GTK_CTREE (tree_ctree), node);
 
-	gtk_signal_disconnect_by_func (GTK_OBJECT (process), GTK_SIGNAL_FUNC (status_changed_cb), NULL);
+	g_signal_handlers_disconnect_by_func (G_OBJECT (process), G_CALLBACK (status_changed_cb), NULL);
 }

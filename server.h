@@ -19,19 +19,19 @@
  */
 /*====*/
 
-#include <gtk/gtkobject.h>
+#include <glib-object.h>
 #include <process.h>
 
 #define MP_TYPE_SERVER            (mp_server_get_type ())
-#define MP_SERVER(obj)            (GTK_CHECK_CAST ((obj), MP_TYPE_SERVER, MPServer))
-#define MP_SERVER_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_SERVER, MPServerClass))
-#define MP_IS_SERVER(obj)         (GTK_CHECK_TYPE ((obj), MP_TYPE_SERVER))
-#define MP_IS_SERVER_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), MP_TYPE_SERVER))
-#define MP_SERVER_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), MP_TYPE_SERVER, MPServerClass))
+#define MP_SERVER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MP_TYPE_SERVER, MPServer))
+#define MP_SERVER_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), MP_TYPE_SERVER, MPServerClass))
+#define MP_IS_SERVER(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MP_TYPE_SERVER))
+#define MP_IS_SERVER_CLASS(obj)   (G_TYPE_CHECK_CLASS_TYPE ((obj), MP_TYPE_SERVER))
+#define MP_SERVER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MP_TYPE_SERVER, MPServerClass))
 
 typedef struct _MPServerClass MPServerClass;
 
-GtkType   mp_server_get_type   (void);
+GType   mp_server_get_type     (void);
 MPServer *mp_server_new        (void);
 int       mp_server_instrument (MPServer  *server,
 				char     **args);

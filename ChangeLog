@@ -1,3 +1,33 @@
+Tue Dec 11 00:41:13  Kristian Rietveld  <kris@gtk.org>
+
+	Port to gnome2 platform.
+
+	* Makefile.am: remove intl from SUBDIRS, pkgdata_DATA:
+	s/glade/glade2/, add memprof.glade2 build rule, add -export-dynamic
+	as LDFLAG
+
+	* acconfig.h: add GETTEXT_PACKAGE
+
+	* autogen.sh: replace with 'gnome2 generic app autogen.sh'
+
+	* configure.in: require autoconf 2.52, require intltool,
+	require libglade-convert, use pkg-config instead of gnome-config,
+	don't generate intl/Makefile
+
+	* main.c: change to GObject where needed, ported glade_xml code,
+	various other porting, get NLS support right and read
+	memprof.glade2 instead of memprof.glade
+
+	* memprof-strings.c: updated by glade
+
+	* memprof.desktop: add Dutch Name and Comment
+
+	* memprof.glade: remove invalid UTF-8
+
+	* process.[ch], server.[ch]: port to new object system
+
+	* tree.c: small porting action
+
 2001-12-01  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* memintercept.c (memalign): Fix typo (name should be memalign(),

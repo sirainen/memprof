@@ -120,7 +120,7 @@
 
 	    <widget>
 	      <class>GtkPixmapMenuItem</class>
-	      <name>schlieﬂen1</name>
+	      <name>close1</name>
 	      <signal>
 		<name>activate</name>
 		<handler>close_cb</handler>

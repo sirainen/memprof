@@ -319,7 +319,7 @@ profile_ref_button_press (GtkWidget      *widget,
 			}
 		}
 
-		gtk_signal_emit_stop_by_name (GTK_OBJECT (widget), "button_press_event");
+		g_signal_stop_emission_by_name (G_OBJECT (widget), "button_press_event");
 		return TRUE;
 	}
 	
@@ -561,7 +561,7 @@ leak_stack_button_press (GtkWidget      *widget,
 			leak_stack_run_command (pwin, block, my_row);
 		}
 
-		gtk_signal_emit_stop_by_name (GTK_OBJECT (widget), "button_press_event");
+		g_signal_stop_emission_by_name (G_OBJECT (widget), "button_press_event");
 		return TRUE;
 	}
 	
@@ -681,12 +681,9 @@ status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 			tree_window_remove (pwin);
 		
 			if (pwin->process) {
-				gtk_signal_disconnect_by_func (GTK_OBJECT (pwin->process),
-							       GTK_SIGNAL_FUNC (status_changed_cb), pwin);
-				
-				gtk_signal_disconnect_by_func (GTK_OBJECT (pwin->process),
-							       GTK_SIGNAL_FUNC (reset_cb), pwin);
-				gtk_object_unref (GTK_OBJECT (pwin->process));
+				g_signal_handlers_disconnect_by_func (G_OBJECT (pwin->process), G_CALLBACK (status_changed_cb), pwin);
+				g_signal_handlers_disconnect_by_func (G_OBJECT (pwin->process), G_CALLBACK (reset_cb), pwin);
+				g_object_unref (G_OBJECT (pwin->process));
 				pwin->process = NULL;
 			}
 			
@@ -748,10 +745,10 @@ init_process (ProcessWindow *pwin, MPProcess *process)
 			       update_status,
 			       pwin);
 
-	gtk_signal_connect (GTK_OBJECT (process), "status_changed",
-			    GTK_SIGNAL_FUNC (status_changed_cb), pwin);
-	gtk_signal_connect (GTK_OBJECT (process), "reset",
-			    GTK_SIGNAL_FUNC (reset_cb), pwin);
+	g_signal_connect (G_OBJECT (process), "status_changed",
+			G_CALLBACK (status_changed_cb), pwin);
+	g_signal_connect (G_OBJECT (process), "reset",
+			G_CALLBACK (reset_cb), pwin);
 
 	tree_window_add (pwin);
 }
@@ -813,7 +810,7 @@ run_cb (GtkWidget *widget)
 
        ProcessWindow *pwin = pwin_from_widget (widget);
        
-       xml = glade_xml_new (glade_file, "RunDialog");
+       xml = glade_xml_new (glade_file, "RunDialog", NULL);
        run_dialog = glade_xml_get_widget (xml, "RunDialog");
        entry = glade_xml_get_widget (xml, "RunDialog-entry");
 
@@ -821,7 +818,7 @@ run_cb (GtkWidget *widget)
 				  GTK_SIGNAL_FUNC (gtk_widget_activate),
 				  GTK_OBJECT (glade_xml_get_widget (xml, "RunDialog-run")));
 
-       gtk_object_destroy (GTK_OBJECT (xml));
+       g_object_unref (G_OBJECT (xml));
 
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (run_dialog),
@@ -1054,7 +1051,7 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkWidget *skip_clist = glade_xml_get_widget (preferences_xml, "skip-clist");
        GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
 
-       xml = glade_xml_new (glade_file, "SkipAddDialog");
+       xml = glade_xml_new (glade_file, "SkipAddDialog", NULL);
        dialog = glade_xml_get_widget (xml, "SkipAddDialog");
        entry = glade_xml_get_widget (xml, "SkipAddDialog-entry");
 
@@ -1062,7 +1059,7 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 				  GTK_SIGNAL_FUNC (gtk_widget_activate),
 				  GTK_OBJECT (glade_xml_get_widget (xml, "SkipAddDialog-add")));
 
-       gtk_object_destroy (GTK_OBJECT (xml));
+       g_object_unref (G_OBJECT (xml));
 
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
@@ -1152,7 +1149,7 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkWidget *skip_regexes_clist = glade_xml_get_widget (preferences_xml, "skip-regexes-clist");
        GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
 
-       xml = glade_xml_new (glade_file, "SkipRegexesAddDialog");
+       xml = glade_xml_new (glade_file, "SkipRegexesAddDialog", NULL);
        dialog = glade_xml_get_widget (xml, "SkipRegexesAddDialog");
        entry = glade_xml_get_widget (xml, "SkipRegexesAddDialog-entry");
 
@@ -1160,7 +1157,7 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 				  GTK_SIGNAL_FUNC (gtk_widget_activate),
 				  GTK_OBJECT (glade_xml_get_widget (xml, "SkipRegexesAddDialog-add")));
 
-       gtk_object_destroy (GTK_OBJECT (xml));
+       g_object_unref (G_OBJECT (xml));
 
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
@@ -1232,7 +1229,7 @@ preferences_destroy_cb (GtkWidget *widget, GtkObject **xml)
 {
 	g_assert( xml != NULL );
 
-	gtk_object_destroy(*xml);
+	g_object_unref(*xml);
 	/* Mark the property box as destroyed so we don't try to touch it again */
 	*xml = NULL;
 }
@@ -1254,7 +1251,7 @@ preferences_cb (GtkWidget *widget)
 		return;
        }
 
-       xml = glade_xml_new (glade_file, "Preferences");
+       xml = glade_xml_new (glade_file, "Preferences", NULL);
        skip_clist = glade_xml_get_widget (xml, "skip-clist");
        skip_regexes_clist = glade_xml_get_widget (xml, "skip-regexes-clist");
        stack_command_entry = glade_xml_get_widget (xml, "stack-command-entry");
@@ -1297,10 +1294,12 @@ preferences_cb (GtkWidget *widget)
 
        gtk_signal_connect (GTK_OBJECT (property_box), "apply",
 			   GTK_SIGNAL_FUNC (preferences_apply_cb),
-			   GTK_OBJECT (xml));
+			   G_OBJECT (xml));
        gtk_signal_connect (GTK_OBJECT (property_box), "destroy",
 		       	   GTK_SIGNAL_FUNC(preferences_destroy_cb),
 			   &(xml));
+
+       gtk_widget_show_all (property_box);
 }
 
 void
@@ -1329,13 +1328,15 @@ about_cb (GtkWidget *widget)
 
        ProcessWindow *pwin = pwin_from_widget (widget);
 	
-       xml = glade_xml_new (glade_file, "About");
+       xml = glade_xml_new (glade_file, "About", NULL);
        dialog = glade_xml_get_widget (xml, "About");
-       gtk_object_destroy (GTK_OBJECT (xml));
+       g_object_unref (G_OBJECT (xml));
 
        gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
-       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
-				GTK_WINDOW (pwin->main_window));
+       gtk_window_set_transient_for (GTK_WINDOW (dialog),
+                                     GTK_WINDOW (pwin->main_window->window));
+/*       gnome_dialog_set_parent (GTK_DIALOG (dialog),
+				GTK_WINDOW (pwin->main_window));*/
 
        gtk_widget_show (dialog);
 }
@@ -1440,7 +1441,7 @@ process_window_new (void)
        pwin->usage_high = 0;
        pwin->usage_leaked = 0;
 
-       xml = glade_xml_new (glade_file, "MainWindow");
+       xml = glade_xml_new (glade_file, "MainWindow", NULL);
 
        pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
 
@@ -1540,7 +1541,7 @@ process_window_new (void)
        gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
        glade_xml_signal_autoconnect (xml);
-       gtk_object_destroy (GTK_OBJECT (xml));
+       g_object_unref (G_OBJECT (xml));
 
        return pwin;
 }
@@ -1577,14 +1578,16 @@ process_window_hide (ProcessWindow *pwin)
 void
 check_quit (void)
 {
-	GList *toplevels;
+	GList *toplevels, *tmplist;
 	
-	toplevels = gtk_container_get_toplevels ();
-	while (toplevels) {
+	tmplist = toplevels = gtk_window_list_toplevels ();
+	while (tmplist) {
 		if (GTK_WIDGET_VISIBLE (toplevels->data))
 			return;
-		toplevels = toplevels->next;
+		tmplist = tmplist->next;
 	}
+
+	g_list_free (toplevels);
 
 	gtk_main_quit ();
 }
@@ -1673,25 +1676,29 @@ main(int argc, char **argv)
 	*/
        signal (SIGCHLD, sigchld_handler);
        
-       bindtextdomain (PACKAGE, GNOMELOCALEDIR);
-       textdomain (PACKAGE);
+       bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+       textdomain (GETTEXT_PACKAGE);
+
+#ifdef HAVE_BIND_TEXTDOMAIN_CODESET
+       bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+#endif
 
        init_results = gnome_init_with_popt_table (PACKAGE, VERSION,
 						  argc, argv,
 						  memprof_popt_options, 0, &ctx);
        glade_gnome_init ();
 
-       glade_file = "./memprof.glade";
+       glade_file = "./memprof.glade2";
        if (!g_file_exists (glade_file)) {
-	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
+	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade2");
        }
        if (!g_file_exists (glade_file)) {
-	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
+	       show_error (ERROR_FATAL, _("Cannot find memprof.glade2"));
        }
 
        global_server = mp_server_new ();
-       gtk_signal_connect (GTK_OBJECT (global_server), "process_created",
-			   GTK_SIGNAL_FUNC (process_created_cb), NULL);
+       g_signal_connect (G_OBJECT (global_server), "process_created",
+		       G_CALLBACK (process_created_cb), NULL);
        
        initial_window = process_window_new ();
 

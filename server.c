@@ -27,7 +27,7 @@
 #include <sys/stat.h>
 #include <sys/socket.h>
 
-#include <gtk/gtksignal.h>
+#include <glib-object.h>
 #include <libgnome/libgnome.h>
 
 #include "memintercept.h"
@@ -46,7 +46,7 @@
 
 static void   mp_server_class_init  (MPServerClass *class);
 static void   mp_server_init        (MPServer      *server);
-static void   mp_server_finalize    (GtkObject     *object);
+static void   mp_server_finalize    (GObject       *object);
 
 static char *   find_lib_location     (void);
 static void     create_control_socket (MPServer     *server);
@@ -55,7 +55,7 @@ static gboolean control_func          (GIOChannel   *source,
 				       gpointer      data);
 struct _MPServer
 {
-	GtkObject parent_instance;
+	GObject parent_instance;
 	
 	char *lib_location;
 	char *socket_path;
@@ -70,7 +70,7 @@ struct _MPServer
 };
 
 struct _MPServerClass {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 
         void (*process_created) (MPServer *server, MPProcess *process);
 };
@@ -97,24 +97,27 @@ fatal (const char *format, ...)
 	exit (1);
 }
 
-GtkType
+GType
 mp_server_get_type (void)
 {
-	static GtkType server_type = 0;
+	static GType server_type = 0;
 
 	if (!server_type) {
-		static const GtkTypeInfo server_info = {
-			"MPServer",
-			sizeof (MPServer),
+		static const GTypeInfo server_info = {
 			sizeof (MPServerClass),
-			(GtkClassInitFunc) mp_server_class_init,
-			(GtkObjectInitFunc) mp_server_init,
-			/* reserved_1 */ NULL,
-			/* reserved_2 */ NULL,
-			(GtkClassInitFunc) NULL,
+			(GBaseInitFunc) NULL,
+			(GBaseFinalizeFunc) NULL,
+			(GClassInitFunc) mp_server_class_init,
+			NULL, /* class_finalize */
+			NULL, /* class_data */
+			sizeof (MPServer),
+			0, /* n_preallocs */
+			(GInstanceInitFunc) mp_server_init
 		};
 
-		server_type = gtk_type_unique (GTK_TYPE_OBJECT, &server_info);
+		server_type = g_type_register_static (G_TYPE_OBJECT,
+						      "MPServer",
+						      &server_info, 0);
 	}
 
 	return server_type;
@@ -123,23 +126,25 @@ mp_server_get_type (void)
 static void
 mp_server_class_init (MPServerClass *class)
 {
-	GtkObjectClass *object_class;
+	static gboolean initialized = FALSE;
 
-	object_class = GTK_OBJECT_CLASS (class);
+	GObjectClass *o_class = G_OBJECT_CLASS (class);
 
-	object_class->finalize = mp_server_finalize;
+	o_class->finalize = mp_server_finalize;
 	class->process_created = NULL;
 
-	server_signals[PROCESS_CREATED] =
-		gtk_signal_new ("process_created",
-				GTK_RUN_LAST,
-				object_class->type,
-				GTK_SIGNAL_OFFSET (MPServerClass, process_created),
-				gtk_marshal_NONE__POINTER,
-				GTK_TYPE_NONE, 1,
-				MP_TYPE_PROCESS);
+	if (!initialized) {
+		server_signals[PROCESS_CREATED] =
+			g_signal_new ("process_created",
+				      MP_TYPE_SERVER,
+				      G_SIGNAL_RUN_LAST,
+				      G_STRUCT_OFFSET (MPServerClass, process_created),
+				      NULL, NULL,
+				      g_cclosure_marshal_VOID__POINTER,
+				      G_TYPE_NONE, 1, MP_TYPE_PROCESS);
 
-	gtk_object_class_add_signals (object_class, server_signals, LAST_SIGNAL);
+		initialized = TRUE;
+	}
 }
 
 static void
@@ -155,12 +160,11 @@ mp_server_init (MPServer *server)
 	server->control_watch = g_io_add_watch (channel, G_IO_IN | G_IO_HUP, control_func, server);
 	g_io_channel_unref (channel);
 
-	gtk_object_ref (GTK_OBJECT (server));
-	gtk_object_sink (GTK_OBJECT (server));
+	g_object_ref (G_OBJECT (server));
 }
 
 static void
-mp_server_finalize (GtkObject *object)
+mp_server_finalize (GObject *object)
 {
 	MPServer *server = MP_SERVER (object);
 	
@@ -177,7 +181,7 @@ mp_server_finalize (GtkObject *object)
 MPServer *
 mp_server_new (void)
 {
-	MPServer *server = gtk_type_new (mp_server_get_type ());
+	MPServer *server = g_type_create_instance (MP_TYPE_SERVER);
 
 	return server;
 }
@@ -412,7 +416,7 @@ create_control_socket (MPServer *server)
 static void
 mp_server_process_created (MPServer *server, MPProcess *process)
 {
-	gtk_signal_emit (GTK_OBJECT (server), server_signals[PROCESS_CREATED], process);
+	g_signal_emit_by_name (server, "process_created", process);
 }
 
 /* Input func to receive new process connections */

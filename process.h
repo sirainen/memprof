@@ -26,16 +26,16 @@
 #include <glib.h>
 #include <unistd.h>
 
-#include <gtk/gtkobject.h>
+#include <glib-object.h>
 
 #include "memprof.h"
 
 #define MP_TYPE_PROCESS            (mp_process_get_type ())
-#define MP_PROCESS(obj)            (GTK_CHECK_CAST ((obj), MP_TYPE_PROCESS, MPProcess))
-#define MP_PROCESS_CLASS(klass)    (GTK_CHECK_CLASS_CAST ((klass), GTK_TYPE_PROCESS, MPProcessClass))
-#define MP_IS_PROCESS(obj)         (GTK_CHECK_TYPE ((obj), MP_TYPE_PROCESS))
-#define MP_IS_PROCESS_CLASS(klass) (GTK_CHECK_CLASS_TYPE ((klass), MP_TYPE_PROCESS))
-#define MP_PROCESS_GET_CLASS(obj)  (GTK_CHECK_GET_CLASS ((obj), MP_TYPE_PROCESS, MPProcessClass))
+#define MP_PROCESS(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MP_TYPE_PROCESS, MPProcess))
+#define MP_PROCESS_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), MP_TYPE_PROCESS, MPProcessClass))
+#define MP_IS_PROCESS(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), MP_TYPE_PROCESS))
+#define MP_IS_PROCESS_CLASS(obj)   (G_TYPE_CHECK_CLASS_TYPE ((obj), MP_TYPE_PROCESS))
+#define MP_PROCESS_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MP_TYPE_PROCESS, MPProcessClass))
 
 /* forward declaration */
 typedef struct _MPServer MPServer;
@@ -54,7 +54,7 @@ typedef enum {
 
 struct _MPProcess
 {
-	GtkObject parent_instance;
+	GObject parent_instance;
 
 	MPProcessStatus status;
 	
@@ -84,13 +84,13 @@ struct _MPProcess
 };
 
 struct _MPProcessClass {
-	GtkObjectClass parent_class;
+	GObjectClass parent_class;
 
 	void (*status_changed) (MPProcess *process);
 	void (*reset)          (MPProcess *process);
 };
 
-GtkType     mp_process_get_type     (void);
+GType       mp_process_get_type     (void);
 MPProcess * process_new             (MPServer           *server);
 MPProcess * process_duplicate       (MPProcess          *process);
 void        process_set_follow_fork (MPProcess          *process,
