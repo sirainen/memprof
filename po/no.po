@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2002-07-16 10:04+0200\n"
+"POT-Creation-Date: 2003-01-26 10:09+0100\n"
+"PO-Revision-Date: 2003-01-26 10:10+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,53 +18,65 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åpne utdata-filen: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Kjøring av \"%s\" feilet"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Virkelig avslutte MemProf?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kunne ikke finne kjørbar fil for \"%s\""
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "MemProf feil"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "MemProf advarsel"
 
-#: main.c:1666
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig koble fra avsluttet prosess?"
 
-#: main.c:1668
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig koble fra kjørende prosess?"
 
-#: main.c:1698
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "Vil du virkelig drepe kjørende prosess?"
 
-#: main.c:1731
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Opprett nye vinduer for prosesser som har fork()et"
 
-#: main.c:1733
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "Bevar vinduer for prosesser etter exec()"
 
-#: main.c:1770
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "Type profileringsinformasjon som skal samles"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Antall datapunkter per sekund for tidsprofil (1k=1000)"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Flagget --profile må være ett av «memory», «cycles» eller «time»\n"
+
+#: main.c:1837
 msgid "Cannot find memprof.glade"
 msgstr "Kan ikke finne memprof.glade"
 
@@ -152,9 +164,8 @@ msgstr ""
 "beregning av profiler"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
-msgstr "Skriv inn sti til eksekverbar fil"
+msgstr "Skriv inn sti til en eksekverbar fil"
 
 #: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
@@ -322,29 +333,30 @@ msgstr "Kjø_r program..."
 msgid "_Settings"
 msgstr "Inn_stillinger"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Initiell"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Starter"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Kjører"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Avslutter"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Ute av funksjon"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Kan ikke finne libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Kunne ikke finne %s"
 
 #: tree.c:91
 msgid "Show"
@@ -357,9 +369,3 @@ msgstr "Skjul"
 #: tree.c:101
 msgid "Detach"
 msgstr "Koble fra"
-
-#~ msgid "Add..."
-#~ msgstr "Legg til..."
-
-#~ msgid "Delete"
-#~ msgstr "Slett"
