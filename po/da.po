@@ -11,8 +11,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2002-08-31 01:10+0200\n"
+"POT-Creation-Date: 2002-09-07 17:48+0200\n"
+"PO-Revision-Date: 2002-09-07 17:50+0200\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -24,53 +24,65 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åbne filen: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Kørsel af '%s' mislykkedes"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Vil du virkelig afslutte Hukommelsesprofilering?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "Hukommelsesprofilering"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kunne ikke finde kørbar fil for '%s'"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "Hukommelsesprofileringsfejl"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "Hukommelsesprofileringsadvarsel"
 
-#: main.c:1666
+#: main.c:1678
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig frigøre den afsluttede proces?"
 
-#: main.c:1668
+#: main.c:1680
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig frigøre den kørende proces?"
 
-#: main.c:1698
+#: main.c:1710
 msgid "Really kill running process?"
 msgstr "Vil du virkelig dræbe den kørende proces?"
 
-#: main.c:1731
+#: main.c:1747
 msgid "Create new windows for forked processes"
 msgstr "Opret nye vinduer for fraspaltede processer"
 
-#: main.c:1733
+#: main.c:1749
 msgid "Retain windows for processes after exec()"
 msgstr "Behold vinduer for processer efter exec()"
 
-#: main.c:1770
+#: main.c:1751
+msgid "Type of profiling information to collect"
+msgstr "Type af profileringsoplysninger der skal indsamles"
+
+#: main.c:1753
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Antal prøver/sek. for tidsprofilering (1k=1000)"
+
+#: main.c:1802
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Parameteren til --profile skal være 'memory', 'cycles' eller 'time'\n"
+
+#: main.c:1843
 msgid "Cannot find memprof.glade"
 msgstr "Kan ikke finde memprof.glade"
 
@@ -326,29 +338,30 @@ msgstr "_Kør program"
 msgid "_Settings"
 msgstr "_Indstillinger"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Begyndelse"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Starter"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Kører"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Afslutter"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Ude af drift"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Kan ikke finde libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Kan ikke finde %s"
 
 #: tree.c:91
 msgid "Show"
