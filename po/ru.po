@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-05-07 19:39+0000\n"
-"PO-Revision-Date: 2000-05-07 19:54+00:00\n"
+"POT-Creation-Date: 2000-05-14 23:13+0000\n"
+"PO-Revision-Date: 2000-05-14 23:15+00:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -157,7 +157,7 @@ msgstr "Инструмент профилирования памяти"
 
 #: memprof-strings.c:49
 msgid "Functions to Skip:"
-msgstr ""
+msgstr "Функции для пропуска:"
 
 #: memprof-strings.c:50
 msgid "label37"
@@ -189,11 +189,11 @@ msgstr "Параметры засечки утечек"
 
 #: memprof-strings.c:57
 msgid "Adding Skip Function"
-msgstr ""
+msgstr "Добавить функцию пропуска"
 
 #: memprof-strings.c:58
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr ""
+msgstr "Введите название функции для пропуска при вычислении профиля"
 
 #: memprof-strings.c:59
 msgid "Add"
@@ -236,7 +236,7 @@ msgstr "Предупреждение MemProf"
 
 #: main.c:1248
 msgid "Create new windows for forked processes"
-msgstr ""
+msgstr "Создать новое окно для порожденного процесса"
 
 #: main.c:1250
 msgid "Retain windows for processes after exec()"
