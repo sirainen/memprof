@@ -401,6 +401,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 	GtkTreeStore *tree_store;
 	GtkListStore *list_store;
 	GtkTreeModel *list_model;
+	GtkTreePath *path;
 	GPtrArray *caller_list;
 	ProfileDescendantTree *descendant_tree;
 	int i;
@@ -435,6 +436,13 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 	gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_descendants_tree_view),
 				 GTK_TREE_MODEL (tree_store));
 
+	/* Expand the toplevel of the descendant tree so we see the immediate
+	 * descendants.
+	 */
+	path = gtk_tree_path_new_from_indices (0, -1);
+	gtk_tree_view_expand_row (GTK_TREE_VIEW (pwin->profile_descendants_tree_view), path, FALSE);
+	gtk_tree_path_free (path);
+	
 	if (was_sorted)
 		gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (tree_store),
 						      old_sort_column, old_sort_type);
