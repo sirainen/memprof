@@ -1,12 +1,11 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Valek Filippov <frob@df.ru>, 2000.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-05-24 12:16+0000\n"
-"PO-Revision-Date: 2000-05-24 12:19+00:00\n"
+"POT-Creation-Date: 2000-05-25 17:57+0000\n"
+"PO-Revision-Date: 2000-05-25 17:59+00:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +17,7 @@ msgstr ""
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:659 memprof-strings.c:7
+#: main.c:676 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
@@ -256,40 +255,48 @@ msgstr "Состояние"
 msgid "Cannot open output file: %s\n"
 msgstr "Невозможно открыть файл вывода: %s\n"
 
-#: main.c:496
+#: main.c:502
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Выполнение \"%s\" не удалось"
 
-#: main.c:622
+#: main.c:628
 msgid "Really quit MemProf?"
 msgstr "Действительно выйти из MemProf?"
 
-#: main.c:717
+#: main.c:769
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Невозможно найти исполняемую программу для \"%s\""
 
-#: main.c:1157
+#: main.c:1207
 msgid "MemProf Error"
 msgstr "Ошибка MemProf"
 
-#: main.c:1157
+#: main.c:1207
 msgid "MemProf Warning"
 msgstr "Предупреждение MemProf"
 
-#: main.c:1345
+#: main.c:1451
+msgid "Really detach from finished process?"
+msgstr "Отсоединить от завершенного процесса?"
+
+#: main.c:1453
+msgid "Really detach from running process?"
+msgstr "Отсоединить от запущенного процесса?"
+
+#: main.c:1473
+msgid "Really kill running process?"
+msgstr "Уничтожить запущенный процесс?"
+
+#: main.c:1503
 msgid "Create new windows for forked processes"
 msgstr "Создать новое окно для порожденного процесса"
 
-#: main.c:1347
+#: main.c:1505
 msgid "Retain windows for processes after exec()"
 msgstr "Сохранять окна для процессов после exec()"
 
-#: main.c:1369
+#: main.c:1531
 msgid "Cannot find memprof.glade"
 msgstr "Не удалось найти memprof.glade"
-
-#: main.c:1453
-msgid "Kill running process?"
-msgstr "Уничтожить запущенный процесс?"
