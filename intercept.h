@@ -20,59 +20,26 @@
  */
 /*====*/
 
-typedef union _MIInfo MIInfo;
-typedef struct _MIInfoAny MIInfoAny;
-typedef struct _MIInfoAlloc MIInfoAlloc;
-typedef struct _MIInfoFork MIInfoFork;
-typedef struct _MIInfoExec MIInfoExec;
+#ifndef __INTERCEPT_H__
+#define __INTERCEPT_H__
 
-typedef enum {
-	MI_MALLOC,
-	MI_REALLOC,
-	MI_FREE,
-	MI_TIME,
-	MI_EXEC,
-	MI_NEW,
-	MI_FORK,
-	MI_CLONE,
-	MI_EXIT
-} MIOperation;
+/* Functions provided by core to speedintercept/memintercept */
 
-struct _MIInfoAny {
-	MIOperation operation;
-	pid_t pid;
-	unsigned int seqno;
-};
+typedef int MIBool;
 
-struct _MIInfoAlloc {
-	MIOperation operation;
-	pid_t  pid;
-	unsigned int seqno;
-	void  *old_ptr;
-	void  *new_ptr;
-	size_t size;
-	unsigned int stack_size;
-};
+#define MI_TRUE 1
+#define MI_FALSE 0
 
-struct _MIInfoFork {
-	MIOperation operation;
-	pid_t pid;
-	unsigned int seqno;
-	pid_t new_pid;
-	pid_t new_fd;
-};
+void mi_write_stack (int      n_frames,
+		     void   **frames,
+		     void    *data);
+MIBool  mi_tracing     (void);
+MIBool  mi_check_init  (void);
 
-struct _MIInfoExec {
-	MIOperation operation;
-	pid_t pid;
-	unsigned int seqno;
-};
+/* Hooks provided by speedintercept/memintercpet to core */
 
-union _MIInfo {
-	MIOperation operation;
-	MIInfoAny any;
-	MIInfoAlloc alloc;
-	MIInfoFork fork;
-	MIInfoExec exec;
-};
+void mi_init ();
+void mi_start ();
+void mi_stop ();
 
+#endif /* __INTERCEPT_H__ */

@@ -30,13 +30,24 @@
 #define MP_IS_SERVER_CLASS(obj)   (G_TYPE_CHECK_CLASS_TYPE ((obj), MP_TYPE_SERVER))
 #define MP_SERVER_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), MP_TYPE_SERVER, MPServerClass))
 
+typedef enum {
+	MP_PROFILE_MEMORY,
+	MP_PROFILE_CYCLES,
+	MP_PROFILE_TIME
+} MPProfileType;
+
 typedef struct _MPServerClass MPServerClass;
 
 GType   mp_server_get_type     (void);
 MPServer *mp_server_new        (void);
-int       mp_server_instrument (MPServer     *server,
-				const char   *program,
-				char        **args);
+
+void mp_server_set_profile_type (MPServer       *server,
+				 MPProfileType   type);
+void mp_server_set_interval     (MPServer       *server,
+				 guint           usecs);
+int  mp_server_instrument       (MPServer       *server,
+				 const char     *program,
+				 char          **args);
 
 MPProcess *mp_server_find_process       (MPServer  *server,
 					 pid_t      pid);

@@ -1,3 +1,30 @@
+Thu Sep  5 14:54:33 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* Makefile.am server.c: Move libmemintercept.so into
+	/usr/lib/memprof.
+
+	* Makefile.am main.c server.[ch]: Add options for 
+	turning on and controlling speed profiling, install
+	'speedprof' as a symlink, change behavior when
+	run as speedprof.
+	
+	* memprof.glade main.c: Hide the leak detection
+	UI when in 'speedprof' mode.
+
+	* memintercept.c intercept.[ch]: Move the intercept-library
+	stuff that is shared between memory and speed profiling
+	into intercept.[ch].
+
+	* speedintercept.c: Intercept library for speed profiling.
+
+	* memprof.h process.c: Add a MI_TIME operation.
+
+	* mi-perfctr.[ch] perfctr.h: Speed profiling via the
+	PIII performance monitoring counters and the perfctr
+	driver.
+
+	* memprof.spec: Update.
+
 Sat Aug 31 22:24:22 2002  Kristian Rietveld  <kris@gtk.org>
 
 	* Release 0.5.1

@@ -85,7 +85,7 @@
                         </child>
 
                         <child>
-                          <widget class="GtkImageMenuItem" id="save_leak_info1">
+                          <widget class="GtkImageMenuItem" id="save-leak-info">
                             <property name="label" translatable="yes">Save _Leak Info...</property>
                             <property name="visible">yes</property>
                             <property name="use_underline">yes</property>
@@ -160,7 +160,7 @@
                         </child>
 
                         <child>
-                          <widget class="GtkImageMenuItem" id="generate_leak_info1">
+                          <widget class="GtkImageMenuItem" id="generate-leak-report">
                             <property name="label" translatable="yes">Generate _Leak Report</property>
                             <property name="visible">yes</property>
                             <property name="use_stock">no</property>
@@ -368,7 +368,7 @@
                 </child>
 
                 <child>
-                  <widget class="button" id="button24">
+                  <widget class="button" id="toolbar-leaks-button">
                     <property name="tooltip" translatable="yes">Check for Leaks</property>
                     <property name="label" translatable="yes">Leaks</property>
                     <property name="icon">leak.xpm</property>

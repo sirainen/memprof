@@ -49,7 +49,7 @@ static void   mp_server_class_init  (MPServerClass *class);
 static void   mp_server_init        (MPServer      *server);
 static void   mp_server_finalize    (GObject       *object);
 
-static char *   find_lib_location     (void);
+static char *   find_lib_location     (MPServer     *server);
 static void     create_control_socket (MPServer     *server);
 static gboolean control_func          (GIOChannel   *source,
 				       GIOCondition  condition,
@@ -58,7 +58,6 @@ struct _MPServer
 {
 	GObject parent_instance;
 	
-	char *lib_location;
 	char *socket_path;
 
 	int socket_fd;
@@ -68,6 +67,9 @@ struct _MPServer
 	 */
 	GHashTable *pid_table;
 	guint control_watch;
+
+	MPProfileType profile_type;
+	guint interval;		/* In usecs */
 };
 
 struct _MPServerClass {
@@ -153,8 +155,10 @@ mp_server_init (MPServer *server)
 {
 	GIOChannel *channel;
 
+	server->profile_type = MP_PROFILE_MEMORY;
+	server->interval = 10000;
+	
 	server->pid_table = NULL;
-	server->lib_location = find_lib_location ();
 	create_control_socket (server);
 
 	channel = g_io_channel_unix_new (server->socket_fd);
@@ -187,10 +191,29 @@ mp_server_new (void)
 	return server;
 }
 
+void
+mp_server_set_profile_type (MPServer       *server,
+			    MPProfileType   type)
+{
+
+	g_return_if_fail (MP_IS_SERVER (server));
+	server->profile_type = type;
+}
+
+void
+mp_server_set_interval (MPServer *server,
+			guint     usecs)
+{
+	g_return_if_fail (MP_IS_SERVER (server));
+	
+	server->interval = usecs;
+}
+
 int
 mp_server_instrument (MPServer *server, const char *program, char **args)
 {
 	int pid;
+	char *lib_location = find_lib_location (server);
 
 	pid = fork();
 	if (pid < 0)
@@ -203,8 +226,18 @@ mp_server_instrument (MPServer *server, const char *program, char **args)
 		envstr = g_strdup_printf ("%s=%s", "_MEMPROF_SOCKET", server->socket_path);
 		putenv (envstr);
 
-		envstr = g_strdup_printf ("%s=%s", "LD_PRELOAD", server->lib_location);
+		envstr = g_strdup_printf ("%s=%s", "LD_PRELOAD", lib_location);
 		putenv (envstr);
+
+		if (server->profile_type != MP_PROFILE_MEMORY) {
+			envstr = g_strdup_printf ("%s=%d", "_MEMPROF_INTERVAL", server->interval);
+			putenv (envstr);
+			
+			envstr = g_strdup_printf ("%s=%s", "_MEMPROF_SPEED_TYPE",
+						  server->profile_type == MP_PROFILE_CYCLES ?
+						  "cycles" : "time");
+			putenv (envstr);
+		}
 
 		execvp (program, args);
 
@@ -212,19 +245,27 @@ mp_server_instrument (MPServer *server, const char *program, char **args)
 		_exit(1);
 	}
 
+	g_free (lib_location);
+
 	return pid;
 }
 
 
 static char *
-find_lib_location (void)
+find_lib_location (MPServer *server)
 {
 	const char **dirname;
+	const char *basename;
+
+	if (server->profile_type == MP_PROFILE_MEMORY)
+		basename = "libmemintercept.so";
+	else
+		basename = "libspeedintercept.so";
 
 	static const char *directories[] = {
 		".libs",
 		".",
-		LIBDIR,
+		PKGLIBDIR,
 		NULL
 	};
 
@@ -232,7 +273,7 @@ find_lib_location (void)
 	
 	lib_location = NULL;
 	for (dirname = directories; *dirname; dirname++) {
-		char *path = g_concat_dir_and_file (*dirname, "libmemintercept.so");
+		char *path = g_concat_dir_and_file (*dirname, basename);
 		if (!access (path, R_OK)) {
 			lib_location = path;
 			break;
@@ -242,7 +283,7 @@ find_lib_location (void)
 
 	if (!lib_location)
 		show_error (NULL, ERROR_FATAL,
-			    _("Cannot find libmemintercept.so"));
+			    _("Cannot find %s"), basename);
 
 	/* Make lib_location absolute */
 
@@ -509,6 +550,7 @@ control_func (GIOChannel  *source,
 			
 		break;
 		
+	case MI_TIME:
 	case MI_MALLOC:
 	case MI_REALLOC:
 	case MI_FREE:

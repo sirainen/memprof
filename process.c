@@ -524,6 +524,12 @@ process_command (MPProcess *process, MIInfo *info, StackElement *stack)
 	case MI_EXIT:
 		/* Handled before, ignore */
 		break;
+
+	case MI_TIME:
+		info->alloc.old_ptr = NULL;
+		info->alloc.new_ptr = (void *)process->seqno;
+		info->alloc.size = 1;
+		/* Fall through */
 		
 	default: /* MALLOC / REALLOC / FREE */
 		block_table = get_block_table (process);
@@ -596,7 +602,8 @@ input_func (GIOChannel  *source,
 
 		if (info.operation == MI_MALLOC ||
 		    info.operation == MI_REALLOC ||
-		    info.operation == MI_FREE) {
+		    info.operation == MI_FREE ||
+		    info.operation == MI_TIME) {
 			void **stack_buffer = NULL;
 			StackStash *stash = get_stack_stash (input_process);
 			

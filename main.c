@@ -101,6 +101,8 @@ GSList *process_windows = NULL;
 
 static GladeXML *pref_dialog_xml = NULL; /* We save this around, so we can prevent multiple property boxes from being opened at once */
 
+static MPProfileType profile_type;
+
 
 /************************************************************
  * Status Page 
@@ -1593,6 +1595,16 @@ process_window_new (void)
        vpaned = glade_xml_get_widget (xml, "leaks-vpaned");
        gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
+       /* If profiling time, not memory, hide all GUI related to leak
+	* detection.
+	*/
+       if (profile_type != MP_PROFILE_MEMORY) {
+	       gtk_widget_hide (glade_xml_get_widget (xml, "leaks-vpaned"));
+	       gtk_widget_hide (glade_xml_get_widget (xml, "toolbar-leaks-button"));
+	       gtk_widget_hide (glade_xml_get_widget (xml, "save-leak-info"));
+	       gtk_widget_hide (glade_xml_get_widget (xml, "generate-leak-report"));
+       }
+
        glade_xml_signal_autoconnect (xml);
        g_object_unref (G_OBJECT (xml));
 
@@ -1726,11 +1738,19 @@ sigchld_handler (int signum)
 int
 main(int argc, char **argv)
 {
+       static char *profile_type_string = NULL;
+       static char *profile_rate_string = NULL;
+       static int profile_interval = 1000;
+
        static const struct poptOption memprof_popt_options [] = {
 	       { "follow-fork", '\0', POPT_ARG_NONE, &default_follow_fork, 0,
 		 N_("Create new windows for forked processes"), NULL },
 	       { "follow-exec", '\0', POPT_ARG_NONE, &default_follow_exec, 0,
 		 N_("Retain windows for processes after exec()"), NULL },
+	       { "profile", '\0', POPT_ARG_STRING, &profile_type_string, 0,
+		 N_("Type of profiling information to collect"), "memory/cycles/time" },
+	       { "rate", '\0', POPT_ARG_STRING, &profile_rate_string, 0,
+		 N_("Number of samples/sec for time profile (1k=1000)"), NULL },
 	       { NULL, '\0', 0, NULL, 0 },
        };
        poptContext ctx;
@@ -1738,6 +1758,7 @@ main(int argc, char **argv)
        GnomeProgram *program;
        const char **startup_args;
        ProcessWindow *initial_window;
+	
 
        /* Set up a handler for SIGCHLD to avoid zombie children
 	*/
@@ -1756,6 +1777,58 @@ main(int argc, char **argv)
 				     GNOME_PARAM_POPT_TABLE, memprof_popt_options,
 				     NULL);
 
+       /* If the user didn't specify the profile type explicitely,
+	* we guess from the executable name.
+	*/
+       if (!profile_type_string) {
+	       char *basename;
+	       basename = g_path_get_basename (argv[0]);
+	       
+	       if (strcmp (basename, "speedprof") == 0)
+		       profile_type_string = "cycles";
+	       else
+		       profile_type_string = "memory";
+
+	       g_free (basename);
+       }
+
+       if (strcmp (profile_type_string, "memory") == 0)
+	       profile_type = MP_PROFILE_MEMORY;
+       else if (strcmp (profile_type_string, "cycles") == 0)
+	       profile_type = MP_PROFILE_CYCLES;
+       else if (strcmp (profile_type_string, "time") == 0)
+	       profile_type = MP_PROFILE_TIME;
+       else {
+	       g_printerr (_("Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"));
+	       exit (1);
+       }
+	       
+       if (profile_rate_string) {
+	       int multiplier = 1;
+	       double rate;
+	       int len = strlen (profile_rate_string);
+	       char suffix[2] = { '\0', '\0' };
+	       char *end;
+	       
+	       if (len > 0 &&
+		   (profile_rate_string[len - 1] == 'k' ||
+		    profile_rate_string[len - 1] == 'K')) {
+		       suffix[0] = profile_rate_string[len - 1];
+		       multiplier = 1000;
+		       profile_rate_string[len - 1] = '\0';
+	       }
+
+	       rate = strtod (profile_rate_string, &end);
+	       if (len == 0 || *end != '\0' ||
+		   rate * multiplier <= 1 || rate * multiplier > 1000000) {
+		       g_printerr ("Invalid rate: %s%s\n",
+				   profile_rate_string, suffix);
+		       exit (1);
+	       }
+
+	       profile_interval = (int) (0.5 + 1000000 / (rate * multiplier));
+       }
+
        g_object_get (G_OBJECT (program),
 		     GNOME_PARAM_POPT_CONTEXT, &ctx,
 		     NULL);
@@ -1771,6 +1844,9 @@ main(int argc, char **argv)
        }
 
        global_server = mp_server_new ();
+       mp_server_set_profile_type (global_server, profile_type);
+       mp_server_set_interval (global_server, profile_interval);
+       
        g_signal_connect (G_OBJECT (global_server), "process_created",
 		       G_CALLBACK (process_created_cb), NULL);
        

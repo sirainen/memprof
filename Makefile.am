@@ -4,7 +4,7 @@ bin_PROGRAMS = memprof
 noinst_PROGRAMS = testmemprof
 pkgdata_DATA = memprof.glade leak.xpm memprof.png
 
-lib_LTLIBRARIES = libmemintercept.la
+pkglib_LTLIBRARIES = libmemintercept.la libspeedintercept.la
 
 memprof_SOURCES =	        \
 	bfdutils.c		\
@@ -27,21 +27,38 @@ memprof_SOURCES =	        \
 memprof_LDADD = $(MEMPROF_LIBS)
 memprof_LDFLAGS = -export-dynamic
 
-libmemintercept_la_SOURCES =    \
-	memintercept.c		\
-	memintercept.h		\
+intercept_sources = 		\
+	intercept.c		\
+	intercept.h		\
 	memintercept-utils.c	\
 	memintercept-utils.h	\
 	stack-frame.c		\
 	stack-frame.h
 
+
+libmemintercept_la_SOURCES =    \
+	$(intercept_sources)	\
+	memintercept.c		\
+	memintercept.h	
+
 libmemintercept_la_LDFLAGS = -module -avoid-version
 libmemintercept_la_LIBADD = -ldl
+
+libspeedintercept_la_SOURCES =  \
+	$(intercept_sources)	\
+	mi-perfctr.c		\
+	mi-perfctr.h		\
+	perfctr.h		\
+	speedintercept.c	\
+	speedintercept.h
+
+libspeedintercept_la_LDFLAGS = -module -avoid-version
+libspeedintercept_la_LIBADD = -ldl
 
 INCLUDES = 					   \
 	$(MEMPROF_CFLAGS) 			   \
 	-DDATADIR=\"$(pkgdatadir)\"		   \
-	-DLIBDIR=\"$(libdir)\"			   \
+	-DPKGLIBDIR=\"$(pkglibdir)\"		   \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
 
 schemadir = @GCONF_SCHEMA_FILE_DIR@
@@ -73,6 +90,9 @@ DISTCLEANFILES =		\
 install-data-local:
 	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) \
 	$(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
+
+install-exec-hook:
+	cd $(bindir) && ln -sf memprof speedprof
 
 .PHONY: copyrights
 
