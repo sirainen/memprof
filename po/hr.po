@@ -1,11 +1,11 @@
 # Translation of memprof to Croatian
 # Copyright (C) Croatian team
-# Translators: Automatski Prijevod <>,Denis Lackovic <delacko@fly.srk.fer.hr>,
+# Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0\n"
 "POT-Creation-Date: 2003-11-06 18:12+0100\n"
-"PO-Revision-Date: 2003-11-07 18:45+CET\n"
+"PO-Revision-Date: 2003-11-10 16:54+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -122,7 +122,7 @@ msgstr ""
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
-msgstr ""
+msgstr "# alokacija:"
 
 #: memprof.glade.h:2
 msgid "*"
@@ -317,7 +317,7 @@ msgstr "_Ubij"
 
 #: memprof.glade.h:51
 msgid "_Process"
-msgstr ""
+msgstr "_proces"
 
 #: memprof.glade.h:52
 msgid "_Run Program..."
