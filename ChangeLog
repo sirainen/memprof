@@ -1,3 +1,7 @@
+2000-06-27  Yuri Syrota  <rasta@renome.rovno.ua>
+
+	* configure.in: Add "uk" to ALL_LINGUAS.
+
 Mon Jun  5 10:46:32 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Add de to ALL_LINGUAS.
