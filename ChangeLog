@@ -1,3 +1,7 @@
+Wed Aug 21 19:26:24 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* memprof.glade: simple typo fix
+
 Tue Aug 19 02:28:34 2002  Kristian Rietveld  <kris@gtk.org>
 
 	* main.c (run_cb), (skip_add_cb), (skip_regexes_add_cb): conversion

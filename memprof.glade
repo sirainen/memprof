@@ -1366,7 +1366,7 @@
 
             <child>
               <widget class="GtkLabel" id="label40">
-                <property name="label" translatable="yes">Enter pathname to a executable</property>
+                <property name="label" translatable="yes">Enter pathname to an executable</property>
                 <property name="justify">GTK_JUSTIFY_CENTER</property>
                 <property name="wrap">yes</property>
                 <property name="xalign">0.5</property>
