@@ -137,7 +137,7 @@ profile_create (MPProcess *process,
   
   profile->skip_hash = g_hash_table_new (g_str_hash, g_str_equal);
   for (tmp_list = skip_funcs; tmp_list != NULL; tmp_list = tmp_list->next)
-    g_hash_table_insert (profile->skip_hash, (gchar *)skip_funcs->data, "");
+    g_hash_table_insert (profile->skip_hash, (gchar *)tmp_list->data, "");
   
   /* Go through all blocks, and add up memory
    */
