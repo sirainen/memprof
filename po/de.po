@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3\n"
-"POT-Creation-Date: 2000-04-30 16:46+0200\n"
+"POT-Creation-Date: 2000-07-07 16:19-0400\n"
 "PO-Revision-Date: 2000-06-03 23:17+02:00\n"
 "Last-Translator: Kai Lahmann <kl@linuxfaqs.de>\n"
 "Language-Team: de <de@li.org>\n"
@@ -251,7 +251,7 @@ msgstr "Kommandozeile"
 msgid "Status"
 msgstr "Status"
 
-#: leakdetect.c:583 profile.c:191
+#: leakdetect.c:586 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kann die Ausgabedatei nicht öffnen: %s\n"

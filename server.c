@@ -76,26 +76,24 @@ static guint server_signals[LAST_SIGNAL] = { 0 };
 GtkType
 mp_server_get_type (void)
 {
-  static GtkType server_type = 0;
+	static GtkType server_type = 0;
 
-  if (!server_type)
-    {
-      static const GtkTypeInfo server_info =
-      {
-	"MPServer",
-	sizeof (MPServer),
-	sizeof (MPServerClass),
-	(GtkClassInitFunc) mp_server_class_init,
-	(GtkObjectInitFunc) mp_server_init,
-        /* reserved_1 */ NULL,
-	/* reserved_2 */ NULL,
-	(GtkClassInitFunc) NULL,
-      };
+	if (!server_type) {
+		static const GtkTypeInfo server_info = {
+			"MPServer",
+			sizeof (MPServer),
+			sizeof (MPServerClass),
+			(GtkClassInitFunc) mp_server_class_init,
+			(GtkObjectInitFunc) mp_server_init,
+			/* reserved_1 */ NULL,
+			/* reserved_2 */ NULL,
+			(GtkClassInitFunc) NULL,
+		};
 
-      server_type = gtk_type_unique (GTK_TYPE_OBJECT, &server_info);
-    }
+		server_type = gtk_type_unique (GTK_TYPE_OBJECT, &server_info);
+	}
 
-  return server_type;
+	return server_type;
 }
 
 static void

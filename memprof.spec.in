@@ -1,14 +1,12 @@
-%define    ver     @VERSION@
-%define    rel     1
 %define    prefix  /usr
 
 Summary: Tool for memory profiling and leak detection
 Name: memprof
-Version: %{ver}
-Release: %{rel}
+Version: @VERSION@
+Release: 1
 Copyright: GPL
 Group: Development/Debuggers
-Source: memprof-%{ver}.tar.gz
+Source: memprof-%{version}.tar.gz
 Requires: libglade >= 0.7
 BuildRoot: /var/tmp/%{name}-root
 ExclusiveArch: i386
@@ -22,10 +20,11 @@ binaries without need for recompilation.
 
 %build
 CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
+make
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+make prefix=$RPM_BUILD_ROOT%{prefix} install
 strip $RPM_BUILD_ROOT%{prefix}/bin/*
 
 %clean
@@ -37,10 +36,12 @@ rm -rf $RPM_BUILD_ROOT
 %{prefix}/bin/*
 %{prefix}/lib/*
 %{prefix}/share/memprof
-# FIXME: we need some translations
-# %{prefix}/share/locale/*/*/*
+%{prefix}/share/locale/*/*/*
 
 %changelog
+* Sat Jul 08 2000 Owen Taylor <otaylor@redhat.com>
+- Some cleanups, reenable local files
+
 * Wed Nov 10 1999 Owen Taylor <otaylor@redhat.com>
   (From Nils Philippsen <nils@wombat.dialup.fht-esslingen.de>)
 - Added %defattr() so that files are owned by root

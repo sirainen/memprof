@@ -2,11 +2,10 @@
 # Copyright (C) 2000 Free Software Foundation, Inc.
 # Andraz Tori<andraz.tori1@guest.arnes.si>, 2000.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-06-26 00:00+0200\n"
+"POT-Creation-Date: 2000-07-07 16:19-0400\n"
 "PO-Revision-Date: 2000-06-26 00:00+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -252,7 +251,7 @@ msgstr "Ukazna Vrstica"
 msgid "Status"
 msgstr "Stanje"
 
-#: leakdetect.c:583 profile.c:191
+#: leakdetect.c:586 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Ne morem odpreti izhodne datoteke: %s\n"
@@ -302,14 +301,3 @@ msgstr "Ohrani okna za procese po exec()"
 #: main.c:1531
 msgid "Cannot find memprof.glade"
 msgstr "Ne najdem memprof.glade"
-
-
-# Smart report:
-# Total untranslated messages in file: 69 
-# Translations made:
-# full: 24
-# smart: 0
-# cond: 13
-# total: 37 ; distinct: 24
-
-

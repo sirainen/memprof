@@ -476,16 +476,6 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 {
 	Block *block;
 
-	switch (info->operation) {
-	case MI_MALLOC:
-	case MI_FREE:
-	case MI_REALLOC:
-	case MI_EXIT:
-		break;
-	default:
-		abort();
-	}
-		
 	if (info->any.seqno != process->seqno) {
 		queue_command (process, info, stack);
 		return;
@@ -501,9 +491,10 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 	case MI_CLONE:
 	case MI_EXEC:
 		g_assert_not_reached ();
-
+		break;
+		
 	case MI_EXIT:
-		process_set_status (process, MP_PROCESS_EXITING);
+		/* Handled before, ignore */
 		break;
 		
 	default: /* MALLOC / REALLOC / FREE */
@@ -522,6 +513,13 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 			}
 		}
 		
+			/* There is a problem with malloc initialization where __libc_malloc gets
+			 * called twice for the same block. To really get correct counts, we should do:
+			 *
+			 * if (info->alloc.new_ptr && !g_hash_table_lookup (procss->block_table, info->alloc.new_ptr))
+			 *   {
+			 */
+
 		if (info->alloc.new_ptr) {
 			block = g_new (Block, 1);
 			block->refcount = 1;
@@ -534,7 +532,7 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 			
 			process->n_allocations++;
 			process->bytes_used += info->alloc.size;
-			
+
 			g_hash_table_insert (process->block_table, info->alloc.new_ptr, block);
 		}
 		else
@@ -574,13 +572,18 @@ input_func (GIOChannel  *source,
 			stack = g_new (void *, info.alloc.stack_size);
 			g_io_channel_read (source, (char *)stack, sizeof(void *) * info.alloc.stack_size, &count);
 
+		} else if (info.operation == MI_EXIT) {
+			process_set_status (input_process, MP_PROCESS_EXITING);
+			if (input_process->clone_of)
+				process_detach (input_process);
 		}
-
+		
 		process = input_process;
 		while (process->clone_of)
 			process = process->clone_of;
-	
+		
 		process_command (process, &info, stack);
+
 
 /*		if (info.any.pid != input_process->pid)
 		g_warning ("Ow! Ow! Ow: %d %d %d!", info.any.pid, input_process->pid, g_io_channel_unix_get_fd (input_process->input_channel)); */

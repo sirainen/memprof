@@ -1,3 +1,22 @@
+Fri Jul  7 16:24:53 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Release 0.4.0
+
+	* memprof.spec.in: Some cleanups
+
+Fri Jul  7 16:18:31 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (input_func): Fix a couple of bugs with
+	process exit.
+
+	* memintercept.c (_exit): Increment seqno, and close
+	outfds[i] - to deal with case of threading.
+
+	* server.c (mp_server_get_type): Reindent.
+
+	* memintercept.c: Make outbuf non-static to avoid 
+	keeping last block around for leak detection to find.
+
 Thu Jul  6 10:52:42 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* leakdetect.c (find_block): Handle case where no

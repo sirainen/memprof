@@ -54,7 +54,6 @@ static void (*old__exit) (int status);
 
 #define MAX_THREADS 128
 
-/* We count on the increment of this being atomic */
 static pthread_mutex_t malloc_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
 static int tracing = 1;
 
@@ -209,7 +208,7 @@ stack_trace (MIInfo *info)
 {
 	int n = 0;
 	void **sp;
-	static char outbuf[OUT_BUF_SIZE];
+	char outbuf[OUT_BUF_SIZE];
 	void **stack_buffer = NULL;
 	int i;
 	int old_errno = errno;
@@ -506,7 +505,7 @@ _exit (int status)
 		int count;
 		char response;
 		info.any.operation = MI_EXIT;
-		info.any.seqno = seqno;
+		info.any.seqno = seqno++;
 		info.any.pid = getpid();
 		
 		for (i=0; pids[i] && i<MAX_THREADS; i++)
@@ -521,6 +520,9 @@ _exit (int status)
 				if (count >= 0 || errno != EINTR)
 					break;
 			}
+
+		close (outfds[i]);
+		
 	}
 	
 	(*old__exit) (status);

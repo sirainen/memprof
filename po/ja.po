@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3.0\n"
-"POT-Creation-Date: 1999-10-28 01:53-0400\n"
+"POT-Creation-Date: 2000-07-07 16:19-0400\n"
 "PO-Revision-Date: 1999-11-10 21:51+09:00\n"
 "Last-Translator: Riue. SATOH <riue@gnome.gr.jp>\n"
 "Language-Team: Japanese <translation@gnome.gr.jp>\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: memprof-strings.c:7
+#: main.c:676 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
@@ -27,201 +27,288 @@ msgid "_Run..."
 msgstr "実行..."
 
 #: memprof-strings.c:9
-msgid "Generate Profile"
-msgstr "プロファイルの生成"
-
-#: memprof-strings.c:10
-msgid "Generate Leak Info"
-msgstr "リーク情報の生成"
-
-#: memprof-strings.c:11
-msgid "Save Profile..."
+#, fuzzy
+msgid "Save _Profile..."
 msgstr "プロファイルの保存..."
 
-#: memprof-strings.c:12
-msgid "Save Leak Info..."
+#: memprof-strings.c:10
+#, fuzzy
+msgid "Save _Leak Info..."
 msgstr "リーク情報の保存..."
 
-#: memprof-strings.c:13
-msgid "Open File"
-msgstr "ファイルを開く"
+#: memprof-strings.c:11
+msgid "_Process"
+msgstr ""
 
-#: memprof-strings.c:14 memprof-strings.c:60
+#: memprof-strings.c:12
+#, fuzzy
+msgid "Generate _Profile"
+msgstr "プロファイルの生成"
+
+#: memprof-strings.c:13
+#, fuzzy
+msgid "Generate _Leak Report"
+msgstr "リーク情報の生成"
+
+#: memprof-strings.c:14
+msgid "_Kill"
+msgstr ""
+
+#: memprof-strings.c:15
+msgid "_Detach"
+msgstr ""
+
+#: memprof-strings.c:16
+msgid "Process _Tree"
+msgstr ""
+
+#: memprof-strings.c:17
+msgid "Follow _fork()"
+msgstr ""
+
+#: memprof-strings.c:18
+msgid "Follow _exec()"
+msgstr ""
+
+#: memprof-strings.c:19 memprof-strings.c:21
+msgid "Run Program"
+msgstr ""
+
+#: memprof-strings.c:20 memprof-strings.c:70
 msgid "Run"
 msgstr "実行"
 
-#: memprof-strings.c:15 memprof-strings.c:36
+#: memprof-strings.c:22
+msgid "Kill"
+msgstr ""
+
+#: memprof-strings.c:23
+#, fuzzy
+msgid "Create Profile"
+msgstr "プロファイルの生成"
+
+#: memprof-strings.c:24 memprof-strings.c:46
 msgid "Profile"
 msgstr "プロファイル"
 
-#: memprof-strings.c:16 memprof-strings.c:44
+#: memprof-strings.c:25
+msgid "Check for Leaks"
+msgstr ""
+
+#: memprof-strings.c:26 memprof-strings.c:54
 msgid "Leaks"
 msgstr "リーク"
 
-#: memprof-strings.c:17
-msgid "Save File"
+#: memprof-strings.c:27
+#, fuzzy
+msgid "Save Report"
 msgstr "ファイルの保存"
 
-#: memprof-strings.c:18
+#: memprof-strings.c:28
 msgid "Save"
 msgstr "保存"
 
-#: memprof-strings.c:19
+#: memprof-strings.c:29
 msgid "0k"
 msgstr "OK"
 
-#: memprof-strings.c:20
+#: memprof-strings.c:30
 msgid "32k"
 msgstr "32k"
 
-#: memprof-strings.c:21
+#: memprof-strings.c:31
 msgid "# of Allocations:"
 msgstr "アロケーション数:"
 
-#: memprof-strings.c:22 memprof-strings.c:24 memprof-strings.c:26
+#: memprof-strings.c:32 memprof-strings.c:34 memprof-strings.c:36
 msgid "0"
 msgstr "0"
 
-#: memprof-strings.c:23
+#: memprof-strings.c:33
 msgid "Bytes / Allocation:"
 msgstr "バイト数 / アロケーション:"
 
-#: memprof-strings.c:25
+#: memprof-strings.c:35
 msgid "Total Bytes:"
 msgstr "合計バイト数:"
 
-#: memprof-strings.c:27 memprof-strings.c:31 memprof-strings.c:34
-#: memprof-strings.c:41
+#: memprof-strings.c:37 memprof-strings.c:41 memprof-strings.c:44
+#: memprof-strings.c:51
 msgid "Function"
 msgstr "関数"
 
-#: memprof-strings.c:28
+#: memprof-strings.c:38
 msgid "Self"
 msgstr "自己"
 
-#: memprof-strings.c:29
+#: memprof-strings.c:39
 msgid "Total"
 msgstr "合計"
 
-#: memprof-strings.c:30
+#: memprof-strings.c:40
 msgid "Children"
 msgstr "子"
 
-#: memprof-strings.c:32 memprof-strings.c:35
+#: memprof-strings.c:42 memprof-strings.c:45
 msgid "Bytes"
 msgstr "バイト数"
 
-#: memprof-strings.c:33
+#: memprof-strings.c:43
 msgid "Callers"
 msgstr "呼び出し元"
 
-#: memprof-strings.c:37
+#: memprof-strings.c:47
 msgid "Address"
 msgstr "アドレス"
 
-#: memprof-strings.c:38
+#: memprof-strings.c:48
 msgid "Size"
 msgstr "サイズ"
 
-#: memprof-strings.c:39
+#: memprof-strings.c:49
 msgid "Caller"
 msgstr "呼び出し元"
 
-#: memprof-strings.c:40
+#: memprof-strings.c:50
 msgid "Stack Trace"
 msgstr "スタックトレース"
 
-#: memprof-strings.c:42
+#: memprof-strings.c:52
 msgid "Line"
 msgstr "行"
 
-#: memprof-strings.c:43
+#: memprof-strings.c:53
 msgid "File"
 msgstr "ファイル"
 
-#: memprof-strings.c:45
-msgid "Copyright Red Hat, Inc., 1999"
+#: memprof-strings.c:55
+#, fuzzy
+msgid "Copyright Red Hat, Inc., 1999-2000"
 msgstr "Copyright Red Hat, Inc., 1999"
 
-#: memprof-strings.c:46
+#: memprof-strings.c:56
 msgid "Memory Profiling Tool"
 msgstr "メモリプロファイリングツーツ"
 
-#: memprof-strings.c:47
+#: memprof-strings.c:57
 msgid "Functions to Skip:"
 msgstr "スキップする関数:"
 
-#: memprof-strings.c:48
+#: memprof-strings.c:58
 msgid "label37"
 msgstr "label37"
 
-#: memprof-strings.c:49
+#: memprof-strings.c:59
 msgid "Add..."
 msgstr "追加..."
 
-#: memprof-strings.c:50
+#: memprof-strings.c:60
 msgid "Delete"
 msgstr "削除"
 
-#: memprof-strings.c:51
+#: memprof-strings.c:61
 msgid "Defaults"
 msgstr "デフォルト"
 
-#: memprof-strings.c:52
+#: memprof-strings.c:62
 msgid "Profile Options"
 msgstr "プロファイルオプション"
 
-#: memprof-strings.c:53
+#: memprof-strings.c:63
 msgid "Command to run on double click in stack trace:"
 msgstr "スタックトレース中のダブルクリックで実行するコマンド:"
 
-#: memprof-strings.c:54
+#: memprof-strings.c:64
 msgid "Leak Detection Options"
 msgstr "リーク検出オプション"
 
-#: memprof-strings.c:55
+#: memprof-strings.c:65
 msgid "Adding Skip Function"
 msgstr "スキップする関数の追加"
 
-#: memprof-strings.c:56
+#: memprof-strings.c:66
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr "プロファイル取得時にスキップする関数名を入力して下さい"
 
-#: memprof-strings.c:57
+#: memprof-strings.c:67
 msgid "Add"
 msgstr "追加"
 
-#: memprof-strings.c:58
+#: memprof-strings.c:68
 msgid "Run Executable"
 msgstr "実行ファイルの実行"
 
-#: memprof-strings.c:59
+#: memprof-strings.c:69
 msgid "Enter pathname to a executable"
 msgstr "実行ファイルのパス名を入力して下さい"
 
-#: leakdetect.c:483 profile.c:191
+#: memprof-strings.c:71
+#, fuzzy
+msgid "MemProf - Processes"
+msgstr "MemProf エラー"
+
+#: memprof-strings.c:72
+msgid "PID"
+msgstr ""
+
+#: memprof-strings.c:73
+msgid "Command Line"
+msgstr ""
+
+#: memprof-strings.c:74
+msgid "Status"
+msgstr ""
+
+#: leakdetect.c:586 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "出力ファイルが開きません: %s\n"
 
-#: main.c:481
+#: main.c:502
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "\"%s\" が実行できません"
 
-#: main.c:596
-#, c-format
-msgid "Cannot find executable for: %s"
+#: main.c:628
+msgid "Really quit MemProf?"
+msgstr ""
+
+#: main.c:769
+#, fuzzy, c-format
+msgid "Cannot find executable for \"%s\""
 msgstr "実行ファイルが見つかりません: %s"
 
-#: main.c:960
+#: main.c:1207
 msgid "MemProf Error"
 msgstr "MemProf エラー"
 
-#: main.c:960
+#: main.c:1207
 msgid "MemProf Warning"
 msgstr "MemProf 警告"
 
-#: main.c:1077
+#: main.c:1451
+msgid "Really detach from finished process?"
+msgstr ""
+
+#: main.c:1453
+msgid "Really detach from running process?"
+msgstr ""
+
+#: main.c:1473
+msgid "Really kill running process?"
+msgstr ""
+
+#: main.c:1503
+msgid "Create new windows for forked processes"
+msgstr ""
+
+#: main.c:1505
+msgid "Retain windows for processes after exec()"
+msgstr ""
+
+#: main.c:1531
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade が見つかりません"
+
+#~ msgid "Open File"
+#~ msgstr "ファイルを開く"
