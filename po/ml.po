@@ -164,7 +164,8 @@ msgid "Defaults"
 msgstr "സ്വതേ"
 
 #: memprof.glade.h:19
-msgid "Enter a regular expression of function names to skip when computing profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr "രീതികള് നടപ്പിലാക്കുപേള് ഒഴിവാക്കേണ്ട റെഗുലര് എക്സ്പ്രഷന്"
 
 #: memprof.glade.h:20
@@ -371,4 +372,3 @@ msgstr "ഒളിപ്പിക്കുക"
 #: tree.c:101
 msgid "Detach"
 msgstr "വേര്പ്പെടുത്തുക"
-
