@@ -85,8 +85,7 @@ AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
                    [Identifier for message catalog files])
 
-ALL_LINGUAS="am az be ca cs da de el es et fr hu it ja ko lv ms nl no pl pt 
-pt_BR ru sk sl sv ta tr uk vi zh_CN"
+ALL_LINGUAS="am az be ca cs da de el es et fr hu it ja ko lv ms nl no pl pt pt_BR ru sk sl sv ta tr uk vi zh_CN"
 AM_GLIB_GNU_GETTEXT
 
 AC_HAVE_HEADERS(execinfo.h)

@@ -1,3 +1,7 @@
+2003-04-24  Abel Cheung  <maddog@linux.org.hk>
+
+	* configure.in: Fix broken configure.in caused by previous commit.
+
 2003-02-20  Dmitry G. Mastrukov  <dmitry@taurussoft.org>
 
 	* configure.in: Added Belarusian to ALL_LINGUAS.
