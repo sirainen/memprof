@@ -1,12 +1,12 @@
 # Czech translation of memprof
 # This file is distributed under the same license as the PACKAGE package.
-# Miloslav Trmac <mitr@volny.cz>, 2002.
+# Miloslav Trmac <mitr@volny.cz>, 2002, 2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memproff VERSION\n"
-"POT-Creation-Date: 2002-09-23 04:41+0200\n"
-"PO-Revision-Date: 2002-09-27 01:19+0200\n"
+"POT-Creation-Date: 2003-02-06 11:28+0100\n"
+"PO-Revision-Date: 2003-02-07 16:32+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -44,39 +44,40 @@ msgstr "Chyba MemProf"
 msgid "MemProf Warning"
 msgstr "Varování MemProf"
 
-#: main.c:1678
+#: main.c:1672
 msgid "Really detach from finished process?"
-msgstr "Opradu se odpojit od skončeného procesu?"
+msgstr "Opravdu se odpojit od skončeného procesu?"
 
-#: main.c:1680
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "Opravdu se odpojit od běžícího procesu?"
 
-#: main.c:1710
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "Opravdu zabít běžící proces?"
 
-#: main.c:1747
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Vytvořit pro forkované procesy nová okna"
 
-#: main.c:1749
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "Zachovat okna pro procesy po exec()"
 
-#: main.c:1751
+#: main.c:1745
 msgid "Type of profiling information to collect"
 msgstr "Typ sbíraných profilovacích informací"
 
-#: main.c:1753
+#: main.c:1747
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Počet vzorků/s pro časový profil (1k=1000)"
 
-#: main.c:1802
+#: main.c:1796
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr "Argument volby --profile musí být jeden z 'memory', 'cycles' nebo 'time'\n"
+msgstr ""
+"Argument volby --profile musí být jeden z 'memory', 'cycles' nebo 'time'\n"
 
-#: main.c:1843
+#: main.c:1837
 msgid "Cannot find memprof.glade"
 msgstr "Nemohu najít memprof.glade"
 
@@ -144,7 +145,9 @@ msgstr "Příkaz, který spustit po dvojitém kliknutí ve výpisu zásobníku:"
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
-msgstr "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
+msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
@@ -157,7 +160,8 @@ msgstr "Implicitní"
 #: memprof.glade.h:19
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr "Vložte regulární výraz pro jména funkcí, které přeskočit při počítání profilů"
+msgstr ""
+"Vložte regulární výraz pro jména funkcí, které přeskočit při počítání profilů"
 
 #: memprof.glade.h:20
 msgid "Enter pathname to an executable"
