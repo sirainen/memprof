@@ -263,7 +263,7 @@
 	      </signal>
 	      <label>Follow _fork()</label>
 	      <active>False</active>
-	      <always_show_toggle>False</always_show_toggle>
+	      <always_show_toggle>True</always_show_toggle>
 	    </widget>
 
 	    <widget>
@@ -276,7 +276,7 @@
 	      </signal>
 	      <label>Follow _exec()</label>
 	      <active>True</active>
-	      <always_show_toggle>False</always_show_toggle>
+	      <always_show_toggle>True</always_show_toggle>
 	    </widget>
 	  </widget>
 	</widget>
@@ -349,7 +349,7 @@
 	  <class>GtkButton</class>
 	  <child_name>Toolbar:button</child_name>
 	  <name>button26</name>
-	  <tooltip>Run Program</tooltip>
+	  <tooltip>Kill Program</tooltip>
 	  <signal>
 	    <name>clicked</name>
 	    <handler>kill_cb</handler>
@@ -1192,6 +1192,7 @@
 	      <name>skip-add-button</name>
 	      <can_focus>True</can_focus>
 	      <label>Add...</label>
+	      <relief>GTK_RELIEF_NORMAL</relief>
 	      <child>
 		<padding>0</padding>
 		<expand>False</expand>
@@ -1204,6 +1205,7 @@
 	      <name>skip-delete-button</name>
 	      <can_focus>True</can_focus>
 	      <label>Delete</label>
+	      <relief>GTK_RELIEF_NORMAL</relief>
 	      <child>
 		<padding>0</padding>
 		<expand>False</expand>
@@ -1216,6 +1218,7 @@
 	      <name>skip-defaults-button</name>
 	      <can_focus>True</can_focus>
 	      <label>Defaults</label>
+	      <relief>GTK_RELIEF_NORMAL</relief>
 	      <child>
 		<padding>0</padding>
 		<expand>False</expand>
@@ -1322,6 +1325,7 @@
 	      <name>skip-regexes-add-button</name>
 	      <can_focus>True</can_focus>
 	      <label>Add...</label>
+	      <relief>GTK_RELIEF_NORMAL</relief>
 	      <child>
 		<padding>0</padding>
 		<expand>False</expand>
@@ -1334,6 +1338,7 @@
 	      <name>skip-regexes-delete-button</name>
 	      <can_focus>True</can_focus>
 	      <label>Delete</label>
+	      <relief>GTK_RELIEF_NORMAL</relief>
 	      <child>
 		<padding>0</padding>
 		<expand>False</expand>
@@ -1346,6 +1351,7 @@
 	      <name>skip-regexes-defaults-button</name>
 	      <can_focus>True</can_focus>
 	      <label>Defaults</label>
+	      <relief>GTK_RELIEF_NORMAL</relief>
 	      <child>
 		<padding>0</padding>
 		<expand>False</expand>
