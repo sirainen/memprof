@@ -25,6 +25,11 @@
 
 #include <stdarg.h>
 #include <stdio.h>
+
+#include <errno.h>
+#include <sys/wait.h>
+#include <signal.h>
+
 #include <glade/glade.h>
 #include <gnome.h>
 
@@ -80,6 +85,7 @@ MPServer *global_server;
 
 static ProcessWindow *process_window_new (void);
 static void process_window_destroy (ProcessWindow *pwin);
+static void process_window_reset   (ProcessWindow *pwin);
 
 static int n_skip_funcs;
 static char **skip_funcs;
@@ -629,28 +635,39 @@ exit_cb (GtkWidget *widget)
 }
 
 static void
+reset_cb (MPProcess *process, ProcessWindow *pwin)
+{
+	process_window_reset  (pwin);
+}
+
+static void
 status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 {
-	if (process->status == MP_PROCESS_DEFUNCT) {
+	if (process->status == MP_PROCESS_DEFUNCT ||
+	    process->status == MP_PROCESS_DETACHED) {
 
-		tree_window_remove (pwin);
-
-		if (g_slist_length (process_windows) > 1)
+		if (g_slist_length (process_windows) > 1) {
+			tree_window_remove (pwin);
 			process_window_destroy (pwin);
-		else { 
-			gtk_object_unref (GTK_OBJECT (pwin->process));
-			pwin->process = NULL;
-			pwin->usage_max = 32*1024;
-			pwin->usage_high = 0;
-			pwin->usage_leaked = 0;
-
-			gtk_window_set_title (GTK_WINDOW (pwin->main_window), "MemProf");
-			update_bars (pwin);
+		} else { 
+			tree_window_remove (pwin);
+		
+			if (pwin->process) {
+				gtk_signal_disconnect_by_func (GTK_OBJECT (pwin->process),
+							       GTK_SIGNAL_FUNC (status_changed_cb), pwin);
+				
+				gtk_signal_disconnect_by_func (GTK_OBJECT (pwin->process),
+							       GTK_SIGNAL_FUNC (reset_cb), pwin);
+				gtk_object_unref (GTK_OBJECT (pwin->process));
+				pwin->process = NULL;
+			}
 			
 			if (pwin->status_update_timeout) {
 				g_source_remove (pwin->status_update_timeout);
 				pwin->status_update_timeout = 0;
 			}
+			
+			process_window_reset (pwin);
 		}
 		
 	} else {
@@ -662,6 +679,32 @@ status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 		g_free (status);
 		g_free (cmdline);
 	}
+}
+
+static void 
+process_window_reset (ProcessWindow *pwin)
+{
+	if (pwin->profile) {
+		profile_free (pwin->profile);
+		pwin->profile = NULL;
+		gtk_clist_clear (GTK_CLIST (pwin->profile_func_clist));
+		gtk_clist_clear (GTK_CLIST (pwin->profile_caller_clist));
+		gtk_clist_clear (GTK_CLIST (pwin->profile_child_clist));
+	}
+
+	if (pwin->leaks) {
+			g_slist_free (pwin->leaks);
+			pwin->leaks = NULL;
+			gtk_clist_clear (GTK_CLIST (pwin->leak_block_clist));
+			gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
+	}
+	
+	pwin->usage_max = 32*1024;
+	pwin->usage_high = 0;
+	pwin->usage_leaked = 0;
+	
+	gtk_window_set_title (GTK_WINDOW (pwin->main_window), "MemProf");
+	update_bars (pwin);
 }
 
 static void
@@ -679,6 +722,8 @@ init_process (ProcessWindow *pwin, MPProcess *process)
 
 	gtk_signal_connect (GTK_OBJECT (process), "status_changed",
 			    GTK_SIGNAL_FUNC (status_changed_cb), pwin);
+	gtk_signal_connect (GTK_OBJECT (process), "reset",
+			    GTK_SIGNAL_FUNC (reset_cb), pwin);
 
 	tree_window_add (pwin);
 }
@@ -701,14 +746,21 @@ run_file (ProcessWindow *pwin, char **args)
 	
 	g_return_val_if_fail (args != NULL, FALSE);
 	g_return_val_if_fail (args[0] != NULL, FALSE);
-	
+
 	path = process_find_exec (args);
 	
 	if (path) {
 		MPProcess *process = process_new (global_server);
 		process_run (process, path, args);
 
+		if (pwin->process) {
+			pwin = process_window_new ();
+			tree_window_show ();
+		}
+
 		init_process (pwin, process);
+		
+		gtk_widget_show (pwin->main_window);
 
 		result = TRUE;
 		
@@ -774,9 +826,8 @@ kill_cb (GtkWidget *widget)
 {
        ProcessWindow *pwin = pwin_from_widget (widget);
 
-       if (pwin->process) {
+       if (pwin->process)
 	       process_window_maybe_kill (pwin);
-       }
 }
 
 void
@@ -784,9 +835,8 @@ detach_cb (GtkWidget *widget)
 {
        ProcessWindow *pwin = pwin_from_widget (widget);
 
-       if (pwin->process) {
-	       process_detach (pwin->process);
-       }
+       if (pwin->process)
+	       process_window_maybe_detach (pwin);
 }
 
 void
@@ -1337,59 +1387,6 @@ process_window_new (void)
        return pwin;
 }
 
-int
-main(int argc, char **argv)
-{
-       static const struct poptOption memprof_popt_options [] = {
-	       { "follow-fork", '\0', POPT_ARG_NONE, &default_follow_fork, 0,
-		 N_("Create new windows for forked processes"), NULL },
-	       { "follow-exec", '\0', POPT_ARG_NONE, &default_follow_exec, 0,
-		 N_("Retain windows for processes after exec()"), NULL },
-	       { NULL, '\0', 0, NULL, 0 },
-       };
-       poptContext ctx;
-
-       int init_results;
-       const char **startup_args;
-       ProcessWindow *initial_window;
-
-       bindtextdomain (PACKAGE, GNOMELOCALEDIR);
-       textdomain (PACKAGE);
-
-       init_results = gnome_init_with_popt_table (PACKAGE, VERSION,
-						  argc, argv,
-						  memprof_popt_options, 0, &ctx);
-       glade_gnome_init ();
-
-       glade_file = "./memprof.glade";
-       if (!g_file_exists (glade_file)) {
-	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
-       }
-       if (!g_file_exists (glade_file)) {
-	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
-       }
-
-       global_server = mp_server_new ();
-       gtk_signal_connect (GTK_OBJECT (global_server), "process_created",
-			   GTK_SIGNAL_FUNC (process_created_cb), NULL);
-       
-       initial_window = process_window_new ();
-
-       gnome_config_get_vector ("/MemProf/Options/skip_funcs=" DEFAULT_SKIP,
-				&n_skip_funcs, &skip_funcs);
-       stack_command = gnome_config_get_string ("/MemProf/Options/stack_command=" DEFAULT_STACK_COMMAND);
-
-       gtk_widget_show (initial_window->main_window);
-
-       startup_args = poptGetArgs (ctx);
-       if (startup_args)
-	       run_file (initial_window, (char **)startup_args);
-       poptFreeContext (ctx);
-       
-       gtk_main ();
-
-       return 0;
-}
 
 MPProcess *
 process_window_get_process (ProcessWindow *pwin)
@@ -1445,20 +1442,114 @@ hide_and_check_quit (GtkWidget *window)
 
 
 void
+process_window_maybe_detach (ProcessWindow *pwin)
+{
+	GtkWidget *dialog;
+	const char *message;
+
+	if (pwin->process->status == MP_PROCESS_EXITING)
+		message = _("Really detach from finished process?");
+	else
+		message = _("Really detach from running process?");
+
+	
+	dialog = gnome_message_box_new (message, GNOME_MESSAGE_BOX_QUESTION,
+					GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
+	
+	gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
+	if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0)
+		process_detach (pwin->process);
+}
+
+
+void
 process_window_maybe_kill (ProcessWindow *pwin)
 {
-	if (pwin->process->status == MP_PROCESS_RUNNING) {
+	if (pwin->process->status == MP_PROCESS_EXITING)
+		process_window_maybe_detach (pwin);
+	else {
 		GtkWidget *dialog;
 		
-		dialog = gnome_message_box_new (_("Kill running process?"), GNOME_MESSAGE_BOX_QUESTION,
+		dialog = gnome_message_box_new (_("Really kill running process?"), GNOME_MESSAGE_BOX_QUESTION,
 						GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
 		
 		gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
-		if (gnome_dialog_run (GNOME_DIALOG (dialog)) != 0)
-			return;
+		if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0)
+			process_kill (pwin->process);
 	}
-
-	process_kill (pwin->process);
 }
 
+void
+sigchld_handler (int signum)
+{
+	int old_errno = errno;
+	
+	while (1) {
+		int pid = waitpid (WAIT_ANY, NULL, WNOHANG);
+		if (pid < 0 && errno != ECHILD)
+			g_error ("waitpid: %s\n", g_strerror (errno));
+		else if (pid <= 0)
+			break;
+	}
+
+	errno = old_errno;
+}
+
+int
+main(int argc, char **argv)
+{
+       static const struct poptOption memprof_popt_options [] = {
+	       { "follow-fork", '\0', POPT_ARG_NONE, &default_follow_fork, 0,
+		 N_("Create new windows for forked processes"), NULL },
+	       { "follow-exec", '\0', POPT_ARG_NONE, &default_follow_exec, 0,
+		 N_("Retain windows for processes after exec()"), NULL },
+	       { NULL, '\0', 0, NULL, 0 },
+       };
+       poptContext ctx;
+
+       int init_results;
+       const char **startup_args;
+       ProcessWindow *initial_window;
+
+       /* Set up a handler for SIGCHLD to avoid zombie children
+	*/
+       signal (SIGCHLD, sigchld_handler);
+       
+       bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+       textdomain (PACKAGE);
+
+       init_results = gnome_init_with_popt_table (PACKAGE, VERSION,
+						  argc, argv,
+						  memprof_popt_options, 0, &ctx);
+       glade_gnome_init ();
+
+       glade_file = "./memprof.glade";
+       if (!g_file_exists (glade_file)) {
+	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
+       }
+       if (!g_file_exists (glade_file)) {
+	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
+       }
+
+       global_server = mp_server_new ();
+       gtk_signal_connect (GTK_OBJECT (global_server), "process_created",
+			   GTK_SIGNAL_FUNC (process_created_cb), NULL);
+       
+       initial_window = process_window_new ();
+
+       gnome_config_get_vector ("/MemProf/Options/skip_funcs=" DEFAULT_SKIP,
+				&n_skip_funcs, &skip_funcs);
+       stack_command = gnome_config_get_string ("/MemProf/Options/stack_command=" DEFAULT_STACK_COMMAND);
+
+       gtk_widget_show (initial_window->main_window);
+
+       startup_args = poptGetArgs (ctx);
+       if (startup_args)
+	       run_file (initial_window, (char **)startup_args);
+       poptFreeContext (ctx);
+       
+       gtk_main ();
+
+       return 0;
+}
 

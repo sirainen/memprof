@@ -42,14 +42,16 @@
 
 enum {
 	STATUS_CHANGED,
+	RESET,
 	LAST_SIGNAL
 };
 static guint process_signals[LAST_SIGNAL] = { 0 };
 
 static void mp_process_class_init (MPProcessClass *class);
 static void mp_process_init (MPProcess *process);
+static void mp_process_finalize (GtkObject *object);
 
-#define PAGE_SIZE 4096
+#define MP_PAGE_SIZE 4096
 
 /* Code to keep a queue of commands read
  */
@@ -256,7 +258,7 @@ locate_map (MPProcess *process, guint addr)
 	Map *map = real_locate_map (process, addr);
 	if (!map)
 	{
-		gpointer page_addr = (gpointer) (addr - addr % PAGE_SIZE);
+		gpointer page_addr = (gpointer) (addr - addr % MP_PAGE_SIZE);
 		if (g_list_find (process->bad_pages, page_addr))
 			return NULL;
 
@@ -459,6 +461,8 @@ process_exec_reset (MPProcess *process)
 	
 	/* FIXME: leak */
 	process->command_queue = NULL;
+
+	gtk_signal_emit (GTK_OBJECT (process), process_signals[RESET]);
 }
 
 static void
@@ -550,8 +554,6 @@ input_func (GIOChannel  *source,
 	if (count == 0) {
 		g_io_channel_unref (input_process->input_channel);
 		input_process->input_channel = NULL;
-
-		waitpid (input_process->pid, NULL, 0);
 
 		mp_server_remove_process (input_process->server, input_process);
 		process_set_status (input_process, MP_PROCESS_DEFUNCT);
@@ -682,7 +684,16 @@ mp_process_class_init (MPProcessClass *class)
 				gtk_marshal_NONE__NONE,
 				GTK_TYPE_NONE, 0);
 
+	process_signals[RESET] =
+		gtk_signal_new ("reset",
+				GTK_RUN_LAST,
+				object_class->type,
+				GTK_SIGNAL_OFFSET (MPProcessClass, reset),
+				gtk_marshal_NONE__NONE,
+				GTK_TYPE_NONE, 0);
+
 	gtk_object_class_add_signals (object_class, process_signals, LAST_SIGNAL);
+	object_class->finalize = mp_process_finalize;
 }
 
 static void
@@ -705,7 +716,21 @@ mp_process_init (MPProcess *process)
 
 	process->follow_fork = FALSE;
 	process->follow_exec = FALSE;
+
+	gtk_object_ref (GTK_OBJECT (process));
+	gtk_object_sink (GTK_OBJECT (process));
 }
+
+static void 
+mp_process_finalize (GtkObject *object)
+{
+	MPProcess *process = MP_PROCESS (object);
+
+	process_exec_reset (process);
+	
+	g_free (process->program_name);
+}
+
 
 MPProcess *
 process_new (MPServer *server)
@@ -783,6 +808,9 @@ process_get_status_text (MPProcess *process)
 	case MP_PROCESS_DEFUNCT:
 		status = _("Defunct");
 		break;
+	case MP_PROCESS_DETACHED:
+		status = _("Defunct");
+		break;
 	}
 
 	return g_strdup (status);
@@ -826,6 +854,9 @@ process_detach (MPProcess *process)
 		if (process->status == MP_PROCESS_EXITING) {
 			char response = 0;
 			write (fd, &response, 1);
+		} else {
+			g_io_channel_close (process->input_channel);
+			process_set_status (process, MP_PROCESS_DETACHED);
 		}
 	}
 }

@@ -65,9 +65,8 @@ static void
 tree_detach_cb (GtkWidget *widget)
 {
 	ProcessWindow *pwin = get_process_window (widget);
-	MPProcess *process = process_window_get_process (pwin);
 
-	process_detach (process);
+	process_window_maybe_detach (pwin);
 }
 
 static void

@@ -132,6 +132,9 @@ mp_server_init (MPServer *server)
 	channel = g_io_channel_unix_new (server->socket_fd);
 	server->control_watch = g_io_add_watch (channel, G_IO_IN | G_IO_HUP, control_func, server);
 	g_io_channel_unref (channel);
+
+	gtk_object_ref (GTK_OBJECT (server));
+	gtk_object_sink (GTK_OBJECT (server));
 }
 
 static void

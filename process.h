@@ -48,7 +48,8 @@ typedef enum {
 	MP_PROCESS_STARTING,	/* Run child, waiting for it to connect */
 	MP_PROCESS_RUNNING,	/* Child is running */
 	MP_PROCESS_EXITING,	/* _exit() has been called in child */
-	MP_PROCESS_DEFUNCT	/* child no longer exists */
+	MP_PROCESS_DEFUNCT,	/* child no longer exists */
+	MP_PROCESS_DETACHED	/* we now ignore this child */
 } MPProcessStatus;
 
 struct _MPProcess
@@ -86,6 +87,7 @@ struct _MPProcessClass {
 	GtkObjectClass parent_class;
 
 	void (*status_changed) (MPProcess *process);
+	void (*reset)          (MPProcess *process);
 };
 
 GtkType     mp_process_get_type     (void);

@@ -1,3 +1,28 @@
+Wed May 24 23:30:02 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (mp_process_finalize): Add a finalize
+	function.
+
+Wed May 24 23:18:12 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (mp_process_init): 
+	* server.c (mp_server_init):
+
+	Ref and sink objects to make them strictly reference
+	counted.
+
+Wed May 24 05:26:18 2000  Owen Taylor  <otaylor@redhat.com>
+
+        * tree.c main.c: Always confirm when killing or
+	detaching from a process.
+	
+	* main.c (run_file): When running a new process, and we
+	have an existing process, create a new window for the
+	new process.
+
+	* main.c: Add a SIGCHLD handler so we don't have to
+	worry about waiting for processes we've detached from.
+
 Wed May 24 04:22:28 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* main.c gui.h (process_window_maybe_kill) process.[ch]
