@@ -1,3 +1,23 @@
+Tue Aug 19 02:28:34 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* main.c (run_cb), (skip_add_cb), (skip_regexes_add_cb): conversion
+	to GtkDialog.
+
+	* memprof.glade (fileentry1): GnomeFileEntry in the run dialog should
+	be modal, so the file selector there also responds (pointed out
+	by Dennis Smit),
+	(SkipAddDialog, RunDialog, SkipRegexesAddDialog): conversion to
+	GtkDialog and enable has_default again on the appropriate buttons,
+	set activates_default to true on the entries,
+	(Preferences dialog): use stock buttons for add and delete.
+
+	* process.c (process_find_exec): prepend "./" to non-absolute paths,
+	so running programs in the current directory works without hassle,
+	(process_run): also pass path to program to mp_server_instrument.
+
+	* server.[ch] (mp_server_instrument): use program value processed by
+	process_find_exec and not args[0].
+
 Tue Aug 20 11:03:11 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Patch from Art Haas to use AC_CONFIG_FILES.

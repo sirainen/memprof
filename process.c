@@ -654,7 +654,10 @@ process_find_exec (char **args)
 	int i;
   
 	if (g_file_exists(args[0])) {
-		return g_strdup (args[0]);
+		if (!g_path_is_absolute (args[0]))
+			return g_strconcat ("./", args[0], NULL);
+		else
+			return g_strdup (args[0]);
 	} else {
 		char **paths;
 		char *path = NULL;
@@ -811,7 +814,7 @@ process_run (MPProcess *process, const char *path, char **args)
 	process->program_name = g_strdup (path);
 	read_inode (path);
 
-	process->pid = mp_server_instrument (process->server, args);
+	process->pid = mp_server_instrument (process->server, path, args);
 	mp_server_add_process (process->server, process);
 
 	process_set_status (process, MP_PROCESS_STARTING);

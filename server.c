@@ -188,7 +188,7 @@ mp_server_new (void)
 }
 
 int
-mp_server_instrument (MPServer *server, char **args)
+mp_server_instrument (MPServer *server, const char *program, char **args)
 {
 	int pid;
 
@@ -206,7 +206,7 @@ mp_server_instrument (MPServer *server, char **args)
 		envstr = g_strdup_printf ("%s=%s", "LD_PRELOAD", server->lib_location);
 		putenv (envstr);
 
-		execvp (args[0], args);
+		execvp (program, args);
 
 		g_warning ("Cannot run program: %s", g_strerror (errno));
 		_exit(1);

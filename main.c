@@ -832,9 +832,9 @@ run_cb (GtkWidget *widget)
        g_object_unref (G_OBJECT (xml));
 
        while (1) {
-	       gnome_dialog_set_parent (GNOME_DIALOG (run_dialog),
-					GTK_WINDOW (pwin->main_window));
-	       if (gnome_dialog_run (GNOME_DIALOG (run_dialog)) == 1) {
+	       gtk_window_set_transient_for (GTK_WINDOW (run_dialog),
+			                     GTK_WINDOW (pwin->main_window));
+	       if (gtk_dialog_run (GTK_DIALOG (run_dialog)) == 1) {
 		       gchar **args;
 		       char *text;
 		       gboolean result;
@@ -1018,9 +1018,10 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        g_object_unref (G_OBJECT (xml));
 
        while (1) {
-	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
-					GTK_WINDOW (property_box));
-	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 1) {
+               gtk_window_set_transient_for (GTK_WINDOW (dialog),
+				             GTK_WINDOW (property_box));
+
+	       if (gtk_dialog_run (GTK_DIALOG (dialog)) == 1) {
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
 		       if (strchr (text, ' ')) {
@@ -1116,9 +1117,10 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        g_object_unref (G_OBJECT (xml));
 
        while (1) {
-	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
-					GTK_WINDOW (property_box));
-	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 1) {
+               gtk_window_set_transient_for (GTK_WINDOW (dialog),
+                                             GTK_WINDOW (property_box));
+
+	       if (gtk_dialog_run (GTK_DIALOG (dialog)) == 1) {
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 		       
 		       if (strchr (text, ' ')) {

@@ -1155,15 +1155,13 @@
 </property>
     <property name="comments" translatable="yes">Memory Profiling Tool</property>
   </widget>
-  <widget class="GnomeDialog" id="SkipAddDialog">
+  <widget class="GtkDialog" id="SkipAddDialog">
     <property name="visible">no</property>
     <property name="title" translatable="yes">Adding Skip Function</property>
     <property name="type">GTK_WINDOW_TOPLEVEL</property>
     <property name="modal">no</property>
     <property name="allow_shrink">no</property>
     <property name="allow_grow">no</property>
-    <property name="auto_close">no</property>
-    <property name="hide_on_close">yes</property>
     <property name="window-position">GTK_WIN_POS_NONE</property>
 
     <child internal-child="vbox">
@@ -1186,18 +1184,20 @@
                 <property name="label">gtk-cancel</property>
                 <property name="use_stock">yes</property>
                 <property name="use_underline">yes</property>
+                <property name="response_id">0</property>
               </widget>
             </child>
 
             <child>
               <widget class="GtkButton" id="SkipAddDialog-add">
                 <property name="can_default">yes</property>
-<!--                <property name="has_default">yes</property> -->
+                <property name="has_default">yes</property>
                 <property name="can_focus">yes</property>
                 <property name="visible">yes</property>
                 <property name="label">gtk-add</property>
                 <property name="use_stock">yes</property>
                 <property name="use_underline">yes</property>
+                <property name="response_id">1</property>
               </widget>
             </child>
           </widget>
@@ -1265,6 +1265,7 @@
                 <property name="has_focus">yes</property>
                 <property name="editable">yes</property>
                 <property name="text" translatable="yes"></property>
+                <property name="activates-default">yes</property>
                 <property name="max-length">0</property>
                 <property name="visibility">yes</property>
                 <property name="visible">yes</property>
@@ -1290,15 +1291,13 @@
       </packing>
     </child>
   </widget>
-  <widget class="GnomeDialog" id="RunDialog">
+  <widget class="GtkDialog" id="RunDialog">
     <property name="visible">no</property>
     <property name="title" translatable="yes">Run Executable</property>
     <property name="type">GTK_WINDOW_TOPLEVEL</property>
     <property name="modal">no</property>
     <property name="allow_shrink">no</property>
     <property name="allow_grow">no</property>
-    <property name="auto_close">yes</property>
-    <property name="hide_on_close">yes</property>
     <property name="window-position">GTK_WIN_POS_NONE</property>
 
     <child internal-child="vbox">
@@ -1321,18 +1320,20 @@
                 <property name="label">gtk-cancel</property>
                 <property name="use_stock">yes</property>
                 <property name="use_underline">yes</property>
+                <property name="response_id">0</property>
               </widget>
             </child>
 
             <child>
               <widget class="GtkButton" id="RunDialog-run">
                 <property name="can_default">yes</property>
-<!--                <property name="has_default">yes</property> -->
+                <property name="has_default">yes</property>
                 <property name="can_focus">yes</property>
                 <property name="label">gtk-execute</property>
                 <property name="use_stock">yes</property>
                 <property name="use_underline">yes</property>
                 <property name="visible">yes</property>
+                <property name="response_id">1</property>
               </widget>
             </child>
           </widget>
@@ -1391,7 +1392,7 @@
         <child>
           <widget class="GnomeFileEntry" id="fileentry1">
             <property name="history_id">RunDialog</property>
-            <property name="modal">no</property>
+            <property name="modal">yes</property>
             <property name="directory_entry">no</property>
             <property name="visible">yes</property>
 
@@ -1402,6 +1403,7 @@
                 <property name="editable">yes</property>
                 <property name="text" translatable="yes"></property>
                 <property name="max-length">0</property>
+                <property name="activates-default">yes</property>
                 <property name="visibility">yes</property>
                 <property name="visible">yes</property>
               </widget>
@@ -1503,15 +1505,13 @@
       </widget>
     </child>
   </widget>
-  <widget class="GnomeDialog" id="SkipRegexesAddDialog">
+  <widget class="GtkDialog" id="SkipRegexesAddDialog">
     <property name="visible">no</property>
     <property name="title" translatable="yes">Adding Skip Regular Expression</property>
     <property name="type">GTK_WINDOW_TOPLEVEL</property>
     <property name="modal">no</property>
     <property name="allow_shrink">no</property>
     <property name="allow_grow">no</property>
-    <property name="auto_close">no</property>
-    <property name="hide_on_close">yes</property>
     <property name="window-position">GTK_WIN_POS_NONE</property>
 
     <child internal-child="vbox">
@@ -1534,18 +1534,20 @@
                 <property name="label">gtk-cancel</property>
                 <property name="use_stock">yes</property>
                 <property name="use_underline">yes</property>
+                <property name="response_id">0</property>
               </widget>
             </child>
 
             <child>
               <widget class="GtkButton" id="SkipRegexesAddDialog-add">
                 <property name="can_default">yes</property>
-<!--                <property name="has_default">yes</property> -->
+                <property name="has_default">yes</property>
                 <property name="can_focus">yes</property>
                 <property name="visible">yes</property>
                 <property name="label">gtk-add</property>
                 <property name="use_stock">yes</property>
                 <property name="use_underline">yes</property>
+                <property name="response_id">1</property>
               </widget>
             </child>
           </widget>
@@ -1613,6 +1615,7 @@
                 <property name="has_focus">yes</property>
                 <property name="editable">yes</property>
                 <property name="text" translatable="yes"></property>
+                <property name="activates-default">yes</property>
                 <property name="max-length">0</property>
                 <property name="visibility">yes</property>
                 <property name="visible">yes</property>
@@ -1759,7 +1762,9 @@
                         <child>
                           <widget class="GtkButton" id="skip-add-button">
                             <property name="can_focus">yes</property>
-                            <property name="label" translatable="yes">Add...</property>
+                            <property name="label">gtk-add</property>
+                            <property name="use_stock">yes</property>
+                            <property name="use_underline">yes</property>
                             <property name="relief">GTK_RELIEF_NORMAL</property>
                             <property name="visible">yes</property>
                           </widget>
@@ -1773,7 +1778,9 @@
                         <child>
                           <widget class="GtkButton" id="skip-delete-button">
                             <property name="can_focus">yes</property>
-                            <property name="label" translatable="yes">Delete</property>
+                            <property name="label">gtk-delete</property>
+                            <property name="use_stock">yes</property>
+                            <property name="use_underline">yes</property>
                             <property name="relief">GTK_RELIEF_NORMAL</property>
                             <property name="visible">yes</property>
                           </widget>
@@ -1913,7 +1920,9 @@
                         <child>
                           <widget class="GtkButton" id="skip-regexes-add-button">
                             <property name="can_focus">yes</property>
-                            <property name="label" translatable="yes">Add...</property>
+                            <property name="label">gtk-add</property>
+                            <property name="use_stock">yes</property>
+                            <property name="use_underline">yes</property>
                             <property name="relief">GTK_RELIEF_NORMAL</property>
                             <property name="visible">yes</property>
                           </widget>
@@ -1927,7 +1936,9 @@
                         <child>
                           <widget class="GtkButton" id="skip-regexes-delete-button">
                             <property name="can_focus">yes</property>
-                            <property name="label" translatable="yes">Delete</property>
+                            <property name="label">gtk-delete</property>
+                            <property name="use_stock">yes</property>
+                            <property name="use_underline">yes</property>
                             <property name="relief">GTK_RELIEF_NORMAL</property>
                             <property name="visible">yes</property>
                           </widget>

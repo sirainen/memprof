@@ -34,8 +34,9 @@ typedef struct _MPServerClass MPServerClass;
 
 GType   mp_server_get_type     (void);
 MPServer *mp_server_new        (void);
-int       mp_server_instrument (MPServer  *server,
-				char     **args);
+int       mp_server_instrument (MPServer     *server,
+				const char   *program,
+				char        **args);
 
 MPProcess *mp_server_find_process       (MPServer  *server,
 					 pid_t      pid);
