@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof HEAD\n"
-"POT-Creation-Date: 2002-03-06 09:09+0800\n"
+"POT-Creation-Date: 2002-04-16 03:16+0800\n"
 "PO-Revision-Date: 2002-03-06 09:06+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: ms <sebol@ikhlas.com>\n"
@@ -13,12 +13,12 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:531
+#: main.c:528
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Perlaksanaan \"%s\" gagal"
 
-#: main.c:657
+#: main.c:654
 msgid "Really quit MemProf?"
 msgstr "Benar-benar keluar MemProf?"
 
@@ -27,44 +27,44 @@ msgstr "Benar-benar keluar MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:702 memprof-strings.c:7
+#: main.c:699 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:795
+#: main.c:792
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Gagal menjumpai bolehlaksana bagi \"%s\""
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Error"
 msgstr "Ralat Memprof"
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Warning"
 msgstr "Amaran MemProf"
 
-#: main.c:1613
+#: main.c:1637
 msgid "Really detach from finished process?"
 msgstr "Benar-benar lerai dari proses ditamatkan?"
 
-#: main.c:1615
+#: main.c:1639
 msgid "Really detach from running process?"
 msgstr "Benar-benar lerai dari proses terlaksana?"
 
-#: main.c:1635
+#: main.c:1659
 msgid "Really kill running process?"
 msgstr "Benar-benar bunuh proses terlaksana?"
 
-#: main.c:1665
+#: main.c:1689
 msgid "Create new windows for forked processes"
 msgstr "Cipta tetingkap baru bagi proses disepit"
 
-#: main.c:1667
+#: main.c:1691
 msgid "Retain windows for processes after exec()"
 msgstr "Kekalkan tetingkap bagi proses selepas exec()"
 
-#: main.c:1697
+#: main.c:1721
 msgid "Cannot find memprof.glade2"
 msgstr "Gagal menjumpai memprof.glade2"
 
@@ -116,7 +116,7 @@ msgstr "Ikut _exec()"
 msgid "Run Program"
 msgstr "Laksanakan Program"
 
-#: memprof-strings.c:20 memprof-strings.c:74
+#: memprof-strings.c:20 memprof-strings.c:61
 msgid "Run"
 msgstr "Laksana"
 
@@ -234,89 +234,93 @@ msgid "Memory Profiling Tool"
 msgstr "Radas memprofil memori"
 
 #: memprof-strings.c:57
-msgid "Functions to Skip:"
-msgstr "Fungsi untuk dilangkah:"
-
-#: memprof-strings.c:58 memprof-strings.c:63
-msgid "label37"
-msgstr "label37"
-
-#: memprof-strings.c:59 memprof-strings.c:64
-msgid "Add..."
-msgstr "Tambah..."
-
-#: memprof-strings.c:60 memprof-strings.c:65
-msgid "Delete"
-msgstr "Padam"
-
-#: memprof-strings.c:61 memprof-strings.c:66
-msgid "Defaults"
-msgstr "Default"
-
-#: memprof-strings.c:62
-msgid "Regular expressions to Skip:"
-msgstr "Penyataan regular (regexp) untuk dilangkah:"
-
-#: memprof-strings.c:67
-msgid "Profile Options"
-msgstr "Opsyen Profil"
-
-#: memprof-strings.c:68
-msgid "Command to run on double click in stack trace:"
-msgstr "Arahan untuk dilaksanakan pada dwi-klik pada surihan tindanan:"
-
-#: memprof-strings.c:69
-msgid "Leak Detection Options"
-msgstr "Opsyen Mengesan Kebocoran"
-
-#: memprof-strings.c:70
 msgid "Adding Skip Function"
 msgstr "Menambah Fungsi langkahan"
 
-#: memprof-strings.c:71 memprof-strings.c:81
+#: memprof-strings.c:58 memprof-strings.c:68
 msgid "Add"
 msgstr "Tambah"
 
-#: memprof-strings.c:72
+#: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr "Masukkan nama fungsi untuk dilangkah bila mengkomput profil"
 
-#: memprof-strings.c:73
+#: memprof-strings.c:60
 msgid "Run Executable"
 msgstr "Laksanakan bolehlaksana"
 
-#: memprof-strings.c:75
+#: memprof-strings.c:62
 msgid "Enter pathname to a executable"
 msgstr "Masukkan nama path ke bolehlaksana"
 
-#: memprof-strings.c:76
+#: memprof-strings.c:63
 msgid "MemProf - Processes"
 msgstr "MemProf - Proses"
 
-#: memprof-strings.c:77
+#: memprof-strings.c:64
 msgid "PID"
 msgstr "PID"
 
-#: memprof-strings.c:78
+#: memprof-strings.c:65
 msgid "Command Line"
 msgstr "Arahan Baris"
 
-#: memprof-strings.c:79
+#: memprof-strings.c:66
 msgid "Status"
 msgstr "Status"
 
-#: memprof-strings.c:80
+#: memprof-strings.c:67
 msgid "Adding Skip Regular Expression"
 msgstr "Tambah Penyataan Regular (regepx) Langkahan"
 
-#: memprof-strings.c:82
+#: memprof-strings.c:69
 msgid ""
 "Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
 "Masukkan penyataan regular (regexp) bagi nama fungsi untuk dilangkah bile "
 "menkomput profil"
 
-#: leakdetect.c:585 profile.c:201
+#: memprof-strings.c:70
+msgid "Preferences"
+msgstr "Keutamaan"
+
+#: memprof-strings.c:71
+msgid "Functions to Skip:"
+msgstr "Fungsi untuk dilangkah:"
+
+#: memprof-strings.c:72 memprof-strings.c:77
+msgid "label37"
+msgstr "label37"
+
+#: memprof-strings.c:73 memprof-strings.c:78
+msgid "Add..."
+msgstr "Tambah..."
+
+#: memprof-strings.c:74 memprof-strings.c:79
+msgid "Delete"
+msgstr "Padam"
+
+#: memprof-strings.c:75 memprof-strings.c:80
+msgid "Defaults"
+msgstr "Default"
+
+#: memprof-strings.c:76
+msgid "Regular expressions to Skip:"
+msgstr "Penyataan regular (regexp) untuk dilangkah:"
+
+#: memprof-strings.c:81
+msgid "Profile Options"
+msgstr "Opsyen Profil"
+
+#: memprof-strings.c:82
+msgid "Command to run on double click in stack trace:"
+msgstr "Arahan untuk dilaksanakan pada dwi-klik pada surihan tindanan:"
+
+#: memprof-strings.c:83
+msgid "Leak Detection Options"
+msgstr "Opsyen Mengesan Kebocoran"
+
+#: leakdetect.c:585 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Tak dapat buka fail output: %s\n"
