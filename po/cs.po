@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-01-24 04:55+0100\n"
-"PO-Revision-Date: 2004-01-27 16:44+0100\n"
+"POT-Creation-Date: 2004-09-05 12:10+0200\n"
+"PO-Revision-Date: 2004-09-05 16:18+0200\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -37,88 +37,87 @@ msgstr "Nemohu najít spustitelný soubor pro \"%s\""
 msgid "Saving is disabled at the moment"
 msgstr "Ukládání je momentálně zakázáno"
 
-#: main.c:1704
+#: main.c:1706
 msgid "MemProf Error"
 msgstr "Chyba MemProf"
 
-#: main.c:1704
+#: main.c:1706
 msgid "MemProf Warning"
 msgstr "Varování MemProf"
 
-#: main.c:1773 main.c:1786 main.c:1801
+#: main.c:1775 main.c:1788 main.c:1803
 msgid "Name"
 msgstr "Název"
 
-#: main.c:1774 main.c:1787 main.c:1802
+#: main.c:1776 main.c:1789 main.c:1804
 msgid "Self"
 msgstr "Sama"
 
-#: main.c:1775 main.c:1803
+#: main.c:1777 main.c:1805
 msgid "Total"
 msgstr "Celkem"
 
-#: main.c:1788
+#: main.c:1790
 msgid "Cumulative"
-msgstr "Shouhrn"
+msgstr "Souhrn"
 
-#: main.c:1825
+#: main.c:1827
 msgid "Address"
 msgstr "Adresa"
 
-#: main.c:1826
+#: main.c:1828
 msgid "Size"
 msgstr "Velikost"
 
-#: main.c:1827
+#: main.c:1829
 msgid "Caller"
 msgstr "Volající"
 
-#: main.c:1845
+#: main.c:1847
 msgid "Function"
 msgstr "Funkce"
 
-#: main.c:1846
+#: main.c:1848
 msgid "Line"
 msgstr "Řádek"
 
-#: main.c:1847
+#: main.c:1849
 msgid "File"
 msgstr "Soubor"
 
-#: main.c:2057
+#: main.c:2059
 msgid "Really detach from finished process?"
 msgstr "Opravdu se odpojit od skončeného procesu?"
 
-#: main.c:2059
+#: main.c:2061
 msgid "Really detach from running process?"
 msgstr "Opravdu se odpojit od běžícího procesu?"
 
-#: main.c:2089
+#: main.c:2091
 msgid "Really kill running process?"
 msgstr "Opravdu zabít běžící proces?"
 
-#: main.c:2126
+#: main.c:2128
 msgid "Create new windows for forked processes"
 msgstr "Vytvořit pro forkované procesy nová okna"
 
-#: main.c:2128
+#: main.c:2130
 msgid "Retain windows for processes after exec()"
 msgstr "Zachovat okna pro procesy po exec()"
 
-#: main.c:2130
+#: main.c:2132
 msgid "Type of profiling information to collect"
 msgstr "Typ sbíraných profilovacích informací"
 
-#: main.c:2132
+#: main.c:2134
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Počet vzorků/s pro časový profil (1k=1000)"
 
-#: main.c:2181
-msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr ""
-"Argument volby --profile musí být jeden z 'memory', 'cycles' nebo 'time'\n"
+#: main.c:2183
+msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
+msgstr "Argument volby --profile musí být jeden z 'memory', 'cycles' nebo 'time'\n"
 
-#: main.c:2222
+#: main.c:2224
 msgid "Cannot find memprof.glade"
 msgstr "Nemohu najít memprof.glade"
 
@@ -336,23 +335,23 @@ msgstr "_Nastavení"
 msgid "translator_credits"
 msgstr "Miloslav Trmač <mitr@volny.cz>"
 
-#: process.c:888
+#: process.c:895
 msgid "Initial"
 msgstr "Počáteční"
 
-#: process.c:891
+#: process.c:898
 msgid "Starting"
 msgstr "Startuje"
 
-#: process.c:894
+#: process.c:901
 msgid "Running"
 msgstr "Běží"
 
-#: process.c:897
+#: process.c:904
 msgid "Exiting"
 msgstr "Ukončuje se"
 
-#: process.c:900 process.c:903
+#: process.c:907 process.c:910
 msgid "Defunct"
 msgstr "Nefunkční"
 
