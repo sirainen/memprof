@@ -8,106 +8,106 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-06-11 18:26+0200\n"
-"PO-Revision-Date: 2002-06-11 18:29+0200\n"
+"POT-Creation-Date: 2002-07-16 09:27+0200\n"
+"PO-Revision-Date: 2002-07-16 09:28+0200\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:529
+#: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Körning av \"%s\" misslyckades"
 
-#: main.c:660
+#: main.c:661
 msgid "Really quit MemProf?"
 msgstr "Verkligen avsluta MemProf?"
 
-#: main.c:706 memprof.glade.h:36
+#: main.c:707 memprof.glade.h:36
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:800
+#: main.c:801
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kan inte hitta programfil för \"%s\""
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Error"
 msgstr "MemProf-fel"
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Warning"
 msgstr "MemProf-varning"
 
-#: main.c:1645
+#: main.c:1660
 msgid "Really detach from finished process?"
 msgstr "Verkligen lösgöra från avslutad process?"
 
-#: main.c:1647
+#: main.c:1662
 msgid "Really detach from running process?"
 msgstr "Verkligen lösgöra från körande process?"
 
-#: main.c:1677
+#: main.c:1692
 msgid "Really kill running process?"
 msgstr "Verkligen döda körande process?"
 
-#: main.c:1710
+#: main.c:1725
 msgid "Create new windows for forked processes"
 msgstr "Skapa nya fönster för grenade processer"
 
-#: main.c:1712
+#: main.c:1727
 msgid "Retain windows for processes after exec()"
 msgstr "Bibehåll fönster för processer efter exec()"
 
-#: main.c:1749
+#: main.c:1764
 msgid "Cannot find memprof.glade"
 msgstr "Kan inte hitta memprof.glade"
 
-#: leakdetect.c:586 profile.c:202
+#: leakdetect.c:587 profile.c:203
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan inte öppna utmatningsfil: %s\n"
 
-#: process.c:814
+#: process.c:815
 msgid "Initial"
 msgstr "Initialt"
 
-#: process.c:817
+#: process.c:818
 msgid "Starting"
 msgstr "Startar"
 
-#: process.c:820
+#: process.c:821
 msgid "Running"
 msgstr "Kör"
 
-#: process.c:823
+#: process.c:824
 msgid "Exiting"
 msgstr "Avslutar"
 
-#: process.c:826 process.c:829
+#: process.c:827 process.c:830
 msgid "Defunct"
 msgstr "Död"
 
-#: server.c:244
+#: server.c:245
 msgid "Cannot find libmemintercept.so"
 msgstr "Kan inte hitta libmemintercept.so"
 
-#: tree.c:90
+#: tree.c:91
 msgid "Show"
 msgstr "Visa"
 
-#: tree.c:93
+#: tree.c:94
 msgid "Hide"
 msgstr "Dölj"
 
-#: tree.c:97 memprof.glade.h:31
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Döda"
 
-#: tree.c:100
+#: tree.c:101
 msgid "Detach"
 msgstr "Lösgör"
 
@@ -176,8 +176,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skall köras vid dubbelklickning på stackvisningen:"
 
 #: memprof.glade.h:17
-msgid "Copyright Red Hat, Inc., 1999-2000"
-msgstr "Copyright Red Hat, Inc., 1999-2000"
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -355,8 +359,15 @@ msgid "_Process"
 msgstr "_Process"
 
 #: memprof.glade.h:63
+msgid "_Run Program..."
+msgstr "_Kör program..."
+
+#: memprof.glade.h:64
 msgid "_Settings"
 msgstr "_Inställningar"
+
+#~ msgid "Copyright Red Hat, Inc., 1999-2000"
+#~ msgstr "Copyright Red Hat, Inc., 1999-2000"
 
 #~ msgid "_Run..."
 #~ msgstr "_Kör..."
