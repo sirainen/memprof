@@ -2,7 +2,10 @@
 
 	* intercept.c (clone __clone clone_thunk): Add extra arguments to
 	clone intercept functions.  (Fixes #122460)
-
+	* process.c (process_read_maps): 
+	* leakdetect.c (read_stack_maps): 
+	Parse device numbers as hex.  Fix from Ian McKellar.  (Fixes #120457)
+	
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Add «nb» to ALL_LINGUAS.

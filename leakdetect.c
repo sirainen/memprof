@@ -169,7 +169,7 @@ read_stack_maps (MPProcess *process)
 		return NULL;
 
 	while (fgets(buffer, 1023, in)) {
-		int count = sscanf (buffer, "%x-%x %15s %*x %u:%u %u %255s",
+		int count = sscanf (buffer, "%x-%x %15s %*x %x:%x %u %255s",
 				    &start, &end, perms, &major, &minor, &inode, file);
 		if (count >= 6)	{
 			if (strcmp (perms, "rwxp") == 0) {
