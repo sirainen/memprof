@@ -626,13 +626,7 @@ process_find_exec (char **args)
 
 	  g_strfreev (paths);
 
-	  if (path)
-	    return path;
-	  else
-	    {
-	      g_strfreev (args);
-	      return NULL;
-	    }
+	  return path;
 	}
     }
 }

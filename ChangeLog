@@ -1,3 +1,10 @@
+Thu Oct 28 09:22:42 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (process_find_exec): Fix extra free
+	in case where executable is not found. 
+	(Pointed out by Sven Neumann
+	 <neumann@simul.biophys.uni-duesseldorf.de>)
+
 Wed Oct 27 20:58:03 1999  George Lebl  <jirka@5z.com>
 
 	* main.c: (update_status) if current_process->n_allocations,

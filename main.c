@@ -596,7 +596,7 @@ run_file (char **args)
 		
 	} else {
 		show_error (ERROR_MODAL,
-			    _("Cannot find executable for: %s"),
+			    _("Cannot find executable for \"%s\""),
 			    args[0]);
 		result = FALSE;
 	}
