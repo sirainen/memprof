@@ -368,7 +368,9 @@ process_dump_stack (MPProcess *process, FILE *out, gint stack_size, void **stack
 			fprintf(out, "\t%s(): %s:%u\n", functionname, filename, line);
 			free (functionname);
 		} else
-			fprintf(out, "\t(???)\n");
+			/* 3f == ?, suppress trigraph warnings */
+			fprintf(out, "\t(\x3f\x3f\x3f)\n");
+
 	}
 }
 
@@ -507,21 +509,22 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 			}
 			else {
 				g_hash_table_remove (process->block_table, info->alloc.old_ptr);
+				process->bytes_used -= block->size;
 				block_unref (block);
 				
-				process->bytes_used -= block->size;
 				process->n_allocations--;
 			}
 		}
-		
-			/* There is a problem with malloc initialization where __libc_malloc gets
-			 * called twice for the same block. To really get correct counts, we should do:
-			 *
-			 * if (info->alloc.new_ptr && !g_hash_table_lookup (procss->block_table, info->alloc.new_ptr))
-			 *   {
-			 */
 
-		if (info->alloc.new_ptr) {
+		/* We need to lookup before inserting, because realloc() can call malloc(), so we
+		 * see the same block twice. The same problem comes upduring malloc initialization
+		 * where __libc_malloc() is called twice for the same block. We could optimize
+		 * things a bit by using g_hash_table_new_full() to catch the replacement when
+		 * it happens and free the old block, but that would make keeping track of
+		 * process->n_allocations/bytes_used a little difficult.
+		 */
+
+		if (info->alloc.new_ptr && !g_hash_table_lookup (process->block_table, info->alloc.new_ptr)) {
 			block = g_new (Block, 1);
 			block->refcount = 1;
 			
@@ -752,7 +755,7 @@ process_new (MPServer *server)
 {
 	MPProcess *process;
 
-	process = g_type_create_instance (MP_TYPE_PROCESS);
+	process = g_object_new (MP_TYPE_PROCESS, NULL);
 
 	process->server = server;
 

@@ -1,3 +1,16 @@
+Tue Dec 11 20:40:37 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c (process_command): Check for duplicate
+	allocations of a same block, since realloc apparently
+	calls malloc in some cases.
+
+	* main.c server.c memintercept.c: Warning cleanups.
+
+	* server.c process.c: Use g_object_new(), not g_type_create_instance.
+
+	* process.c (process_command): Don't access block->size 
+	after unrefing block.
+
 Tue Dec 11 00:41:13  Kristian Rietveld  <kris@gtk.org>
 
 	Port to gnome2 platform.

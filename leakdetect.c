@@ -560,7 +560,6 @@ leaks_find (MPProcess *process)
 		tmp_list = tmp_list->next;
 	}
 
- error:
 	/* Clean up
 	 */
 	g_list_free (clones);

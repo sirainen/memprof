@@ -122,7 +122,7 @@ write_num (unsigned long num)
 
 	write (2, buffer, n);
 }
-#endif DEBUG
+#endif /* DEBUG */
 
 static int
 write_all (int fd, void *buf, int total)
@@ -329,7 +329,7 @@ __libc_malloc (size_t size)
 			write_num (size);
 			write (2, ")\n", 2);
 		}
-#endif DEBUG		
+#endif /* DEBUG	*/
 		
 		return result;
 	}
@@ -462,7 +462,7 @@ __libc_free (void *ptr)
 		
 		write (2, msg, sizeof (msg));
 		write_num ((unsigned long)ptr);
-#endif DEBUG
+#endif /* DEBUG */
 
 		if (ptr == starter_mem + starter_last)
 			starter_alloced = starter_last;
@@ -470,7 +470,7 @@ __libc_free (void *ptr)
 		else
 			write (2, " (ignored)", 10);
 		write (2, "\n", 1);
-#endif DEBUG		
+#endif /* DEBUG	*/
 		return;
 	}
 

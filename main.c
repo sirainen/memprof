@@ -384,8 +384,9 @@ leak_block_select_row (GtkWidget     *widget,
 		
 		if (!process_find_line (pwin->process, block->stack[i],
 					&filename, &functionname, &line)) {
-			functionname = g_strdup ("(???)");
-			filename = "(???)";
+			/* 0x3f == '?' -- suppress trigraph warnings */
+			functionname = g_strdup ("(\x3f\x3f\x3f)");
+			filename = "(\x3f\x3f\x3f)";
 			line = 0;
 		}
 		
@@ -459,7 +460,7 @@ leaks_fill (ProcessWindow *pwin, GtkCList *clist)
 				break;
 		}
 		if (!functionname)
-			functionname = g_strdup ("(???)");
+			functionname = g_strdup ("(\x3f\x3f\x3f)");
 		
 		g_snprintf(buf, 32, "%p", block->addr);
 		data[0] = g_strdup (buf);

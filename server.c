@@ -181,7 +181,7 @@ mp_server_finalize (GObject *object)
 MPServer *
 mp_server_new (void)
 {
-	MPServer *server = g_type_create_instance (MP_TYPE_SERVER);
+	MPServer *server = g_object_new (MP_TYPE_SERVER, NULL);
 
 	return server;
 }
@@ -392,7 +392,7 @@ create_control_socket (MPServer *server)
 	if (addrlen > sizeof (addr))
 		addrlen = sizeof(addr);
 
-	if (bind (server->socket_fd, &addr, addrlen) < 0) {
+	if (bind (server->socket_fd, (struct sockaddr *)&addr, addrlen) < 0) {
 		if (errno == EADDRINUSE)
 			goto retry;
 		else
