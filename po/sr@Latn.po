@@ -1,0 +1,376 @@
+# Serbian translation of memprof
+# Courtesy of Prevod.org team (http://www.prevod.org/) -- 2003.
+# 
+# This file is distributed under the same license as the memprof package.
+# 
+# Maintainer: Dušan Živojnov <calvin@verat.net>
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: memproof\n"
+"POT-Creation-Date: 2003-05-06 05:27+0200\n"
+"PO-Revision-Date: 2003-05-04 20:54+0100\n"
+"Last-Translator: Dušan Živojnov <calvin@verat.net>\n"
+"Language-Team: Serbian (sr) <serbiangnome-lista@nongnu.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: leakdetect.c:584 profile.c:202
+#, c-format
+msgid "Cannot open output file: %s\n"
+msgstr "Ne mogu otvoriti datoteku: %s\n"
+
+#: main.c:536
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "Izvršenje \"%s\" nije uspelo"
+
+#: main.c:667
+msgid "Really quit MemProf?"
+msgstr "Zaista ugasiti MemProf?"
+
+#: main.c:713 memprof.glade.h:34
+msgid "MemProf"
+msgstr "MemProf"
+
+#: main.c:807
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "Ne mogu pronaći izvršnu datoteku za \"%s\""
+
+#: main.c:1418
+msgid "MemProf Error"
+msgstr "MemProf greška"
+
+#: main.c:1418
+msgid "MemProf Warning"
+msgstr "MemProf upozorenje"
+
+#: main.c:1672
+msgid "Really detach from finished process?"
+msgstr "Zaista odvojiti od završeniх procesa?"
+
+#: main.c:1674
+msgid "Really detach from running process?"
+msgstr "ZAista odvojiti od aktivniх procesa?"
+
+#: main.c:1704
+msgid "Really kill running process?"
+msgstr "Zaista ugasiti sve aktivne procese?"
+
+#: main.c:1741
+msgid "Create new windows for forked processes"
+msgstr "Stvoriti novi prozor za procese koji se dele"
+
+#: main.c:1743
+msgid "Retain windows for processes after exec()"
+msgstr "Zadrži prozore za procese posle exec()"
+
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "Tip profilisaniх informacija za sakupljanje"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Broj primera/sek za vremenski profil (1k=1000)"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr ""
+"Argument za --profile mora biti jedan od 'memory', 'cycles' ili 'time'\n"
+
+#: main.c:1837
+msgid "Cannot find memprof.glade"
+msgstr "Ne mogu pronaći memprof.glade"
+
+#: memprof.glade.h:1
+msgid "# of Allocations:"
+msgstr "# alokacija:"
+
+#: memprof.glade.h:2
+msgid "0"
+msgstr "0"
+
+#: memprof.glade.h:3
+msgid "0k"
+msgstr "0k"
+
+#: memprof.glade.h:4
+msgid "32k"
+msgstr "32k"
+
+#: memprof.glade.h:5
+msgid "Adding Skip Function"
+msgstr "Dodavanje preskoka finkcije"
+
+#: memprof.glade.h:6
+msgid "Adding Skip Regular Expression"
+msgstr "Dodavanje preskoka ispravnog izraza"
+
+#: memprof.glade.h:7
+msgid "Address"
+msgstr "Adresa"
+
+#: memprof.glade.h:8
+msgid "Bytes"
+msgstr "Bajtova"
+
+#: memprof.glade.h:9
+msgid "Bytes / Allocation:"
+msgstr "Bajtova / Alokacija:"
+
+#: memprof.glade.h:10
+#, fuzzy
+msgid "Caller"
+msgstr "Pozivač"
+
+#: memprof.glade.h:11
+#, fuzzy
+msgid "Callers"
+msgstr "Pozivači"
+
+#: memprof.glade.h:12
+msgid "Check for Leaks"
+msgstr "Proveri ima li oticanja"
+
+#: memprof.glade.h:13
+msgid "Children"
+msgstr "Deca"
+
+#: memprof.glade.h:14
+msgid "Command Line"
+msgstr "Komandna linija"
+
+#: memprof.glade.h:15
+#, fuzzy
+msgid "Command to run on double click in stack trace:"
+msgstr ""
+"Komanda za pokretanje programa na dvostuki pritisak miša na stack trace:"
+
+#: memprof.glade.h:16
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
+"Autorska prava 1999, 2000, 2001, Red Hat, Inc.&#13;Autorska prava 2002, "
+"Kristian Rietveld"
+
+#: memprof.glade.h:17
+msgid "Create Profile"
+msgstr "Napravi profil"
+
+#: memprof.glade.h:18
+msgid "Defaults"
+msgstr "Uobičajeni"
+
+#: memprof.glade.h:19
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr ""
+"Uneti ispravni izraz imena funkcije za preskok kada se izračunavaju profili"
+
+#: memprof.glade.h:20
+msgid "Enter pathname to an executable"
+msgstr "Uneti ime putanje do izvršne datoteke"
+
+#: memprof.glade.h:21
+msgid "Enter the name of a function to skip when computing profiles"
+msgstr "Uneti ime funkcije za preskok kada se izračunavaju profili"
+
+#: memprof.glade.h:22
+msgid "File"
+msgstr "Datoteka"
+
+#: memprof.glade.h:23
+msgid "Follow _exec()"
+msgstr "Prati _exec()"
+
+#: memprof.glade.h:24
+msgid "Follow _fork()"
+msgstr "Prati _fork()"
+
+#: memprof.glade.h:25
+msgid "Function"
+msgstr "Funkcija"
+
+#: memprof.glade.h:26
+msgid "Functions to Skip:"
+msgstr "Funkcije za preskok:"
+
+#: memprof.glade.h:27
+msgid "Generate _Leak Report"
+msgstr "Napravi izveštaj o _oticanju"
+
+#: memprof.glade.h:28
+msgid "Generate _Profile"
+msgstr "Napravi _profil"
+
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr "Prekini"
+
+#: memprof.glade.h:30
+msgid "Kill Program"
+msgstr "Prekini program"
+
+#: memprof.glade.h:31
+msgid "Leak Detection Options"
+msgstr "Postavke za pronalaženje oticanja"
+
+#: memprof.glade.h:32
+msgid "Leaks"
+msgstr "Oticanja"
+
+#: memprof.glade.h:33
+msgid "Line"
+msgstr "Linija"
+
+#: memprof.glade.h:35
+msgid "MemProf - Processes"
+msgstr "MemProf - procesi"
+
+#: memprof.glade.h:36
+msgid "Memory Profiling Tool"
+msgstr "Alat za profilisanje memorije"
+
+#: memprof.glade.h:37
+msgid "PID"
+msgstr "PID"
+
+#: memprof.glade.h:38
+msgid "Preferences"
+msgstr "Podešavanja"
+
+#: memprof.glade.h:39
+msgid "Process _Tree"
+msgstr "_Drvo procesa"
+
+#: memprof.glade.h:40
+msgid "Profile"
+msgstr "Profil"
+
+#: memprof.glade.h:41
+msgid "Profile Options"
+msgstr "Postavke profila"
+
+#: memprof.glade.h:42
+msgid "Regular expressions to Skip:"
+msgstr "Ispravni israz za preskok:"
+
+#: memprof.glade.h:43
+msgid "Run"
+msgstr "Pokreni"
+
+#: memprof.glade.h:44
+msgid "Run Executable"
+msgstr "Pokreni izvršnu datoteku"
+
+#: memprof.glade.h:45
+msgid "Run Program"
+msgstr "Pokreni program"
+
+#: memprof.glade.h:46
+msgid "Save"
+msgstr "Sačuvaj"
+
+#: memprof.glade.h:47
+msgid "Save Report"
+msgstr "Sačuvaj izveštaj"
+
+#: memprof.glade.h:48
+msgid "Save _Leak Info..."
+msgstr "Sačuvaj informacije o _oticanju..."
+
+#: memprof.glade.h:49
+msgid "Save _Profile..."
+msgstr "Sačuvaj _profil..."
+
+#: memprof.glade.h:50
+msgid "Self"
+msgstr "Svoje"
+
+#: memprof.glade.h:51
+msgid "Size"
+msgstr "Veličina"
+
+#: memprof.glade.h:52
+msgid "Stack Trace"
+msgstr ""
+
+#: memprof.glade.h:53
+msgid "Status"
+msgstr "Stanje"
+
+#: memprof.glade.h:54
+msgid "Total"
+msgstr "Ukupno"
+
+#: memprof.glade.h:55
+msgid "Total Bytes:"
+msgstr "Ukupno bajtova:"
+
+#: memprof.glade.h:56
+msgid "_Detach"
+msgstr "_Odvoj"
+
+#: memprof.glade.h:57
+msgid "_File"
+msgstr "_Datoteka"
+
+#: memprof.glade.h:58
+msgid "_Help"
+msgstr "Pomo_ć"
+
+#: memprof.glade.h:59
+msgid "_Kill"
+msgstr "P_rekini"
+
+#: memprof.glade.h:60
+msgid "_Process"
+msgstr "_Procesi"
+
+#: memprof.glade.h:61
+msgid "_Run Program..."
+msgstr "Pok_reni program..."
+
+#: memprof.glade.h:62
+msgid "_Settings"
+msgstr "P_odešavanja"
+
+#: process.c:854
+msgid "Initial"
+msgstr "Prvobitno"
+
+#: process.c:857
+msgid "Starting"
+msgstr "Pokretanje"
+
+#: process.c:860
+msgid "Running"
+msgstr "Radi"
+
+#: process.c:863
+msgid "Exiting"
+msgstr "Izlaz"
+
+#: process.c:866 process.c:869
+msgid "Defunct"
+msgstr "Mrtav"
+
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Ne mogu da pronađem %s"
+
+#: tree.c:91
+msgid "Show"
+msgstr "Prikaži"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "Sakrij"
+
+#: tree.c:101
+msgid "Detach"
+msgstr "Odvojiti"

@@ -1,3 +1,7 @@
+2003-05-06  Danilo ≈†egan  <dsegan@gmx.net>
+
+	* configure.in: Added "sr" and "sr@Latn" to ALL_LINGUAS.
+
 2003-04-24  Abel Cheung  <maddog@linux.org.hk>
 
 	* configure.in: Fix broken configure.in caused by previous commit.
@@ -439,7 +443,7 @@ Thu Jul 19 18:19:52 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* memprof.glade: Fix wrong tooltip on Kill button. (#55413)
 	
-2001-02-26  Carlos PerellÛ MarÌn <carlos@gnome-db.org>
+2001-02-26  Carlos Perell√≥ Mar√≠n <carlos@gnome-db.org>
 
 	* configure.in (ALL_LINGUAS): Added es.
 
@@ -746,7 +750,7 @@ Thu Nov  4 13:14:36 1999  Owen Taylor  <otaylor@redhat.com>
 	* memprof.glade main.c (process_window_destroy): Add ability
 	to close windows.
 
-1999-11-15  Martin Norb‰ck  <d95mback@dtek.chalmers.se>
+1999-11-15  Martin Norb√§ck  <d95mback@dtek.chalmers.se>
 
 	* configure.in: Added sv to ALL_LINGUAS
 
