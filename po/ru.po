@@ -4,8 +4,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-08-13 23:10+0000\n"
-"PO-Revision-Date: 2000-08-13 23:13+00:00\n"
+"POT-Creation-Date: 2000-08-27 15:08+0400\n"
+"PO-Revision-Date: 2000-08-27 15:09+04:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -306,10 +306,8 @@ msgstr "Добавить регулярное выражение для пропуска"
 
 #: memprof-strings.c:82
 msgid ""
-"Enter a regular expression of function names to skipwhen computing  profiles"
-msgstr ""
-"Введите название регулярного выражения имен функций для пропуска при "
-"вычислении профиля"
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr "Введите регулярное выражение имен функций для пропуска при вычислении профилей"
 
 #: leakdetect.c:587 profile.c:191
 #, c-format
