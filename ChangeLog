@@ -1,3 +1,8 @@
+Wed Oct 27 20:58:03 1999  George Lebl  <jirka@5z.com>
+
+	* main.c: (update_status) if current_process->n_allocations,
+	  don't divide by it and just strdup a "-"
+
 Wed Oct 27 16:22:03 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* Released 0.3.0

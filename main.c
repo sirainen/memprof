@@ -92,9 +92,12 @@ update_status (gpointer data)
 	gtk_label_set_text (GTK_LABEL (n_allocations_label), tmp);
 	g_free (tmp);
 
-	tmp = g_strdup_printf ("%.2f",
-			       (double)current_process->bytes_used /
-			       	       current_process->n_allocations);
+	if (current_process->n_allocations == 0)
+		tmp = g_strdup("-");
+	else
+		tmp = g_strdup_printf ("%.2f",
+				       (double)current_process->bytes_used /
+					       current_process->n_allocations);
 	gtk_label_set_text (GTK_LABEL (bytes_per_label), tmp);
 	g_free (tmp);
 
