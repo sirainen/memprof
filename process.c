@@ -144,11 +144,13 @@ prepare_map (Map *map)
 		result = g_array_new (FALSE, FALSE, sizeof(Symbol));
 
 		for (i = 0; i < map->symcount; i++) {
-			if (map->syms[i]->flags & BSF_FUNCTION)	{
+			/* FIXME: is strcmp() agaings ".text" really right? */
+			if ((map->syms[i]->flags & BSF_FUNCTION) &&
+			    (strcmp (map->syms[i]->section->name, ".text") == 0))
+			{
 				symbol.addr = bfd_asymbol_value(map->syms[i]);
 				symbol.size = 0;
 				symbol.name = demangle (map, bfd_asymbol_name(map->syms[i]));
-	      
 				g_array_append_vals (result, &symbol, 1);
 			}
 		}
@@ -1042,6 +1044,9 @@ symbol_copy  (const Symbol *orig)
 	symbol->addr = orig->addr;
 	symbol->size = orig->size;
 
+	g_assert (symbol_equal (symbol, orig));
+	g_assert (symbol_hash (symbol) == symbol_hash (orig));
+	
 	return symbol;
 }
 

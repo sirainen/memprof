@@ -287,7 +287,7 @@ profile_func_list_goto_symbol (ProcessWindow *pwin, Symbol *symbol)
 					    PROFILE_FUNC_FUNC, &func,
 					    -1);
 
-			if (func->node->symbol == symbol) {
+			if (symbol_equal (func->node->symbol, symbol)) {
 				found = TRUE;
 				break;
 			}

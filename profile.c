@@ -48,7 +48,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
     ProfileNode *parent = NULL;
     GHashTable *seen_symbols = g_hash_table_new_full (symbol_hash, symbol_equal,
 						      (GDestroyNotify)symbol_free, NULL);
-    
+
     for (list = stack; list != NULL; list = list->next)
     {
 	StackElement *element = list->data;
@@ -283,7 +283,8 @@ add_trace_to_tree (GPtrArray *roots, GList *trace, guint size)
 		match = seen_tree_node;
 		
 		g_hash_table_destroy (seen_symbols);
-		seen_symbols = g_hash_table_new (g_direct_hash, g_direct_equal);
+		seen_symbols = g_hash_table_new_full (symbol_hash, symbol_equal,
+						      (GDestroyNotify)symbol_free, NULL);
 		
 		for (node = match; node != NULL; node = node->parent)
 		    g_hash_table_insert (seen_symbols, symbol_copy (node->symbol), node);

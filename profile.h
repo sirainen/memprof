@@ -32,9 +32,11 @@ struct ProfileNode {
 
     guint		total;
     guint		self;
-    gboolean		toplevel;
+    gboolean		toplevel;	/* whether the node is the first for this function
+					 * in the stack trace
+					 */
 
-    ProfileNode *	next;
+    ProfileNode *	next;		/* chains together nodes with matching symbols */
 
     GPtrArray *		children;
     ProfileNode *	parent;
