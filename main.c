@@ -33,6 +33,8 @@
 #include <glade/glade.h>
 #include <gnome.h>
 
+#include <regex.h>
+
 #include "leakdetect.h"
 #include "gui.h"
 #include "memprof.h"
@@ -79,6 +81,7 @@ struct _ProcessWindow {
 char *glade_file;
 
 #define DEFAULT_SKIP "g_malloc g_malloc0 g_realloc g_strdup strdup strndup"
+#define DEFAULT_SKIP_REGEXES ""
 #define DEFAULT_STACK_COMMAND "emacsclient -n +%l \"%f\""
 
 MPServer *global_server;
@@ -89,6 +92,9 @@ static void process_window_reset   (ProcessWindow *pwin);
 
 static int n_skip_funcs;
 static char **skip_funcs;
+
+static int n_skip_regexes;
+static char **skip_regexes;
 
 static gboolean default_follow_fork = FALSE;
 static gboolean default_follow_exec = FALSE;
@@ -418,12 +424,34 @@ leaks_fill (ProcessWindow *pwin, GtkCList *clist)
 			if (process_find_line (pwin->process, block->stack[frame],
 					       &filename, &functionname, &line)) {
 				int i;
+
+				if (!functionname)
+					continue;
+
 				for (i = 0; i < n_skip_funcs; i++) {
 					if (!strcmp (functionname, skip_funcs[i])) {
 						free (functionname);
 						functionname = NULL;
 						break;
 					}
+				}
+
+				if (!functionname)
+					continue;
+
+				for (i = 0; i < n_skip_regexes; i++) {
+					regex_t regex;
+
+					regcomp (&regex, skip_regexes[i], 0);
+
+					if (!regexec (&regex, functionname, 0, NULL, 0)) {
+						free (functionname);
+						functionname = NULL;
+						regfree (&regex);
+						break;
+					}
+
+					regfree (&regex);
 				}
 			}
 			
@@ -954,6 +982,8 @@ preferences_apply_cb (GtkWidget *widget, gint page_num, GladeXML *preferences_xm
 {
 	GtkWidget *skip_clist = glade_xml_get_widget (preferences_xml,
 						      "skip-clist");
+	GtkWidget *skip_regexes_clist = glade_xml_get_widget (preferences_xml,
+							     "skip-regexes-clist");
 	GtkWidget *stack_command_entry = glade_xml_get_widget (preferences_xml,
 							       "stack-command-entry");
 
@@ -964,8 +994,15 @@ preferences_apply_cb (GtkWidget *widget, gint page_num, GladeXML *preferences_xm
 		g_free (skip_funcs[i]);
 	g_free (skip_funcs);
 
+	for (i=0; i < n_skip_regexes; i++)
+		g_free (skip_regexes[i]);
+	g_free (skip_regexes);
+
 	n_skip_funcs = GTK_CLIST (skip_clist)->rows;
 	skip_funcs = g_new (gchar *, n_skip_funcs);
+	
+	n_skip_regexes = GTK_CLIST (skip_regexes_clist)->rows;
+	skip_regexes = g_new (gchar *, n_skip_regexes);
 	
 	for (i=0; i < n_skip_funcs; i++) {
 		gchar *text;
@@ -973,8 +1010,17 @@ preferences_apply_cb (GtkWidget *widget, gint page_num, GladeXML *preferences_xm
 		skip_funcs[i] = g_strdup (text);
 	}
 
+	for (i=0; i < n_skip_regexes; i++) {
+		gchar *text;
+		gtk_clist_get_text (GTK_CLIST (skip_regexes_clist), i, 0, &text);
+		skip_regexes[i] = g_strdup (text);
+	}
+
 	gnome_config_set_vector ("/MemProf/Options/skip_funcs",
 				 n_skip_funcs, (const char **const)skip_funcs);
+
+	gnome_config_set_vector ("/MemProf/Options/skip_regexes",
+				 n_skip_regexes, (const char **const)skip_regexes);
 
 	text = gtk_editable_get_chars (GTK_EDITABLE (stack_command_entry), 0, -1);
 	if (stack_command)
@@ -1083,6 +1129,104 @@ skip_defaults_cb (GtkWidget *widget, GladeXML *preferences_xml)
 	gnome_property_box_changed (GNOME_PROPERTY_BOX (property_box));
 }
 
+static void
+skip_regexes_fill (GtkWidget *clist)
+{
+       int i;
+
+       gtk_clist_clear (GTK_CLIST (clist));
+
+       for (i=0; i<n_skip_regexes; i++) {
+	       gtk_clist_append (GTK_CLIST (clist), &skip_regexes[i]);
+       }
+}
+
+static void
+skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
+{
+       GladeXML *xml;
+       GtkWidget *dialog;
+       GtkWidget *entry;
+       char *text;
+
+       GtkWidget *skip_regexes_clist = glade_xml_get_widget (preferences_xml, "skip-regexes-clist");
+       GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
+
+       xml = glade_xml_new (glade_file, "SkipRegexesAddDialog");
+       dialog = glade_xml_get_widget (xml, "SkipRegexesAddDialog");
+       entry = glade_xml_get_widget (xml, "SkipRegexesAddDialog-entry");
+
+       gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
+				  GTK_SIGNAL_FUNC (gtk_widget_activate),
+				  GTK_OBJECT (glade_xml_get_widget (xml, "SkipRegexesAddDialog-add")));
+
+       gtk_object_destroy (GTK_OBJECT (xml));
+
+       while (1) {
+	       gnome_dialog_set_parent (GNOME_DIALOG (dialog),
+					GTK_WINDOW (property_box));
+	       if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0) {
+		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+		       
+		       if (strchr (text, ' ')) {
+			       GtkWidget *error = gnome_error_dialog_parented ("Function names cannot contain spaces",									       GTK_WINDOW (dialog));
+			       gnome_dialog_run (GNOME_DIALOG (error));
+			       g_free (text);
+		       } else if (strlen (text) == 0) {
+			       GtkWidget *error = gnome_error_dialog_parented ("Function name cannot be blank",
+									       GTK_WINDOW (dialog));
+			       gnome_dialog_run (GNOME_DIALOG (error));
+			       g_free (text);
+		       } else {
+			       gtk_clist_append (GTK_CLIST (skip_regexes_clist), &text);
+			       g_free (text);
+			       
+			       gnome_property_box_changed (GNOME_PROPERTY_BOX (property_box));
+			       break;
+		       }
+			       
+	       } else {
+		       break;
+	       }
+       }
+
+       gtk_widget_destroy (dialog);
+	
+}
+
+static void
+skip_regexes_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
+{
+       GtkWidget *clist = glade_xml_get_widget (preferences_xml, "skip-regexes-clist");
+       GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
+
+	if (GTK_CLIST (clist)->selection) {
+		gint selected_row = GPOINTER_TO_INT (GTK_CLIST (clist)->selection->data);
+		gtk_clist_remove (GTK_CLIST (clist), selected_row);
+
+		gnome_property_box_changed (GNOME_PROPERTY_BOX (property_box));
+	}
+}
+
+static void
+skip_regexes_defaults_cb (GtkWidget *widget, GladeXML *preferences_xml)
+{
+       GtkWidget *clist = glade_xml_get_widget (preferences_xml, "skip-regxes-clist");
+       GtkWidget *property_box = glade_xml_get_widget (preferences_xml, "Preferences");
+
+	gchar **funcs = g_strsplit (DEFAULT_SKIP_REGEXES, " ", -1);
+	int i;
+
+	gtk_clist_clear (GTK_CLIST (clist));
+	for (i=0; funcs[i]; i++) {
+	       gtk_clist_append (GTK_CLIST (clist), &funcs[i]);
+	}
+
+	g_strfreev (funcs);
+
+	gnome_property_box_changed (GNOME_PROPERTY_BOX (property_box));
+}
+
 void
 preferences_destroy_cb (GtkWidget *widget, GtkObject **xml)
 {
@@ -1097,7 +1241,7 @@ void
 preferences_cb (GtkWidget *widget)
 {
        static GladeXML *xml = NULL; /* Static so we can prevent multiple property boxes from being opened at once */
-       GtkWidget *skip_clist;
+       GtkWidget *skip_clist, *skip_regexes_clist;
        static GtkWidget *property_box = NULL;
        GtkWidget *stack_command_entry;
        GtkWidget *button;
@@ -1112,10 +1256,12 @@ preferences_cb (GtkWidget *widget)
 
        xml = glade_xml_new (glade_file, "Preferences");
        skip_clist = glade_xml_get_widget (xml, "skip-clist");
+       skip_regexes_clist = glade_xml_get_widget (xml, "skip-regexes-clist");
        stack_command_entry = glade_xml_get_widget (xml, "stack-command-entry");
        property_box = glade_xml_get_widget (xml, "Preferences");
 
        skip_fill (skip_clist);
+       skip_regexes_fill (skip_regexes_clist);
 
        gtk_entry_set_text (GTK_ENTRY (stack_command_entry), stack_command);
        gtk_signal_connect_object (GTK_OBJECT (stack_command_entry),
@@ -1134,6 +1280,18 @@ preferences_cb (GtkWidget *widget)
        button = glade_xml_get_widget (xml, "skip-defaults-button");
        gtk_signal_connect (GTK_OBJECT (button), "clicked",
 			   GTK_SIGNAL_FUNC (skip_defaults_cb), xml);
+
+       button = glade_xml_get_widget (xml, "skip-regexes-add-button");
+       gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			   GTK_SIGNAL_FUNC (skip_regexes_add_cb), xml);
+
+       button = glade_xml_get_widget (xml, "skip-regexes-delete-button");
+       gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			   GTK_SIGNAL_FUNC (skip_regexes_delete_cb), xml);
+
+       button = glade_xml_get_widget (xml, "skip-regexes-defaults-button");
+       gtk_signal_connect (GTK_OBJECT (button), "clicked",
+			   GTK_SIGNAL_FUNC (skip_regexes_defaults_cb), xml);
 
        glade_xml_signal_autoconnect (xml);
 
@@ -1539,6 +1697,8 @@ main(int argc, char **argv)
 
        gnome_config_get_vector ("/MemProf/Options/skip_funcs=" DEFAULT_SKIP,
 				&n_skip_funcs, &skip_funcs);
+       gnome_config_get_vector ("/MemProf/Options/skip_regexes=" DEFAULT_SKIP_REGEXES,
+				&n_skip_regexes, &skip_regexes);
        stack_command = gnome_config_get_string ("/MemProf/Options/stack_command=" DEFAULT_STACK_COMMAND);
 
        gtk_widget_show (initial_window->main_window);
