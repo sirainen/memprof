@@ -392,7 +392,7 @@ __libc_memalign (size_t boundary, size_t size)
 }
 
 void *
-memealign (size_t boundary, size_t size)
+memalign (size_t boundary, size_t size)
 {
 	return __libc_memalign (boundary, size);
 }

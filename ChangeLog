@@ -1,3 +1,8 @@
+2001-12-01  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* memintercept.c (memalign): Fix typo (name should be memalign(),
+	not memealign())
+
 Thu Jul 19 18:19:52 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* memprof.glade: Fix wrong tooltip on Kill button. (#55413)
