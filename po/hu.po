@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof-VERSION\n"
 "POT-Creation-Date: 2000-12-14 12:47+0100\n"
-"PO-Revision-Date: 2000-12-14 12:56+01:00\n"
+"PO-Revision-Date: 2001-01-24 15:15+0100\n"
 "Last-Translator: Emese Kovacs <emese@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
 "MIME-Version: 1.0\n"
@@ -46,23 +46,23 @@ msgstr "MemProf Figyelmeztetés"
 
 #: main.c:1609
 msgid "Really detach from finished process?"
-msgstr "Ténlyleg lekapcsolódjak a lefutott processzrõl?"
+msgstr "Ténlyleg lekapcsolódjak a lefutott folyamatról?"
 
 #: main.c:1611
 msgid "Really detach from running process?"
-msgstr "Tényleg lekapcsolódjak a futó processzrõl?"
+msgstr "Tényleg lekapcsolódjak a futó folyamatról?"
 
 #: main.c:1631
 msgid "Really kill running process?"
-msgstr "Tényleg megszakítsam a futó proceszt?"
+msgstr "Tényleg megszakítsam a futó folyamatot?"
 
 #: main.c:1661
 msgid "Create new windows for forked processes"
-msgstr "Új ablak létrehozása a 'fork()'-olt processznek"
+msgstr "Új ablak létrehozása a 'fork()'-olt folyamatnak"
 
 #: main.c:1663
 msgid "Retain windows for processes after exec()"
-msgstr "Processz ablakának megtartása exec() után"
+msgstr "Folyamat ablakának megtartása exec() után"
 
 #: main.c:1689
 msgid "Cannot find memprof.glade"
@@ -82,7 +82,7 @@ msgstr "_Csurgás adatainak mentése..."
 
 #: memprof-strings.c:11
 msgid "_Process"
-msgstr "_Processz"
+msgstr "_Folyamat"
 
 #: memprof-strings.c:12
 msgid "Generate _Profile"
@@ -102,7 +102,7 @@ msgstr "_Lekapcsol"
 
 #: memprof-strings.c:16
 msgid "Process _Tree"
-msgstr "Processz _Fa"
+msgstr "Folyamat_fa"
 
 #: memprof-strings.c:17
 msgid "Follow _fork()"
@@ -288,7 +288,7 @@ msgstr "Program elérési útvonala"
 
 #: memprof-strings.c:76
 msgid "MemProf - Processes"
-msgstr "MemProf - Processzek"
+msgstr "MemProf - Folyamatok"
 
 #: memprof-strings.c:77
 msgid "PID"
