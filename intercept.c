@@ -76,6 +76,7 @@ static MIBool tracing = MI_TRUE;
 
 static ThreadInfo threads[MAX_THREADS];
 static char *socket_path = NULL;
+static char socket_buf[64];
 static unsigned int seqno = 0;
 
 #undef ENABLE_DEBUG
@@ -282,6 +283,11 @@ memprof_init (void)
 		exit (1);
 	}
 
+	if (strlen(socket_path) < sizeof(socket_buf)) {
+		strcpy(socket_buf, socket_path);
+		socket_path = socket_buf;
+	}
+	
 	MI_DEBUG (("_MEMPROF_SOCKET = %s\n", socket_path));
 	
 	if (socket_path[0] == '\0') /* tracing off */

@@ -6,6 +6,9 @@
 	* leakdetect.c (read_stack_maps): 
 	Parse device numbers as hex.  Fix from Ian McKellar.  (Fixes #120457)
 	* main.c (main): Fix typo.  (Fixes #139682)
+	* intercept.c (memprof_init): Make a copy of the socket path so we
+	don't rely on the profiled program leaving the environment alone.
+	(Fixes #148603)
 	
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 
