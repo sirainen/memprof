@@ -259,11 +259,11 @@ msgstr "Mo¾nosti profila"
 
 #: memprof-strings.c:68
 msgid "Command to run on double click in stack trace:"
-msgstr "Ukaz, ki naj se po¾ene ob dvojnem kliknu na sledi sklada:"
+msgstr "Ukaz, ki naj se po¾ene ob dvojnem klinu na sledi sklada:"
 
 #: memprof-strings.c:69
 msgid "Leak Detection Options"
-msgstr "Mo¾nosti detekcije pu¹èanja"
+msgstr "Mo¾nosti zaznave pu¹èanja"
 
 #: memprof-strings.c:70
 msgid "Adding Skip Function"
