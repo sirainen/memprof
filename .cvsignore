@@ -19,4 +19,4 @@ Makefile.in
 memprof.spec
 *.la
 *.lo
-
+memprof.glade2

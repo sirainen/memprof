@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<gconfschemafile>
+  <schemalist>
+
+    <schema>
+      <key>/schemas/apps/memprof/skip_funcs</key>
+      <applyto>/apps/memprof/skip_funcs</applyto>
+      <owner>memprof</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <default>[g_malloc,g_malloc0,g_realloc,g_strdup,strdup,strndup]</default>
+      <locale name="C">
+        <short>List of functions to skip</short>
+        <long>List of functions to skip when computing profiles.</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/memprof/skip_regexes</key>
+      <applyto>/apps/memprof/skip_regexes</applyto>
+      <owner>memprof</owner>
+      <type>list</type>
+      <list_type>string</list_type>
+      <locale name="C">
+        <short>List of regexes to skip</short>
+        <long>List of regular expressions to skip when computing profiles</long>
+      </locale>
+    </schema>
+
+    <schema>
+      <key>/schemas/apps/memprof/stack_command</key>
+      <applyto>/apps/memprof/stack_command</applyto>
+      <owner>memprof</owner>
+      <type>string</type>
+      <default>emacsclient -n +%l "%f"</default>
+      <locale name="C">
+        <short>Editor</short>
+        <long>Command to run on double click in stack trace.</long>
+      </locale>
+    </schema>
+
+  </schemalist>
+</gconfschemafile>

@@ -1,3 +1,25 @@
+Tue Mar 12 18:59:11 2002  Kristian Rietveld  <kris@gtk.org>
+
+	Summary: support for gconf
+
+	* main.c: include gconf/gconf-client.h, remove hardcoded default
+	values (those are now in the schema), uses GSLists instead of
+	chararrays for skip_funcs and skip_regexes, put preferences dialog
+	XML global, change everything to handle the GSLists, changed
+	pref dialog to be an 'instant-apply-dialog'
+
+	* memprof-strings.c, memprof.glade: updates, remove the PropertyBox,
+	pack it in a GtkWindow
+
+	* profile.[ch]: change profile_create to use GSList
+
+	* configure.in: add check for GConf, not required, but for
+	cleanliness, require newer versions
+
+	* Makefile.am: install schema
+
+	* memprof.schemas: new file
+
 2002-03-07  Stanislav Visnovsky  <visnovsky@nenya.ms.mff.cuni.cz>
 
 	* configure.in: Added "sk" to ALL_LINGUAS.

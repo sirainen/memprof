@@ -124,18 +124,19 @@ compare_function (const void *a, const void *b)
 }
 
 Profile *
-profile_create (MPProcess *process, char **skip_funcs, gint n_skip_funcs)
+profile_create (MPProcess *process,
+		GSList *skip_funcs)
 {
   GArray *functions;
   Profile *profile;
-  int i;
+  GSList *tmp_list;
 
   profile = g_new (Profile, 1);
   profile->process = process;
   
   profile->skip_hash = g_hash_table_new (g_str_hash, g_str_equal);
-  for (i=0; i<n_skip_funcs; i++)
-    g_hash_table_insert (profile->skip_hash, skip_funcs[i], "");
+  for (tmp_list = skip_funcs; tmp_list != NULL; tmp_list = tmp_list->next)
+    g_hash_table_insert (profile->skip_hash, (gchar *)skip_funcs->data, "");
   
   /* Go through all blocks, and add up memory
    */

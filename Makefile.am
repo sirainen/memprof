@@ -43,6 +43,9 @@ INCLUDES = 					   \
 	-DLIBDIR=\"$(libdir)\"			   \
 	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
 
+schemadir = @GCONF_SCHEMA_FILE_DIR@
+schema_DATA = memprof.schemas
+
 EXTRA_DIST =			\
 	memprof.desktop		\
 	gnome-question.png	\
@@ -51,13 +54,19 @@ EXTRA_DIST =			\
 	memprof.glade	  	\
 	memprof.spec.in		\
 	memprof.png         	\
-	memprof-strings.c
+	memprof-strings.c	\
+	$(schema_DATA)
 
 Developmentdir = $(datadir)/applications
 Development_DATA = memprof.desktop
 
 pixmapsdir = $(datadir)/pixmaps
 pixmaps_DATA = memprof.png
+
+
+install-data-local:
+	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) \
+	gconftool-2 --makefile-install-rule $(schema_DATA)
 
 .PHONY: copyrights
 
@@ -83,4 +92,3 @@ dist-hook:
 	   cp -p $(srcdir)/memprof.spec.in $(distdir) ; \
 	fi
 	cp memprof.spec $(distdir)
-

@@ -45,7 +45,7 @@ typedef struct {
   GHashTable *skip_hash;
 } Profile;
 
-Profile *profile_create (MPProcess *process, char **skip_funcs, gint n_skip_funcs);
-void profile_write (Profile *profile, gchar *outfile);
+Profile *profile_create (MPProcess *process, GSList *skip_funcs);
+void profile_write (Profile *profile,
+		    gchar *outfile);
 void profile_free (Profile *profile);
-
