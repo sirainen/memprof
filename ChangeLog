@@ -1,7 +1,12 @@
+2004-09-13  John Myers  <jgmyers@localhost.localdomain>
+
 2004-09-13  John Gardiner Myers  <jgmyers@proofpoint.com>
 
 	* process.c (input_func): Process detach makes the input channel
 	unreadable.  (Fixes #64690)
+
+	* leakdetect.c (process_status): Avoid infinite loop when trying
+	to leak detect a nonexistent process.  (Fixes #93173)
 
 2004-09-10  John Gardiner Myers  <jgmyers@proofpoint.com>
 

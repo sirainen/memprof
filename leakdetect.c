@@ -145,7 +145,7 @@ read_proc_stat (int pid, char *status, guint *start_stack, guint *end_stack)
 static char
 process_status (int pid)
 {
-	char c;
+	char c = 'T';		/* Avoid infinite loop in caller */
 
 	read_proc_stat (pid, &c, NULL, NULL);
 
