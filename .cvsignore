@@ -19,4 +19,8 @@ Makefile.in
 memprof.spec
 *.la
 *.lo
+intltool-extract*
+intltool-merge*
+intltool-update*
+.intltool-cache*
 memprof.glade2
