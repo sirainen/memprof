@@ -600,7 +600,9 @@ input_func (GIOChannel  *source,
 	MPProcess *process = NULL;
   
 	do {
-		g_io_channel_read_chars (source, (char *)&info, sizeof(info), &count, NULL);
+		count = 0;
+		if (g_io_channel_get_flags(source) & G_IO_FLAG_IS_READABLE)
+			g_io_channel_read_chars (source, (char *)&info, sizeof(info), &count, NULL);
 
 		if (count == 0) {
 			g_io_channel_unref (input_process->input_channel);
@@ -641,7 +643,7 @@ input_func (GIOChannel  *source,
 		g_warning ("Ow! Ow! Ow: %d %d %d!", info.any.pid, input_process->pid, g_io_channel_unix_get_fd (input_process->input_channel)); */
 
 		}
-	} while (g_io_channel_get_buffer_condition(source) & G_IO_IN);
+	} while (info.operation != MI_EXIT && (g_io_channel_get_buffer_condition(source) & G_IO_IN));
   
 	return TRUE;
 }
