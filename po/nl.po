@@ -291,7 +291,7 @@ msgstr "MemProf - Processen"
 
 #: memprof-strings.c:77
 msgid "PID"
-msgstr ""
+msgstr "PID"
 
 #: memprof-strings.c:78
 msgid "Command Line"
