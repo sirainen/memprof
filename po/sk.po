@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: sk\n"
-"POT-Creation-Date: 2002-07-03 17:07+0200\n"
-"PO-Revision-Date: 2002-07-03 17:07+0200\n"
+"POT-Creation-Date: 2002-07-16 07:50+0200\n"
+"PO-Revision-Date: 2002-07-16 07:50+0200\n"
 "Last-Translator: Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
@@ -16,98 +16,98 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0beta2\n"
 
-#: main.c:529
+#: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Spustenie \"%s\" zlyhalo"
 
-#: main.c:660
+#: main.c:661
 msgid "Really quit MemProf?"
 msgstr "Naozaj ukončiť MemProf?"
 
-#: main.c:706 memprof.glade.h:36
+#: main.c:707 memprof.glade.h:36
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:800
+#: main.c:801
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Nepodarilo sa nájsť spustiteľný súbor \"%s\""
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Error"
 msgstr "Chyba MemProf"
 
-#: main.c:1399
+#: main.c:1410
 msgid "MemProf Warning"
 msgstr "Varovanie MemProf"
 
-#: main.c:1645
+#: main.c:1660
 msgid "Really detach from finished process?"
 msgstr "Naozaj odpojiť od dokončeného procesu?"
 
-#: main.c:1647
+#: main.c:1662
 msgid "Really detach from running process?"
 msgstr "Naozaj odpojiť od bežiaceho procesu?"
 
-#: main.c:1677
+#: main.c:1692
 msgid "Really kill running process?"
 msgstr "Naozaj zabiť bežiaci proces?"
 
-#: main.c:1710
+#: main.c:1725
 msgid "Create new windows for forked processes"
 msgstr "Vytvoriť nové okná pre procesy vytvorené pomocou fork"
 
-#: main.c:1712
+#: main.c:1727
 msgid "Retain windows for processes after exec()"
 msgstr "Zachovať okná pre procesy po volaní exec()"
 
-#: main.c:1749
+#: main.c:1764
 msgid "Cannot find memprof.glade"
 msgstr "Nepodarilo sa nájsť memprof.glade"
 
-#: leakdetect.c:586 profile.c:202
+#: leakdetect.c:587 profile.c:203
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Nepodarilo sa otvoriť výstupný súbor %s\n"
 
-#: process.c:814
+#: process.c:815
 msgid "Initial"
 msgstr "Počiatočný"
 
-#: process.c:817
+#: process.c:818
 msgid "Starting"
 msgstr "Spúšťajúci sa"
 
-#: process.c:820
+#: process.c:821
 msgid "Running"
 msgstr "Bežiaci"
 
-#: process.c:823
+#: process.c:824
 msgid "Exiting"
 msgstr "Končiaci"
 
-#: process.c:826 process.c:829
+#: process.c:827 process.c:830
 msgid "Defunct"
 msgstr "Nefunkčný"
 
-#: server.c:244
+#: server.c:245
 msgid "Cannot find libmemintercept.so"
 msgstr "Nepodarilo sa nájsť libmemintercept.so"
 
-#: tree.c:90
+#: tree.c:91
 msgid "Show"
 msgstr "Zobraziť"
 
-#: tree.c:93
+#: tree.c:94
 msgid "Hide"
 msgstr "Skryť"
 
-#: tree.c:97 memprof.glade.h:31
+#: tree.c:98 memprof.glade.h:31
 msgid "Kill"
 msgstr "Zabiť"
 
-#: tree.c:100
+#: tree.c:101
 msgid "Detach"
 msgstr "Odpojiť"
 
@@ -176,8 +176,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Príkaz spustení pri dvojitom kliknutí na záznam zásobníka:"
 
 #: memprof.glade.h:17
-msgid "Copyright Red Hat, Inc., 1999-2000"
-msgstr "Copyright Red Hat, Inc., 1999-2000"
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
+msgstr ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:18
 msgid "Create Profile"
@@ -354,8 +358,15 @@ msgid "_Process"
 msgstr "_Proces"
 
 #: memprof.glade.h:63
+msgid "_Run Program..."
+msgstr "_Spustiť program..."
+
+#: memprof.glade.h:64
 msgid "_Settings"
 msgstr "Nas_tavenia"
+
+#~ msgid "Copyright Red Hat, Inc., 1999-2000"
+#~ msgstr "Copyright Red Hat, Inc., 1999-2000"
 
 #~ msgid "_Run..."
 #~ msgstr "_Spustiť..."
