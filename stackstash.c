@@ -55,7 +55,7 @@ stack_element_free (StackElement *element)
 {
 #ifdef BUILD_TEST_CASE	
 	test_bytes_used -= G_STRUCT_OFFSET (StackElement, children) + element->n_children * sizeof (StackElement *);
-	test_nodes_used++;
+	test_nodes_used--;
 #endif
 	
 	g_free (element);

@@ -1,3 +1,8 @@
+Sat Aug 17 15:33:36 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* stackstash.c (stack_element_free): Fix accounting
+	error in test statistics.
+
 Sat Aug 17 14:54:46 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* stackstash.[ch] Makefile.am: Data structure for storing
