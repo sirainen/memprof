@@ -1,3 +1,23 @@
+Wed Oct 27 12:26:02 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* memintercept.c: Reindent to linux style
+
+	* memintercept.c (stack_trace): Write out output in
+	single write() call to ensure atomicity.
+
+	* memintercept.c (my_free_hook): Changed hooks
+	to match glibc-2.1 prototypes
+
+	* *.[ch]: Added copyrights to source files.
+
+	* main.c process.c process.h: Pass pre-split args
+	into process_run(), add functions for splitting
+	args and finding the executable.
+
+	* main.c: Add code from Michael Meeks <michael@nuclecu.unam.mx>
+	for specifying the program to debug from the command
+	line.
+
 Mon Oct 25 15:17:38 PDT 1999 Manish Singh <yosh@gimp.org>
 
 	* configure.in: add a -ldl fallback test for libiberty
@@ -5,7 +25,7 @@ Mon Oct 25 15:17:38 PDT 1999 Manish Singh <yosh@gimp.org>
 Wed Oct 20 19:59:16 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* main.c (DEFAULT_STACK_COMMAND): Use emacsclient instead of 
-	  gnudoit because emacsclient is standard.
+	gnudoit because emacsclient is standard.
 
 	* process.c (read_inode): Fix mem leak found by MemProf.
 

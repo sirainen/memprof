@@ -1,5 +1,24 @@
 /* -*- mode: C; c-file-style: "linux" -*- */
 
+/* MemProf -- memory profiler and leak detector
+ * Copyright (C) 1999 Red Hat, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+/*====*/
+
 #define _GNU_SOURCE
 
 #include <stdarg.h>
@@ -551,13 +570,45 @@ exit_cb ()
 	gtk_main_quit ();
 }
 
+static gboolean
+run_file (char **args)
+{
+	gboolean result;
+	char *path;
+	
+	g_return_val_if_fail (args != NULL, FALSE);
+	g_return_val_if_fail (args[0] != NULL, FALSE);
+	
+	path = process_find_exec (args);
+	
+	if (path) {
+		current_process = process_run (path, args);
+		
+		if (!status_update_timeout)
+			status_update_timeout =
+				g_timeout_add (100,
+					       update_status,
+					       NULL);
+		result = TRUE;
+		
+	} else {
+		show_error (ERROR_MODAL,
+			    _("Cannot find executable for: %s"),
+			    args[0]);
+		result = FALSE;
+	}
+
+	g_free (path);
+	return result;
+}
+
+
 void
 run_cb ()
 {
        GladeXML *xml;
        GtkWidget *run_dialog;
        GtkWidget *entry;
-       char *text;
 
        xml = glade_xml_new (glade_file, "RunDialog");
        run_dialog = glade_xml_get_widget (xml, "RunDialog");
@@ -573,26 +624,20 @@ run_cb ()
 	       gnome_dialog_set_parent (GNOME_DIALOG (run_dialog),
 					GTK_WINDOW (main_window));
 	       if (gnome_dialog_run (GNOME_DIALOG (run_dialog)) == 0) {
-		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
-		       
-		       if (g_file_exists (text)) {
-			       current_process = process_run (text);
+		       gchar **args;
+		       char *text;
+		       gboolean result;
 
-			       if (!status_update_timeout)
-				       status_update_timeout =
-					       g_timeout_add (100,
-							      update_status,
-							      NULL);
-			       
-			       g_free (text);
+		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+		       args = process_parse_exec (text);
+
+		       result = run_file (args);
+		       
+		       g_strfreev (args);
+		       g_free (text);
+
+		       if (result)
 			       break;
-	 	       } else {
-			       show_error (ERROR_MODAL,
-					   _("Executable \"%s\" does not exist"),
-					   text);
-			       g_free (text);
-		       }
-			       
 	       } else {
 		       break;
 	       }
@@ -940,27 +985,12 @@ set_white_bg (GtkWidget *widget)
 	gtk_widget_modify_style (widget, rc_style);
 }
 
-int
-main(int argc, char **argv)
+static void
+create_main_window (void)
 {
-       int init_results;
        GladeXML *xml;
        GtkWidget *vpaned;       
-       
-       bindtextdomain (PACKAGE, GNOMELOCALEDIR);
-       textdomain (PACKAGE);
 
-       init_results = gnome_init(PACKAGE, VERSION, argc, argv);
-       glade_gnome_init ();
-
-       glade_file = "./memprof.glade";
-       if (!g_file_exists (glade_file)) {
-	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
-       }
-       if (!g_file_exists (glade_file)) {
-	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
-       }
-       
        xml = glade_xml_new (glade_file, "MainWindow");
 
        main_window = glade_xml_get_widget (xml, "MainWindow");
@@ -1017,17 +1047,51 @@ main(int argc, char **argv)
        gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
        glade_xml_signal_autoconnect (xml);
+       gtk_object_destroy (GTK_OBJECT (xml));
+}
 
+int
+main(int argc, char **argv)
+{
+       static const struct poptOption memprof_popt_options [] = {
+	       { NULL, '\0', 0, NULL, 0 }
+       };
+       poptContext ctx;
+
+       int init_results;
+       const char **startup_args;
+
+       bindtextdomain (PACKAGE, GNOMELOCALEDIR);
+       textdomain (PACKAGE);
+
+       init_results = gnome_init_with_popt_table (PACKAGE, VERSION,
+						  argc, argv,
+						  memprof_popt_options, 0, &ctx);
+       glade_gnome_init ();
+
+       glade_file = "./memprof.glade";
+       if (!g_file_exists (glade_file)) {
+	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
+       }
+       if (!g_file_exists (glade_file)) {
+	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
+       }
+
+       create_main_window();
        process_init();
 
        gnome_config_get_vector ("/MemProf/Options/skip_funcs=" DEFAULT_SKIP,
 				&n_skip_funcs, &skip_funcs);
        stack_command = gnome_config_get_string ("/MemProf/Options/stack_command=" DEFAULT_STACK_COMMAND);
-       
+
        gtk_widget_show (main_window);
+
+       startup_args = poptGetArgs (ctx);
+       if (startup_args)
+	       run_file ((char **)startup_args);
+       poptFreeContext (ctx);
+       
        gtk_main ();
 
-       gtk_object_destroy (GTK_OBJECT (xml));
-       
        return 0;
 }

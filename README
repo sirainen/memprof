@@ -1,0 +1,16 @@
+Memprof is a memory profiler and leak detector.
+
+Requirements
+============
+
+ For the interface, memprof requires:
+
+  - GTK+        
+  - gnome-libs  
+  - libglade
+
+ For the backend memprof currently requires:
+
+  - Linux (kernel version 2.2 will work better)
+  - GNU libc (2.0 or 2.1 will work, but 2.0 may produce warnings 
+              when compiling)

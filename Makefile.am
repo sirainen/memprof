@@ -42,3 +42,18 @@ EXTRA_DIST =			\
 
 Developmentdir = $(datadir)/gnome/apps/Development
 Development_DATA = memprof.desktop
+
+.PHONY: copyrights
+
+copyrights:
+	FILES="$(memprof_SOURCES) $(libmemintercept_la_SOURCES)";	  \
+	for i in $$FILES ; do 				  		  \
+           mv $$i $$i.bak; 				  		  \
+           cat copyright-header > $$i;			  		  \
+	   if grep "/\*====\*/" $$i.bak ; then          	 	  \
+	     perl -ne 'print if m!/\*====\*/!..0' $$i.bak >> $$i; 	  \
+	   else						  		  \
+	     echo "/*====*/" >> $$	i;		  		  \
+             cat $$i.bak >> $$i;				  	  \
+	   fi;								  \
+	done

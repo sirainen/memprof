@@ -1,3 +1,24 @@
+/* -*- mode: C; c-file-style: "linux" -*- */
+
+/* MemProf -- memory profiler and leak detector
+ * Copyright (C) 1999 Red Hat, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+/*====*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <errno.h>
@@ -43,7 +64,7 @@ inode_compare (gconstpointer a, gconstpointer b)
 }
 
 static void
-read_inode (gchar *path)
+read_inode (const gchar *path)
 {
   struct stat stbuf;
 
@@ -613,19 +634,59 @@ process_init (void)
     show_error (ERROR_FATAL, _("Cannot find libmemintercept.so"));
 }
 
+char *
+process_find_exec (char **args)
+{
+  int i;
+  
+  if (g_file_exists(args[0]))
+    {
+      return g_strdup (args[0]);
+    }
+  else
+    {
+      char **paths;
+      char *path;
+      char *pathenv = getenv ("PATH");
+      if (pathenv)
+	{
+	  paths = g_strsplit (pathenv, ":", -1);
+	  for (i=0; paths[i]; i++)
+	    {
+	      path = g_concat_dir_and_file (paths[i], args[0]);
+	      if (g_file_exists (path))
+		break;
+	      else
+		{
+		  g_free (path);
+		  path = NULL;
+		}
+	    }
+
+	  g_strfreev (paths);
+
+	  if (path)
+	    return path;
+	  else
+	    {
+	      g_strfreev (args);
+	      return NULL;
+	    }
+	}
+    }
+}
+
+char **
+process_parse_exec (const char *exec_string)
+{
+  return g_strsplit (exec_string, " ", -1);
+}
+
 MPProcess *
-process_run (char *exec_string)
+process_run (const char *path, char **args)
 {
   int fd;
   MPProcess *process;
-  char **args;
-
-  args = g_strsplit (exec_string, " ", -1);
-  if (!g_file_exists(args[0]))
-    {
-      g_strfreev (args);
-      return NULL;
-    }
 
   process = g_new0 (MPProcess, 1);
 
@@ -633,8 +694,8 @@ process_run (char *exec_string)
   process->n_allocations = 0;
   process->block_table = g_hash_table_new (g_direct_hash, NULL);
 
-  process->program_name = args[0];
-  read_inode (args[0]);
+  process->program_name = g_strdup (path);
+  read_inode (path);
 
   fd = instrument (process, args);
   process->input_channel = g_io_channel_unix_new (fd);

@@ -1,3 +1,24 @@
+/* -*- mode: C; c-file-style: "linux" -*- */
+
+/* MemProf -- memory profiler and leak detector
+ * Copyright (C) 1999 Red Hat, Inc.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
+ */
+/*====*/
+
 #ifndef __PROCESS_H__
 #define __PROCESS_H__
 
@@ -28,7 +49,9 @@ struct _MPProcess
 void process_init (void);
 
 void process_sections (MPProcess *process, SectionFunc func, gpointer user_data);
-MPProcess *process_run (char *exec_string);
+char **process_parse_exec (const char *exec_string);
+char *process_find_exec (char **args);
+MPProcess *process_run (const char *path, char **args);
      
 void process_start_input (MPProcess *process);
 void process_stop_input (MPProcess *process);

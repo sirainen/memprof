@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 1999-10-20 19:56-0400\n"
+"POT-Creation-Date: 1999-10-27 11:57-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -200,29 +200,29 @@ msgstr ""
 msgid "Enter pathname to a executable"
 msgstr ""
 
-#: leakdetect.c:458 profile.c:170
+#: leakdetect.c:482 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr ""
 
-#: main.c:462
+#: main.c:481
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr ""
 
-#: main.c:591
+#: main.c:596
 #, c-format
-msgid "Executable \"%s\" does not exist"
+msgid "Cannot find executable for: %s"
 msgstr ""
 
-#: main.c:915
+#: main.c:960
 msgid "MemProf Error"
 msgstr ""
 
-#: main.c:915
+#: main.c:960
 msgid "MemProf Warning"
 msgstr ""
 
-#: main.c:961
+#: main.c:1077
 msgid "Cannot find memprof.glade"
 msgstr ""
