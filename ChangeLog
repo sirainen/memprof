@@ -2,6 +2,9 @@
 
 	* process.c (process_duplicate): Don't try to copy NULL block table.
 
+	* process.c (input_func): Keep processing while buffers still have
+	data.
+
 2004-09-03  John Gardiner Myers  <jgmyers@proofpoint.com>
 
 	* intercept.c (clone __clone clone_thunk): Add extra arguments to

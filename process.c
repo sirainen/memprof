@@ -599,47 +599,49 @@ input_func (GIOChannel  *source,
 	MPProcess *input_process = data;
 	MPProcess *process = NULL;
   
-	g_io_channel_read_chars (source, (char *)&info, sizeof(info), &count, NULL);
+	do {
+		g_io_channel_read_chars (source, (char *)&info, sizeof(info), &count, NULL);
 
-	if (count == 0) {
-		g_io_channel_unref (input_process->input_channel);
-		input_process->input_channel = NULL;
+		if (count == 0) {
+			g_io_channel_unref (input_process->input_channel);
+			input_process->input_channel = NULL;
 
-		mp_server_remove_process (input_process->server, input_process);
-		process_set_status (input_process, MP_PROCESS_DEFUNCT);
+			mp_server_remove_process (input_process->server, input_process);
+			process_set_status (input_process, MP_PROCESS_DEFUNCT);
 		
-		return FALSE;
-	} else {
-		StackElement *stack = NULL;
+			return FALSE;
+		} else {
+			StackElement *stack = NULL;
 
-		if (info.operation == MI_MALLOC ||
-		    info.operation == MI_REALLOC ||
-		    info.operation == MI_FREE ||
-		    info.operation == MI_TIME) {
-			void **stack_buffer = NULL;
-			StackStash *stash = get_stack_stash (input_process);
+			if (info.operation == MI_MALLOC ||
+			    info.operation == MI_REALLOC ||
+			    info.operation == MI_FREE ||
+			    info.operation == MI_TIME) {
+				void **stack_buffer = NULL;
+				StackStash *stash = get_stack_stash (input_process);
 			
-			stack_buffer = g_alloca (sizeof (void *) * info.alloc.stack_size);
-			g_io_channel_read_chars (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count, NULL);
-			stack = stack_stash_store (stash, stack_buffer, info.alloc.stack_size);
+				stack_buffer = g_alloca (sizeof (void *) * info.alloc.stack_size);
+				g_io_channel_read_chars (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count, NULL);
+				stack = stack_stash_store (stash, stack_buffer, info.alloc.stack_size);
 
-		} else if (info.operation == MI_EXIT) {
-			process_set_status (input_process, MP_PROCESS_EXITING);
-			if (input_process->clone_of)
-				process_detach (input_process);
-		}
+			} else if (info.operation == MI_EXIT) {
+				process_set_status (input_process, MP_PROCESS_EXITING);
+				if (input_process->clone_of)
+					process_detach (input_process);
+			}
 		
-		process = input_process;
-		while (process->clone_of)
-			process = process->clone_of;
+			process = input_process;
+			while (process->clone_of)
+				process = process->clone_of;
 		
-		process_command (process, &info, stack);
+			process_command (process, &info, stack);
 
 
 /*		if (info.any.pid != input_process->pid)
 		g_warning ("Ow! Ow! Ow: %d %d %d!", info.any.pid, input_process->pid, g_io_channel_unix_get_fd (input_process->input_channel)); */
 
-	}
+		}
+	} while (g_io_channel_get_buffer_condition(source) & G_IO_IN);
   
 	return TRUE;
 }
