@@ -8,8 +8,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2002-08-23 12:10+0200\n"
+"POT-Creation-Date: 2002-10-30 00:42+0100\n"
+"PO-Revision-Date: 2002-10-30 00:43+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -21,53 +21,67 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Kan inte öppna utmatningsfil: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Körning av \"%s\" misslyckades"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Verkligen avsluta MemProf?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kan inte hitta programfil för \"%s\""
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "MemProf-fel"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "MemProf-varning"
 
-#: main.c:1666
+#: main.c:1678
 msgid "Really detach from finished process?"
 msgstr "Verkligen lösgöra från avslutad process?"
 
-#: main.c:1668
+#: main.c:1680
 msgid "Really detach from running process?"
 msgstr "Verkligen lösgöra från körande process?"
 
-#: main.c:1698
+#: main.c:1710
 msgid "Really kill running process?"
 msgstr "Verkligen döda körande process?"
 
-#: main.c:1731
+#: main.c:1747
 msgid "Create new windows for forked processes"
 msgstr "Skapa nya fönster för grenade processer"
 
-#: main.c:1733
+#: main.c:1749
 msgid "Retain windows for processes after exec()"
 msgstr "Bibehåll fönster för processer efter exec()"
 
-#: main.c:1770
+#: main.c:1751
+msgid "Type of profiling information to collect"
+msgstr "Typ av profileringsinformation att inhämta"
+
+#: main.c:1753
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Antal sampel/sekund för tidsprofil (1k=1000)"
+
+#: main.c:1802
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr ""
+"Argument till --profile måste vara ett av \"memory\", \"cycles\" eller \"time"
+"\"\n"
+
+#: main.c:1843
 msgid "Cannot find memprof.glade"
 msgstr "Kan inte hitta memprof.glade"
 
@@ -322,29 +336,30 @@ msgstr "_Kör program..."
 msgid "_Settings"
 msgstr "_Inställningar"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Initialt"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Startar"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Kör"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Avslutar"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Död"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Kan inte hitta libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Kan inte hitta %s"
 
 #: tree.c:91
 msgid "Show"
@@ -357,6 +372,9 @@ msgstr "Dölj"
 #: tree.c:101
 msgid "Detach"
 msgstr "Lösgör"
+
+#~ msgid "Cannot find libmemintercept.so"
+#~ msgstr "Kan inte hitta libmemintercept.so"
 
 #~ msgid "Add..."
 #~ msgstr "Lägg till..."
