@@ -1,3 +1,8 @@
+2004-09-03  John Gardiner Myers  <jgmyers@proofpoint.com>
+
+	* intercept.c (clone __clone clone_thunk): Add extra arguments to
+	clone intercept functions.  (Fixes #122460)
+
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Add «nb» to ALL_LINGUAS.

@@ -65,7 +65,8 @@ static int (*old_vfork) (void);
 static int (*old_clone) (int (*fn) (void *arg),
 			 void *child_stack,
 			 int flags,
-			 void *arg);
+			 void *arg,
+			 void *xarg1, void *xarg2, void *xarg3, void *xarg4);
 static void (*old__exit) (int status);
 
 static int initialized = MI_FALSE;
@@ -437,7 +438,8 @@ clone_thunk (void *arg)
 int __clone (int (*fn) (void *arg),
 	     void *child_stack,
 	     int   flags,
-	     void *arg)
+	     void *arg,
+	     void *xarg1, void *xarg2, void *xarg3, void *xarg4)
 {
 	volatile CloneData data;
 	int pid;
@@ -453,7 +455,7 @@ int __clone (int (*fn) (void *arg),
 		
 		find_thread (data.pid); /* Make sure we're registered */
 		
-		pid = (*old_clone) (clone_thunk, child_stack, flags, (void *)&data);
+		pid = (*old_clone) (clone_thunk, child_stack, flags, (void *)&data, xarg1, xarg2, xarg3, xarg4);
 
 		while (!data.started)
 			/* Wait */;
@@ -462,15 +464,16 @@ int __clone (int (*fn) (void *arg),
 
 		return pid;
 	} else
-		return (*old_clone) (fn, child_stack, flags, arg);
+		return (*old_clone) (fn, child_stack, flags, arg, xarg1, xarg2, xarg3, xarg4);
 }
 
 int clone (int (*fn) (void *arg),
 	   void *child_stack,
 	   int   flags,
-	   void *arg)
+	   void *arg,
+	   void *xarg1, void *xarg2, void *xarg3, void *xarg4)
 {
-	return __clone (fn, child_stack, flags, arg);
+	return __clone (fn, child_stack, flags, arg, xarg1, xarg2, xarg3, xarg4);
 }
 
 static void
