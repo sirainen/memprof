@@ -4,11 +4,14 @@ Summary: Tool for memory profiling and leak detection
 Name: memprof
 Version: @VERSION@
 Release: 1
-Copyright: GPL
+License: GPL
 Group: Development/Debuggers
 Source: memprof-%{version}.tar.gz
-Requires: libglade >= 0.7
+Requires: libgnomeui >= 2.0.0
+Requires: libglade2 >= 2.0.0
 BuildRoot: /var/tmp/%{name}-root
+BuildRequires: libgnomeui-devel >= 2.0.0
+BuildRequires: libglade2-devel >= 2.0.0
 ExclusiveArch: i386
 
 %description
@@ -24,21 +27,39 @@ make
 
 %install
 rm -rf $RPM_BUILD_ROOT
+export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 make prefix=$RPM_BUILD_ROOT%{prefix} install
+unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
 strip $RPM_BUILD_ROOT%{prefix}/bin/*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%post
+
+export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
+SCHEMAS="memprof.schemas"
+for S in $SCHEMAS; do
+  gconftool-2 --makefile-install-rule %{_sysconfigdir}/gconf/schemas/$S > /dev/null
+done
+
 %files
 %defattr(-, root, root)
 
+%doc README AUTHORS NEWS
 %{prefix}/bin/*
 %{prefix}/lib/*
+%{prefix}/share/pixmaps/memprof.png
+%{prefix}/share/applications/memprof.desktop
 %{prefix}/share/memprof
 %{prefix}/share/locale/*/*/*
+%{prefix}/etc/gconf/schemas/*.schemas
 
 %changelog
+* Sat Aug 10 2002 Kristian Rietveld <kris@gtk.org>
+- Version 0.5.0
+- Updates deps, files and handle installation of gconf schemas.
+
 * Fri Feb 09 2001 Owen Taylor <otaylor@redhat.com>
 - Version 0.4.1
 
@@ -55,6 +76,3 @@ rm -rf $RPM_BUILD_ROOT
 
 * Wed Oct 27 1999 Owen Taylor <otaylor@redhat.com>
 - Initial package
-
-
-

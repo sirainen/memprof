@@ -1,3 +1,9 @@
+Sat Aug 10 20:14:11 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* NEWS: a few tweaks
+
+	* memprof.spec.in: an attempt to update it.
+
 Sat Aug 10 13:45:18 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* README: Few tweaks, add a mini-FAQ.
