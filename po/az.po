@@ -5,67 +5,80 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3.0\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2001-06-02 00:23GMT +0200\n"
-"Last-Translator: Vasif İsmayıloğlu MD <azerb_linux@hotmail.com>\n"
+"POT-Creation-Date: 2003-02-07 11:27+0100\n"
+"PO-Revision-Date: 2003-02-08 15:56+0200\n"
+"Last-Translator: Mətin Əmirov <metin@karegen.com>\n"
 "Language-Team: Azerbaijani Turkish <linuxaz@azerimal.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.8\n"
 
-#: leakdetect.c:584 profile.c:202
+#: leakdetect.c:584
+#: profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr "Nəticə faylı %s'ni aça bilmədim\n"
+msgstr "Nəticə faylı %s -nı aça bilmədim\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "\"%s\"'nin işə salınması bacarılmadı"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "\"MemProf\"dan çıxımmı?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713
+#: memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "\"%s\" üçün proqram tə'minatını tapa bilmədim"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "MemProf xətası"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "MemProf xəbərdarlığı"
 
-#: main.c:1666
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "Sonlanan gedişatdan əlavə edilimmi?"
 
-#: main.c:1668
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "İşləyən gedişatdan əlavə edilimmi?"
 
-#: main.c:1698
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "İşləyən gedişatı öldürümmü?"
 
-#: main.c:1731
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Fork edilən gedişatlar üçün yeni pəncərələr aç"
 
-#: main.c:1733
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "exec() əməliyyatları üçün pəncərə ayır"
 
-#: main.c:1770
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "Toplanacaq profil məlumatının növü"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "(1k=1000) zaman müddətindəki nümunə/saniyə ədədi"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "--profilin arqumenti 'memory', 'cycles, yada 'time' -dan biri olmalıdır\n"
+
+#: main.c:1837
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade'i tapa bilmədim"
 
@@ -130,10 +143,8 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Çöküntü daramasında cüt-tıqlamada başladılacaq proqram tə'minatı :"
 
 #: memprof.glade.h:16
-msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
-msgstr ""
+msgid "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
+msgstr "Tə'lif Haqqı 1999, 2000, 2001, Red Hat, Inc.&#13;Tə'lif Haqqı 2002, Kristian Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
@@ -144,21 +155,16 @@ msgid "Defaults"
 msgstr "Əsas qiymətlər"
 
 #: memprof.glade.h:19
-msgid ""
-"Enter a regular expression of function names to skip when computing profiles"
-msgstr ""
-"Profiller üstündə işlərkən nəzərə alınmayacaq funksiya qaydalı ifadəsi girin"
+msgid "Enter a regular expression of function names to skip when computing profiles"
+msgstr "Profiller üstündə işlərkən nəzərə alınmayacaq funksiya qaydalı ifadəsi girin"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
-msgstr "Proqram tə'minatının cığırını bildir"
+msgstr "İcraçı fayla gedən cığır adını girin"
 
 #: memprof.glade.h:21
-#, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr ""
-"Profiller üstündə işlərkən nəzərə alınmayacaq bir funksiyanın adını bildir"
+msgstr "Profiller üstündə işlərkən nəzərə alınmayacaq bir funksiyanın adını bildir"
 
 #: memprof.glade.h:22
 msgid "File"
@@ -188,14 +194,14 @@ msgstr "_Yaddaş Quyusu Raportunu Yarat"
 msgid "Generate _Profile"
 msgstr "Profili _Yarat"
 
-#: memprof.glade.h:29 tree.c:98
+#: memprof.glade.h:29
+#: tree.c:98
 msgid "Kill"
 msgstr "Öldür"
 
 #: memprof.glade.h:30
-#, fuzzy
 msgid "Kill Program"
-msgstr "Proqram Tə'minatı işə sal"
+msgstr "Proqramdan çıx (Kill)"
 
 #: memprof.glade.h:31
 msgid "Leak Detection Options"
@@ -223,7 +229,7 @@ msgstr "PID"
 
 #: memprof.glade.h:38
 msgid "Preferences"
-msgstr ""
+msgstr "Seçənəklər"
 
 #: memprof.glade.h:39
 msgid "Process _Tree"
@@ -298,13 +304,12 @@ msgid "_Detach"
 msgstr "_Əlavə Et"
 
 #: memprof.glade.h:57
-#, fuzzy
 msgid "_File"
-msgstr "Fayl"
+msgstr "_Fayl"
 
 #: memprof.glade.h:58
 msgid "_Help"
-msgstr ""
+msgstr "_Yardım"
 
 #: memprof.glade.h:59
 msgid "_Kill"
@@ -315,38 +320,38 @@ msgid "_Process"
 msgstr "_Gedişat"
 
 #: memprof.glade.h:61
-#, fuzzy
 msgid "_Run Program..."
-msgstr "Proqram Tə'minatı işə sal"
+msgstr "_Proqramı başlat"
 
 #: memprof.glade.h:62
-#, fuzzy
 msgid "_Settings"
-msgstr "Başladılır"
+msgstr "_Qurğular"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Başlanğıc"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Başladılır"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "İıə Sal"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Çıxılır"
 
-#: process.c:859 process.c:862
+#: process.c:866
+#: process.c:869
 msgid "Defunct"
 msgstr "Defunksiya"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "libmemintercept.so tapıla bilmir"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "%s -i tapa bilmədim"
 
 #: tree.c:91
 msgid "Show"
@@ -360,20 +365,3 @@ msgstr "Gizlət"
 msgid "Detach"
 msgstr "Ayır"
 
-#~ msgid "Add..."
-#~ msgstr "Əlavə Et ..."
-
-#~ msgid "Delete"
-#~ msgstr "Sil"
-
-#~ msgid "_Run..."
-#~ msgstr "İşə _Sal ..."
-
-#~ msgid "Copyright Red Hat, Inc., 1999-2000"
-#~ msgstr "Təl'if haqqı(C) 1999-2000 Red Hat, Inc."
-
-#~ msgid "label37"
-#~ msgstr "etiket 37"
-
-#~ msgid "Add"
-#~ msgstr "Əlavə Et"
