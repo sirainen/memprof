@@ -148,7 +148,7 @@ elsif(-s "$LANG.po"){
     
     $d="mv $LANG.po $LANG.po.old && msgmerge $LANG.po.old $PACKAGE.pot -o $LANG.po";
 
-    $f="msgfmt --statistics $LANG.po";
+    $f="msgfmt --statistics $LANG.po -o /dev/null";
 
     `$d`;
     `$f`;

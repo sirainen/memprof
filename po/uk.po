@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-08-18 10:47+0300\n"
+"POT-Creation-Date: 2000-10-27 12:33+0300\n"
 "PO-Revision-Date: 2000-06-27 17:59+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
@@ -307,9 +307,9 @@ msgstr "Додати пропуск ре╜улярного виразу"
 
 #: memprof-strings.c:82
 msgid ""
-"Enter a regular expression of function names to skipwhen computing  profiles"
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Введ╕ть ре╜улярний вираз назв функц╕й для пропуску при вирахуванн╕ проф╕лю"
+"Введ╕ть ре╜улярний вираз назв функц╕й для пропуску п╕д час обрахунку проф╕лю"
 
 #: leakdetect.c:587 profile.c:191
 #, c-format
