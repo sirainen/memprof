@@ -1,89 +1,92 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# translation of memprof.po to Malayalam
 # This file is distributed under the same license as the PACKAGE package.
-# FSF-India <locale@gnu.org.in>, 2003.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# root <root@localhost.localdomain>, 2003
+# Suresh VP <mvpsuresh@yahoo.com>, 2003
 #
 msgid ""
 msgstr ""
-"Project-Id-Version:memprof.HEAD\n"
-"POT-Creation-Date: 2003-06-06 04:56+0200\n"
-"PO-Revision-Date: 2003-07-05 10:29+0530\n"
-"Last-Translator: FSF-India <locale@gnu.org.in>\n"
-"Language-Team: Malayalam <locale@gnu.org.in>\n"
+"Project-Id-Version: memprof\n"
+"POT-Creation-Date: 2003-06-07 22:17+0200\n"
+"PO-Revision-Date: 2003-06-10 23:01-0600\n"
+"Last-Translator: Suresh VP <mvpsuresh@yahoo.com>\n"
+"Language-Team: Malayalam <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.0\n"
 
 #: leakdetect.c:584 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr ""
+msgstr "ഫലരചന %s തുറക്കാന്‌ കഴിയില്ല\n"
 
 #: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr ""
+msgstr "\"%s\" പ്രവര്ത്തനത്തില് തകരാര്"
 
 #: main.c:667
 msgid "Really quit MemProf?"
-msgstr ""
+msgstr "MemProf നിര്ത്തണം എന്നുറപ്പാണോ ?"
 
 #: main.c:713 memprof.glade.h:34
 msgid "MemProf"
-msgstr ""
+msgstr "MemProf"
 
 #: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr ""
+msgstr "\"%s\" പ്രവ‍ര്ത്തനരൂപം കാണ്മാനില്ല"
 
 #: main.c:1418
 msgid "MemProf Error"
-msgstr ""
+msgstr "MemProf തകരാര്"
 
 #: main.c:1418
 msgid "MemProf Warning"
-msgstr ""
+msgstr "MemProf മുന്നറിയിപ്പ"
 
 #: main.c:1672
 msgid "Really detach from finished process?"
-msgstr ""
+msgstr "കഴിഞ്ഞ ജോലികള് മാററണം എന്നുറപ്പാണോ ?"
 
 #: main.c:1674
 msgid "Really detach from running process?"
-msgstr ""
+msgstr "നടക്കുന്ന ജോലികള് മാററണം എന്നുറപ്പാണോ ?"
 
 #: main.c:1704
 msgid "Really kill running process?"
-msgstr ""
+msgstr "നടക്കുന്ന ജോലികള് നിര്ത്തണം എന്നുറപ്പാണോ ?"
 
 #: main.c:1741
 msgid "Create new windows for forked processes"
-msgstr ""
+msgstr "ചില്ലകള്ക്കായി പുതു ജാലകം തുറക്കുക"
 
 #: main.c:1743
 msgid "Retain windows for processes after exec()"
-msgstr ""
+msgstr "ജോലിക്കു ശേഷവും ജാലകം നിലനിര്ത്തുക"
 
 #: main.c:1745
 msgid "Type of profiling information to collect"
-msgstr ""
+msgstr "ഏതു തരത്തിലുള്ള രീതി വിവരങ്ങള്"
 
 #: main.c:1747
 msgid "Number of samples/sec for time profile (1k=1000)"
-msgstr ""
+msgstr "മാതൃകകളുടെ എണണം/സെക്കെന്ഡ്  (1കി=1000)"
 
 #: main.c:1796
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr ""
+msgstr "രീതികളിലെ വിലകള് 'memory','cycles','time' എന്നിവയില് ഒന്നായിരിക്കണം\n"
 
 #: main.c:1837
 msgid "Cannot find memprof.glade"
-msgstr ""
+msgstr "memprof.glade  കാണ്മാനില്ല"
 
 #: memprof.glade.h:1
+#, fuzzy
 msgid "# of Allocations:"
-msgstr ""
+msgstr "# of Allocations:"
 
 #: memprof.glade.h:2
 msgid "0"
@@ -91,19 +94,19 @@ msgstr "0"
 
 #: memprof.glade.h:3
 msgid "0k"
-msgstr ""
+msgstr "0കി"
 
 #: memprof.glade.h:4
 msgid "32k"
-msgstr ""
+msgstr "32കി"
 
 #: memprof.glade.h:5
 msgid "Adding Skip Function"
-msgstr ""
+msgstr "സ്കിപ്പ് ഫംങ്ഷന് ചേര്ക്കുന്നു"
 
 #: memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
-msgstr ""
+msgstr "Skip Regular Expression  ചേര്ക്കുന്നു"
 
 #: memprof.glade.h:7
 msgid "Address"
@@ -111,91 +114,94 @@ msgstr "വിലാസം"
 
 #: memprof.glade.h:8
 msgid "Bytes"
-msgstr "Bytes"
+msgstr "ബൈററ്സ്"
 
 #: memprof.glade.h:9
+#, fuzzy
 msgid "Bytes / Allocation:"
-msgstr ""
+msgstr "ബൈററ്സ്/Allocation:"
 
 #: memprof.glade.h:10
 msgid "Caller"
-msgstr ""
+msgstr "വിളിക്കുന്നവ്"
 
 #: memprof.glade.h:11
 msgid "Callers"
-msgstr ""
+msgstr "വിളിക്കുന്നവകള്്"
 
 #: memprof.glade.h:12
 msgid "Check for Leaks"
-msgstr ""
+msgstr "ചോരച്ചകള്് പരിശേധിക്കുക"
 
 #: memprof.glade.h:13
 msgid "Children"
-msgstr ""
+msgstr "ഉപ-ജോലികള്്"
 
 #: memprof.glade.h:14
+#, fuzzy
 msgid "Command Line"
-msgstr "ആജ്ഞമേഘല"
+msgstr "Command Line"
 
 #: memprof.glade.h:15
+#, fuzzy
 msgid "Command to run on double click in stack trace:"
-msgstr ""
+msgstr "Command to run on double click in stack trace:"
 
 #: memprof.glade.h:16
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
+"പകര്പ്പവകാശം 1999, 2000, 2001, റെഡ് ഹാററ്, Inc.&#13;പകര്പ്പവകാശം 2002, Kristian "
+"Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
-msgstr ""
+msgstr "രീതി ‌ നിര്മ്മിക്കുക"
 
 #: memprof.glade.h:18
 msgid "Defaults"
-msgstr ""
+msgstr "സ്വതേ"
 
 #: memprof.glade.h:19
-msgid ""
-"Enter a regular expression of function names to skip when computing profiles"
-msgstr ""
+msgid "Enter a regular expression of function names to skip when computing profiles"
+msgstr "രീതികള് നടപ്പിലാക്കുപേള് ഒഴിവാക്കേണ്ട റെഗുലര് എക്സ്പ്രഷന്"
 
 #: memprof.glade.h:20
 msgid "Enter pathname to an executable"
-msgstr ""
+msgstr " പ്രവ‍ര്ത്തനരൂപത്തിലേക്കുള്ള വഴി"
 
 #: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr ""
+msgstr "രീതികള് നടപ്പിലാക്കുപേള് ഒഴിവാക്കേണ്ട ഫംങ്ഷന്"
 
 #: memprof.glade.h:22
-#, fuzzy
 msgid "File"
-msgstr "ശേഖരം"
+msgstr "രചന"
 
 #: memprof.glade.h:23
 msgid "Follow _exec()"
-msgstr ""
+msgstr " _exec() പിന്തുടരുക"
 
 #: memprof.glade.h:24
 msgid "Follow _fork()"
-msgstr ""
+msgstr " _fork() പിന്തുടരുക"
 
 #: memprof.glade.h:25
 msgid "Function"
-msgstr "ധ‌ര്മ്മം"
+msgstr "ഫംങ്ഷന്"
 
 #: memprof.glade.h:26
 msgid "Functions to Skip:"
-msgstr ""
+msgstr "ഒഴിവാക്കേണ്ട ഫംങ്ഷനുകള്"
 
 #: memprof.glade.h:27
 msgid "Generate _Leak Report"
-msgstr ""
+msgstr "ചോര്ച്ച പഠനം നടത്തൂക"
 
 #: memprof.glade.h:28
 msgid "Generate _Profile"
-msgstr ""
+msgstr "രീതി് ത  യ്യാറാക്കുക"
 
 #: memprof.glade.h:29 tree.c:98
 msgid "Kill"
@@ -203,64 +209,63 @@ msgstr "അവസാനിപ്പിക്കുക"
 
 #: memprof.glade.h:30
 msgid "Kill Program"
-msgstr ""
+msgstr "ജോലി അവസാനിപ്പിക്കുക"
 
 #: memprof.glade.h:31
 msgid "Leak Detection Options"
-msgstr ""
+msgstr "ചോര്്ച്ചകള കണ്ടൂപിടിക്കാനുള്ള വഴികള്"
 
 #: memprof.glade.h:32
 msgid "Leaks"
-msgstr ""
+msgstr "ചോര്്ച്ചകള്"
 
 #: memprof.glade.h:33
 msgid "Line"
-msgstr "വരി‌"
+msgstr "വരി"
 
 #: memprof.glade.h:35
 msgid "MemProf - Processes"
-msgstr ""
+msgstr "MemProf - ജോലികള്"
 
 #: memprof.glade.h:36
 msgid "Memory Profiling Tool"
-msgstr ""
+msgstr "സ്മൃതിപഥ രീതികള് രേഖപ്പെടുത്താനൂള്ള ഉപകരണം"
 
 #: memprof.glade.h:37
-#, fuzzy
 msgid "PID"
-msgstr "പൈ"
+msgstr "PID"
 
 #: memprof.glade.h:38
 msgid "Preferences"
-msgstr "മുന്‍ഗണനകള്‍"
+msgstr "മുന്ഗണനകള്്"
 
 #: memprof.glade.h:39
 msgid "Process _Tree"
-msgstr ""
+msgstr "ജോലി വൃക്ഷ കാഴ്ച"
 
 #: memprof.glade.h:40
 msgid "Profile"
-msgstr ""
+msgstr "രീതി"
 
 #: memprof.glade.h:41
 msgid "Profile Options"
-msgstr ""
+msgstr "രീതി ബദലുകള്"
 
 #: memprof.glade.h:42
 msgid "Regular expressions to Skip:"
-msgstr ""
+msgstr "ഒഴിവാക്കേണ്ട റെഗുലര് എക്സ്പ്രഷനുകള്"
 
 #: memprof.glade.h:43
 msgid "Run"
-msgstr "പ്രവ‍ര്ത്തിപ്പിക്കുക"
+msgstr "ഒാടിക്കുക"
 
 #: memprof.glade.h:44
 msgid "Run Executable"
-msgstr ""
+msgstr " പ്രവ‍ര്ത്തനരൂപം ഒാടിക്കുക "
 
 #: memprof.glade.h:45
 msgid "Run Program"
-msgstr "നിര്‍ദ്ദേശം നടപ്പിലാക്കുക"
+msgstr "നിര്‍ദ്ദേശ-സംഹിത നടപ്പിലാക്കുക"
 
 #: memprof.glade.h:46
 msgid "Save"
@@ -268,19 +273,19 @@ msgstr "സംരംക്ഷിക്കുക"
 
 #: memprof.glade.h:47
 msgid "Save Report"
-msgstr ""
+msgstr "പഠനം സംരംക്ഷിക്കുക"
 
 #: memprof.glade.h:48
 msgid "Save _Leak Info..."
-msgstr ""
+msgstr "ചോര്്ച്ച വിവരം സംരംക്ഷിക്കുക"
 
 #: memprof.glade.h:49
 msgid "Save _Profile..."
-msgstr ""
+msgstr "രീതി സംരംക്ഷിക്കുക..."
 
 #: memprof.glade.h:50
 msgid "Self"
-msgstr ""
+msgstr "സ്വന്തം"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -288,7 +293,7 @@ msgstr "വലിപ്പം"
 
 #: memprof.glade.h:52
 msgid "Stack Trace"
-msgstr ""
+msgstr "Stack Trace"
 
 #: memprof.glade.h:53
 msgid "Status"
@@ -296,19 +301,19 @@ msgstr "അവസ്ഥ"
 
 #: memprof.glade.h:54
 msgid "Total"
-msgstr "മൊത്തം"
+msgstr "ആകെ"
 
 #: memprof.glade.h:55
 msgid "Total Bytes:"
-msgstr ""
+msgstr "ആകെ ബൈററ്സ്"
 
 #: memprof.glade.h:56
 msgid "_Detach"
-msgstr ""
+msgstr "വേര്പ്പെടുത്തുക"
 
 #: memprof.glade.h:57
 msgid "_File"
-msgstr "ശേഖരം"
+msgstr "രചന"
 
 #: memprof.glade.h:58
 msgid "_Help"
@@ -316,23 +321,23 @@ msgstr "സഹായം"
 
 #: memprof.glade.h:59
 msgid "_Kill"
-msgstr ""
+msgstr "അവസാനിപ്പിക്കുക"
 
 #: memprof.glade.h:60
 msgid "_Process"
-msgstr ""
+msgstr "ജോലി"
 
 #: memprof.glade.h:61
 msgid "_Run Program..."
-msgstr ""
+msgstr "നിര്‍ദ്ദേശ-സംഹിത നടപ്പിലാക്കുക"
 
 #: memprof.glade.h:62
 msgid "_Settings"
-msgstr "സജ്ജീകരണം"
+msgstr "സജ്ജീകരണങ്ങള്"
 
 #: process.c:854
 msgid "Initial"
-msgstr ""
+msgstr "അദ്യ"
 
 #: process.c:857
 msgid "Starting"
@@ -343,18 +348,17 @@ msgid "Running"
 msgstr "പ്രവ‍ര്ത്തിക്കുന്നു"
 
 #: process.c:863
-#, fuzzy
 msgid "Exiting"
-msgstr "ചിട്ടപ്പെടുത്തുന്നു"
+msgstr "പുറത്ത് കടക്കുന്നു"
 
 #: process.c:866 process.c:869
 msgid "Defunct"
-msgstr ""
+msgstr "Defunct"
 
 #: server.c:286
 #, c-format
 msgid "Cannot find %s"
-msgstr ""
+msgstr "%s  കണ്ടെത്താന്‌ കഴിഞ്ഞില്ല"
 
 #: tree.c:91
 msgid "Show"
@@ -362,8 +366,9 @@ msgstr "കാണിക്കുക"
 
 #: tree.c:94
 msgid "Hide"
-msgstr "ഒളിയ്‍ക്കുക"
+msgstr "ഒളിപ്പിക്കുക"
 
 #: tree.c:101
 msgid "Detach"
-msgstr ""
+msgstr "വേര്പ്പെടുത്തുക"
+
