@@ -9,6 +9,8 @@
 	* intercept.c (memprof_init): Make a copy of the socket path so we
 	don't rely on the profiled program leaving the environment alone.
 	(Fixes #148603)
+	* process.c (process_duplicate): When following fork, create the
+	copy block hash table before trying to insert into it.  (Fixes #148606)
 	
 2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
 

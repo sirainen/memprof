@@ -398,6 +398,16 @@ process_sections (MPProcess *process, SectionFunc func, gpointer user_data)
  * Communication with subprocess
  ************************************************************/
 
+static GHashTable *
+get_block_table (MPProcess *process)
+{
+	if (!process->block_table)
+		process->block_table = g_hash_table_new (g_direct_hash, NULL);
+
+	return process->block_table;
+		
+}
+
 static void
 process_free_block (gpointer key, gpointer value, gpointer data)
 {
@@ -419,10 +429,11 @@ MPProcess *
 process_duplicate (MPProcess *process)
 {
 	MPProcess *new_process = process_new (process->server);
+	GHashTable *new_block_table = get_block_table(new_process);
 
 	g_hash_table_foreach (process->block_table,
 			      process_duplicate_block,
-			      new_process->block_table);
+			      new_block_table);
 
 	new_process->bytes_used = process->bytes_used;
 	new_process->n_allocations = process->n_allocations;
@@ -472,16 +483,6 @@ process_reinit (MPProcess *process)
 
 	/* FIXME: leak */
 	process->command_queue = NULL;
-}
-
-static GHashTable *
-get_block_table (MPProcess *process)
-{
-	if (!process->block_table)
-		process->block_table = g_hash_table_new (g_direct_hash, NULL);
-
-	return process->block_table;
-		
 }
 
 static StackStash *
