@@ -1,19 +1,19 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# translation of memprof.HEAD.be.po to belarusian
 # This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # Vital Khilko <dojlid@mova.org>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: memprof 2.1\n"
-"POT-Creation-Date: 2003-01-04 04:53+0100\n"
-"PO-Revision-Date: 2003-01-07 14:38GMT+2\n"
+"Project-Id-Version: memprof.HEAD.be\n"
+"POT-Creation-Date: 2003-02-20 20:22+0100\n"
+"PO-Revision-Date: 2003-02-21 22:51GMT+2\n"
 "Last-Translator: Vital Khilko <dojlid@mova.org>\n"
 "Language-Team: belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
+"X-Generator: KBabel 1.0\n"
 
 #: leakdetect.c:584 profile.c:202
 #, c-format
@@ -67,12 +67,10 @@ msgid "Retain windows for processes after exec()"
 msgstr "Утрымліваць вокны для працэсаў пасьля exec()"
 
 #: main.c:1745
-#, fuzzy
 msgid "Type of profiling information to collect"
-msgstr "Пазначце інфармацыю аб прафіляваньні"
+msgstr "Тып профіляванае інфармацыі для калекцыі"
 
 #: main.c:1747
-#, fuzzy
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Колькасьць узораў у сэкунду для часу прафіляваньня (1k=1000)"
 
@@ -149,8 +147,8 @@ msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 msgstr ""
-"Аўтарскае права 1999, 2000, 2001, Red Hat, Inc.&#13;Аўтарскае права 2002, Крысьціян "
-"Рытвілд"
+"Аўтарскае права 1999, 2000, 2001, Red Hat, Inc.&#13;Аўтарскае права 2002, "
+"Крысьціян Рытвілд"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
