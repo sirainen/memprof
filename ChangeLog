@@ -1,3 +1,9 @@
+Thu Sep 19 14:30:31 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* memintercept-utils.c (mi_atomic_[increment/decrement]): Fix
+	wrong in the non-atomic fallback case. (#93670, 
+	Christian Marillat)
+
 2002-09-10  James Henstridge  <james@daa.com.au>
 
 	* server.c (find_lib_location): variable definitions need to go at

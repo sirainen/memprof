@@ -272,7 +272,7 @@ mi_atomic_increment(uint32_t *addr)
 	return result;
 #else
 	/* Hope for the best */
-	return *++p;
+	return *++addr;
 #endif
 }
 
@@ -287,7 +287,7 @@ mi_atomic_decrement(uint32_t *addr)
 	return result;
 #else
 	/* Hope for the best */
-	return *--p;
+	return *--addr;
 #endif
 }
 
