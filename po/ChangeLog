@@ -1,3 +1,8 @@
+2003-07-19  Christophe Merlet  <redfox@redfoxcenter.org>
+
+	* fr.po: Updated French translation from work of
+	Benoit Dejean <bnet@ifrance.com>.
+
 2003-07-17  Vincent van Adrighem  <V.vanAdrighem@dirck.mine.nu>
 
 	* nl.po: Dutch translation updated by Kees van den Broek.
@@ -75,7 +80,7 @@
 2003-02-03  Daniel Yacob  <locales@geez.org>
 
 	* am.po: Updated Amharic translation.
-	
+
 2003-02-01  Christophe Merlet  <redfox@redfoxcenter.org>
 
 	* fr.po: Updated French translation from work of
