@@ -1,12 +1,13 @@
 # Danish translation of memprof.
 # Copyright (C) 2000 Free Software Foundation, Inc.
 # Kenneth Christiansen <kenneth@gnome.dk>, 2000
+# keld Simonsen <keld@dkuug.dk>, 2000
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
 "POT-Creation-Date: 2000-04-30 16:46+0200\n"
-"PO-Revision-Date: 2000-04-30 01:17+02:00\n"
+"PO-Revision-Date: 2000-05-07 01:17+02:00\n"
 "Last-Translator: Kenneth Christiansen <kenneth@gnome.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +25,7 @@ msgstr "MemProf"
 
 #: memprof-strings.c:8
 msgid "_Run..."
-msgstr "Kør..."
+msgstr "_Kør..."
 
 #: memprof-strings.c:9
 msgid "Generate Profile"
@@ -92,7 +93,7 @@ msgstr "0"
 
 #: memprof-strings.c:25
 msgid "Bytes / Allocation:"
-msgstr "Byte / allocation:"
+msgstr "Byte / tildeling:"
 
 #: memprof-strings.c:27
 msgid "Total Bytes:"
@@ -189,11 +190,12 @@ msgstr "Lækage detekteringsvalg"
 
 #: memprof-strings.c:57
 msgid "Adding Skip Function"
-msgstr "Tilføjer skip funtion"
+msgstr "Tilføjer skip funktion"
 
 #: memprof-strings.c:58
 msgid "Enter the name of a function to skip when computing  profiles"
-msgstr ""
+msgstr "Indtast navnet på en funktion der skal overspringes ved "
+"beregning af profiler"
 
 #: memprof-strings.c:59
 msgid "Add"
@@ -213,18 +215,18 @@ msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åbne filen: %s\n"
 
 #: main.c:510
-#, fuzzy, c-format
+#, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "Køring af %s fejlede"
+msgstr "Udførelse af %s fejlede"
 
 #: main.c:636
 msgid "Really quit MemProf?"
 msgstr "Virkelig afslut MemProf?"
 
 #: main.c:690
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr "Kunne ikke billedfil %s"
+msgstr "Kunne ikke udførbar fil for \"%s\""
 
 #: main.c:1099
 msgid "MemProf Error"
@@ -236,11 +238,11 @@ msgstr "MemProf-advarsel"
 
 #: main.c:1248
 msgid "Create new windows for forked processes"
-msgstr ""
+msgstr "Opret nye vinduer for nye processer"
 
 #: main.c:1250
 msgid "Retain windows for processes after exec()"
-msgstr ""
+msgstr "Behold vinduer for processer efter exec()"
 
 #: main.c:1272
 msgid "Cannot find memprof.glade"
