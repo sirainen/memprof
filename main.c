@@ -1433,14 +1433,8 @@ show_error (GtkWidget *parent_window,
 static void
 set_white_bg (GtkWidget *widget)
 {
-	GtkRcStyle *rc_style = gtk_rc_style_new();
-
-	rc_style->color_flags[GTK_STATE_NORMAL] = GTK_RC_BG;
-	rc_style->bg[GTK_STATE_NORMAL].red = 0xffff;
-	rc_style->bg[GTK_STATE_NORMAL].green = 0xffff;
-	rc_style->bg[GTK_STATE_NORMAL].blue = 0xffff;
-
-	gtk_widget_modify_style (widget, rc_style);
+	GdkColor white = { 0, 0xffff, 0xffff, 0xffff };
+	gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, &white);
 }
 
 static void
