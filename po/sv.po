@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-10-30 00:42+0100\n"
+"POT-Creation-Date: 2003-06-19 14:09+0200\n"
 "PO-Revision-Date: 2002-10-30 00:43+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
@@ -16,72 +16,76 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: leakdetect.c:584 profile.c:202
+#: leakdetect.c:584
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan inte öppna utmatningsfil: %s\n"
 
-#: main.c:536
+#: main.c:635
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Körning av \"%s\" misslyckades"
 
-#: main.c:667
+#: main.c:766
 msgid "Really quit MemProf?"
 msgstr "Verkligen avsluta MemProf?"
 
-#: main.c:713 memprof.glade.h:34
+#: main.c:812 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:807
+#: main.c:915
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kan inte hitta programfil för \"%s\""
 
-#: main.c:1418
+#: main.c:1018
+msgid "Saving is disabled at the moment"
+msgstr ""
+
+#: main.c:1532
 msgid "MemProf Error"
 msgstr "MemProf-fel"
 
-#: main.c:1418
+#: main.c:1532
 msgid "MemProf Warning"
 msgstr "MemProf-varning"
 
-#: main.c:1678
+#: main.c:1913
 msgid "Really detach from finished process?"
 msgstr "Verkligen lösgöra från avslutad process?"
 
-#: main.c:1680
+#: main.c:1915
 msgid "Really detach from running process?"
 msgstr "Verkligen lösgöra från körande process?"
 
-#: main.c:1710
+#: main.c:1945
 msgid "Really kill running process?"
 msgstr "Verkligen döda körande process?"
 
-#: main.c:1747
+#: main.c:1982
 msgid "Create new windows for forked processes"
 msgstr "Skapa nya fönster för grenade processer"
 
-#: main.c:1749
+#: main.c:1984
 msgid "Retain windows for processes after exec()"
 msgstr "Bibehåll fönster för processer efter exec()"
 
-#: main.c:1751
+#: main.c:1986
 msgid "Type of profiling information to collect"
 msgstr "Typ av profileringsinformation att inhämta"
 
-#: main.c:1753
+#: main.c:1988
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Antal sampel/sekund för tidsprofil (1k=1000)"
 
-#: main.c:1802
+#: main.c:2037
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr ""
 "Argument till --profile måste vara ett av \"memory\", \"cycles\" eller \"time"
 "\"\n"
 
-#: main.c:1843
+#: main.c:2078
 msgid "Cannot find memprof.glade"
 msgstr "Kan inte hitta memprof.glade"
 
@@ -90,52 +94,53 @@ msgid "# of Allocations:"
 msgstr "Antal allokeringar:"
 
 #: memprof.glade.h:2
+msgid "*"
+msgstr ""
+
+#: memprof.glade.h:3
 msgid "0"
 msgstr "0"
 
-#: memprof.glade.h:3
+#: memprof.glade.h:4
 msgid "0k"
 msgstr "0k"
 
-#: memprof.glade.h:4
+#: memprof.glade.h:5
 msgid "32k"
 msgstr "32k"
 
-#: memprof.glade.h:5
+#: memprof.glade.h:6
+#, fuzzy
+msgid "<b>Callers</b>"
+msgstr "Anropare"
+
+#: memprof.glade.h:7
+msgid "<b>Descendants</b>"
+msgstr ""
+
+#: memprof.glade.h:8
 msgid "Adding Skip Function"
 msgstr "Lägger till funktion som ska hoppas över"
 
-#: memprof.glade.h:6
+#: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
 msgstr "Lägger till reguljärt uttryck som ska hoppas över"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:10
 msgid "Address"
 msgstr "Adress"
 
-#: memprof.glade.h:8
-msgid "Bytes"
-msgstr "Byte"
-
-#: memprof.glade.h:9
+#: memprof.glade.h:11
 msgid "Bytes / Allocation:"
 msgstr "Byte / allokering:"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:12
 msgid "Caller"
 msgstr "Anropare"
 
-#: memprof.glade.h:11
-msgid "Callers"
-msgstr "Anropare"
-
-#: memprof.glade.h:12
+#: memprof.glade.h:13
 msgid "Check for Leaks"
 msgstr "Leta efter läckor"
-
-#: memprof.glade.h:13
-msgid "Children"
-msgstr "Barn"
 
 #: memprof.glade.h:14
 msgid "Command Line"
@@ -146,147 +151,144 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skall köras vid dubbelklickning på stackvisningen:"
 
 #: memprof.glade.h:16
+#, fuzzy
 msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
 msgstr ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:18
 msgid "Create Profile"
 msgstr "Skapa profil"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:19
 msgid "Defaults"
 msgstr "Standardvärden"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:20
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Ange ett reguljärt uttryck på funktionsnamn som ska hoppas över när profiler "
 "beräknas"
 
-#: memprof.glade.h:20
+#: memprof.glade.h:21
 msgid "Enter pathname to an executable"
 msgstr "Ange sökvägen till ett program"
 
-#: memprof.glade.h:21
+#: memprof.glade.h:22
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Ange namnet på en funktion som ska hoppas över när profiler beräknas"
 
-#: memprof.glade.h:22
+#: memprof.glade.h:23
 msgid "File"
 msgstr "Fil"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:24
 msgid "Follow _exec()"
 msgstr "Följ _exec()"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:25
 msgid "Follow _fork()"
 msgstr "Följ _fork()"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:26
 msgid "Function"
 msgstr "Funktion"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:27
 msgid "Functions to Skip:"
 msgstr "Funktioner som ska hoppas över:"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:28
 msgid "Generate _Leak Report"
 msgstr "Skapa _läckagerapport"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:29
 msgid "Generate _Profile"
 msgstr "Skapa _profil"
 
-#: memprof.glade.h:29 tree.c:98
+#: memprof.glade.h:30 tree.c:98
 msgid "Kill"
 msgstr "Döda"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:31
 msgid "Kill Program"
 msgstr "Döda program"
 
-#: memprof.glade.h:31
+#: memprof.glade.h:32
 msgid "Leak Detection Options"
 msgstr "Läckagedetektionsalternativ"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:33
 msgid "Leaks"
 msgstr "Läckor"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:34
 msgid "Line"
 msgstr "Rad"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:36
 msgid "MemProf - Processes"
 msgstr "MemProf - Processer"
 
-#: memprof.glade.h:36
+#: memprof.glade.h:37
 msgid "Memory Profiling Tool"
 msgstr "Minnesprofileringsverktyg"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:38
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:39
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:40
 msgid "Process _Tree"
 msgstr "Process_träd"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:41
 msgid "Profile"
 msgstr "Profil"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:42
 msgid "Profile Options"
 msgstr "Profileringsalternativ"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:43
 msgid "Regular expressions to Skip:"
 msgstr "Reguljära uttryck som ska hoppas över:"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:44
 msgid "Run"
 msgstr "Kör"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:45
 msgid "Run Executable"
 msgstr "Kör program"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Program"
 msgstr "Kör program"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Save"
 msgstr "Spara"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save Report"
 msgstr "Spara rapport"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save _Leak Info..."
 msgstr "Spara _läckageinformation..."
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Profile..."
 msgstr "Spara _profil..."
-
-#: memprof.glade.h:50
-msgid "Self"
-msgstr "Själv"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -301,40 +303,40 @@ msgid "Status"
 msgstr "Status"
 
 #: memprof.glade.h:54
-msgid "Total"
-msgstr "Totalt"
-
-#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Totalt antal byte:"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:55
 msgid "_Detach"
 msgstr "_Lösgör"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:56
 msgid "_File"
 msgstr "_Arkiv"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:57
 msgid "_Help"
 msgstr "_Hjälp"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:58
 msgid "_Kill"
 msgstr "_Döda"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:59
 msgid "_Process"
 msgstr "_Process"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:60
 msgid "_Run Program..."
 msgstr "_Kör program..."
 
-#: memprof.glade.h:62
+#: memprof.glade.h:61
 msgid "_Settings"
 msgstr "_Inställningar"
+
+#: memprof.glade.h:62
+msgid "translator_credits"
+msgstr ""
 
 #: process.c:854
 msgid "Initial"
@@ -372,6 +374,18 @@ msgstr "Dölj"
 #: tree.c:101
 msgid "Detach"
 msgstr "Lösgör"
+
+#~ msgid "Bytes"
+#~ msgstr "Byte"
+
+#~ msgid "Children"
+#~ msgstr "Barn"
+
+#~ msgid "Self"
+#~ msgstr "Själv"
+
+#~ msgid "Total"
+#~ msgstr "Totalt"
 
 #~ msgid "Cannot find libmemintercept.so"
 #~ msgstr "Kan inte hitta libmemintercept.so"

@@ -2,7 +2,7 @@ SUBDIRS = po
 
 bin_PROGRAMS = memprof
 noinst_PROGRAMS = testmemprof
-pkgdata_DATA = memprof.glade leak.xpm memprof.png
+pkgdata_DATA = memprof.glade leak.xpm leak.png memprof.png
 
 pkglib_LTLIBRARIES = libmemintercept.la libspeedintercept.la
 
@@ -49,8 +49,7 @@ libspeedintercept_la_SOURCES =  \
 	mi-perfctr.c		\
 	mi-perfctr.h		\
 	perfctr.h		\
-	speedintercept.c	\
-	speedintercept.h
+	speedintercept.c
 
 libspeedintercept_la_LDFLAGS = -module -avoid-version
 libspeedintercept_la_LIBADD = -ldl

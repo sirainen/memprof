@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memproff VERSION\n"
-"POT-Creation-Date: 2003-02-06 11:28+0100\n"
+"POT-Creation-Date: 2003-06-19 14:09+0200\n"
 "PO-Revision-Date: 2003-02-07 16:32+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
@@ -13,71 +13,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: leakdetect.c:584 profile.c:202
+#: leakdetect.c:584
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Nemohu otevřít výstupní soubor: %s\n"
 
-#: main.c:536
+#: main.c:635
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Spuštění \"%s\" selhalo"
 
-#: main.c:667
+#: main.c:766
 msgid "Really quit MemProf?"
 msgstr "Opravdu ukončit MemProf?"
 
-#: main.c:713 memprof.glade.h:34
+#: main.c:812 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:807
+#: main.c:915
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Nemohu najít spustitelný soubor pro \"%s\""
 
-#: main.c:1418
+#: main.c:1018
+msgid "Saving is disabled at the moment"
+msgstr ""
+
+#: main.c:1532
 msgid "MemProf Error"
 msgstr "Chyba MemProf"
 
-#: main.c:1418
+#: main.c:1532
 msgid "MemProf Warning"
 msgstr "Varování MemProf"
 
-#: main.c:1672
+#: main.c:1913
 msgid "Really detach from finished process?"
 msgstr "Opravdu se odpojit od skončeného procesu?"
 
-#: main.c:1674
+#: main.c:1915
 msgid "Really detach from running process?"
 msgstr "Opravdu se odpojit od běžícího procesu?"
 
-#: main.c:1704
+#: main.c:1945
 msgid "Really kill running process?"
 msgstr "Opravdu zabít běžící proces?"
 
-#: main.c:1741
+#: main.c:1982
 msgid "Create new windows for forked processes"
 msgstr "Vytvořit pro forkované procesy nová okna"
 
-#: main.c:1743
+#: main.c:1984
 msgid "Retain windows for processes after exec()"
 msgstr "Zachovat okna pro procesy po exec()"
 
-#: main.c:1745
+#: main.c:1986
 msgid "Type of profiling information to collect"
 msgstr "Typ sbíraných profilovacích informací"
 
-#: main.c:1747
+#: main.c:1988
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Počet vzorků/s pro časový profil (1k=1000)"
 
-#: main.c:1796
+#: main.c:2037
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr ""
 "Argument volby --profile musí být jeden z 'memory', 'cycles' nebo 'time'\n"
 
-#: main.c:1837
+#: main.c:2078
 msgid "Cannot find memprof.glade"
 msgstr "Nemohu najít memprof.glade"
 
@@ -86,52 +90,53 @@ msgid "# of Allocations:"
 msgstr "# alokací:"
 
 #: memprof.glade.h:2
+msgid "*"
+msgstr ""
+
+#: memprof.glade.h:3
 msgid "0"
 msgstr "0"
 
-#: memprof.glade.h:3
+#: memprof.glade.h:4
 msgid "0k"
 msgstr "0k"
 
-#: memprof.glade.h:4
+#: memprof.glade.h:5
 msgid "32k"
 msgstr "32k"
 
-#: memprof.glade.h:5
+#: memprof.glade.h:6
+#, fuzzy
+msgid "<b>Callers</b>"
+msgstr "Volající"
+
+#: memprof.glade.h:7
+msgid "<b>Descendants</b>"
+msgstr ""
+
+#: memprof.glade.h:8
 msgid "Adding Skip Function"
 msgstr "Přidávám přeskakovanou funkci"
 
-#: memprof.glade.h:6
+#: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
 msgstr "Přidávám přeskakovaný regulární výraz"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:10
 msgid "Address"
 msgstr "Adresa"
 
-#: memprof.glade.h:8
-msgid "Bytes"
-msgstr "Bytů"
-
-#: memprof.glade.h:9
+#: memprof.glade.h:11
 msgid "Bytes / Allocation:"
 msgstr "Bytů / alokaci:"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:12
 msgid "Caller"
 msgstr "Volající"
 
-#: memprof.glade.h:11
-msgid "Callers"
-msgstr "Volající"
-
-#: memprof.glade.h:12
+#: memprof.glade.h:13
 msgid "Check for Leaks"
 msgstr "Hledat leaky"
-
-#: memprof.glade.h:13
-msgid "Children"
-msgstr "Potomci"
 
 #: memprof.glade.h:14
 msgid "Command Line"
@@ -142,146 +147,143 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Příkaz, který spustit po dvojitém kliknutí ve výpisu zásobníku:"
 
 #: memprof.glade.h:16
+#, fuzzy
 msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
 msgstr ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:18
 msgid "Create Profile"
 msgstr "Vytvořit profil"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:19
 msgid "Defaults"
 msgstr "Implicitní"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:20
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Vložte regulární výraz pro jména funkcí, které přeskočit při počítání profilů"
 
-#: memprof.glade.h:20
+#: memprof.glade.h:21
 msgid "Enter pathname to an executable"
 msgstr "Vložte cestu k spustitelnému souboru"
 
-#: memprof.glade.h:21
+#: memprof.glade.h:22
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Vložte jméno funkce, kterou přeskočit při počítání profilů"
 
-#: memprof.glade.h:22
+#: memprof.glade.h:23
 msgid "File"
 msgstr "Soubor"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:24
 msgid "Follow _exec()"
 msgstr "Následovat _exec()"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:25
 msgid "Follow _fork()"
 msgstr "Následovat _fork()"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:26
 msgid "Function"
 msgstr "Funkce"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:27
 msgid "Functions to Skip:"
 msgstr "Funkce, které přeskočit:"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:28
 msgid "Generate _Leak Report"
 msgstr "Generovat seznam _leaků"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:29
 msgid "Generate _Profile"
 msgstr "Generovat _profil"
 
-#: memprof.glade.h:29 tree.c:98
+#: memprof.glade.h:30 tree.c:98
 msgid "Kill"
 msgstr "Zabít"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:31
 msgid "Kill Program"
 msgstr "Zabít program"
 
-#: memprof.glade.h:31
+#: memprof.glade.h:32
 msgid "Leak Detection Options"
 msgstr "Volby detekce leaků"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:33
 msgid "Leaks"
 msgstr "Leaky"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:34
 msgid "Line"
 msgstr "Řádek"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:36
 msgid "MemProf - Processes"
 msgstr "MemProf - procesy"
 
-#: memprof.glade.h:36
+#: memprof.glade.h:37
 msgid "Memory Profiling Tool"
 msgstr "Nástroj na profilování paměti"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:38
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:39
 msgid "Preferences"
 msgstr "Nastavení"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:40
 msgid "Process _Tree"
 msgstr "_Strom procesů"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:41
 msgid "Profile"
 msgstr "Profil"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:42
 msgid "Profile Options"
 msgstr "Nastavení profilu"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:43
 msgid "Regular expressions to Skip:"
 msgstr "Regulární výrazy, které přeskočit:"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:44
 msgid "Run"
 msgstr "Spustit"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:45
 msgid "Run Executable"
 msgstr "Spustit spustitelný soubor"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Program"
 msgstr "Spustit program"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Save"
 msgstr "Uložit"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save Report"
 msgstr "Uložit zprávu"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save _Leak Info..."
 msgstr "Uložit info o _leacích..."
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Profile..."
 msgstr "Uložit _profil..."
-
-#: memprof.glade.h:50
-msgid "Self"
-msgstr "Sama"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -296,40 +298,40 @@ msgid "Status"
 msgstr "Stav"
 
 #: memprof.glade.h:54
-msgid "Total"
-msgstr "Celkem"
-
-#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Celkem bytů:"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:55
 msgid "_Detach"
 msgstr "_Odpojit"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:56
 msgid "_File"
 msgstr "_Soubor"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:57
 msgid "_Help"
 msgstr "_Nápověda"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:58
 msgid "_Kill"
 msgstr "_Zabít"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:59
 msgid "_Process"
 msgstr "_Proces"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:60
 msgid "_Run Program..."
 msgstr "_Spustit program..."
 
-#: memprof.glade.h:62
+#: memprof.glade.h:61
 msgid "_Settings"
 msgstr "_Nastavení"
+
+#: memprof.glade.h:62
+msgid "translator_credits"
+msgstr ""
 
 #: process.c:854
 msgid "Initial"
@@ -367,3 +369,15 @@ msgstr "Skrýt"
 #: tree.c:101
 msgid "Detach"
 msgstr "Odpojit"
+
+#~ msgid "Bytes"
+#~ msgstr "Bytů"
+
+#~ msgid "Children"
+#~ msgstr "Potomci"
+
+#~ msgid "Self"
+#~ msgstr "Sama"
+
+#~ msgid "Total"
+#~ msgstr "Celkem"

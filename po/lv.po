@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-12-22 04:44+0100\n"
+"POT-Creation-Date: 2003-06-19 14:09+0200\n"
 "PO-Revision-Date: 2002-12-23 11:38+0200\n"
 "Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -15,79 +15,73 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: leakdetect.c:584
-#: profile.c:202
 #, c-format
-msgid ""
-"Cannot open output file: %s\n"
-""
-msgstr ""
-"Nevaru atvērt izvades failu: %s\n"
-""
+msgid "Cannot open output file: %s\n"
+msgstr "Nevaru atvērt izvades failu: %s\n"
 
-#: main.c:536
+#: main.c:635
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Neizdevās \"%s\" izpildīšana"
 
-#: main.c:667
+#: main.c:766
 msgid "Really quit MemProf?"
 msgstr "Patiešām iziet no MemProf?"
 
-#: main.c:713
-#: memprof.glade.h:34
+#: main.c:812 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:807
+#: main.c:915
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Nevaru atrast izpildāmfailu priekš \"%s\""
 
-#: main.c:1418
+#: main.c:1018
+msgid "Saving is disabled at the moment"
+msgstr ""
+
+#: main.c:1532
 msgid "MemProf Error"
 msgstr "MemProf Kļūda"
 
-#: main.c:1418
+#: main.c:1532
 msgid "MemProf Warning"
 msgstr "MemProf Brīdinājums"
 
-#: main.c:1672
+#: main.c:1913
 msgid "Really detach from finished process?"
 msgstr "Patiesi atdalīt no pabeigta procesa?"
 
-#: main.c:1674
+#: main.c:1915
 msgid "Really detach from running process?"
 msgstr "Patiesi atdalīt no darbojamies procesa?"
 
-#: main.c:1704
+#: main.c:1945
 msgid "Really kill running process?"
 msgstr "Gatavs nokaut palaistos procesus?"
 
-#: main.c:1741
+#: main.c:1982
 msgid "Create new windows for forked processes"
 msgstr "Izveidot atzarotajiem procesiem jaunu logu"
 
-#: main.c:1743
+#: main.c:1984
 msgid "Retain windows for processes after exec()"
 msgstr "Saglabāt procesu logus pēc exec()"
 
-#: main.c:1745
+#: main.c:1986
 msgid "Type of profiling information to collect"
 msgstr "Savācamā profilēšanas informācija"
 
-#: main.c:1747
+#: main.c:1988
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Paraugu/sek skaits laika profīlam (1k=1000)"
 
-#: main.c:1796
-msgid ""
-"Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-""
-msgstr ""
-"--profile argumentam jābūt kādam no 'memory', 'cycles, vai 'time'\n"
-""
+#: main.c:2037
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "--profile argumentam jābūt kādam no 'memory', 'cycles, vai 'time'\n"
 
-#: main.c:1837
+#: main.c:2078
 msgid "Cannot find memprof.glade"
 msgstr "Nevaru atrast memprof.glade"
 
@@ -96,52 +90,53 @@ msgid "# of Allocations:"
 msgstr "Iedalījumu #:"
 
 #: memprof.glade.h:2
+msgid "*"
+msgstr ""
+
+#: memprof.glade.h:3
 msgid "0"
 msgstr "0"
 
-#: memprof.glade.h:3
+#: memprof.glade.h:4
 msgid "0k"
 msgstr "0k"
 
-#: memprof.glade.h:4
+#: memprof.glade.h:5
 msgid "32k"
 msgstr "32k"
 
-#: memprof.glade.h:5
+#: memprof.glade.h:6
+#, fuzzy
+msgid "<b>Callers</b>"
+msgstr "Izsaucēji"
+
+#: memprof.glade.h:7
+msgid "<b>Descendants</b>"
+msgstr ""
+
+#: memprof.glade.h:8
 msgid "Adding Skip Function"
 msgstr "Pievienoju Izlaist Funkciju"
 
-#: memprof.glade.h:6
+#: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
 msgstr "Pievienoju Izlaist Regulāru Izteiksmi"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:10
 msgid "Address"
 msgstr "Adrese"
 
-#: memprof.glade.h:8
-msgid "Bytes"
-msgstr "Baiti"
-
-#: memprof.glade.h:9
+#: memprof.glade.h:11
 msgid "Bytes / Allocation:"
 msgstr "Baiti / Iedalījums:"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:12
 msgid "Caller"
 msgstr "Izsaucējs"
 
-#: memprof.glade.h:11
-msgid "Callers"
-msgstr "Izsaucēji"
-
-#: memprof.glade.h:12
+#: memprof.glade.h:13
 msgid "Check for Leaks"
 msgstr "Pārbaudīt Noplūdes"
-
-#: memprof.glade.h:13
-msgid "Children"
-msgstr "Bērni"
 
 #: memprof.glade.h:14
 msgid "Command Line"
@@ -152,141 +147,144 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Komanda, kuru palaist pie dubultklikšķa steka trasē:"
 
 #: memprof.glade.h:16
-msgid "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian Rietveld"
-msgstr "Autortiesības 1999, 2000, 2001, Red Hat, Inc.&#13;Autortiesības 2002, Kristian Rietveld"
+#, fuzzy
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
+msgstr ""
+"Autortiesības 1999, 2000, 2001, Red Hat, Inc.&#13;Autortiesības 2002, "
+"Kristian Rietveld"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:18
 msgid "Create Profile"
 msgstr "Izveidot Profīlu"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:19
 msgid "Defaults"
 msgstr "Noklusētie"
 
-#: memprof.glade.h:19
-msgid "Enter a regular expression of function names to skip when computing profiles"
-msgstr "Ievadiet funkciju nosaukumu regulāras izteiksmes, ko izlaist, kad skaitļoju profīlus"
-
 #: memprof.glade.h:20
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr ""
+"Ievadiet funkciju nosaukumu regulāras izteiksmes, ko izlaist, kad skaitļoju "
+"profīlus"
+
+#: memprof.glade.h:21
 msgid "Enter pathname to an executable"
 msgstr "Izvadiet ceļa līdz izpildāmfailam"
 
-#: memprof.glade.h:21
+#: memprof.glade.h:22
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Ievadiet funkciju nosaukumus, ko izlaist, kad skaitļoju profīlus"
 
-#: memprof.glade.h:22
+#: memprof.glade.h:23
 msgid "File"
 msgstr "Fails"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:24
 msgid "Follow _exec()"
 msgstr "Sekot _exec()"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:25
 msgid "Follow _fork()"
 msgstr "Sekot _fork()"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:26
 msgid "Function"
 msgstr "Funkcija"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:27
 msgid "Functions to Skip:"
 msgstr "Funkcijas, kuras Izlaist:"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:28
 msgid "Generate _Leak Report"
 msgstr "Radīt _Noplūdes Atskaiti"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:29
 msgid "Generate _Profile"
 msgstr "Radīt _Profīlu"
 
-#: memprof.glade.h:29
-#: tree.c:98
+#: memprof.glade.h:30 tree.c:98
 msgid "Kill"
 msgstr "Nokaut"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:31
 msgid "Kill Program"
 msgstr "Nokaut Programmu"
 
-#: memprof.glade.h:31
+#: memprof.glade.h:32
 msgid "Leak Detection Options"
 msgstr "Noplūdes Apraksta Opcijas"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:33
 msgid "Leaks"
 msgstr "Noplūdes"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:34
 msgid "Line"
 msgstr "Līnija"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:36
 msgid "MemProf - Processes"
 msgstr "MemProf - Procesi"
 
-#: memprof.glade.h:36
+#: memprof.glade.h:37
 msgid "Memory Profiling Tool"
 msgstr "Atmiņas Profilēšanas Rīks"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:38
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:39
 msgid "Preferences"
 msgstr "Preferences"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:40
 msgid "Process _Tree"
 msgstr "Procesu _Koks"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:41
 msgid "Profile"
 msgstr "Profīls"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:42
 msgid "Profile Options"
 msgstr "Profīla Opcijas"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:43
 msgid "Regular expressions to Skip:"
 msgstr "Regulārās izteiksmes, ko Izlaist:"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:44
 msgid "Run"
 msgstr "Palaist"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:45
 msgid "Run Executable"
 msgstr "Palaist Izpildāmfailu"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Program"
 msgstr "Palaist Programmu"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Save"
 msgstr "Saglabāt"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save Report"
 msgstr "Saglabāt Atskaiti"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save _Leak Info..."
 msgstr "Saglabāt _Noplūdes Info..."
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Profile..."
 msgstr "Saglabāt _Profīlu..."
-
-#: memprof.glade.h:50
-msgid "Self"
-msgstr "Pats"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -301,40 +299,40 @@ msgid "Status"
 msgstr "Statuss"
 
 #: memprof.glade.h:54
-msgid "Total"
-msgstr "Kopā"
-
-#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Kopā Baiti:"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:55
 msgid "_Detach"
 msgstr "_Atdalīt"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:56
 msgid "_File"
 msgstr "_Fails"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:57
 msgid "_Help"
 msgstr "_Palīdzība"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:58
 msgid "_Kill"
 msgstr "_Nokaut"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:59
 msgid "_Process"
 msgstr "_Process"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:60
 msgid "_Run Program..."
 msgstr "_Palaist Programmu..."
 
-#: memprof.glade.h:62
+#: memprof.glade.h:61
 msgid "_Settings"
 msgstr "_Uzstādījumi"
+
+#: memprof.glade.h:62
+msgid "translator_credits"
+msgstr ""
 
 #: process.c:854
 msgid "Initial"
@@ -352,8 +350,7 @@ msgstr "Palaižu"
 msgid "Exiting"
 msgstr "Izeju"
 
-#: process.c:866
-#: process.c:869
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "Miris"
 
@@ -374,3 +371,14 @@ msgstr "Paslēpt"
 msgid "Detach"
 msgstr "Atdalīt"
 
+#~ msgid "Bytes"
+#~ msgstr "Baiti"
+
+#~ msgid "Children"
+#~ msgstr "Bērni"
+
+#~ msgid "Self"
+#~ msgstr "Pats"
+
+#~ msgid "Total"
+#~ msgstr "Kopā"

@@ -3,6 +3,7 @@
 /* MemProf -- memory profiler and leak detector
  * Copyright 1999, 2000, 2001, Red Hat, Inc.
  * Copyright 2002, Kristian Rietveld
+ * Copyright 2002, Soeren Sandmann (sandmann@daimi.au.dk)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +33,6 @@
 #include <signal.h>
 
 #include <glade/glade.h>
-#include <gnome.h>
 
 #include <gconf/gconf-client.h>
 
@@ -44,6 +44,7 @@
 #include "process.h"
 #include "profile.h"
 #include "server.h"
+#include <gnome.h>
 
 struct _ProcessWindow {
 	MPProcess *process;
@@ -53,12 +54,25 @@ struct _ProcessWindow {
 	GtkWidget *main_window;
 	GtkWidget *main_notebook;
 	GtkWidget *n_allocations_label;
+	GtkWidget *profile_status_label;
 	GtkWidget *bytes_per_label;
 	GtkWidget *total_bytes_label;
 
-	GtkWidget *profile_func_clist;
-	GtkWidget *profile_caller_clist;
-	GtkWidget *profile_child_clist;
+	GtkWidget *profile_func_tree_view;
+	GtkTreeViewColumn *profile_func_column0;
+	GtkTreeViewColumn *profile_func_column1;
+	GtkTreeViewColumn *profile_func_column2;
+
+	GtkWidget *profile_caller_tree_view;
+	GtkTreeViewColumn *profile_caller_column0;
+	GtkTreeViewColumn *profile_caller_column1;
+	GtkTreeViewColumn *profile_caller_column2;
+	
+	GtkWidget *profile_descendants_tree_view;
+	GtkTreeViewColumn *profile_descendants_column0;
+	GtkTreeViewColumn *profile_descendants_column1;
+	GtkTreeViewColumn *profile_descendants_column2;
+	GtkTreeViewColumn *profile_descendants_column3;
 
 	GtkWidget *leak_block_clist;
 	GtkWidget *leak_stack_clist;
@@ -146,6 +160,10 @@ update_status (gpointer data)
 	gtk_label_set_text (GTK_LABEL (pwin->n_allocations_label), tmp);
 	g_free (tmp);
 
+	tmp = g_strdup_printf ("%d samples", pwin->process->bytes_used);
+	gtk_label_set_text (GTK_LABEL (pwin->profile_status_label), tmp);
+	g_free (tmp);
+
 	if (pwin->process->n_allocations == 0)
 		tmp = g_strdup("-");
 	else
@@ -201,159 +219,302 @@ usage_canvas_size_allocate (GtkWidget     *widget,
  * GUI for profiles
  ************************************************************/
 
-static gint
-profile_compare_name (GtkCList     *clist,
-		      gconstpointer ptr1,
-		      gconstpointer ptr2)
-{
-	ProfileFunc *func1 = ((const GtkCListRow *)ptr1)->data;
-	ProfileFunc *func2 = ((const GtkCListRow *)ptr2)->data;
-
-	return strcmp (func1->symbol->name, func2->symbol->name);
-}
-							     
-static gint
-profile_compare_self (GtkCList     *clist,
-		      gconstpointer ptr1,
-		      gconstpointer ptr2)
-{
-	ProfileFunc *func1 = ((const GtkCListRow *)ptr1)->data;
-	ProfileFunc *func2 = ((const GtkCListRow *)ptr2)->data;
-
-	return func1->self < func2->self ? 1 :
-		(func1->self > func2->self ? -1 : 0);
-}
-							     
-static gint
-profile_compare_total (GtkCList     *clist,
-		       gconstpointer ptr1,
-		       gconstpointer ptr2)
-{
-	ProfileFunc *func1 = ((const GtkCListRow *)ptr1)->data;
-	ProfileFunc *func2 = ((const GtkCListRow *)ptr2)->data;
-
-	return func1->total < func2->total ? 1 :
-		(func1->total > func2->total ? -1 : 0);
-}
-
-static void
-profile_func_click_column (GtkWidget *clist, gint column)
-{
-	static const GtkCListCompareFunc compare_funcs[] = {
-		profile_compare_name,
-		profile_compare_self,
-		profile_compare_total
-	};
-
-	g_return_if_fail (column >= 0 && column < 3);
-
-	gtk_clist_set_compare_func (GTK_CLIST (clist), compare_funcs[column]);
-	gtk_clist_sort (GTK_CLIST (clist));
-}
-							     
-static void
-profile_fill_ref_clist (GtkWidget *clist, GList *refs)
-{
-	gint row;
-	GList *tmp_list;
-
-	gtk_clist_clear (GTK_CLIST (clist));
-	tmp_list = refs;
-	while (tmp_list) {
-		char *data[2];
-		char buf[32];
-		
-		ProfileFuncRef *ref = tmp_list->data;
-
-		data[0] = ref->function->symbol->name;
-		g_snprintf(buf, 32, "%d", ref->bytes);
-		data[1] = buf;
-
-		row = gtk_clist_append (GTK_CLIST (clist), data);
-		gtk_clist_set_row_data (GTK_CLIST (clist), row, ref);
-
-		tmp_list = tmp_list->next;
-	}
-}
-
-static void
-profile_func_select_row (GtkWidget     *widget,
-			 gint           row,
-			 gint           column,
-			 GdkEvent      *event,
-			 ProcessWindow *pwin)
-{
-	ProfileFunc *function = gtk_clist_get_row_data (GTK_CLIST (widget), row);
-
-	if (function == NULL)
-		return;
-
-	profile_fill_ref_clist (pwin->profile_child_clist, function->children);
-	profile_fill_ref_clist (pwin->profile_caller_clist, function->inherited);
-}
-
 static gboolean
-profile_ref_button_press (GtkWidget      *widget,
-			  GdkEventButton *event,
-			  ProcessWindow  *pwin)
+get_sort_info (GtkTreeView *view, int *sort_column, GtkSortType *sort_type)
 {
-	if (event->window == GTK_CLIST (widget)->clist_window &&
-	    event->type == GDK_2BUTTON_PRESS) {
-		int my_row, function_row;
+	GtkTreeModel *model = gtk_tree_view_get_model (view);
 
-		if (!gtk_clist_get_selection_info (GTK_CLIST (widget),
-						   event->x, event->y,
-						   &my_row, NULL))
-			return FALSE;
-
-		if (my_row != -1) {
-			ProfileFuncRef *ref;
-			ref = gtk_clist_get_row_data (GTK_CLIST (widget), my_row);
-
-			function_row = gtk_clist_find_row_from_data (GTK_CLIST (pwin->profile_func_clist), ref->function);
-
-			if (function_row != -1) {
-				gtk_clist_select_row (GTK_CLIST (pwin->profile_func_clist), function_row, 0);
-				gtk_clist_moveto (GTK_CLIST (pwin->profile_func_clist),
-						  function_row, -1, 0.5, 0.0);
-			}
-		}
-
-		g_signal_stop_emission_by_name (G_OBJECT (widget), "button_press_event");
-		return TRUE;
-	}
+	if (model && GTK_IS_TREE_SORTABLE (model))
+		return gtk_tree_sortable_get_sort_column_id (
+			GTK_TREE_SORTABLE (model), sort_column, sort_type);
 	
 	return FALSE;
 }
 
 static void
-profile_fill (ProcessWindow *pwin, GtkCList *clist)
+profile_func_list_goto_symbol (ProcessWindow *pwin, Symbol *symbol)
 {
-	int i, row;
+	GtkTreeModel *function_list;
+	GtkTreeIter iter;
+	gboolean found = FALSE;
 
-	gtk_clist_clear (clist);
-	for (i=0; i<pwin->profile->n_functions; i++) {
-		ProfileFunc *function = pwin->profile->functions[i];
-		char *data[3];
-		char buf[32];
-		
-		data[0] = function->symbol->name;
-		g_snprintf(buf, 32, "%u", function->self);
-		data[1] = g_strdup (buf);
+	function_list = gtk_tree_view_get_model (
+		GTK_TREE_VIEW (pwin->profile_func_tree_view));
 
-		g_snprintf(buf, 32, "%u", function->total);
-		data[2] = g_strdup (buf);
+	if (gtk_tree_model_get_iter_first (function_list, &iter)) {
+		do {
+			ProfileFunc *func;
 
-		row = gtk_clist_append (clist, data);
+			gtk_tree_model_get (function_list, &iter,
+					    3, &func,
+					    -1);
 
-		g_free (data[1]);
-		g_free (data[2]);
-
-		gtk_clist_set_row_data (clist, row, function);
+			if (func->node->symbol == symbol) {
+				found = TRUE;
+				break;
+			}
+		} while (gtk_tree_model_iter_next (function_list, &iter));
 	}
+	
+	if (found) {
+		GtkTreePath *path =
+			gtk_tree_model_get_path (function_list, &iter);
 
-	if (clist->rows > 0)
-		profile_func_select_row (GTK_WIDGET (clist), 0, 0, NULL, pwin);
+		gtk_tree_view_set_cursor (
+			GTK_TREE_VIEW (pwin->profile_func_tree_view), path, 0, FALSE);
+	}
+	gtk_widget_grab_focus (GTK_WIDGET (pwin->profile_func_tree_view));
+}
+
+static void
+profile_descendants_row_activated (GtkTreeView *treeview,
+				   GtkTreePath *path,
+				   GtkTreeViewColumn *column,
+				   gpointer data)
+{
+	GtkTreeModel *descendants_store;
+	ProcessWindow *pwin = data;
+	GtkTreeIter iter;
+	Symbol *desc_symbol;
+
+	descendants_store = gtk_tree_view_get_model (treeview);
+	if (!gtk_tree_model_get_iter (descendants_store, &iter, path))
+		return;
+
+	gtk_tree_model_get (descendants_store, &iter, 4, &desc_symbol, -1);
+
+	profile_func_list_goto_symbol (pwin, desc_symbol);
+}
+
+static void
+profile_caller_row_activated (GtkTreeView *treeview,
+			      GtkTreePath *path,
+			      GtkTreeViewColumn *column,
+			      gpointer data)
+{
+	GtkTreeModel *caller_list;
+	ProcessWindow *pwin = data;
+	GtkTreeIter iter;
+	Symbol *caller_symbol;
+
+	caller_list = gtk_tree_view_get_model (treeview);
+	if (!gtk_tree_model_get_iter (caller_list, &iter, path))
+		return;
+
+	gtk_tree_model_get (caller_list, &iter, 3, &caller_symbol, -1);
+
+	if (caller_symbol != GINT_TO_POINTER (-1))
+		profile_func_list_goto_symbol (pwin, caller_symbol);
+}
+
+static void
+add_node (GtkTreeStore *store, int n_samples,
+	  const GtkTreeIter *parent, ProfileDescendantTreeNode *node)
+{
+	GtkTreeIter iter;
+	gchar *name;
+	int i;
+
+	gtk_tree_store_insert (store, &iter, (GtkTreeIter *)parent, 0);
+
+	if (node->symbol)
+		name = node->symbol->name;
+	else
+		name = "???";
+
+	gtk_tree_store_set (store, &iter,
+			    0, name,
+			    1, 100 * (double)node->self/n_samples,
+			    2, 100 * (double)node->non_recursion/n_samples,
+			    3, 100 * (double)node->total/n_samples,
+			    4, node->symbol,
+			    -1);
+
+	for (i = 0; i < node->children->len; ++i)
+		add_node (store, n_samples, &iter, node->children->pdata[i]);
+}
+
+static void
+profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
+{
+	GtkListStore *store;
+	GtkTreeIter selected;
+	ProfileFunc *func;
+	GtkTreeStore *tree_store;
+	GtkListStore *list_store;
+	GPtrArray *caller_list;
+	ProfileDescendantTree *descendant_tree;
+	int i;
+	int n_samples = pwin->profile->n_bytes;
+	int old_sort_column;
+	GtkSortType old_sort_type;
+	gboolean was_sorted;
+
+	gtk_tree_selection_get_selected (selection, (GtkTreeModel **)&store, &selected);
+
+	gtk_tree_model_get (GTK_TREE_MODEL (store), &selected,
+			    3, &func,
+			    -1);
+
+	was_sorted = get_sort_info (GTK_TREE_VIEW (pwin->profile_descendants_tree_view),
+				    &old_sort_column, &old_sort_type);
+	
+	/* fill descendants tree */
+	tree_store = gtk_tree_store_new (
+		5, G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_POINTER);
+
+	descendant_tree = profile_func_create_descendant_tree (func);
+
+	add_node (tree_store, n_samples, NULL, descendant_tree->roots->pdata[0]);
+	
+	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_descendants_tree_view), TRUE);
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_descendants_tree_view),
+				 GTK_TREE_MODEL (tree_store));
+
+	if (was_sorted)
+		gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (tree_store),
+						      old_sort_column, old_sort_type);
+	else
+		gtk_tree_sortable_set_sort_column_id (
+			GTK_TREE_SORTABLE (tree_store), 2, GTK_SORT_DESCENDING);
+
+	gtk_tree_sortable_sort_column_changed (GTK_TREE_SORTABLE (tree_store));
+
+	g_object_unref (G_OBJECT (tree_store));
+
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column0, 0);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column1, 1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column2, 2);
+
+	profile_descendant_tree_free (descendant_tree);
+
+	/* fill caller tree */
+	was_sorted = get_sort_info (GTK_TREE_VIEW (pwin->profile_caller_tree_view),
+				    &old_sort_column, &old_sort_type);
+
+	list_store = gtk_list_store_new (4, G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_POINTER);
+
+ 	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column0, -1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column1, -1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column2, -1);
+
+	caller_list = profile_func_create_caller_list (func);
+
+	for (i = 0; i < caller_list->len; ++i) {
+		GtkTreeIter iter;
+		gchar *name;
+		ProfileFunc *caller = caller_list->pdata[i];
+
+		if (caller->node) {
+			if (caller->node->symbol)
+				name = caller->node->symbol->name;
+			else
+				name = "???";
+		}
+		else
+			name = "<spontaneous>";
+			
+		gtk_list_store_append (list_store, &iter);
+		gtk_list_store_set (list_store, &iter,
+				    0, name,
+				    1, 100 * (double)caller->self / n_samples,
+				    2, 100 * (double)caller->total / n_samples,
+				    3, caller->node? caller->node->symbol : GINT_TO_POINTER (-1),
+				    -1);
+	}
+	profile_caller_list_free (caller_list);
+
+ 	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column0, 0);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column1, 1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column2, 2);
+
+	gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_caller_tree_view),
+				 GTK_TREE_MODEL (list_store));
+
+	if (was_sorted)
+		gtk_tree_sortable_set_sort_column_id (
+			GTK_TREE_SORTABLE (list_store), old_sort_column, old_sort_type);
+	else
+		gtk_tree_sortable_set_sort_column_id (
+			GTK_TREE_SORTABLE (list_store), 2, GTK_SORT_DESCENDING);
+
+	gtk_tree_sortable_sort_column_changed (GTK_TREE_SORTABLE (list_store));
+
+	g_object_unref (G_OBJECT (list_store));
+	
+	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_caller_tree_view), TRUE);
+}
+
+static void
+profile_fill (ProcessWindow *pwin)
+{
+	GtkListStore *store;
+	
+	int i;
+	int n_samples = pwin->profile->n_bytes;
+
+	int old_sort_column;
+	GtkSortType old_sort_type;
+	gboolean was_sorted;
+
+	was_sorted =
+		get_sort_info (GTK_TREE_VIEW (pwin->profile_func_tree_view),
+			       &old_sort_column, &old_sort_type);
+	
+	gtk_tree_view_set_model (GTK_TREE_VIEW (pwin->profile_func_tree_view), NULL);
+ 	store = gtk_list_store_new (4, G_TYPE_STRING, G_TYPE_DOUBLE, G_TYPE_DOUBLE, G_TYPE_POINTER);
+
+	gtk_tree_view_set_model (
+		GTK_TREE_VIEW (pwin->profile_func_tree_view),
+		GTK_TREE_MODEL (store));
+
+	/* inserting in a ListStore is O(n) when sorting ... */
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column0, -1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column1, -1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column2, -1);
+
+	for (i = 0; i < pwin->profile->functions->len; ++i) {
+		GtkTreeIter iter;
+		gchar *name;
+		
+		ProfileFunc *func = pwin->profile->functions->pdata[i];
+
+		gtk_list_store_append (store, &iter);
+
+		g_assert (func);
+
+		if (func->node->symbol)
+			name = func->node->symbol->name;
+		else
+			name = "???";
+		
+		gtk_list_store_set (store, &iter,
+				    0, name,
+				    1, 100 * (double)func->self / n_samples,
+				    2, 100 * (double)func->total / n_samples,
+				    3, func,
+				    -1);
+	}
+	
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column0, 0);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column1, 1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column2, 2);
+
+	if (was_sorted) {
+		gtk_tree_sortable_set_sort_column_id (GTK_TREE_SORTABLE (store), old_sort_column,
+						      old_sort_type);
+	}
+	else {
+		gtk_tree_sortable_set_sort_column_id (
+			GTK_TREE_SORTABLE (store), 2, GTK_SORT_DESCENDING);
+	}
+	
+	gtk_tree_sortable_sort_column_changed (GTK_TREE_SORTABLE (store));
+
+	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_func_tree_view), TRUE);
+
+	g_object_unref (G_OBJECT (store));
 }
 
 
@@ -655,23 +816,7 @@ close_cb (GtkWidget *widget)
 void
 exit_cb (GtkWidget *widget)
 {
-	GtkWidget *dialog;
-	gint response;
-
-	ProcessWindow *pwin = pwin_from_widget (widget);
-       
-	dialog = gtk_message_dialog_new (GTK_WINDOW (pwin->main_window),
-					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
-					 GTK_MESSAGE_QUESTION,
-					 GTK_BUTTONS_YES_NO,
-					 _("Really quit MemProf?"));
-	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
-
-	response = gtk_dialog_run (GTK_DIALOG (dialog));
-	gtk_widget_destroy (dialog);
-	
-	if (response == GTK_RESPONSE_YES)
-		gtk_main_quit ();
+	gtk_main_quit ();
 }
 
 static void
@@ -712,6 +857,7 @@ status_changed_cb (MPProcess *process, ProcessWindow *pwin)
 		char *cmdline = process_get_cmdline (process);
 		char *title = g_strdup_printf ("%s - %s (%d) - %s", _("MemProf"), cmdline, process->pid, status);
 		gtk_window_set_title (GTK_WINDOW (pwin->main_window), title);
+		
 		g_free (title);
 		g_free (status);
 		g_free (cmdline);
@@ -724,16 +870,24 @@ process_window_reset (ProcessWindow *pwin)
 	if (pwin->profile) {
 		profile_free (pwin->profile);
 		pwin->profile = NULL;
-		gtk_clist_clear (GTK_CLIST (pwin->profile_func_clist));
-		gtk_clist_clear (GTK_CLIST (pwin->profile_caller_clist));
-		gtk_clist_clear (GTK_CLIST (pwin->profile_child_clist));
+
+		gtk_tree_view_set_model (
+			GTK_TREE_VIEW (pwin->profile_func_tree_view), NULL);
+		gtk_tree_view_set_model (
+			GTK_TREE_VIEW (pwin->profile_caller_tree_view), NULL);
+		gtk_tree_view_set_model (
+			GTK_TREE_VIEW (pwin->profile_descendants_tree_view), NULL);
+
+		gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_func_tree_view), FALSE);
+		gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_caller_tree_view), FALSE);
+		gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_descendants_tree_view), FALSE);
 	}
 
 	if (pwin->leaks) {
-			g_slist_free (pwin->leaks);
-			pwin->leaks = NULL;
-			gtk_clist_clear (GTK_CLIST (pwin->leak_block_clist));
-			gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
+		g_slist_free (pwin->leaks);
+		pwin->leaks = NULL;
+		gtk_clist_clear (GTK_CLIST (pwin->leak_block_clist));
+		gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
 	}
 	
 	pwin->usage_max = 32*1024;
@@ -906,6 +1060,10 @@ save_leak_cb (GtkWidget *widget)
 void
 save_profile_cb (GtkWidget *widget)
 {
+	show_error (pwin_from_widget (widget)->main_window,
+		    ERROR_WARNING, _("Saving is disabled at the moment"));
+	
+#if 0
 	static gchar *suggestion = NULL;
 	gchar *filename;
 
@@ -921,6 +1079,7 @@ save_profile_cb (GtkWidget *widget)
 			profile_write (pwin->profile, filename);
 		}
 	}
+#endif
 }
 
 void
@@ -981,10 +1140,21 @@ generate_profile_cb (GtkWidget *widget)
 
 		pwin->profile = profile_create (pwin->process, skip_funcs);
 		process_start_input (pwin->process);
-		profile_fill (pwin, GTK_CLIST (pwin->profile_func_clist));
+		profile_fill (pwin);
 
 		gtk_notebook_set_page (GTK_NOTEBOOK (pwin->main_notebook), 0);
 	}
+}
+
+void
+reset_profile_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = pwin_from_widget (widget);
+
+	process_window_reset (pwin);
+
+	if (pwin->process)
+		process_clear_input (pwin->process);
 }
 
 static void
@@ -1466,143 +1636,269 @@ process_window_destroy (ProcessWindow *pwin)
 	check_quit ();
 }
 
+typedef struct {
+	gint column;
+	ProcessWindow *pwin;
+} ColumnInfo;
+
+static void
+double_to_text (GtkTreeViewColumn *tree_column,
+		GtkCellRenderer *cell, GtkTreeModel *tree_model,
+		GtkTreeIter *iter, gpointer data)
+{
+	gdouble d;
+	gchar *text;
+	ColumnInfo *info = data;
+
+	gtk_tree_model_get (tree_model, iter, info->column, &d, -1);
+
+	if (profile_type == MP_PROFILE_MEMORY)
+		text = g_strdup_printf ("%d", (int)(d * info->pwin->profile->n_bytes));
+	else
+		text = g_strdup_printf ("%.2f", d);
+
+        g_object_set (cell, "text", text, NULL);
+        g_free (text);
+}
+
+static GtkTreeViewColumn *
+add_two_digit_column (GtkTreeView *view, const gchar *title, gint model_column, ProcessWindow *pwin)
+{
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+	ColumnInfo *column_info = g_new (ColumnInfo, 1);
+
+	renderer = gtk_cell_renderer_text_new ();
+
+	column = gtk_tree_view_column_new ();
+	gtk_tree_view_column_set_title  (column, title);
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_resizable (column, TRUE);
+
+	column_info->column = model_column;
+	column_info->pwin = pwin;
+	
+	gtk_tree_view_column_set_cell_data_func (
+		column, renderer, double_to_text, column_info, g_free);
+
+	gtk_tree_view_append_column (view, column);
+
+	return column;
+}
+
+static GtkTreeViewColumn *
+add_plain_text_column (GtkTreeView *view, const gchar *title, gint model_column)
+{
+	GtkCellRenderer *renderer;
+	GtkTreeViewColumn *column;
+
+	renderer = gtk_cell_renderer_text_new ();
+	column = gtk_tree_view_column_new_with_attributes (
+		title, renderer, "text", model_column, NULL);
+	gtk_tree_view_column_set_resizable (column, TRUE);
+	gtk_tree_view_append_column (view, column);
+
+	return column;
+}
+
+static void
+setup_profile_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
+{
+	GtkTreeSelection *selection;
+	
+	pwin->profile_func_column0 = add_plain_text_column (tree_view, "Name", 0);
+	pwin->profile_func_column1 = add_two_digit_column (tree_view, "Self", 1, pwin);
+	pwin->profile_func_column2 = add_two_digit_column (tree_view, "Total", 2, pwin);
+
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column0, 0);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column1, 1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_func_column2, 2);
+
+	selection = gtk_tree_view_get_selection (tree_view);
+	g_signal_connect (selection, "changed", G_CALLBACK (profile_selection_changed), pwin);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
+}
+
+static void
+setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
+{
+	pwin->profile_descendants_column0 = add_plain_text_column (tree_view, "Name", 0);
+	pwin->profile_descendants_column1 = add_two_digit_column (tree_view, "Self", 1, pwin);
+	pwin->profile_descendants_column2 = add_two_digit_column (tree_view, "Cummulative", 2, pwin);
+
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column0, 0);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column1, 1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_descendants_column2, 2);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_descendants_tree_view), FALSE);
+
+	g_signal_connect (G_OBJECT (tree_view), "row-activated",
+			  G_CALLBACK (profile_descendants_row_activated), pwin);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
+}
+
+static void
+setup_profile_caller_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
+{
+	pwin->profile_caller_column0 = add_plain_text_column (tree_view, "Name", 0);
+	pwin->profile_caller_column1 = add_two_digit_column (tree_view, "Self", 1, pwin);
+	pwin->profile_caller_column2 = add_two_digit_column (tree_view, "Total", 2, pwin);
+	
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column0, 0);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column1, 1);
+	gtk_tree_view_column_set_sort_column_id (pwin->profile_caller_column2, 2);
+
+	g_signal_connect (G_OBJECT (tree_view), "row-activated",
+			  G_CALLBACK (profile_caller_row_activated), pwin);
+
+	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
+}
+
 static ProcessWindow *
 process_window_new (void)
 {
-       gchar *fullfilename;
-       GladeXML *xml;
-       GtkWidget *vpaned;
-       ProcessWindow *pwin;
-       GtkWidget *menuitem;
+	gchar *fullfilename;
+	GladeXML *xml;
+	GtkWidget *vpaned;
+	GtkWidget *hpaned;
+	ProcessWindow *pwin;
+	GtkWidget *menuitem;
+	
+	pwin = g_new0 (ProcessWindow, 1);
+	process_windows = g_slist_prepend (process_windows, pwin);
+	
+	pwin->process = NULL;
+	pwin->profile = NULL;
+	pwin->leaks = NULL;
+	
+	pwin->usage_max = 32*1024;
+	pwin->usage_high = 0;
+	pwin->usage_leaked = 0;
+	
+	xml = glade_xml_new (glade_file, "MainWindow", NULL);
+	
+	pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
+	fullfilename = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "memprof.png", FALSE, NULL);
+	gnome_window_icon_set_from_file (GTK_WINDOW (pwin->main_window),
+					 fullfilename);
+	g_free (fullfilename);
+	
+	gtk_signal_connect (GTK_OBJECT (pwin->main_window), "delete_event",
+			    GTK_SIGNAL_FUNC (hide_and_check_quit), pwin);
+	
+	
+	gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 500, 400);
+	
+	gtk_object_set_data_full (GTK_OBJECT (pwin->main_window),
+				  "process-window",
+				  pwin, (GDestroyNotify)process_window_free);
+	
+	pwin->main_notebook = glade_xml_get_widget (xml, "main-notebook");
+	
+	pwin->follow_fork = default_follow_fork;
+	pwin->follow_exec = default_follow_exec;
+	
+	menuitem = glade_xml_get_widget (xml, "follow-fork");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_fork);
+	menuitem = glade_xml_get_widget (xml, "follow-exec");
+	gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_exec);
+	
+	pwin->n_allocations_label = glade_xml_get_widget (xml, "n-allocations-label");
+	pwin->bytes_per_label = glade_xml_get_widget (xml, "bytes-per-label");
+	pwin->total_bytes_label = glade_xml_get_widget (xml, "total-bytes-label");
 
-       pwin = g_new0 (ProcessWindow, 1);
-       process_windows = g_slist_prepend (process_windows, pwin);
+	pwin->profile_status_label = glade_xml_get_widget (xml, "profile-status-label");
+	
+	/* setup profile tree views */
+	pwin->profile_func_tree_view = glade_xml_get_widget (xml, "profile-func-tree-view");
+	pwin->profile_descendants_tree_view =
+		glade_xml_get_widget (xml, "profile-descendants-tree-view");
+	pwin->profile_caller_tree_view = glade_xml_get_widget (xml, "profile-caller-tree-view");
 
-       pwin->process = NULL;
-       pwin->profile = NULL;
-       pwin->leaks = NULL;
+	setup_profile_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_func_tree_view));
+	setup_profile_descendants_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_descendants_tree_view));
+	setup_profile_caller_tree_view (pwin, GTK_TREE_VIEW (pwin->profile_caller_tree_view));
 
-       pwin->usage_max = 32*1024;
-       pwin->usage_high = 0;
-       pwin->usage_leaked = 0;
+	/* leak clists */
+	pwin->leak_block_clist = glade_xml_get_widget (xml, "leak-block-clist");
+	pwin->leak_stack_clist =  glade_xml_get_widget (xml, "leak-stack-clist");
+	
+	gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 0, 250);
+	gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 2, 500);
+	
+	gtk_signal_connect (GTK_OBJECT (pwin->leak_block_clist), "select_row",
+			    GTK_SIGNAL_FUNC (leak_block_select_row), pwin);
+	gtk_signal_connect (GTK_OBJECT (pwin->leak_stack_clist), "button_press_event",
+			    GTK_SIGNAL_FUNC (leak_stack_button_press), pwin);
+	
+	pwin->usage_max_label = glade_xml_get_widget (xml, "usage-max-label");
+	pwin->usage_canvas = glade_xml_get_widget (xml, "usage-canvas");
+	
+	set_white_bg (pwin->usage_canvas);
+	gtk_signal_connect (GTK_OBJECT (pwin->usage_canvas), "size_allocate",
+			    GTK_SIGNAL_FUNC (usage_canvas_size_allocate), pwin);
+	
+	pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+						      gnome_canvas_rect_get_type (),
+						      "x1", 0.0,
+						      "y1", 0.0,
+						      "outline_color", "black", 
+						      "fill_color", "blue",
+						      NULL);
+	pwin->usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+							 gnome_canvas_rect_get_type (),
+							 "x1", 0.0,
+							 "y1", 0.0,
+							 "outline_color", "black", 
+							 "fill_color", "yellow",
+							 NULL);
+	pwin->usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+						      gnome_canvas_rect_get_type (),
+						      "x1", 0.0,
+						      "y1", 0.0,
+						      "outline_color", "black", 
+						      "fill_color", "red",
+						      NULL);
+	pwin->usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
+						   gnome_canvas_rect_get_type (),
+						   "x1", 0.0,
+						   "y1", 0.0,
+						   "outline_color", "black", 
+						   "fill_color", NULL,
+						   NULL);
+	
+	vpaned = glade_xml_get_widget (xml, "profile-vpaned");
+	gtk_paned_set_position (GTK_PANED (vpaned), 150);
 
-       xml = glade_xml_new (glade_file, "MainWindow", NULL);
-
-       pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
-       fullfilename = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "memprof.png", FALSE, NULL);
-       gnome_window_icon_set_from_file (GTK_WINDOW (pwin->main_window),
-					fullfilename);
-       g_free (fullfilename);
-
-       gtk_signal_connect (GTK_OBJECT (pwin->main_window), "delete_event",
-			   GTK_SIGNAL_FUNC (hide_and_check_quit), pwin);
-			   
-       
-       gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 400, 600);
-
-       gtk_object_set_data_full (GTK_OBJECT (pwin->main_window),
-				 "process-window",
-				 pwin, (GDestroyNotify)process_window_free);
-
-       pwin->main_notebook = glade_xml_get_widget (xml, "main-notebook");
-
-       pwin->follow_fork = default_follow_fork;
-       pwin->follow_exec = default_follow_exec;
-
-       menuitem = glade_xml_get_widget (xml, "follow-fork");
-       gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_fork);
-       menuitem = glade_xml_get_widget (xml, "follow-exec");
-       gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_exec);
-
-       pwin->n_allocations_label = glade_xml_get_widget (xml, "n-allocations-label");
-       pwin->bytes_per_label = glade_xml_get_widget (xml, "bytes-per-label");
-       pwin->total_bytes_label = glade_xml_get_widget (xml, "total-bytes-label");
-
-       pwin->profile_func_clist = glade_xml_get_widget (xml, "profile-func-clist");
-       pwin->profile_child_clist =  glade_xml_get_widget (xml, "profile-child-clist");
-       pwin->profile_caller_clist = glade_xml_get_widget (xml, "profile-caller-clist");
-
-       gtk_clist_set_column_width (GTK_CLIST (pwin->profile_func_clist), 0, 250);
-       gtk_clist_set_column_width (GTK_CLIST (pwin->profile_child_clist), 0, 250);
-       gtk_clist_set_column_width (GTK_CLIST (pwin->profile_caller_clist), 0, 250);
-
-       gtk_signal_connect (GTK_OBJECT (pwin->profile_func_clist), "select_row",
-			   GTK_SIGNAL_FUNC (profile_func_select_row), pwin);
-       gtk_signal_connect (GTK_OBJECT (pwin->profile_func_clist), "click_column",
-			   GTK_SIGNAL_FUNC (profile_func_click_column), NULL);
-
-       gtk_signal_connect (GTK_OBJECT (pwin->profile_caller_clist), "button_press_event",
-			   GTK_SIGNAL_FUNC (profile_ref_button_press), pwin);
-       gtk_signal_connect (GTK_OBJECT (pwin->profile_child_clist), "button_press_event",
-			   GTK_SIGNAL_FUNC (profile_ref_button_press), pwin);
-       
-       pwin->leak_block_clist = glade_xml_get_widget (xml, "leak-block-clist");
-       pwin->leak_stack_clist =  glade_xml_get_widget (xml, "leak-stack-clist");
-
-       gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 0, 250);
-       gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 2, 500);
-
-       gtk_signal_connect (GTK_OBJECT (pwin->leak_block_clist), "select_row",
-			   GTK_SIGNAL_FUNC (leak_block_select_row), pwin);
-       gtk_signal_connect (GTK_OBJECT (pwin->leak_stack_clist), "button_press_event",
-			   GTK_SIGNAL_FUNC (leak_stack_button_press), pwin);
-
-       pwin->usage_max_label = glade_xml_get_widget (xml, "usage-max-label");
-       pwin->usage_canvas = glade_xml_get_widget (xml, "usage-canvas");
-
-       set_white_bg (pwin->usage_canvas);
-       gtk_signal_connect (GTK_OBJECT (pwin->usage_canvas), "size_allocate",
-			   GTK_SIGNAL_FUNC (usage_canvas_size_allocate), pwin);
-
-       pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-						     gnome_canvas_rect_get_type (),
-						     "x1", 0.0,
-						     "y1", 0.0,
-						     "outline_color", "black", 
-						     "fill_color", "blue",
-						     NULL);
-       pwin->usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-							gnome_canvas_rect_get_type (),
-							"x1", 0.0,
-							"y1", 0.0,
-							"outline_color", "black", 
-							"fill_color", "yellow",
-							NULL);
-       pwin->usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-						     gnome_canvas_rect_get_type (),
-						     "x1", 0.0,
-						     "y1", 0.0,
-						     "outline_color", "black", 
-						     "fill_color", "red",
-						     NULL);
-       pwin->usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-						  gnome_canvas_rect_get_type (),
-						  "x1", 0.0,
-						  "y1", 0.0,
-						  "outline_color", "black", 
-						  "fill_color", NULL,
-						  NULL);
-              
-       vpaned = glade_xml_get_widget (xml, "profile-vpaned");
-       gtk_paned_set_position (GTK_PANED (vpaned), 150);
-       
-       vpaned = glade_xml_get_widget (xml, "leaks-vpaned");
-       gtk_paned_set_position (GTK_PANED (vpaned), 150);
-
-       /* If profiling time, not memory, hide all GUI related to leak
-	* detection.
-	*/
-       if (profile_type != MP_PROFILE_MEMORY) {
-	       gtk_widget_hide (glade_xml_get_widget (xml, "leaks-vpaned"));
-	       gtk_widget_hide (glade_xml_get_widget (xml, "toolbar-leaks-button"));
-	       gtk_widget_hide (glade_xml_get_widget (xml, "save-leak-info"));
-	       gtk_widget_hide (glade_xml_get_widget (xml, "generate-leak-report"));
-       }
-
-       glade_xml_signal_autoconnect (xml);
-       g_object_unref (G_OBJECT (xml));
-
-       return pwin;
+	hpaned = glade_xml_get_widget (xml, "profile-hpaned");
+	gtk_paned_set_position (GTK_PANED (hpaned), 150);
+	
+	vpaned = glade_xml_get_widget (xml, "leaks-vpaned");
+	gtk_paned_set_position (GTK_PANED (vpaned), 150);
+	
+	/* If profiling time, not memory, hide all GUI related to leak
+	 * detection.
+	 */
+	if (profile_type != MP_PROFILE_MEMORY) {
+		gtk_widget_hide (glade_xml_get_widget (xml, "leaks-vpaned"));
+		gtk_widget_hide (glade_xml_get_widget (xml, "toolbar-leaks-button"));
+		gtk_widget_hide (glade_xml_get_widget (xml, "save-leak-info"));
+		gtk_widget_hide (glade_xml_get_widget (xml, "generate-leak-report"));
+		gtk_widget_hide (glade_xml_get_widget (xml, "allocation-bar"));
+		gtk_notebook_set_show_tabs (
+			GTK_NOTEBOOK (glade_xml_get_widget (xml, "main-notebook")), FALSE);
+	}
+	else {
+		gtk_widget_hide (glade_xml_get_widget (xml, "profile-status-label"));
+		gtk_widget_hide (glade_xml_get_widget (xml, "reset-profile-button"));
+	}
+	
+	glade_xml_signal_autoconnect (xml);
+	g_object_unref (G_OBJECT (xml));
+	
+	return pwin;
 }
 
 

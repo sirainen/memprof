@@ -1,8 +1,5 @@
-/* -*- mode: C; c-file-style: "linux" -*- */
-
 /* MemProf -- memory profiler and leak detector
- * Copyright 1999, 2000, 2001, Red Hat, Inc.
- * Copyright 2002, Kristian Rietveld
+ * Copyright 2002, Soeren Sandmann (sandmann@daimi.au.dk)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,31 +19,67 @@
 
 #include "memprof.h"
 #include "process.h"
+#include <glib.h>
 
-typedef struct {
-  Symbol *symbol;
-  guint self;
-  guint total;
-  GList *inherited;
-  GList *children;
-} ProfileFunc;
+typedef struct ProfileNode			ProfileNode;
+typedef struct Profile				Profile;
+typedef struct ProfileFunc			ProfileFunc;
+typedef struct ProfileDescendantTree		ProfileDescendantTree;
+typedef struct ProfileDescendantTreeNode	ProfileDescendantTreeNode;
 
-typedef struct {
-  ProfileFunc *function;
-  guint bytes;
-} ProfileFuncRef;
+struct ProfileNode {
+    Symbol *		symbol;
 
-typedef struct {
-  gint n_functions;
-  ProfileFunc **functions;
+    guint		total;
+    guint		self;
+    gboolean		toplevel;
 
-  /* Private */
-  MPProcess *process;
-  GHashTable *function_hash;
-  GHashTable *skip_hash;
-} Profile;
+    ProfileNode *	next;
 
-Profile *profile_create (MPProcess *process, GSList *skip_funcs);
-void profile_write (Profile *profile,
-		    gchar *outfile);
-void profile_free (Profile *profile);
+    GPtrArray *		children;
+    ProfileNode *	parent;
+};
+
+struct ProfileDescendantTreeNode
+{
+    Symbol *			symbol;
+
+    guint			self;
+    guint			non_recursion;
+    guint			total;
+    
+    GPtrArray *			children;
+    ProfileDescendantTreeNode *parent;
+    
+    gint			marked_non_recursive;
+    gboolean			marked_total;
+};
+
+struct ProfileDescendantTree {
+    GPtrArray *	roots;
+};
+
+struct ProfileFunc {
+    guint		total;		/* sum of all toplevel totals */
+    guint		self;		/* sum of all selfs */
+
+    ProfileNode       *node;
+};
+
+struct Profile {
+    GPtrArray *		roots;		/* root nodes of call tree */
+    GPtrArray *		functions;
+    guint		n_bytes;	/* total number of bytes profiled */
+    
+    /* private */
+    MPProcess *	process;
+    GHashTable *nodes_by_symbol;
+};
+
+Profile *              profile_create                      (MPProcess             *process,
+							    GSList                *skip_funcs);
+void                   profile_free                        (Profile               *profile);
+ProfileDescendantTree *profile_func_create_descendant_tree (ProfileFunc           *func);
+void                   profile_descendant_tree_free        (ProfileDescendantTree *descendant_tree);
+GPtrArray *            profile_func_create_caller_list     (ProfileFunc           *func);
+void                   profile_caller_list_free            (GPtrArray             *caller_list);

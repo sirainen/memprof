@@ -54,6 +54,9 @@ done
 %{_sysconfdir}/gconf/schemas/*.schemas
 
 %changelog
+* Thu Jun 19 2003 Owen Taylor <otaylor@redhat.com>
+- Version 0.5.1-ssp
+
 * Sat Aug 31 2002 Owen Taylor <otaylor@redhat.com>
 - Version 0.5.1
 

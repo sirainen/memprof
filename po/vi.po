@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof VERSION\n"
-"POT-Creation-Date: 2002-09-18 04:42+0200\n"
+"POT-Creation-Date: 2003-06-19 14:09+0200\n"
 "PO-Revision-Date: 2002-09-19 22:21+0700\n"
 "Last-Translator: pclouds <pclouds@gmx.net>\n"
 "Language-Team: GnomeVI <gnomevi-list@lists.sourceforge.net>\n"
@@ -12,70 +12,75 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: leakdetect.c:584 profile.c:202
+#: leakdetect.c:584
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Không thể mở tập tin xuất: %s\n"
 
-#: main.c:536
+#: main.c:635
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Thất bại thực hiện \"%s\""
 
-#: main.c:667
+#: main.c:766
 msgid "Really quit MemProf?"
 msgstr "Thực sự muốn thoát khỏi MemProf?"
 
-#: main.c:713 memprof.glade.h:34
+#: main.c:812 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:807
+#: main.c:915
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Không thể tìm chương trình \"%s\""
 
-#: main.c:1418
+#: main.c:1018
+msgid "Saving is disabled at the moment"
+msgstr ""
+
+#: main.c:1532
 msgid "MemProf Error"
 msgstr "Lỗi MemProf"
 
-#: main.c:1418
+#: main.c:1532
 msgid "MemProf Warning"
 msgstr "Cảnh báo MemProf"
 
-#: main.c:1678
+#: main.c:1913
 msgid "Really detach from finished process?"
 msgstr "Thật sự muốn tách khỏi tiến trình đã hoàn tất?"
 
-#: main.c:1680
+#: main.c:1915
 msgid "Really detach from running process?"
 msgstr "Thật sự muốn tách khỏi tiến trình đang chạy?"
 
-#: main.c:1710
+#: main.c:1945
 msgid "Really kill running process?"
 msgstr "Thật sự muốn buộc chấm dứt tiến trình đang chạy?"
 
-#: main.c:1747
+#: main.c:1982
 msgid "Create new windows for forked processes"
 msgstr "Tạo cửa sổ mới cho tiến trình bị fork"
 
-#: main.c:1749
+#: main.c:1984
 msgid "Retain windows for processes after exec()"
 msgstr "Vẫn giữ cửa sổ cho tiến trình sau khi exec()"
 
-#: main.c:1751
+#: main.c:1986
 msgid "Type of profiling information to collect"
 msgstr "Loại thông tin profile cần thu thập"
 
-#: main.c:1753
+#: main.c:1988
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Số mẫu/giây cho profile thời gian (1k=1000)"
 
-#: main.c:1802
+#: main.c:2037
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr "Đối số của --profile phải là hoặc 'memory', hoặc 'cycles', hoặc 'time'\n"
+msgstr ""
+"Đối số của --profile phải là hoặc 'memory', hoặc 'cycles', hoặc 'time'\n"
 
-#: main.c:1843
+#: main.c:2078
 msgid "Cannot find memprof.glade"
 msgstr "Không thể tìm thấy memprof.glade"
 
@@ -84,52 +89,53 @@ msgid "# of Allocations:"
 msgstr "# cấp phát:"
 
 #: memprof.glade.h:2
+msgid "*"
+msgstr ""
+
+#: memprof.glade.h:3
 msgid "0"
 msgstr "0"
 
-#: memprof.glade.h:3
+#: memprof.glade.h:4
 msgid "0k"
 msgstr "0k"
 
-#: memprof.glade.h:4
+#: memprof.glade.h:5
 msgid "32k"
 msgstr "32k"
 
-#: memprof.glade.h:5
+#: memprof.glade.h:6
+#, fuzzy
+msgid "<b>Callers</b>"
+msgstr "Hàm gọi"
+
+#: memprof.glade.h:7
+msgid "<b>Descendants</b>"
+msgstr ""
+
+#: memprof.glade.h:8
 msgid "Adding Skip Function"
 msgstr "Đang thêm Hàm bỏ qua"
 
-#: memprof.glade.h:6
+#: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
 msgstr "Đang thêm Biểu thức chính quy bỏ qua"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:10
 msgid "Address"
 msgstr "Địa chỉ"
 
-#: memprof.glade.h:8
-msgid "Bytes"
-msgstr "Byte"
-
-#: memprof.glade.h:9
+#: memprof.glade.h:11
 msgid "Bytes / Allocation:"
 msgstr "Byte / Cấp phát:"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:12
 msgid "Caller"
 msgstr "Hàm gọi"
 
-#: memprof.glade.h:11
-msgid "Callers"
-msgstr "Hàm gọi"
-
-#: memprof.glade.h:12
+#: memprof.glade.h:13
 msgid "Check for Leaks"
 msgstr "Kiểm tra rò rỉ"
-
-#: memprof.glade.h:13
-msgid "Children"
-msgstr "Con"
 
 #: memprof.glade.h:14
 msgid "Command Line"
@@ -140,145 +146,142 @@ msgid "Command to run on double click in stack trace:"
 msgstr "Lệnh cần chạy khi nhấp đúp vào Stack trace:"
 
 #: memprof.glade.h:16
+#, fuzzy
 msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
 msgstr ""
 "Bản quyền 1999, 2000, 2001, Red Hat, Inc.&#13;Bản quyền 2002, Kristian "
 "Rietveld"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:18
 msgid "Create Profile"
 msgstr "Tạo profile"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:19
 msgid "Defaults"
 msgstr "Mặc định"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:20
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr "Nhập biểu thức chính quy cho tên hàm cần bỏ qua khi tính profile"
 
-#: memprof.glade.h:20
+#: memprof.glade.h:21
 msgid "Enter pathname to an executable"
 msgstr "Nhập đường dẫn chương trình cần thực hiện"
 
-#: memprof.glade.h:21
+#: memprof.glade.h:22
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Nhập tên hàm cần bỏ qua khi tính profile"
 
-#: memprof.glade.h:22
+#: memprof.glade.h:23
 msgid "File"
 msgstr "Tập tin"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:24
 msgid "Follow _exec()"
 msgstr "Đi theo _exec()"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:25
 msgid "Follow _fork()"
 msgstr "Đi theo _fork()"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:26
 msgid "Function"
 msgstr "Hàm"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:27
 msgid "Functions to Skip:"
 msgstr "Hàm cần bỏ qua:"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:28
 msgid "Generate _Leak Report"
 msgstr "Phát sinh _báo cáo rò rỉ"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:29
 msgid "Generate _Profile"
 msgstr "Phát sinh _profile"
 
-#: memprof.glade.h:29 tree.c:98
+#: memprof.glade.h:30 tree.c:98
 msgid "Kill"
 msgstr "Buộc chấm dứt"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:31
 msgid "Kill Program"
 msgstr "Buộc chấm dứt chương trình (kill)"
 
-#: memprof.glade.h:31
+#: memprof.glade.h:32
 msgid "Leak Detection Options"
 msgstr "Tùy chọn phát hiện rò rỉ"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:33
 msgid "Leaks"
 msgstr "Rò rỉ"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:34
 msgid "Line"
 msgstr "Hàng"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:36
 msgid "MemProf - Processes"
 msgstr "MemProf - Tiến trình"
 
-#: memprof.glade.h:36
+#: memprof.glade.h:37
 msgid "Memory Profiling Tool"
 msgstr "Công cụ đo hiệu năng sử dụng bộ nhớ"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:38
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:39
 msgid "Preferences"
 msgstr "Thông số"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:40
 msgid "Process _Tree"
 msgstr "_Cây tiến trình"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:41
 msgid "Profile"
 msgstr "Profile"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:42
 msgid "Profile Options"
 msgstr "Tùy chọn profile"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:43
 msgid "Regular expressions to Skip:"
 msgstr "Biểu thức chính quy để bỏ qua:"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:44
 msgid "Run"
 msgstr "Chạy"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:45
 msgid "Run Executable"
 msgstr "Chạy chương trình"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Program"
 msgstr "Chạy chương trình"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Save"
 msgstr "Lưu"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save Report"
 msgstr "Lưu báo cáo"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save _Leak Info..."
 msgstr "Lưu Thông tin _rò rỉ..."
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Profile..."
 msgstr "Lưu _profile..."
-
-#: memprof.glade.h:50
-msgid "Self"
-msgstr "Tự thân"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -293,40 +296,40 @@ msgid "Status"
 msgstr "Trạng thái"
 
 #: memprof.glade.h:54
-msgid "Total"
-msgstr "Tổng cộng"
-
-#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Tổng số byte:"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:55
 msgid "_Detach"
 msgstr "_Tách khỏi"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:56
 msgid "_File"
 msgstr "_Tập tin"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:57
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:58
 msgid "_Kill"
 msgstr "_Buộc chấm dứt"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:59
 msgid "_Process"
 msgstr "_Tiến trình"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:60
 msgid "_Run Program..."
 msgstr "_Chạy chương trình..."
 
-#: memprof.glade.h:62
+#: memprof.glade.h:61
 msgid "_Settings"
 msgstr "_Thiết lập"
+
+#: memprof.glade.h:62
+msgid "translator_credits"
+msgstr ""
 
 #: process.c:854
 msgid "Initial"
@@ -364,6 +367,18 @@ msgstr "Ẩn"
 #: tree.c:101
 msgid "Detach"
 msgstr "Tách ra"
+
+#~ msgid "Bytes"
+#~ msgstr "Byte"
+
+#~ msgid "Children"
+#~ msgstr "Con"
+
+#~ msgid "Self"
+#~ msgstr "Tự thân"
+
+#~ msgid "Total"
+#~ msgstr "Tổng cộng"
 
 #~ msgid "Cannot find libmemintercept.so"
 #~ msgstr "Không thể tìm libmemintercept.so"

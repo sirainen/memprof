@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: MemProf\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
+"POT-Creation-Date: 2003-06-19 14:09+0200\n"
 "PO-Revision-Date: 2001-12-12 21:50+0800\n"
 "Last-Translator: He Qiangqiang <carton@263.net>\n"
 "Language-Team: zh_CN <i18n-translation@lists.linux.net.cn>\n"
@@ -13,58 +13,74 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: leakdetect.c:584 profile.c:202
+#: leakdetect.c:584
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "无法打开输出文件：%s\n"
 
-#: main.c:534
+#: main.c:635
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "执行“%s”失败"
 
-#: main.c:665
+#: main.c:766
 msgid "Really quit MemProf?"
 msgstr "真的要退出 MemProf？"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:812 memprof.glade.h:35
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:915
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "找不到“%s”的可执行文件"
 
-#: main.c:1416
+#: main.c:1018
+msgid "Saving is disabled at the moment"
+msgstr ""
+
+#: main.c:1532
 msgid "MemProf Error"
 msgstr "MemProf 错误"
 
-#: main.c:1416
+#: main.c:1532
 msgid "MemProf Warning"
 msgstr "MemProf 警告"
 
-#: main.c:1666
+#: main.c:1913
 msgid "Really detach from finished process?"
 msgstr "真的从已完成的进程中脱离？"
 
-#: main.c:1668
+#: main.c:1915
 msgid "Really detach from running process?"
 msgstr "真的从正在运行的进程中脱离？"
 
-#: main.c:1698
+#: main.c:1945
 msgid "Really kill running process?"
 msgstr "真的要杀死正在运行的进程？"
 
-#: main.c:1731
+#: main.c:1982
 msgid "Create new windows for forked processes"
 msgstr "为 fork 出的进程创建新窗口"
 
-#: main.c:1733
+#: main.c:1984
 msgid "Retain windows for processes after exec()"
 msgstr "在进程执行了 exec() 后保留窗口"
 
-#: main.c:1770
+#: main.c:1986
+msgid "Type of profiling information to collect"
+msgstr ""
+
+#: main.c:1988
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr ""
+
+#: main.c:2037
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr ""
+
+#: main.c:2078
 msgid "Cannot find memprof.glade"
 msgstr "找不到 memprof.glade"
 
@@ -73,52 +89,53 @@ msgid "# of Allocations:"
 msgstr "分配内存次数："
 
 #: memprof.glade.h:2
+msgid "*"
+msgstr ""
+
+#: memprof.glade.h:3
 msgid "0"
 msgstr "0"
 
-#: memprof.glade.h:3
+#: memprof.glade.h:4
 msgid "0k"
 msgstr "0k"
 
-#: memprof.glade.h:4
+#: memprof.glade.h:5
 msgid "32k"
 msgstr "32k"
 
-#: memprof.glade.h:5
+#: memprof.glade.h:6
+#, fuzzy
+msgid "<b>Callers</b>"
+msgstr "调用者"
+
+#: memprof.glade.h:7
+msgid "<b>Descendants</b>"
+msgstr ""
+
+#: memprof.glade.h:8
 msgid "Adding Skip Function"
 msgstr "添加要忽略的函数"
 
-#: memprof.glade.h:6
+#: memprof.glade.h:9
 msgid "Adding Skip Regular Expression"
 msgstr "添加要忽略的正则表达式"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:10
 msgid "Address"
 msgstr "地址"
 
-#: memprof.glade.h:8
-msgid "Bytes"
-msgstr "字节数"
-
-#: memprof.glade.h:9
+#: memprof.glade.h:11
 msgid "Bytes / Allocation:"
 msgstr "字节数 / 分配内存块："
 
-#: memprof.glade.h:10
+#: memprof.glade.h:12
 msgid "Caller"
 msgstr "调用者"
 
-#: memprof.glade.h:11
-msgid "Callers"
-msgstr "调用者"
-
-#: memprof.glade.h:12
+#: memprof.glade.h:13
 msgid "Check for Leaks"
 msgstr "检查内存泄漏"
-
-#: memprof.glade.h:13
-msgid "Children"
-msgstr "子进程"
 
 #: memprof.glade.h:14
 msgid "Command Line"
@@ -130,145 +147,141 @@ msgstr "在堆栈追踪中双击时执行的命令："
 
 #: memprof.glade.h:16
 msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
 msgstr ""
 
-#: memprof.glade.h:17
+#: memprof.glade.h:18
 msgid "Create Profile"
 msgstr "创建内存使用分析"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:19
 msgid "Defaults"
 msgstr "默认"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:20
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr "输入在计算内存 profile 时要忽略的函数名的正则表达式"
 
-#: memprof.glade.h:20
+#: memprof.glade.h:21
 #, fuzzy
 msgid "Enter pathname to an executable"
 msgstr "输入可执行文件的路径名"
 
-#: memprof.glade.h:21
+#: memprof.glade.h:22
 #, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "输入在计算内存内存使用情况时要忽略的函数"
 
-#: memprof.glade.h:22
+#: memprof.glade.h:23
 msgid "File"
 msgstr "文件"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:24
 msgid "Follow _exec()"
 msgstr "跟随 _exec()"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:25
 msgid "Follow _fork()"
 msgstr "跟随 _fork()"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:26
 msgid "Function"
 msgstr "函数"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:27
 msgid "Functions to Skip:"
 msgstr "要忽略的函数："
 
-#: memprof.glade.h:27
+#: memprof.glade.h:28
 msgid "Generate _Leak Report"
 msgstr "生成内存泄漏报告(_L)"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:29
 msgid "Generate _Profile"
 msgstr "生成内存使用分析(_P)"
 
-#: memprof.glade.h:29 tree.c:98
+#: memprof.glade.h:30 tree.c:98
 msgid "Kill"
 msgstr "杀死"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:31
 #, fuzzy
 msgid "Kill Program"
 msgstr "运行程序"
 
-#: memprof.glade.h:31
+#: memprof.glade.h:32
 msgid "Leak Detection Options"
 msgstr "探测内存泄漏选项"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:33
 msgid "Leaks"
 msgstr "内存泄漏"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:34
 msgid "Line"
 msgstr "行数"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:36
 msgid "MemProf - Processes"
 msgstr "MemProf - 进程"
 
-#: memprof.glade.h:36
+#: memprof.glade.h:37
 msgid "Memory Profiling Tool"
 msgstr "内存使用分析工具"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:38
 msgid "PID"
 msgstr "进程号"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:39
 msgid "Preferences"
 msgstr ""
 
-#: memprof.glade.h:39
+#: memprof.glade.h:40
 msgid "Process _Tree"
 msgstr "进程树(_T)"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:41
 msgid "Profile"
 msgstr "内存使用"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:42
 msgid "Profile Options"
 msgstr "内存使用分析选项"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:43
 msgid "Regular expressions to Skip:"
 msgstr "要忽略的函数名正则表达式："
 
-#: memprof.glade.h:43
+#: memprof.glade.h:44
 msgid "Run"
 msgstr "运行"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:45
 msgid "Run Executable"
 msgstr "运行可执行文件"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:46
 msgid "Run Program"
 msgstr "运行程序"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:47
 msgid "Save"
 msgstr "保存"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:48
 msgid "Save Report"
 msgstr "保存报告"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:49
 msgid "Save _Leak Info..."
 msgstr "保存内存泄漏信息(_L)..."
 
-#: memprof.glade.h:49
+#: memprof.glade.h:50
 msgid "Save _Profile..."
 msgstr "保存内存使用分析(_P)..."
-
-#: memprof.glade.h:50
-msgid "Self"
-msgstr "自身进程"
 
 #: memprof.glade.h:51
 msgid "Size"
@@ -283,67 +296,68 @@ msgid "Status"
 msgstr "状态"
 
 #: memprof.glade.h:54
-msgid "Total"
-msgstr "总和"
-
-#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "字节总数："
 
-#: memprof.glade.h:56
+#: memprof.glade.h:55
 msgid "_Detach"
 msgstr "脱离(_D)"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:56
 #, fuzzy
 msgid "_File"
 msgstr "文件"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:57
 msgid "_Help"
 msgstr ""
 
-#: memprof.glade.h:59
+#: memprof.glade.h:58
 msgid "_Kill"
 msgstr "杀死(_K)"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:59
 msgid "_Process"
 msgstr "进程(_P)"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:60
 #, fuzzy
 msgid "_Run Program..."
 msgstr "运行程序"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:61
 #, fuzzy
 msgid "_Settings"
 msgstr "正在开始"
 
-#: process.c:847
+#: memprof.glade.h:62
+msgid "translator_credits"
+msgstr ""
+
+#: process.c:854
 msgid "Initial"
 msgstr "初始化"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "正在开始"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "正在运行"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "正在退出"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr "僵尸进程"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "找不到 libmemintercept.so"
+#: server.c:286
+#, fuzzy, c-format
+msgid "Cannot find %s"
+msgstr "找不到“%s”的可执行文件"
 
 #: tree.c:91
 msgid "Show"
@@ -356,6 +370,21 @@ msgstr "隐藏"
 #: tree.c:101
 msgid "Detach"
 msgstr "脱离"
+
+#~ msgid "Bytes"
+#~ msgstr "字节数"
+
+#~ msgid "Children"
+#~ msgstr "子进程"
+
+#~ msgid "Self"
+#~ msgstr "自身进程"
+
+#~ msgid "Total"
+#~ msgstr "总和"
+
+#~ msgid "Cannot find libmemintercept.so"
+#~ msgstr "找不到 libmemintercept.so"
 
 #~ msgid "Add..."
 #~ msgstr "添加..."

@@ -121,6 +121,7 @@ void        process_sections        (MPProcess          *process,
 GList *     process_get_clones      (MPProcess          *process);
 void        process_start_input     (MPProcess          *process);
 void        process_stop_input      (MPProcess          *process);
+void	    process_clear_input	    (MPProcess		*process);
 gboolean    process_find_line       (MPProcess          *process,
 				     void               *address,
 				     const char        **filename,

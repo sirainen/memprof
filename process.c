@@ -655,6 +655,38 @@ process_start_input (MPProcess *process)
 							  input_func, process, NULL);
 }
 
+void
+process_clear_input (MPProcess *process)
+{
+	g_return_if_fail (process != NULL);
+  
+	process->bytes_used = 0;
+	process->n_allocations = 0;
+
+	if (process->map_list) {
+		g_list_foreach (process->map_list, (GFunc)g_free, NULL);
+		g_list_free (process->map_list);
+      
+		process->map_list = NULL;
+	}
+
+	if (process->bad_pages) {
+		g_list_free (process->bad_pages);
+		process->bad_pages = NULL;
+	}
+
+	if (process->block_table) {
+		g_hash_table_foreach (process->block_table, process_free_block, NULL);
+		g_hash_table_destroy (process->block_table);
+		process->block_table = NULL;
+	}
+
+	if (process->stack_stash) {
+		stack_stash_free (process->stack_stash);
+		process->stack_stash = NULL;
+	}
+}
+
 char *
 process_find_exec (char **args)
 {

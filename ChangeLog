@@ -1,3 +1,13 @@
+Wed Jul  9 22:00:01 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* Lots of new stuff. Highlights:
+
+		- Rewritten profiling module, that handles 
+		  recursion better 
+		- Profle view ported to GtkTreeView
+		- New leak icon
+		- New reset button
+
 2003-06-17  Guntupalli Karunakar  <karunakar@freedomink.org>
 
 	* configure.in: Added "ml" to ALL_LINGUAS.
