@@ -5,7 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.3.0\n"
-"POT-Creation-Date: 2003-06-19 14:09+0200\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2003-12-28 21:47+0000\n"
 "PO-Revision-Date: 2000-05-28 15:21+0200\n"
 "Last-Translator: Fatih Demir <kabalak@gmx.net>\n"
 "Language-Team: Turkish <tr@li.org>\n"
@@ -18,69 +19,105 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Dışa-verim dosyası %s'yi açamadım\n"
 
-#: main.c:635
+#: main.c:777
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "\"%s\"'nin çalıştırılması başarısız oldu"
 
-#: main.c:766
-msgid "Really quit MemProf?"
-msgstr "MemProf'dan vallahi mi çıkacağın ?"
-
-#: main.c:812 memprof.glade.h:35
+#: main.c:921 memprof.glade.h:29
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:915
+#: main.c:1028
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "\"%s\" için uygulamayı bulamadım"
 
-#: main.c:1018
+#: main.c:1131
 msgid "Saving is disabled at the moment"
 msgstr ""
 
-#: main.c:1532
+#: main.c:1704
 msgid "MemProf Error"
 msgstr "MemProf hatası"
 
-#: main.c:1532
+#: main.c:1704
 msgid "MemProf Warning"
 msgstr "MemProf ikazı"
 
-#: main.c:1913
+#: main.c:1773 main.c:1786 main.c:1801
+msgid "Name"
+msgstr ""
+
+#: main.c:1774 main.c:1787 main.c:1802
+msgid "Self"
+msgstr "Kendisi"
+
+#: main.c:1775 main.c:1803
+msgid "Total"
+msgstr "Toplam"
+
+#: main.c:1788
+msgid "Cumulative"
+msgstr ""
+
+#: main.c:1825
+msgid "Address"
+msgstr "Adres"
+
+#: main.c:1826
+msgid "Size"
+msgstr "Boyut"
+
+#: main.c:1827
+msgid "Caller"
+msgstr "Çağırıcı"
+
+#: main.c:1845
+msgid "Function"
+msgstr "Işlem"
+
+#: main.c:1846
+msgid "Line"
+msgstr "Satır"
+
+#: main.c:1847
+msgid "File"
+msgstr "Dosya"
+
+#: main.c:2057
 msgid "Really detach from finished process?"
 msgstr "Biten işlemden ekleneyim mi ?"
 
-#: main.c:1915
+#: main.c:2059
 msgid "Really detach from running process?"
 msgstr "Çalışan işlemden ekleneyim mi ?"
 
-#: main.c:1945
+#: main.c:2089
 msgid "Really kill running process?"
 msgstr "Çalışan işlemi vallahi mi öldüreyim ?"
 
-#: main.c:1982
+#: main.c:2126
 msgid "Create new windows for forked processes"
 msgstr "Fork edilen işlemler için yeni pencereler aç"
 
-#: main.c:1984
+#: main.c:2128
 msgid "Retain windows for processes after exec()"
 msgstr "exec() işlemleri için pencereler ayır"
 
-#: main.c:1986
+#: main.c:2130
 msgid "Type of profiling information to collect"
 msgstr ""
 
-#: main.c:1988
+#: main.c:2132
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr ""
 
-#: main.c:2037
+#: main.c:2181
 msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
 msgstr ""
 
-#: main.c:2078
+#: main.c:2222
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade'i bulamadım"
 
@@ -123,270 +160,247 @@ msgid "Adding Skip Regular Expression"
 msgstr "Atlatılınacak işlem ekleniyor"
 
 #: memprof.glade.h:10
-msgid "Address"
-msgstr "Adres"
-
-#: memprof.glade.h:11
 msgid "Bytes / Allocation:"
 msgstr "bayt / ayırma :"
 
-#: memprof.glade.h:12
-msgid "Caller"
-msgstr "Çağırıcı"
-
-#: memprof.glade.h:13
+#: memprof.glade.h:11
 msgid "Check for Leaks"
 msgstr "Belelk kuyuları için tara"
 
-#: memprof.glade.h:14
-msgid "Command Line"
-msgstr "Komuta"
-
-#: memprof.glade.h:15
+#: memprof.glade.h:12
 msgid "Command to run on double click in stack trace:"
 msgstr "Çöküntü taranmasında çift-tıklamada başlatılınacak uygulama :"
 
-#: memprof.glade.h:16
+#: memprof.glade.h:13
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
 msgstr ""
 
-#: memprof.glade.h:18
+#: memprof.glade.h:15
 msgid "Create Profile"
 msgstr "Profili yarat"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:16
 msgid "Defaults"
 msgstr "Önayarlı değerler"
 
-#: memprof.glade.h:20
+#: memprof.glade.h:17
 #, fuzzy
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr "Profilleri işlerken atlatılınacak bir işlemin ismini belirle"
 
-#: memprof.glade.h:21
+#: memprof.glade.h:18
 #, fuzzy
 msgid "Enter pathname to an executable"
 msgstr "Uygulamanın dizinlemesini belirle"
 
-#: memprof.glade.h:22
+#: memprof.glade.h:19
 #, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Profilleri işlerken atlatılınacak bir işlemin ismini belirle"
 
-#: memprof.glade.h:23
-msgid "File"
-msgstr "Dosya"
-
-#: memprof.glade.h:24
+#: memprof.glade.h:20
 msgid "Follow _exec()"
 msgstr "_exec()'i takip et"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:21
 msgid "Follow _fork()"
 msgstr "_fork()'u takip et"
 
-#: memprof.glade.h:26
-msgid "Function"
-msgstr "Işlem"
-
-#: memprof.glade.h:27
+#: memprof.glade.h:22
 msgid "Functions to Skip:"
 msgstr "Atlatılınacak işlem :"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:23
 msgid "Generate _Leak Report"
 msgstr "_Bellek kuyusu raporunu yarat"
 
-#: memprof.glade.h:29
+#: memprof.glade.h:24
 msgid "Generate _Profile"
 msgstr "Profili _yarat"
 
-#: memprof.glade.h:30 tree.c:98
+#: memprof.glade.h:25 tree.c:109
 msgid "Kill"
 msgstr "Öldür"
 
-#: memprof.glade.h:31
+#: memprof.glade.h:26
 #, fuzzy
 msgid "Kill Program"
 msgstr "Uygulamayı çalıştır"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:27
 msgid "Leak Detection Options"
 msgstr "Bellek kuyuları tarama seçenekleri"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:28
 msgid "Leaks"
 msgstr "Bellek kuyuları"
 
-#: memprof.glade.h:34
-msgid "Line"
-msgstr "Satır"
-
-#: memprof.glade.h:36
+#: memprof.glade.h:30
 msgid "MemProf - Processes"
 msgstr "MemProf - Işlemler"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:31
 msgid "Memory Profiling Tool"
 msgstr "Bellek profilleştirme uygulaması"
 
-#: memprof.glade.h:38
-msgid "PID"
-msgstr "PID"
-
-#: memprof.glade.h:39
+#: memprof.glade.h:32
 msgid "Preferences"
 msgstr ""
 
-#: memprof.glade.h:40
+#: memprof.glade.h:33
 msgid "Process _Tree"
 msgstr "Işlem _ağacı"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:34
 msgid "Profile"
 msgstr "Profil"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:35
 msgid "Profile Options"
 msgstr "Profilleştirme seçenekeleri"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:36
 #, fuzzy
 msgid "Regular expressions to Skip:"
 msgstr "Atlatılınacak işlem :"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:37
+msgid "Reset"
+msgstr ""
+
+#: memprof.glade.h:38
 msgid "Run"
 msgstr "Çalıştır"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:39
 msgid "Run Executable"
 msgstr "Uygulamayı çalıştır"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:40
 msgid "Run Program"
 msgstr "Uygulamayı çalıştır"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:41
 msgid "Save"
 msgstr "Kaydet"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:42
 msgid "Save Report"
 msgstr "Raporu kaydet"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:43
 msgid "Save _Leak Info..."
 msgstr "_Bellek kuyusu bilgisini kaydet .."
 
-#: memprof.glade.h:50
+#: memprof.glade.h:44
 msgid "Save _Profile..."
 msgstr "_Profili kaydet ..."
 
-#: memprof.glade.h:51
-msgid "Size"
-msgstr "Boyut"
-
-#: memprof.glade.h:52
+#: memprof.glade.h:45
 msgid "Stack Trace"
 msgstr "Çöküntüyü araştır"
 
-#: memprof.glade.h:53
-msgid "Status"
-msgstr "Durum"
-
-#: memprof.glade.h:54
+#: memprof.glade.h:46
 msgid "Total Bytes:"
 msgstr "Toplam bayt :"
 
-#: memprof.glade.h:55
+#: memprof.glade.h:47
 msgid "_Detach"
 msgstr "_Ekle"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:48
 #, fuzzy
 msgid "_File"
 msgstr "Dosya"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:49
 msgid "_Help"
 msgstr ""
 
-#: memprof.glade.h:58
+#: memprof.glade.h:50
 msgid "_Kill"
 msgstr "Öl_dür"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:51
 msgid "_Process"
 msgstr "_Işlem"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:52
 #, fuzzy
 msgid "_Run Program..."
 msgstr "Uygulamayı çalıştır"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:53
 msgid "_Settings"
 msgstr ""
 
-#: memprof.glade.h:62
+#: memprof.glade.h:54
 msgid "translator_credits"
 msgstr ""
 
-#: process.c:854
+#: process.c:888
 msgid "Initial"
 msgstr ""
 
-#: process.c:857
+#: process.c:891
 msgid "Starting"
 msgstr ""
 
-#: process.c:860
+#: process.c:894
 #, fuzzy
 msgid "Running"
 msgstr "Çalıştır"
 
-#: process.c:863
+#: process.c:897
 msgid "Exiting"
 msgstr ""
 
-#: process.c:866 process.c:869
+#: process.c:900 process.c:903
 #, fuzzy
 msgid "Defunct"
 msgstr "Önayarlı değerler"
 
-#: server.c:286
+#: server.c:288
 #, fuzzy, c-format
 msgid "Cannot find %s"
 msgstr "\"%s\" için uygulamayı bulamadım"
 
-#: tree.c:91
+#: tree.c:102
 msgid "Show"
 msgstr ""
 
-#: tree.c:94
+#: tree.c:105
 msgid "Hide"
 msgstr ""
 
-#: tree.c:101
+#: tree.c:112
 #, fuzzy
 msgid "Detach"
 msgstr "_Ekle"
+
+#: tree.c:180
+msgid "PID"
+msgstr "PID"
+
+#: tree.c:181
+msgid "Command Line"
+msgstr "Komuta"
+
+#: tree.c:182
+msgid "Status"
+msgstr "Durum"
+
+#~ msgid "Really quit MemProf?"
+#~ msgstr "MemProf'dan vallahi mi çıkacağın ?"
 
 #~ msgid "Bytes"
 #~ msgstr "Bayt"
 
 #~ msgid "Children"
 #~ msgstr "Alt-işlem"
-
-#~ msgid "Self"
-#~ msgstr "Kendisi"
-
-#~ msgid "Total"
-#~ msgstr "Toplam"
 
 #, fuzzy
 #~ msgid "Cannot find libmemintercept.so"
