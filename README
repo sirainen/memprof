@@ -6,16 +6,20 @@ Requirements
  For the interface, memprof requires:
 
   - GTK+ 2.0
-  - gconf 2.0
+  - GConf 2.0
   - libgnomeui 2.0
   - libglade 2.0
 
- For the backend, memprof currently requires:
+ These are all available from ftp://ftp.gnome.org/pub/GNOME/,
+ but if binary packages are available from your distribution,
+ it's much easier to install them that way.
+
+ For the backend, memprof requires:
 
   - libbfd and libiberty from the GNU binutils distribution.
     (Debian users will probably need to install the binutils-dev package)
   - Linux (kernel version 2.2 will work better)
-  - GNU libc (2.0 or 2.1 will work, but 2.0 may produce warnings 
+  - GNU libc (2.0 or or newer will work, but 2.0 may produce warnings 
               when compiling)
 
 Installation
@@ -38,9 +42,31 @@ Mailing list
 You can find information about subscribing to the memprof mailing list
 at: http://mail.gnome.org/mailman/listinfo/memprof-list/.
 
+FAQ
+===
+
+* What do the colors mean?
+
+  Yellow = Allocated
+  Blue = Allocated then freed (high-water-mark)
+  Red = Leaked (after you press the "Leaks" toolbar button)
+
+* What does the message:
+
+   MemProf: Starter malloc exceeded available space
+
+  mean?
+
+  Currently, MemProf doesn't handle static constructors in
+  C++ very well; all memory that they allocate comes out
+  of a fixed size pool. If that size is exceeded, Memprof
+  prints the above message and aborts the program. As a
+  workaround, you may be able to increase the STARTER_SIZE
+  #define in memintercept.c.
+
 License
 =======
 
-Memprof is Copyright 1999, 2000, 2001, Red Hat Inc, Copyright 2002,
+Memprof is Copyright 1999, 2000, 2001, Red Hat, Inc. Copyright 2002,
 Kristian Rietveld, and licensed under the terms of the GNU General
 Public License. See the file COPYING for details.
