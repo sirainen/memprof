@@ -58,7 +58,7 @@ msgstr "Resnièno ubij proces v teku?"
 
 #: main.c:1661
 msgid "Create new windows for forked processes"
-msgstr "Ustvari nova okna za forkane procese"
+msgstr "Ustvari nova okna za razvejene procese"
 
 #: main.c:1663
 msgid "Retain windows for processes after exec()"
