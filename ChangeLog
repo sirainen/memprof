@@ -1,3 +1,7 @@
+Tue Aug 20 11:03:11 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Patch from Art Haas to use AC_CONFIG_FILES.
+
 Mon Aug 19 14:25:39 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* memintercept.c: Fix leftover commenting out of code.
