@@ -3,6 +3,7 @@
 # Softcatalà <info@softcatala.org>, 2000.
 #
 # Traducció per Softcatalà <linux@softcatala.org>
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
@@ -205,9 +206,8 @@ msgid "Defaults"
 msgstr "Valors predeterminats"
 
 #: memprof-strings.c:62
-#, fuzzy
 msgid "Regular expressions to Skip:"
-msgstr "Funcions per ignorar:"
+msgstr "Expressions normals per ignorar:"
 
 #: memprof-strings.c:67
 msgid "Profile Options"
@@ -258,15 +258,15 @@ msgid "Status"
 msgstr "Estat"
 
 #: memprof-strings.c:80
-#, fuzzy
 msgid "Adding Skip Regular Expression"
-msgstr "Addició de la funció d'ignorar"
+msgstr "Addició de l'expressió normal d'ignorar"
 
 #: memprof-strings.c:82
-#, fuzzy
 msgid ""
 "Enter a regular expression of function names to skipwhen computing  profiles"
-msgstr "Introduïu el nom d'una funció per ignorar en processar els perfils"
+msgstr ""
+"Introduïu una expressió normal de noms de funció per ignorar en processar "
+"els perfils"
 
 #: leakdetect.c:587 profile.c:191
 #, c-format
