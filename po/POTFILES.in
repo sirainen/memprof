@@ -1,4 +1,7 @@
+main.c
 memprof-strings.c
 leakdetect.c
 profile.c
-main.c
+process.c
+server.c
+tree.c
