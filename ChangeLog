@@ -1,3 +1,10 @@
+Wed Oct 20 19:59:16 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* main.c (DEFAULT_STACK_COMMAND): Use emacsclient instead of 
+	  gnudoit because emacsclient is standard.
+
+	* process.c (read_inode): Fix mem leak found by MemProf.
+
 Wed Oct 20 18:46:22 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* process.c (process_init): Look in libdir, not pkgdatadir

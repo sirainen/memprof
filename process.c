@@ -57,8 +57,13 @@ read_inode (gchar *path)
       Inode *inode = g_new (Inode, 1);
       inode->device = stbuf.st_dev;
       inode->inode = stbuf.st_ino;
-      inode->name = g_strdup (path);
-      g_hash_table_insert (inode_table, inode, inode);
+      if (!g_hash_table_lookup (inode_table, inode))
+	{
+	  inode->name = g_strdup (path);
+	  g_hash_table_insert (inode_table, inode, inode);
+	}
+      else
+	g_free (inode);
     }
 }
 

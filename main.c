@@ -48,7 +48,7 @@ GnomeCanvasItem *usage_leak_bar;
 guint status_update_timeout;
 
 #define DEFAULT_SKIP "g_malloc g_malloc0 g_realloc g_strdup strdup strndup"
-#define DEFAULT_STACK_COMMAND "gnudoit '(find-file \"%f\")' '(goto-line %l)'"
+#define DEFAULT_STACK_COMMAND "emacsclient -n +%l \"%f\""
 
 static int n_skip_funcs;
 static char **skip_funcs;
