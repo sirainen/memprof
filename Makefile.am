@@ -53,7 +53,7 @@ EXTRA_DIST =			\
 	memprof.png         	\
 	memprof-strings.c
 
-Developmentdir = $(datadir)/gnome/apps/Development
+Developmentdir = $(datadir)/applications
 Development_DATA = memprof.desktop
 
 pixmapsdir = $(datadir)/pixmaps

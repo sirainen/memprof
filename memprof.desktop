@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=MemProf
+Name=Memory Profiler
 Name[sl]=MemProf
 Name[da]=MemProf
 Name[el]=MemProf
@@ -9,7 +9,7 @@ Name[no]=MemProf
 Name[pt_BR]=MemProf
 Name[sv]=MemProf
 Name[uk]=MemProf
-Comment=Memory Profiling tool
+Comment=Check a program for leaks and analyze its memory usage
 Comment[sl]=Orodje za profiliranje pomnilnika
 Comment[da]=Vζrktψj til hukommelsesprofilering
 Comment[el]=Εργαλείο Κατατόμησης Μνήμης
@@ -24,3 +24,4 @@ Exec=memprof
 Terminal=0
 Type=Application
 Icon=memprof.png
+Categories=Application;Development;

@@ -1,3 +1,12 @@
+2002-02-02  Seth Nickell  <snickell@stanford.edu>
+
+	* Makefile.am:
+	* memprof.desktop:
+
+	Install .desktop file into the GNOME2 location,
+	tweak the Name and Comments fields, add a
+	Categories field.
+	
 Sat Dec 15 17:38:23 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in (ACLOCAL): Remember ACLOCAL_FLAGS.
