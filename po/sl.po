@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2001-03-22 02:27+0100\n"
+"POT-Creation-Date: 2000-09-04 21:35+0200\n"
 "PO-Revision-Date: 2000-06-26 00:00+0200\n"
 "Last-Translator: Andraz Tori <andraz.tori1@guest.arnes.si>\n"
 "Language-Team: Slovenian <sl@li.org>\n"
@@ -309,35 +309,34 @@ msgstr "Dodajam prezrt regularni izraz"
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo "
-"profili"
+"Vpi¹ite regularni izraz imen funkcij, ki naj se prezro, ko se raèunajo profili"
 
-#: leakdetect.c:587 profile.c:192
+#: leakdetect.c:587 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Ne morem odpreti izhodne datoteke: %s\n"
 
-#: process.c:807
+#: process.c:806
 msgid "Initial"
 msgstr "Zaèetno"
 
-#: process.c:810
+#: process.c:809
 msgid "Starting"
 msgstr "Zaganjam"
 
-#: process.c:813
+#: process.c:812
 msgid "Running"
 msgstr "Teèe"
 
-#: process.c:816
+#: process.c:815
 msgid "Exiting"
 msgstr "Se zapira"
 
-#: process.c:819 process.c:822
+#: process.c:818 process.c:821
 msgid "Defunct"
 msgstr "Ne deluje"
 
-#: server.c:238
+#: server.c:214
 msgid "Cannot find libmemintercept.so"
 msgstr "Ne najdem libmemintercept.so"
 
