@@ -1,11 +1,11 @@
-# Copyright (C) 2000-2002 Free Software Foundation, Inc.
-# Valek Filippov <frob@df.ru>, 2000-2002.
+# Copyright (C) 2000-2003 Free Software Foundation, Inc.
+# Valek Filippov <frob@df.ru>, 2000-2003.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2002-08-31 22:21+0200\n"
-"PO-Revision-Date: 2002-03-08 17:00+03:00\n"
+"POT-Creation-Date: 2003-07-03 20:58+0400\n"
+"PO-Revision-Date: 2003-07-03 21:02+0400\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,56 +17,67 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Невозможно открыть файл вывода: %s\n"
 
-#: main.c:534
+#: main.c:536
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Выполнение \"%s\" не удалось"
 
-#: main.c:665
+#: main.c:667
 msgid "Really quit MemProf?"
 msgstr "Действительно выйти из MemProf?"
 
-#: main.c:711 memprof.glade.h:34
+#: main.c:713 memprof.glade.h:34
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:805
+#: main.c:807
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Невозможно найти исполняемую программу для \"%s\""
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Error"
 msgstr "Ошибка MemProf"
 
-#: main.c:1416
+#: main.c:1418
 msgid "MemProf Warning"
 msgstr "Предупреждение MemProf"
 
-#: main.c:1666
+#: main.c:1672
 msgid "Really detach from finished process?"
 msgstr "Отсоединить от завершенного процесса?"
 
-#: main.c:1668
+#: main.c:1674
 msgid "Really detach from running process?"
 msgstr "Отсоединить от запущенного процесса?"
 
-#: main.c:1698
+#: main.c:1704
 msgid "Really kill running process?"
 msgstr "Уничтожить запущенный процесс?"
 
-#: main.c:1731
+#: main.c:1741
 msgid "Create new windows for forked processes"
 msgstr "Создать новое окно для порожденного процесса"
 
-#: main.c:1733
+#: main.c:1743
 msgid "Retain windows for processes after exec()"
 msgstr "Сохранять окна для процессов после exec()"
 
-#: main.c:1770
-#, fuzzy
+#: main.c:1745
+msgid "Type of profiling information to collect"
+msgstr "Тип собираемой информации для профилирования"
+
+#: main.c:1747
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Число образцов в секунду для профилирования времени (1k=1000)"
+
+#: main.c:1796
+msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+msgstr "Аргументом --profile должен быть один из 'memory', 'cycles', или 'time'\n"
+
+#: main.c:1837
 msgid "Cannot find memprof.glade"
-msgstr "Не удалось найти memprof.glade2"
+msgstr "Не удалось найти файл memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
@@ -132,7 +143,7 @@ msgstr "Команда для запуска по двойному щелчку 
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
-msgstr ""
+msgstr "(С) 1999-2001, Red Hat, Inc.&#13; (С) 2002, Kristian Rietveld"
 
 #: memprof.glade.h:17
 msgid "Create Profile"
@@ -143,22 +154,17 @@ msgid "Defaults"
 msgstr "По умолчанию"
 
 #: memprof.glade.h:19
-#, fuzzy
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr ""
-"Введите регулярное выражение имен функций для пропуска при вычислении "
-"профилей"
+msgstr "Введите регулярное выражение имен функций пропускаемых при вычислении профилей"
 
 #: memprof.glade.h:20
-#, fuzzy
 msgid "Enter pathname to an executable"
 msgstr "Введите путь к исполняемой программе"
 
 #: memprof.glade.h:21
-#, fuzzy
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr "Введите название функции для пропуска при вычислении профиля"
+msgstr "Введите название функции пропускаемой при вычислении профиля"
 
 #: memprof.glade.h:22
 msgid "File"
@@ -222,7 +228,7 @@ msgstr "PID"
 
 #: memprof.glade.h:38
 msgid "Preferences"
-msgstr ""
+msgstr "Настройки"
 
 #: memprof.glade.h:39
 msgid "Process _Tree"
@@ -297,13 +303,12 @@ msgid "_Detach"
 msgstr "Отделить"
 
 #: memprof.glade.h:57
-#, fuzzy
 msgid "_File"
 msgstr "Файл"
 
 #: memprof.glade.h:58
 msgid "_Help"
-msgstr ""
+msgstr "Справка"
 
 #: memprof.glade.h:59
 msgid "_Kill"
@@ -314,38 +319,37 @@ msgid "_Process"
 msgstr "Процесс"
 
 #: memprof.glade.h:61
-#, fuzzy
 msgid "_Run Program..."
-msgstr "Запуск программы"
+msgstr "Запуск программы..."
 
 #: memprof.glade.h:62
-#, fuzzy
 msgid "_Settings"
-msgstr "Запуск"
+msgstr "Установки"
 
-#: process.c:847
+#: process.c:854
 msgid "Initial"
 msgstr "Инициализовать"
 
-#: process.c:850
+#: process.c:857
 msgid "Starting"
 msgstr "Запуск"
 
-#: process.c:853
+#: process.c:860
 msgid "Running"
 msgstr "Запуск"
 
-#: process.c:856
+#: process.c:863
 msgid "Exiting"
 msgstr "Выход"
 
-#: process.c:859 process.c:862
+#: process.c:866 process.c:869
 msgid "Defunct"
 msgstr ""
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "Не удалось найти libmemintercept.so"
+#: server.c:286
+#, c-format
+msgid "Cannot find %s"
+msgstr "Невозможно найти %s"
 
 #: tree.c:91
 msgid "Show"
@@ -358,21 +362,3 @@ msgstr "Скрыть"
 #: tree.c:101
 msgid "Detach"
 msgstr "Отделить"
-
-#~ msgid "Add..."
-#~ msgstr "Добавить..."
-
-#~ msgid "Delete"
-#~ msgstr "Удалить"
-
-#~ msgid "_Run..."
-#~ msgstr "Запуск..."
-
-#~ msgid "Copyright Red Hat, Inc., 1999-2000"
-#~ msgstr "Авторское право (С) Red Hat, Inc., 1999-2000"
-
-#~ msgid "label37"
-#~ msgstr "метка37"
-
-#~ msgid "Add"
-#~ msgstr "Добавить"
