@@ -1,14 +1,14 @@
 # German translation of memprof.
 # Copyright (C) 2000 Free Software Foundation, Inc.
-# Kai Lahmann <kl@linuxfaqs.de>, 2000
-# Christian Meyer <cm@ggtt.de>, 2001.
+# Kai Lahmann <kl@linuxfaqs.de>, 2000.
+# Christian Meyer <chrisime@gnome.org>, 2001.
 #
 # Kai, deine Uebersetzungen sind ein echter Graus!
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4\n"
-"POT-Creation-Date: 2001-02-15 18:03+0100\n"
+"POT-Creation-Date: 2001-03-06 13:22+0100\n"
 "PO-Revision-Date: 2001-02-15 18:03+0100\n"
 "Last-Translator: Christian Meyer <chrisime@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -19,7 +19,7 @@ msgstr ""
 #: main.c:530
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "Ausführen von \"%s\" gescheitert"
+msgstr "Ausführen von \"%s\" fehlgeschlagen"
 
 #: main.c:656
 msgid "Really quit MemProf?"
@@ -37,7 +37,7 @@ msgstr "MemProf"
 #: main.c:797
 #, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr "Das Programm %s kann nicht gefunden werden"
+msgstr "Das Programm \"%s\" kann nicht gefunden werden"
 
 #: main.c:1365
 msgid "MemProf Error"
@@ -49,11 +49,11 @@ msgstr "MemProf-Warnung"
 
 #: main.c:1609
 msgid "Really detach from finished process?"
-msgstr "Wirklich vom beendeten Prozess löschen?"
+msgstr "Wirklich vom beendeten Prozess lösen?"
 
 #: main.c:1611
 msgid "Really detach from running process?"
-msgstr "Wirklich vom laufenden Prozess löschen?"
+msgstr "Wirklich vom laufenden Prozess lösen?"
 
 #: main.c:1631
 msgid "Really kill running process?"
@@ -326,7 +326,7 @@ msgstr "Anfang"
 
 #: process.c:810
 msgid "Starting"
-msgstr "Startet"
+msgstr "Startvorgang"
 
 #: process.c:813
 msgid "Running"
@@ -346,7 +346,7 @@ msgstr "libmemintercept.so kann nicht gefunden werden"
 
 #: tree.c:90
 msgid "Show"
-msgstr "Anzeigen"
+msgstr "Zeigen"
 
 #: tree.c:93
 msgid "Hide"
