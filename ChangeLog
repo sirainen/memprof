@@ -1,3 +1,9 @@
+Sat Dec 15 17:38:23 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (ACLOCAL): Remember ACLOCAL_FLAGS.
+
+	* profile.c (profile_free): Fix memory leak.
+	
 2001-12-13  Wang Jian  <lark@linux.net.cn>
 
 	* configure.in(ALL_LINGUAS): Added zh_CN for Simplified Chinese.

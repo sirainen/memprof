@@ -75,6 +75,9 @@ if test -z "$LIBGLADE_CONVERT" ; then
 	AC_MSG_ERROR([libglade-convert (from libglade 2.0) is needed to build memprof])
 fi
 
+dnl Remember ACLOCAL_FLAGS for automatic reautogen.
+ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
 dnl Output the Makefiles
 
 AC_OUTPUT([

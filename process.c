@@ -368,8 +368,7 @@ process_dump_stack (MPProcess *process, FILE *out, gint stack_size, void **stack
 			fprintf(out, "\t%s(): %s:%u\n", functionname, filename, line);
 			free (functionname);
 		} else
-			/* 3f == ?, suppress trigraph warnings */
-			fprintf(out, "\t(\x3f\x3f\x3f)\n");
+			fprintf(out, "\t[%p]\n", stack[i]);
 
 	}
 }

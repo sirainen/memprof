@@ -228,7 +228,9 @@ profile_free (Profile *profile)
   for (i=0; i<profile->n_functions; i++)
     {
       g_list_foreach (profile->functions[i]->children, (GFunc)g_free, NULL);
+      g_list_free (profile->functions[i]->children);
       g_list_foreach (profile->functions[i]->inherited, (GFunc)g_free, NULL);
+      g_list_free (profile->functions[i]->inherited);
       g_free (profile->functions[i]);
     }
 
