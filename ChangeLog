@@ -1,3 +1,7 @@
+2004-09-02  Kjartan Maraas  <kmaraas@gnome.org>
+
+	* configure.in: Add «nb» to ALL_LINGUAS.
+
 2004-09-01 Amanpreet Singh Alam  <aalam@redhat.com>
 	
 	* configure.in: Added Punjabi<pa> to ALL_LINGUAS.
