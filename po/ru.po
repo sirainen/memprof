@@ -5,8 +5,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2000-05-14 23:13+0000\n"
-"PO-Revision-Date: 2000-05-14 23:15+00:00\n"
+"POT-Creation-Date: 2000-05-24 12:16+0000\n"
+"PO-Revision-Date: 2000-05-24 12:19+00:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,7 +18,7 @@ msgstr ""
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: memprof-strings.c:7
+#: main.c:659 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
@@ -27,221 +27,269 @@ msgid "_Run..."
 msgstr "Запуск..."
 
 #: memprof-strings.c:9
-msgid "Generate Profile"
-msgstr "Генерация профиля"
-
-#: memprof-strings.c:10
-msgid "Generate Leak Info"
-msgstr "Генерация информации об утечке"
-
-#: memprof-strings.c:11
-msgid "Save Profile..."
+msgid "Save _Profile..."
 msgstr "Сохранение профиля..."
 
-#: memprof-strings.c:12
-msgid "Save Leak Info..."
+#: memprof-strings.c:10
+msgid "Save _Leak Info..."
 msgstr "Сохранение информации об утечке..."
 
+#: memprof-strings.c:11
+msgid "_Process"
+msgstr "Процесс"
+
+#: memprof-strings.c:12
+msgid "Generate _Profile"
+msgstr "Генерация профиля"
+
 #: memprof-strings.c:13
-msgid "Follow fork()"
-msgstr ""
+msgid "Generate _Leak Report"
+msgstr "Генерация информации об утечке"
 
 #: memprof-strings.c:14
-msgid "Follow exec()"
-msgstr ""
+msgid "_Kill"
+msgstr "Уничтожить"
 
 #: memprof-strings.c:15
-msgid "Open File"
-msgstr "Открыть файл"
+msgid "_Detach"
+msgstr "Отделить"
 
-#: memprof-strings.c:16 memprof-strings.c:62
+#: memprof-strings.c:16
+msgid "Process _Tree"
+msgstr "Дерево процесса"
+
+#: memprof-strings.c:17
+msgid "Follow _fork()"
+msgstr "Отследить fork()"
+
+#: memprof-strings.c:18
+msgid "Follow _exec()"
+msgstr "Отследить exec()"
+
+#: memprof-strings.c:19 memprof-strings.c:21
+msgid "Run Program"
+msgstr "Запуск программы"
+
+#: memprof-strings.c:20 memprof-strings.c:70
 msgid "Run"
 msgstr "Запустить"
 
-#: memprof-strings.c:17 memprof-strings.c:38
+#: memprof-strings.c:22
+msgid "Kill"
+msgstr "Уничтожить"
+
+#: memprof-strings.c:23
+msgid "Create Profile"
+msgstr "Создать профиль"
+
+#: memprof-strings.c:24 memprof-strings.c:46
 msgid "Profile"
 msgstr "Профиль"
 
-#: memprof-strings.c:18 memprof-strings.c:46
+#: memprof-strings.c:25
+msgid "Check for Leaks"
+msgstr "Проверка утечек"
+
+#: memprof-strings.c:26 memprof-strings.c:54
 msgid "Leaks"
 msgstr "Утечки"
 
-#: memprof-strings.c:19
-msgid "Save File"
-msgstr "Сохранить файл"
+#: memprof-strings.c:27
+msgid "Save Report"
+msgstr "Сохранить отчет"
 
-#: memprof-strings.c:20
+#: memprof-strings.c:28
 msgid "Save"
 msgstr "Сохранить"
 
-#: memprof-strings.c:21
+#: memprof-strings.c:29
 msgid "0k"
 msgstr "0k"
 
-#: memprof-strings.c:22
+#: memprof-strings.c:30
 msgid "32k"
 msgstr "32k"
 
-#: memprof-strings.c:23
+#: memprof-strings.c:31
 msgid "# of Allocations:"
 msgstr "Число распределений:"
 
-#: memprof-strings.c:24 memprof-strings.c:26 memprof-strings.c:28
+#: memprof-strings.c:32 memprof-strings.c:34 memprof-strings.c:36
 msgid "0"
 msgstr "0"
 
-#: memprof-strings.c:25
+#: memprof-strings.c:33
 msgid "Bytes / Allocation:"
 msgstr "Байт / Распределение:"
 
-#: memprof-strings.c:27
+#: memprof-strings.c:35
 msgid "Total Bytes:"
 msgstr "Всего байт:"
 
-#: memprof-strings.c:29 memprof-strings.c:33 memprof-strings.c:36
-#: memprof-strings.c:43
+#: memprof-strings.c:37 memprof-strings.c:41 memprof-strings.c:44
+#: memprof-strings.c:51
 msgid "Function"
 msgstr "Функция"
 
-#: memprof-strings.c:30
+#: memprof-strings.c:38
 msgid "Self"
 msgstr "Сама"
 
-#: memprof-strings.c:31
+#: memprof-strings.c:39
 msgid "Total"
 msgstr "Итого"
 
-#: memprof-strings.c:32
+#: memprof-strings.c:40
 msgid "Children"
 msgstr "Потомки"
 
-#: memprof-strings.c:34 memprof-strings.c:37
+#: memprof-strings.c:42 memprof-strings.c:45
 msgid "Bytes"
 msgstr "Байт"
 
-#: memprof-strings.c:35
+#: memprof-strings.c:43
 msgid "Callers"
 msgstr "Вызывающие"
 
-#: memprof-strings.c:39
+#: memprof-strings.c:47
 msgid "Address"
 msgstr "Адрес"
 
-#: memprof-strings.c:40
+#: memprof-strings.c:48
 msgid "Size"
 msgstr "Размер"
 
-#: memprof-strings.c:41
+#: memprof-strings.c:49
 msgid "Caller"
 msgstr "Вызывающая"
 
-#: memprof-strings.c:42
+#: memprof-strings.c:50
 msgid "Stack Trace"
 msgstr "Трассировка стека"
 
-#: memprof-strings.c:44
+#: memprof-strings.c:52
 msgid "Line"
 msgstr "Строка"
 
-#: memprof-strings.c:45
+#: memprof-strings.c:53
 msgid "File"
 msgstr "Файл"
 
-#: memprof-strings.c:47
-msgid "Copyright Red Hat, Inc., 1999"
-msgstr "Авторское право (С) Red Hat, Inc., 1999"
+#: memprof-strings.c:55
+msgid "Copyright Red Hat, Inc., 1999-2000"
+msgstr "Авторское право (С) Red Hat, Inc., 1999-2000"
 
-#: memprof-strings.c:48
+#: memprof-strings.c:56
 msgid "Memory Profiling Tool"
 msgstr "Инструмент профилирования памяти"
 
-#: memprof-strings.c:49
+#: memprof-strings.c:57
 msgid "Functions to Skip:"
 msgstr "Функции для пропуска:"
 
-#: memprof-strings.c:50
+#: memprof-strings.c:58
 msgid "label37"
 msgstr "метка37"
 
-#: memprof-strings.c:51
+#: memprof-strings.c:59
 msgid "Add..."
 msgstr "Добавить..."
 
-#: memprof-strings.c:52
+#: memprof-strings.c:60
 msgid "Delete"
 msgstr "Удалить"
 
-#: memprof-strings.c:53
+#: memprof-strings.c:61
 msgid "Defaults"
 msgstr "По умолчанию"
 
-#: memprof-strings.c:54
+#: memprof-strings.c:62
 msgid "Profile Options"
 msgstr "Параметры профиля"
 
-#: memprof-strings.c:55
+#: memprof-strings.c:63
 msgid "Command to run on double click in stack trace:"
 msgstr "Команда для запуска по двойному щелчку в трассировке стека:"
 
-#: memprof-strings.c:56
+#: memprof-strings.c:64
 msgid "Leak Detection Options"
 msgstr "Параметры засечки утечек"
 
-#: memprof-strings.c:57
+#: memprof-strings.c:65
 msgid "Adding Skip Function"
 msgstr "Добавить функцию пропуска"
 
-#: memprof-strings.c:58
+#: memprof-strings.c:66
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr "Введите название функции для пропуска при вычислении профиля"
 
-#: memprof-strings.c:59
+#: memprof-strings.c:67
 msgid "Add"
 msgstr "Добавить"
 
-#: memprof-strings.c:60
+#: memprof-strings.c:68
 msgid "Run Executable"
 msgstr "Запустить исполняемую программу"
 
-#: memprof-strings.c:61
+#: memprof-strings.c:69
 msgid "Enter pathname to a executable"
 msgstr "Введите путь к исполняемой программе"
+
+#: memprof-strings.c:71
+msgid "MemProf - Processes"
+msgstr "MemProf - Процессы"
+
+#: memprof-strings.c:72
+msgid "PID"
+msgstr "PID"
+
+#: memprof-strings.c:73
+msgid "Command Line"
+msgstr "Командная строка"
+
+#: memprof-strings.c:74
+msgid "Status"
+msgstr "Состояние"
 
 #: leakdetect.c:583 profile.c:191
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Невозможно открыть файл вывода: %s\n"
 
-#: main.c:510
+#: main.c:496
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Выполнение \"%s\" не удалось"
 
-#: main.c:636
+#: main.c:622
 msgid "Really quit MemProf?"
 msgstr "Действительно выйти из MemProf?"
 
-#: main.c:690
+#: main.c:717
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Невозможно найти исполняемую программу для \"%s\""
 
-#: main.c:1099
+#: main.c:1157
 msgid "MemProf Error"
 msgstr "Ошибка MemProf"
 
-#: main.c:1099
+#: main.c:1157
 msgid "MemProf Warning"
 msgstr "Предупреждение MemProf"
 
-#: main.c:1248
+#: main.c:1345
 msgid "Create new windows for forked processes"
 msgstr "Создать новое окно для порожденного процесса"
 
-#: main.c:1250
+#: main.c:1347
 msgid "Retain windows for processes after exec()"
 msgstr "Сохранять окна для процессов после exec()"
 
-#: main.c:1272
+#: main.c:1369
 msgid "Cannot find memprof.glade"
 msgstr "Не удалось найти memprof.glade"
+
+#: main.c:1453
+msgid "Kill running process?"
+msgstr "Уничтожить запущенный процесс?"
