@@ -32,6 +32,15 @@ if test "x$GCC" = "xyes"; then
 fi
 changequote([,])dnl
 
+debugdir=${libdir}/debug
+	 
+AC_ARG_WITH(separate-debug-dir,
+[  --with-separate-debug-dir=path   Look for global separate debug info in this path [LIBDIR/debug]],
+[debugdir="${withval}"])
+	
+AC_DEFINE_DIR(DEBUGDIR, debugdir,
+              [Look for global separate debug info in this path])
+	
 dnl GNOME checks (using pkg-config macros) and getting cflags and libs
 GTK_REQUIRED=2.0.0
 GCONF_REQUIRED=1.1.8
@@ -73,7 +82,8 @@ AM_GCONF_SOURCE_2
 dnl Initialize gettext
 GETTEXT_PACKAGE=memprof
 AC_SUBST(GETTEXT_PACKAGE)
-AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE")
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE",
+                   [Identifier for message catalog files])
 
 ALL_LINGUAS="az ca cs da de el es et fr hu it ja ko lv ms nl no pl pt 
 pt_BR ru sk sl sv ta tr uk vi zh_CN"
