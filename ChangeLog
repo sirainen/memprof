@@ -1,3 +1,15 @@
+Fri Feb  9 10:13:43 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* memintercept.c: Handle __fork, __vfork, so that
+	popen() is handled correctly. 
+
+	* memintercept.c: Unset _MEMPROF_SOCKET when disabling
+	tracing.
+
+Sun Feb  4 14:01:45 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in (ALL_LINGUAS): Add pt_BR.
+
 2001-01-23  Simos Xenitellis  <simos@hellug.gr>
 
 	* configure.in: Added el to ALL_LINGUAS.

@@ -43,6 +43,7 @@ static int (*old_execve) (const char *filename,
 			  char *const argv[],
 			  char *const envp[]);
 static int (*old_fork) (void);
+static int (*old_vfork) (void);
 static int (*old_clone) (int (*fn) (void *arg),
 			 void *child_stack,
 			 int flags,
@@ -147,6 +148,7 @@ write_all (int fd, void *buf, int total)
  error:
 	tracing = 0;
 	close (fd);
+	putenv ("_MEMPROF_SOCKET=");
 	return 0;
 }
 
@@ -162,7 +164,7 @@ new_process (pid_t old_pid, MIOperation operation)
 	int old_errno = errno;
 
 	memset (&addr, 0, sizeof(addr));
-	
+
 	addr.sun_family = AF_UNIX;
 	strncpy (addr.sun_path, socket_path, sizeof (addr.sun_path));
 	addrlen = sizeof(addr.sun_family) + strlen (addr.sun_path);
@@ -214,6 +216,7 @@ new_process (pid_t old_pid, MIOperation operation)
 		/* Stop tracing */
 		tracing = 0;
 		close (outfd);
+		putenv ("_MEMPROF_SOCKET=");
 	}
 
 	errno = old_errno;
@@ -500,10 +503,10 @@ free (void *ptr)
 }
 
 int
-fork (void)
+__fork (void)
 {
 	if (!initialized)
-		abort_unitialized ("fork");
+		abort_unitialized ("__fork");
 	
 	if (tracing) {
 		int pid;
@@ -517,6 +520,26 @@ fork (void)
 		return pid;
 	} else 
 		return (*old_fork) ();
+}
+
+int
+__vfork (void)
+{
+	if (!initialized)
+		abort_unitialized ("__vfork");
+	
+	if (tracing) {
+		int pid;
+		int old_pid = getpid();
+		
+		pid = (*old_vfork) ();
+
+		if (!pid) /* New child process */
+			new_process (old_pid, MI_FORK);
+
+		return pid;
+	} else 
+		return (*old_vfork) ();
 }
 
 int
@@ -633,7 +656,8 @@ static void initialize ()
 	old_calloc = dlsym(RTLD_NEXT, "__libc_calloc");
 	old_memalign = dlsym(RTLD_NEXT, "__libc_memalign");
 	old_execve = dlsym(RTLD_NEXT, "execve");
-	old_fork = dlsym(RTLD_NEXT, "fork");
+	old_fork = dlsym(RTLD_NEXT, "__fork");
+	old_vfork = dlsym(RTLD_NEXT, "__vfork");
 	old_clone = dlsym(RTLD_NEXT, "__clone");
 	old__exit = dlsym(RTLD_NEXT, "_exit");
 
