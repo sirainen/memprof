@@ -1,4 +1,16 @@
-Fri Dec 19 00:00:30 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+Fri Dec 19 16:41:00 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
+
+	* process.c (prepare_map): Only report symbols in the ".text" segment.
+
+	* main.c (profile_func_list_goto_symbol): Use symbol_equal()
+	instead of comparing addresses.
+
+	* profile.c (add_trace_to_tree): Missed one hashtable still using
+	g_direct_hash() instead of symbol_hash()
+
+	* profile.h: Add comments to some fields in struct ProfileNode.
+
+ri Dec 19 00:00:30 2003  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* profile.c: Don't assume that symbols can be compared by
 	comparing their addresses.
