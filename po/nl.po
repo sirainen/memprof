@@ -98,7 +98,7 @@ msgstr "_Beëindigen"
 
 #: memprof-strings.c:15
 msgid "_Detach"
-msgstr "_Ontkoppeln"
+msgstr "_Ontkoppelen"
 
 #: memprof-strings.c:16
 msgid "Process _Tree"
