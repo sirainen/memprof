@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-09-22 20:48+0200\n"
-"PO-Revision-Date: 2003-09-23 05:09+0200\n"
+"POT-Creation-Date: 2004-01-24 04:55+0100\n"
+"PO-Revision-Date: 2004-01-27 16:44+0100\n"
 "Last-Translator: Miloslav Trmac <mitr@volny.cz>\n"
 "Language-Team: Czech <cs@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "Celkem"
 
 #: main.c:1788
 msgid "Cumulative"
-msgstr "Shourhn"
+msgstr "Shouhrn"
 
 #: main.c:1825
 msgid "Address"
@@ -314,7 +314,7 @@ msgstr "_Soubor"
 
 #: memprof.glade.h:49
 msgid "_Help"
-msgstr "_Nápověda"
+msgstr "Nápo_věda"
 
 #: memprof.glade.h:50
 msgid "_Kill"
@@ -336,23 +336,23 @@ msgstr "_Nastavení"
 msgid "translator_credits"
 msgstr "Miloslav Trmač <mitr@volny.cz>"
 
-#: process.c:886
+#: process.c:888
 msgid "Initial"
 msgstr "Počáteční"
 
-#: process.c:889
+#: process.c:891
 msgid "Starting"
 msgstr "Startuje"
 
-#: process.c:892
+#: process.c:894
 msgid "Running"
 msgstr "Běží"
 
-#: process.c:895
+#: process.c:897
 msgid "Exiting"
 msgstr "Ukončuje se"
 
-#: process.c:898 process.c:901
+#: process.c:900 process.c:903
 msgid "Defunct"
 msgstr "Nefunkční"
 
