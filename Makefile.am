@@ -25,6 +25,7 @@ libmemintercept_la_SOURCES =    \
 	memintercept.h
 
 libmemintercept_la_LDFLAGS = -module -avoid-version
+libmemintercept_la_LIBADD = -ldl
 
 INCLUDES = 					   \
 	$(MEMPROF_CFLAGS) 			   \

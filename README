@@ -11,6 +11,8 @@ Requirements
 
  For the backend, memprof currently requires:
 
+  - libbfd and libiberty from the GNU binutils distribution.
+    (Debian users will probably need to install the binutils-dev package)
   - Linux (kernel version 2.2 will work better)
   - GNU libc (2.0 or 2.1 will work, but 2.0 may produce warnings 
               when compiling)

@@ -1,3 +1,51 @@
+Sat Nov 20 10:40:48 1999  Owen Taylor  <otaylor@redhat.com>
+
+        [ Sync CVS with my current tree. This commit destabilizes
+	  things a bit, but adds neat new features like
+	  correct tracing of threaded programs; some options like
+	  turning off following forks not yet implemented ]
+	
+	* memintercept.[ch]: Major reworking of the way we handle
+	intercepting malloc() and friends - the __malloc_hook
+	functionality is inherently not thread safe. So
+	directly override the functions in our LD_PRELOAD.
+	Also, override fork(), clone() and exec() and report these
+	back to our parent to allow tracing of threads and
+	forking programs.
+
+	* process.c memintercept.c: Change the mechanism for
+	communicating with subprocesses from a single pipe to
+	a Unix domain socket with accepts connections for
+	new subprocesses.
+	
+	* process.c: Completely rework handling of getting input
+	from multiple processes. Add a command-queue to deal
+	with recieving out-of-order input from multiple threads
+	within a single process.
+	
+	* main.c: Allow multiple process windows, create new
+	process windows when a fork or exec occurs.
+	
+	* Makefile.am: add -ldl to LIBADD for libmemintercept.so,
+	since we now use DL functions to get original symbols. 
+
+        * process.c bfdutils.c memprof.h: Add an exported demangle function,
+	store symbol names demangled.
+
+	* README: Add note for Debian users telling them to
+	install binutils-dev.
+
+1999-11-17  Elker Cavina <e.cavina@ra.nettuno.it>
+
+       * configure.in: Added it to ALL_LINGUAS
+	
+Thu Nov  4 13:14:36 1999  Owen Taylor  <otaylor@redhat.com>
+
+	* process.c: Re-indent to Linux style.
+
+	* memprof.glade main.c (process_window_destroy): Add ability
+	to close windows.
+
 1999-11-15  Martin Norbäck  <d95mback@dtek.chalmers.se>
 
 	* configure.in: Added sv to ALL_LINGUAS
@@ -6,8 +54,7 @@ Thu Oct 28 09:22:42 1999  Owen Taylor  <otaylor@redhat.com>
 
 	* process.c (process_find_exec): Fix extra free
 	in case where executable is not found. 
-	(Pointed out by Sven Neumann
-	 <neumann@simul.biophys.uni-duesseldorf.de>)
+	(Pointed out by Sven Neumann <neumann@simul.biophys.uni-duesseldorf.de>)
 
 Wed Oct 27 20:58:03 1999  George Lebl  <jirka@5z.com>
 

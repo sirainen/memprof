@@ -3,6 +3,7 @@ Name=MemProf
 Name[sv]=MemProf
 Comment=Memory Profiling tool
 Comment[sv]=Minnesprofileringsverktyg
+Comment[it]=Strumento di profilo della memoria
 Exec=memprof
 Terminal=0
 Type=Application

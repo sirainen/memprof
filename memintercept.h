@@ -19,19 +19,57 @@
  */
 /*====*/
 
-typedef struct _MIInfo MIInfo;
+typedef union _MIInfo MIInfo;
+typedef struct _MIInfoAny MIInfoAny;
+typedef struct _MIInfoAlloc MIInfoAlloc;
+typedef struct _MIInfoFork MIInfoFork;
+typedef struct _MIInfoExec MIInfoExec;
 
 typedef enum {
-  MI_MALLOC,
-  MI_REALLOC,
-  MI_FREE,
+	MI_MALLOC,
+	MI_REALLOC,
+	MI_FREE,
+	MI_EXEC,
+	MI_NEW,
+	MI_FORK,
+	MI_CLONE
 } MIOperation;
 
-struct _MIInfo {
-  MIOperation operation;
-  pid_t  pid;
-  void  *old_ptr;
-  void  *new_ptr;
-  size_t size;
-  unsigned int stack_size;
+struct _MIInfoAny {
+	MIOperation operation;
+	pid_t pid;
+	unsigned int seqno;
 };
+
+struct _MIInfoAlloc {
+	MIOperation operation;
+	pid_t  pid;
+	unsigned int seqno;
+	void  *old_ptr;
+	void  *new_ptr;
+	size_t size;
+	unsigned int stack_size;
+};
+
+struct _MIInfoFork {
+	MIOperation operation;
+	pid_t pid;
+	unsigned int seqno;
+	pid_t new_pid;
+	pid_t new_fd;
+};
+
+struct _MIInfoExec {
+	MIOperation operation;
+	pid_t pid;
+	unsigned int seqno;
+};
+
+union _MIInfo {
+	MIOperation operation;
+	MIInfoAny any;
+	MIInfoAlloc alloc;
+	MIInfoFork fork;
+	MIInfoExec exec;
+};
+

@@ -118,6 +118,18 @@ extern char *cplus_demangle (const char *mangled, int options);
 #define DMGL_PARAMS     (1 << 0)        /* Include function args */
 #define DMGL_ANSI       (1 << 1)        /* Include const, volatile, etc */
 
+char *
+demangle (Map *map, const char *name)
+{
+  char *demangled;
+	
+  if (bfd_get_symbol_leading_char (map->abfd) == *name)
+    ++name;
+
+  demangled = cplus_demangle (name, DMGL_ANSI | DMGL_PARAMS);
+  return demangled ? demangled : strdup (name);
+}
+
 gboolean 
 find_line (Map *map, bfd_vma addr,
 	   const char **filename, char **functionname,
@@ -132,12 +144,7 @@ find_line (Map *map, bfd_vma addr,
 			     addr - map->section->vma, 
 			     filename, &name, line))
     {
-      if (bfd_get_symbol_leading_char (map->abfd) == *name)
-	++name;
-
-      *functionname = cplus_demangle (name, DMGL_ANSI | DMGL_PARAMS);
-      if (!*functionname)
-	*functionname = strdup (name);
+      *functionname = demangle (map, name);
 
       return TRUE;
     }

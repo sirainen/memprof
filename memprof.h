@@ -37,6 +37,8 @@ typedef struct {
   guint size;
   gint stack_size;
   void **stack;
+
+  gint refcount;
 } Block;
 
 typedef struct {
@@ -70,12 +72,17 @@ void show_error	(ErrorType error,
 		 const gchar *format,
 		 ...) G_GNUC_PRINTF (2, 3);
 
-void process_map_sections (Map *map, SectionFunc func, gpointer user_data);
-
-gboolean read_bfd (Map *map);
-gboolean find_line (Map *map, bfd_vma addr,
-		    const char **filename, char **functionname,
-		    unsigned int *line);
+void     process_map_sections (Map           *map,
+			       SectionFunc    func,
+			       gpointer       user_data);
+char *   demangle             (Map           *map,
+			       const char    *name);
+gboolean read_bfd             (Map           *map);
+gboolean find_line            (Map           *map,
+			       bfd_vma        addr,
+			       const char   **filename,
+			       char         **functionname,
+			       unsigned int  *line);
 
 #endif /* __MEMPROF_H__ */
 

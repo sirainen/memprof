@@ -30,11 +30,16 @@
 
 typedef struct _MPProcess MPProcess;
 
+typedef MPProcess *(*ProcessCreateFunc) (MPProcess *parent, pid_t pid);
+
 struct _MPProcess
 {
   pid_t pid;
   gchar *program_name;
 
+  MPProcess *clone_of;
+  guint seqno;	
+	
   guint bytes_used;
   guint n_allocations;
 
@@ -44,23 +49,36 @@ struct _MPProcess
   GList *map_list;
   GList *bad_pages;
   GHashTable *block_table;
+
+  GList *command_queue;
+	
+  ProcessCreateFunc create_func;
 };
 
-void process_init (void);
-
-void process_sections (MPProcess *process, SectionFunc func, gpointer user_data);
-char **process_parse_exec (const char *exec_string);
-char *process_find_exec (char **args);
-MPProcess *process_run (const char *path, char **args);
-     
-void process_start_input (MPProcess *process);
-void process_stop_input (MPProcess *process);
-
-gboolean 
-process_find_line (MPProcess *process, void *address,
-		   const char **filename, char **functionname,
-		   unsigned int *line);
-void process_dump_stack (MPProcess *process, FILE *out, gint stack_size, void **stack);
-Symbol *process_locate_symbol (MPProcess *process, guint addr);
+void        process_init          (ProcessCreateFunc   cfunc);
+MPProcess * process_new           (void);
+void        process_run           (MPProcess          *process,
+				   const char         *path,
+				   char              **args);
+MPProcess * process_duplicate     (MPProcess          *process);
+void        process_sections      (MPProcess          *process,
+				   SectionFunc         func,
+				   gpointer            user_data);
+char **     process_parse_exec    (const char         *exec_string);
+char *      process_find_exec     (char              **args);
+GList *     process_get_clones    (MPProcess          *process);
+void        process_start_input   (MPProcess          *process);
+void        process_stop_input    (MPProcess          *process);
+gboolean    process_find_line     (MPProcess          *process,
+				   void               *address,
+				   const char        **filename,
+				   char              **functionname,
+				   unsigned int       *line);
+void        process_dump_stack    (MPProcess          *process,
+				   FILE               *out,
+				   gint                stack_size,
+				   void              **stack);
+Symbol *    process_locate_symbol (MPProcess          *process,
+				   guint               addr);
 
 #endif /* __PROCESS_H__ */

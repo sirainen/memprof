@@ -21,6 +21,8 @@
 
 #define _GNU_SOURCE
 
+#include "config.h"
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <glade/glade.h>
@@ -31,46 +33,57 @@
 #include "process.h"
 #include "profile.h"
 
-#include "config.h"
+typedef struct _ProcessWindow ProcessWindow;
 
-MPProcess *current_process;
-Profile *current_profile;
-GSList *current_leaks;
+struct _ProcessWindow {
+	MPProcess *process;
+	Profile *profile;
+	GSList *leaks;
+
+	GtkWidget *main_window;
+	GtkWidget *main_notebook;
+	GtkWidget *n_allocations_label;
+	GtkWidget *bytes_per_label;
+	GtkWidget *total_bytes_label;
+
+	GtkWidget *profile_func_clist;
+	GtkWidget *profile_caller_clist;
+	GtkWidget *profile_child_clist;
+
+	GtkWidget *leak_block_clist;
+	GtkWidget *leak_stack_clist;
+
+	GtkWidget *usage_max_label;
+	GtkWidget *usage_canvas;
+
+	guint usage_max;
+	guint usage_high;
+	guint usage_leaked;
+
+	GnomeCanvasItem *usage_frame;
+	GnomeCanvasItem *usage_current_bar;
+	GnomeCanvasItem *usage_high_bar;
+	GnomeCanvasItem *usage_leak_bar;
+
+	guint status_update_timeout;
+
+	gboolean follow_fork : 1;
+	gboolean follow_exec : 1;
+};
 
 char *glade_file;
-
-GtkWidget *main_window;
-GtkWidget *main_notebook;
-GtkWidget *n_allocations_label;
-GtkWidget *bytes_per_label;
-GtkWidget *total_bytes_label;
-
-GtkWidget *profile_func_clist;
-GtkWidget *profile_caller_clist;
-GtkWidget *profile_child_clist;
-
-GtkWidget *leak_block_clist;
-GtkWidget *leak_stack_clist;
-
-GtkWidget *usage_max_label;
-GtkWidget *usage_canvas;
-
-guint usage_max = 32*1024;
-guint usage_high = 0;
-guint usage_leaked = 0;
-
-GnomeCanvasItem *usage_frame;
-GnomeCanvasItem *usage_current_bar;
-GnomeCanvasItem *usage_high_bar;
-GnomeCanvasItem *usage_leak_bar;
-
-guint status_update_timeout;
 
 #define DEFAULT_SKIP "g_malloc g_malloc0 g_realloc g_strdup strdup strndup"
 #define DEFAULT_STACK_COMMAND "emacsclient -n +%l \"%f\""
 
+static ProcessWindow *process_window_new (void);
+static void process_window_destroy (ProcessWindow *pwin);
+
 static int n_skip_funcs;
 static char **skip_funcs;
+
+static gboolean default_follow_fork = FALSE;
+static gboolean default_follow_exec = FALSE;
 
 char *stack_command;
 
@@ -83,100 +96,103 @@ static gboolean
 update_status (gpointer data)
 {
 	char *tmp;
+	ProcessWindow *pwin = (ProcessWindow *)data;
 
-	tmp = g_strdup_printf ("%d", current_process->bytes_used);
-	gtk_label_set_text (GTK_LABEL (total_bytes_label), tmp);
+	tmp = g_strdup_printf ("%d", pwin->process->bytes_used);
+	gtk_label_set_text (GTK_LABEL (pwin->total_bytes_label), tmp);
 	g_free (tmp);
 
-	tmp = g_strdup_printf ("%d", current_process->n_allocations);
-	gtk_label_set_text (GTK_LABEL (n_allocations_label), tmp);
+	tmp = g_strdup_printf ("%d", pwin->process->n_allocations);
+	gtk_label_set_text (GTK_LABEL (pwin->n_allocations_label), tmp);
 	g_free (tmp);
 
-	if (current_process->n_allocations == 0)
+	if (pwin->process->n_allocations == 0)
 		tmp = g_strdup("-");
 	else
 		tmp = g_strdup_printf ("%.2f",
-				       (double)current_process->bytes_used /
-					       current_process->n_allocations);
-	gtk_label_set_text (GTK_LABEL (bytes_per_label), tmp);
+				       (double)pwin->process->bytes_used /
+					       pwin->process->n_allocations);
+	gtk_label_set_text (GTK_LABEL (pwin->bytes_per_label), tmp);
 	g_free (tmp);
 
-	if (current_process->bytes_used > usage_max) {
-		while ((current_process->bytes_used > usage_max))
-			usage_max *= 2;
+	if (pwin->process->bytes_used > pwin->usage_max) {
+		while ((pwin->process->bytes_used > pwin->usage_max))
+			pwin->usage_max *= 2;
 	
-		tmp = g_strdup_printf ("%dk", usage_max / 1024);
-		gtk_label_set_text (GTK_LABEL (usage_max_label), tmp);
+		tmp = g_strdup_printf ("%dk", pwin->usage_max / 1024);
+		gtk_label_set_text (GTK_LABEL (pwin->usage_max_label), tmp);
 		g_free (tmp);
 	}
 
-	usage_high = MAX (current_process->bytes_used, usage_high);
+	pwin->usage_high = MAX (pwin->process->bytes_used, pwin->usage_high);
 	
-	gnome_canvas_item_set (usage_current_bar,
-			       "x2", ((double)usage_canvas->allocation.width *
-				      (double)current_process->bytes_used / usage_max),
+	gnome_canvas_item_set (pwin->usage_current_bar,
+			       "x2", ((double)pwin->usage_canvas->allocation.width *
+				      (double)pwin->process->bytes_used / pwin->usage_max),
 			       NULL);
-	gnome_canvas_item_set (usage_high_bar,
-			       "x2", ((double)usage_canvas->allocation.width *
-				      (double)usage_high / usage_max),
+	gnome_canvas_item_set (pwin->usage_high_bar,
+			       "x2", ((double)pwin->usage_canvas->allocation.width *
+				      (double)pwin->usage_high / pwin->usage_max),
 			       NULL);
-	gnome_canvas_item_set (usage_leak_bar,
-			       "x2", ((double)usage_canvas->allocation.width *
-				      (double)usage_leaked / usage_max),
+	gnome_canvas_item_set (pwin->usage_leak_bar,
+			       "x2", ((double)pwin->usage_canvas->allocation.width *
+				      (double)pwin->usage_leaked / pwin->usage_max),
 			       NULL);
 	
 	return TRUE;
 }
 
 static void
-usage_canvas_size_allocate (GtkWidget *widget, GtkAllocation *allocation)
+usage_canvas_size_allocate (GtkWidget     *widget,
+			    GtkAllocation *allocation,
+			    ProcessWindow *pwin)
 {
-	if (!usage_frame) {
-		usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-							gnome_canvas_rect_get_type (),
-							"x1", 0.0,
-							"y1", 0.0,
-							"outline_color", "black", 
-							"fill_color", "blue",
-							NULL);
-		usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-							   gnome_canvas_rect_get_type (),
-							   "x1", 0.0,
-							   "y1", 0.0,
-							   "outline_color", "black", 
-							   "fill_color", "yellow",
-							   NULL);
-		usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
+	if (!pwin->usage_frame) {
+		pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
+							      gnome_canvas_rect_get_type (),
+							      "x1", 0.0,
+							      "y1", 0.0,
+							      "outline_color", "black", 
+							      "fill_color", "blue",
+							      NULL);
+		pwin->usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
+								 gnome_canvas_rect_get_type (),
+								 "x1", 0.0,
+								 "y1", 0.0,
+								 "outline_color", "black", 
+								 "fill_color", "yellow",
+								 NULL);
+		pwin->usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
 							 gnome_canvas_rect_get_type (),
 							 "x1", 0.0,
 							 "y1", 0.0,
 							 "outline_color", "black", 
 							 "fill_color", "red",
 							 NULL);
-		usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
-						     gnome_canvas_rect_get_type (),
-						     "x1", 0.0,
-						     "y1", 0.0,
-						     "outline_color", "black", 
-						     "fill_color", NULL,
-						     NULL);
+		pwin->usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (widget)),
+							   gnome_canvas_rect_get_type (),
+							   "x1", 0.0,
+							   "y1", 0.0,
+							   "outline_color", "black", 
+							   "fill_color", NULL,
+							   NULL);
 	}
 
 	gnome_canvas_set_scroll_region (GNOME_CANVAS (widget),
 					0, 0,
 					allocation->width, allocation->height);
 		
-	gnome_canvas_item_set (usage_frame,
+	gnome_canvas_item_set (pwin->usage_frame,
 			       "x2", (double)allocation->width - 1,
 			       "y2", (double)allocation->height - 1,
 			       NULL);
-	gnome_canvas_item_set (usage_current_bar,
+	gnome_canvas_item_set (pwin->usage_current_bar,
 			       "y2", (double)allocation->height - 1,
 			       NULL);
-	gnome_canvas_item_set (usage_high_bar,
+	gnome_canvas_item_set (pwin->usage_high_bar,
 			       "y2", (double)allocation->height - 1,
 			       NULL);
-	gnome_canvas_item_set (usage_leak_bar,
+	gnome_canvas_item_set (pwin->usage_leak_bar,
 			       "y2", (double)allocation->height - 1,
 			       NULL);
 }
@@ -263,19 +279,25 @@ profile_fill_ref_clist (GtkWidget *clist, GList *refs)
 }
 
 static void
-profile_func_select_row (GtkWidget *widget, gint row, gint column, GdkEvent *event)
+profile_func_select_row (GtkWidget     *widget,
+			 gint           row,
+			 gint           column,
+			 GdkEvent      *event,
+			 ProcessWindow *pwin)
 {
 	ProfileFunc *function = gtk_clist_get_row_data (GTK_CLIST (widget), row);
 
 	if (function == NULL)
 		return;
 
-	profile_fill_ref_clist (profile_child_clist, function->children);
-	profile_fill_ref_clist (profile_caller_clist, function->inherited);
+	profile_fill_ref_clist (pwin->profile_child_clist, function->children);
+	profile_fill_ref_clist (pwin->profile_caller_clist, function->inherited);
 }
 
 static gboolean
-profile_ref_button_press (GtkWidget *widget, GdkEventButton *event, gpointer data)
+profile_ref_button_press (GtkWidget      *widget,
+			  GdkEventButton *event,
+			  ProcessWindow  *pwin)
 {
 	if (event->window == GTK_CLIST (widget)->clist_window &&
 	    event->type == GDK_2BUTTON_PRESS) {
@@ -290,11 +312,11 @@ profile_ref_button_press (GtkWidget *widget, GdkEventButton *event, gpointer dat
 			ProfileFuncRef *ref;
 			ref = gtk_clist_get_row_data (GTK_CLIST (widget), my_row);
 
-			function_row = gtk_clist_find_row_from_data (GTK_CLIST (profile_func_clist), ref->function);
+			function_row = gtk_clist_find_row_from_data (GTK_CLIST (pwin->profile_func_clist), ref->function);
 
 			if (function_row != -1) {
-				gtk_clist_select_row (GTK_CLIST (profile_func_clist), function_row, 0);
-				gtk_clist_moveto (GTK_CLIST (profile_func_clist),
+				gtk_clist_select_row (GTK_CLIST (pwin->profile_func_clist), function_row, 0);
+				gtk_clist_moveto (GTK_CLIST (pwin->profile_func_clist),
 						  function_row, -1, 0.5, 0.0);
 			}
 		}
@@ -307,13 +329,13 @@ profile_ref_button_press (GtkWidget *widget, GdkEventButton *event, gpointer dat
 }
 
 static void
-profile_fill (void)
+profile_fill (ProcessWindow *pwin, GtkCList *clist)
 {
 	int i, row;
 
-	gtk_clist_clear (GTK_CLIST (profile_func_clist));
-	for (i=0; i<current_profile->n_functions; i++) {
-		ProfileFunc *function = current_profile->functions[i];
+	gtk_clist_clear (clist);
+	for (i=0; i<pwin->profile->n_functions; i++) {
+		ProfileFunc *function = pwin->profile->functions[i];
 		char *data[3];
 		char buf[32];
 		
@@ -324,16 +346,16 @@ profile_fill (void)
 		g_snprintf(buf, 32, "%u", function->total);
 		data[2] = g_strdup (buf);
 
-		row = gtk_clist_append (GTK_CLIST (profile_func_clist), data);
+		row = gtk_clist_append (clist, data);
 
 		g_free (data[1]);
 		g_free (data[2]);
 
-		gtk_clist_set_row_data (GTK_CLIST (profile_func_clist), row, function);
+		gtk_clist_set_row_data (clist, row, function);
 	}
 
-	if (GTK_CLIST (profile_func_clist)->rows > 0)
-		profile_func_select_row (profile_func_clist, 0, 0, NULL);
+	if (clist->rows > 0)
+		profile_func_select_row (GTK_WIDGET (clist), 0, 0, NULL, pwin);
 }
 
 
@@ -342,7 +364,11 @@ profile_fill (void)
  ************************************************************/
 
 static void
-leak_block_select_row (GtkWidget *widget, gint row, gint column, GdkEvent *event)
+leak_block_select_row (GtkWidget     *widget,
+		       gint           row,
+		       gint           column,
+		       GdkEvent      *event,
+		       ProcessWindow *pwin)
 {
 	Block *block = gtk_clist_get_row_data (GTK_CLIST (widget), row);
 	int i;
@@ -350,7 +376,7 @@ leak_block_select_row (GtkWidget *widget, gint row, gint column, GdkEvent *event
 	if (block == NULL)
 		return;
 
-	gtk_clist_clear (GTK_CLIST (leak_stack_clist));
+	gtk_clist_clear (GTK_CLIST (pwin->leak_stack_clist));
 	for (i = 0; i < block->stack_size; i++) {
 		char *data[3];
 		char buf[32];
@@ -358,7 +384,7 @@ leak_block_select_row (GtkWidget *widget, gint row, gint column, GdkEvent *event
 		char *functionname;
 		unsigned int line;
 		
-		if (!process_find_line (current_process, block->stack[i],
+		if (!process_find_line (pwin->process, block->stack[i],
 					&filename, &functionname, &line)) {
 			functionname = g_strdup ("(???)");
 			filename = "(???)";
@@ -372,20 +398,20 @@ leak_block_select_row (GtkWidget *widget, gint row, gint column, GdkEvent *event
 		
 		data[2] = (char *)filename;
 
-		gtk_clist_append (GTK_CLIST (leak_stack_clist), data);
+		gtk_clist_append (GTK_CLIST (pwin->leak_stack_clist), data);
 		free (data[0]);
 	}
 		
 }
 
 static void
-leaks_fill (void)
+leaks_fill (ProcessWindow *pwin, GtkCList *clist)
 {
 	gint row;
 	GSList *tmp_list;
 
-	gtk_clist_clear (GTK_CLIST (leak_block_clist));
-	tmp_list = current_leaks;
+	gtk_clist_clear (clist);
+	tmp_list = pwin->leaks;
 	while (tmp_list) {
 		char *data[3];
 		char buf[32];
@@ -397,7 +423,7 @@ leaks_fill (void)
 		Block *block = tmp_list->data;
 
 		for (frame = 0 ; frame < block->stack_size ; frame++) {
-			if (process_find_line (current_process, block->stack[frame],
+			if (process_find_line (pwin->process, block->stack[frame],
 					       &filename, &functionname, &line)) {
 				int i;
 				for (i = 0; i < n_skip_funcs; i++) {
@@ -423,8 +449,8 @@ leaks_fill (void)
 
 		data[2] = functionname;
 		
-		row = gtk_clist_append (GTK_CLIST (leak_block_clist), data);
-		gtk_clist_set_row_data (GTK_CLIST (leak_block_clist), row, block);
+		row = gtk_clist_append (clist, data);
+		gtk_clist_set_row_data (clist, row, block);
 
 		g_free (data[0]);
 		g_free (data[1]);
@@ -433,18 +459,18 @@ leaks_fill (void)
 		tmp_list = tmp_list->next;
 	}
 
-	if (GTK_CLIST (leak_block_clist)->rows > 0)
-		leak_block_select_row (leak_block_clist, 0, 0, NULL);
+	if (clist->rows > 0)
+		leak_block_select_row (GTK_WIDGET (clist), 0, 0, NULL, pwin);
 }
 
 static void
-leak_stack_run_command (Block *block, int frame)
+leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 {
 	const char *filename;
 	char *functionname;
 	unsigned int line;
 
-	if (process_find_line (current_process, block->stack[frame],
+	if (process_find_line (pwin->process, block->stack[frame],
 			       &filename, &functionname, &line)) {
 		
 		GString *command = g_string_new (NULL);
@@ -490,7 +516,9 @@ leak_stack_run_command (Block *block, int frame)
 }
 
 static gboolean
-leak_stack_button_press (GtkWidget *widget, GdkEventButton *event, gpointer data)
+leak_stack_button_press (GtkWidget      *widget,
+			 GdkEventButton *event,
+			 ProcessWindow  *pwin)
 {
 	if (event->window == GTK_CLIST (widget)->clist_window &&
 	    event->type == GDK_2BUTTON_PRESS) {
@@ -505,12 +533,12 @@ leak_stack_button_press (GtkWidget *widget, GdkEventButton *event, gpointer data
 			Block *block;
 			gint block_row;
 
-			g_return_val_if_fail (GTK_CLIST (leak_block_clist)->selection, FALSE);
+			g_return_val_if_fail (GTK_CLIST (pwin->leak_block_clist)->selection, FALSE);
 
-			block_row = GPOINTER_TO_INT (GTK_CLIST (leak_block_clist)->selection->data);
-			block = gtk_clist_get_row_data (GTK_CLIST (leak_block_clist), block_row);
+			block_row = GPOINTER_TO_INT (GTK_CLIST (pwin->leak_block_clist)->selection->data);
+			block = gtk_clist_get_row_data (GTK_CLIST (pwin->leak_block_clist), block_row);
 
-			leak_stack_run_command (block, my_row);
+			leak_stack_run_command (pwin, block, my_row);
 		}
 
 		gtk_signal_emit_stop_by_name (GTK_OBJECT (widget), "button_press_event");
@@ -567,14 +595,76 @@ get_filename (const gchar *title,
 	return filename;
 }
 
-void
-exit_cb ()
+/* Really ugly utility function to retrieve the ProcessWindow from
+ * either a menu_item or toolbar item.
+ */
+ProcessWindow *
+pwin_from_widget (GtkWidget *widget)
 {
-	gtk_main_quit ();
+	GtkWidget *app;
+
+	if (GTK_IS_MENU_ITEM (widget)) {
+		GtkWidget *menu_shell = widget->parent;
+
+		while (menu_shell && !GTK_IS_MENU_BAR (menu_shell)) {
+			menu_shell = GTK_MENU (menu_shell)->parent_menu_item->parent;
+		}
+		g_assert (menu_shell != NULL);
+
+		app = gtk_widget_get_toplevel (menu_shell);
+	} else
+		app = gtk_widget_get_toplevel (widget);
+		
+	return gtk_object_get_data (GTK_OBJECT (app), "process-window");
+}
+
+void
+close_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
+	process_window_destroy (pwin);
+}
+
+void
+exit_cb (GtkWidget *widget)
+{
+	GtkWidget *dialog;
+
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
+	dialog = gnome_message_box_new (_("Really quit MemProf?"), GNOME_MESSAGE_BOX_QUESTION,
+					GNOME_STOCK_BUTTON_YES, GNOME_STOCK_BUTTON_NO, NULL);
+
+	gnome_dialog_set_parent (GNOME_DIALOG (dialog), GTK_WINDOW (pwin->main_window));
+	
+	if (gnome_dialog_run (GNOME_DIALOG (dialog)) == 0)
+		gtk_main_quit ();
+}
+
+static MPProcess *
+create_child_process (MPProcess *parent_process, pid_t pid)
+{
+	ProcessWindow *pwin = process_window_new ();
+	if (parent_process)
+		pwin->process = process_duplicate (parent_process);
+	else
+		pwin->process = process_new ();
+
+	pwin->process->pid = pid;
+	
+	pwin->status_update_timeout =
+		g_timeout_add (100,
+			       update_status,
+			       pwin);
+
+	gtk_widget_show (pwin->main_window);
+	
+	return pwin->process;
 }
 
 static gboolean
-run_file (char **args)
+run_file (ProcessWindow *pwin, char **args)
 {
 	gboolean result;
 	char *path;
@@ -585,13 +675,14 @@ run_file (char **args)
 	path = process_find_exec (args);
 	
 	if (path) {
-		current_process = process_run (path, args);
+		pwin->process = process_new ();
+		process_run (pwin->process, path, args);
 		
-		if (!status_update_timeout)
-			status_update_timeout =
+		if (!pwin->status_update_timeout)
+			pwin->status_update_timeout =
 				g_timeout_add (100,
 					       update_status,
-					       NULL);
+					       pwin);
 		result = TRUE;
 		
 	} else {
@@ -607,12 +698,14 @@ run_file (char **args)
 
 
 void
-run_cb ()
+run_cb (GtkWidget *widget)
 {
        GladeXML *xml;
        GtkWidget *run_dialog;
        GtkWidget *entry;
 
+       ProcessWindow *pwin = pwin_from_widget (widget);
+       
        xml = glade_xml_new (glade_file, "RunDialog");
        run_dialog = glade_xml_get_widget (xml, "RunDialog");
        entry = glade_xml_get_widget (xml, "RunDialog-entry");
@@ -625,7 +718,7 @@ run_cb ()
 
        while (1) {
 	       gnome_dialog_set_parent (GNOME_DIALOG (run_dialog),
-					GTK_WINDOW (main_window));
+					GTK_WINDOW (pwin->main_window));
 	       if (gnome_dialog_run (GNOME_DIALOG (run_dialog)) == 0) {
 		       gchar **args;
 		       char *text;
@@ -634,7 +727,7 @@ run_cb ()
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 		       args = process_parse_exec (text);
 
-		       result = run_file (args);
+		       result = run_file (pwin, args);
 		       
 		       g_strfreev (args);
 		       g_free (text);
@@ -650,96 +743,106 @@ run_cb ()
 }
 
 void
-save_leak_cb ()
+save_leak_cb (GtkWidget *widget)
 {
 	static gchar *suggestion = NULL;
 	gchar *filename;
-
-	if (current_leaks) {
+	
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
+	if (pwin->leaks) {
 		filename = get_filename ("Save Leak Report", "Output file",
 					 suggestion ? suggestion : "memprof.leak");
 		if (filename) {
 			g_free (suggestion);
 			suggestion = filename;
 			
-			leaks_print (current_process, current_leaks, filename);
+			leaks_print (pwin->process, pwin->leaks, filename);
 		}
 	}
 }
 
 void
-save_profile_cb ()
+save_profile_cb (GtkWidget *widget)
 {
 	static gchar *suggestion = NULL;
 	gchar *filename;
 
-	if (current_profile) {
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
+	if (pwin->profile) {
 		filename = get_filename ("Save Profile", "Output file",
 					 suggestion ? suggestion : "memprof.out");
 		if (filename) {
 			g_free (suggestion);
 			suggestion = filename;
 			
-			profile_write (current_profile, filename);
+			profile_write (pwin->profile, filename);
 		}
 	}
 }
 
 void
-save_current_cb ()
+save_current_cb (GtkWidget *widget)
 {
-	switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (main_notebook))) {
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
+	switch (gtk_notebook_get_current_page (GTK_NOTEBOOK (pwin->main_notebook))) {
 	case 0:
-		save_profile_cb ();
+		save_profile_cb (widget);
 		break;
 	case 1:
-		save_leak_cb ();
+		save_leak_cb (widget);
 		break;
 	}
 }
 
 void
-generate_leak_cb ()
+generate_leak_cb (GtkWidget *widget)
 {
 	GSList *tmp_list;
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
 	
-	if (current_process) {
-		process_stop_input (current_process);
+	if (pwin->process) {
+		process_stop_input (pwin->process);
 
-		if (current_leaks)
-			g_slist_free (current_leaks);
-		current_leaks = leaks_find (current_process);
+		if (pwin->leaks)
+			g_slist_free (pwin->leaks);
+		pwin->leaks = leaks_find (pwin->process);
 
-		usage_leaked = 0;
-		tmp_list = current_leaks;
+		pwin->usage_leaked = 0;
+		tmp_list = pwin->leaks;
 		while (tmp_list) {
-			usage_leaked += ((Block *)tmp_list->data)->size;
+			pwin->usage_leaked += ((Block *)tmp_list->data)->size;
 			tmp_list = tmp_list->next;
 		}
 		
-		leaks_fill ();
-		gtk_notebook_set_page (GTK_NOTEBOOK (main_notebook), 1);
+		leaks_fill (pwin, GTK_CLIST (pwin->leak_block_clist));
+		gtk_notebook_set_page (GTK_NOTEBOOK (pwin->main_notebook), 1);
 
-		process_start_input (current_process);
+		process_start_input (pwin->process);
 	}
 }
 
 void
-generate_profile_cb ()
+generate_profile_cb (GtkWidget *widget)
 {
-	if (current_process) {
-		process_stop_input (current_process);
+	ProcessWindow *pwin = pwin_from_widget (widget);
+       
+	if (pwin->process) {
+		process_stop_input (pwin->process);
 
-		if (current_profile) {
-			profile_free (current_profile);
-			current_profile = NULL;
+		if (pwin->profile) {
+			profile_free (pwin->profile);
+			pwin->profile = NULL;
 		}
 
-		current_profile = profile_create (current_process, skip_funcs, n_skip_funcs);
-		process_start_input (current_process);
-		profile_fill ();
+		pwin->profile = profile_create (pwin->process, skip_funcs, n_skip_funcs);
+		process_start_input (pwin->process);
+		profile_fill (pwin, GTK_CLIST (pwin->profile_func_clist));
 
-		gtk_notebook_set_page (GTK_NOTEBOOK (main_notebook), 0);
+		gtk_notebook_set_page (GTK_NOTEBOOK (pwin->main_notebook), 0);
 	}
 }
 
@@ -878,7 +981,7 @@ skip_defaults_cb (GtkWidget *widget, GladeXML *preferences_xml)
 }
 
 void
-preferences_cb ()
+preferences_cb (GtkWidget *widget)
 {
        GladeXML *xml;
        GtkWidget *skip_clist;
@@ -922,18 +1025,33 @@ preferences_cb ()
 }
 
 void
-about_cb ()
+follow_fork_cb (GtkWidget *widget)
+{
+       ProcessWindow *pwin = pwin_from_widget (widget);
+       pwin->follow_fork = GTK_CHECK_MENU_ITEM (widget)->active;
+}
+
+void
+follow_exec_cb (GtkWidget *widget)
+{
+       ProcessWindow *pwin = pwin_from_widget (widget);
+}
+
+void
+about_cb (GtkWidget *widget)
 {
        GladeXML *xml;
        GtkWidget *dialog;
 
+       ProcessWindow *pwin = pwin_from_widget (widget);
+	
        xml = glade_xml_new (glade_file, "About");
        dialog = glade_xml_get_widget (xml, "About");
        gtk_object_destroy (GTK_OBJECT (xml));
 
        gtk_window_set_modal (GTK_WINDOW (dialog), TRUE);
        gnome_dialog_set_parent (GNOME_DIALOG (dialog),
-				GTK_WINDOW (main_window));
+				GTK_WINDOW (pwin->main_window));
 
        gtk_widget_show (dialog);
 }
@@ -965,9 +1083,11 @@ show_error (ErrorType error,
 	if (error == ERROR_WARNING)
 		gtk_widget_show (dialog);
 	else {
-		if (main_window)
+#if 0
+		if (pwin->main_window)
 			gnome_dialog_set_parent (GNOME_DIALOG (dialog),
-						 GTK_WINDOW (main_window));
+						 GTK_WINDOW (pwin->main_window));
+#endif		
 		gnome_dialog_run (GNOME_DIALOG (dialog));
 	}
 
@@ -989,59 +1109,106 @@ set_white_bg (GtkWidget *widget)
 }
 
 static void
-create_main_window (void)
+process_window_free (ProcessWindow *pwin)
+{
+	/* FIXME: we leak the process structure */
+	
+	if (pwin->leaks)
+		g_slist_free (pwin->leaks);
+
+	if (pwin->profile)
+		profile_free (pwin->profile);
+
+	g_free (pwin);
+}
+
+
+static void
+process_window_destroy (ProcessWindow *pwin)
+{
+	if (pwin->status_update_timeout)
+		g_source_remove (pwin->status_update_timeout);
+	
+	gtk_widget_destroy (pwin->main_window);
+}
+
+static ProcessWindow *
+process_window_new (void)
 {
        GladeXML *xml;
-       GtkWidget *vpaned;       
+       GtkWidget *vpaned;
+       ProcessWindow *pwin;
+       GtkWidget *menuitem;
+
+       pwin = g_new0 (ProcessWindow, 1);
+
+       pwin->process = NULL;
+       pwin->profile = NULL;
+       pwin->leaks = NULL;
+
+       pwin->usage_max = 32*1024;
+       pwin->usage_high = 0;
+       pwin->usage_leaked = 0;
 
        xml = glade_xml_new (glade_file, "MainWindow");
 
-       main_window = glade_xml_get_widget (xml, "MainWindow");
-       gtk_signal_connect (GTK_OBJECT (main_window), "destroy",
-			   GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
-       gtk_window_set_default_size (GTK_WINDOW (main_window), 400, 600);
+       pwin->main_window = glade_xml_get_widget (xml, "MainWindow");
+       
+       gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 400, 600);
 
-       main_notebook = glade_xml_get_widget (xml, "main-notebook");
+       gtk_object_set_data_full (GTK_OBJECT (pwin->main_window),
+				 "process-window",
+				 pwin, (GDestroyNotify)process_window_free);
 
-       n_allocations_label = glade_xml_get_widget (xml, "n-allocations-label");
-       bytes_per_label = glade_xml_get_widget (xml, "bytes-per-label");
-       total_bytes_label = glade_xml_get_widget (xml, "total-bytes-label");
+       pwin->main_notebook = glade_xml_get_widget (xml, "main-notebook");
 
-       profile_func_clist = glade_xml_get_widget (xml, "profile-func-clist");
-       profile_child_clist =  glade_xml_get_widget (xml, "profile-child-clist");
-       profile_caller_clist = glade_xml_get_widget (xml, "profile-caller-clist");
+       pwin->follow_fork = default_follow_fork;
+       pwin->follow_exec = default_follow_exec;
 
-       gtk_clist_set_column_width (GTK_CLIST (profile_func_clist), 0, 250);
-       gtk_clist_set_column_width (GTK_CLIST (profile_child_clist), 0, 250);
-       gtk_clist_set_column_width (GTK_CLIST (profile_caller_clist), 0, 250);
+       menuitem = glade_xml_get_widget (xml, "follow-fork");
+       gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_fork);
+       menuitem = glade_xml_get_widget (xml, "follow-exec");
+       gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (menuitem), pwin->follow_exec);
 
-       gtk_signal_connect (GTK_OBJECT (profile_func_clist), "select_row",
-			   GTK_SIGNAL_FUNC (profile_func_select_row), NULL);
-       gtk_signal_connect (GTK_OBJECT (profile_func_clist), "click_column",
+       pwin->n_allocations_label = glade_xml_get_widget (xml, "n-allocations-label");
+       pwin->bytes_per_label = glade_xml_get_widget (xml, "bytes-per-label");
+       pwin->total_bytes_label = glade_xml_get_widget (xml, "total-bytes-label");
+
+       pwin->profile_func_clist = glade_xml_get_widget (xml, "profile-func-clist");
+       pwin->profile_child_clist =  glade_xml_get_widget (xml, "profile-child-clist");
+       pwin->profile_caller_clist = glade_xml_get_widget (xml, "profile-caller-clist");
+
+       gtk_clist_set_column_width (GTK_CLIST (pwin->profile_func_clist), 0, 250);
+       gtk_clist_set_column_width (GTK_CLIST (pwin->profile_child_clist), 0, 250);
+       gtk_clist_set_column_width (GTK_CLIST (pwin->profile_caller_clist), 0, 250);
+
+       gtk_signal_connect (GTK_OBJECT (pwin->profile_func_clist), "select_row",
+			   GTK_SIGNAL_FUNC (profile_func_select_row), pwin);
+       gtk_signal_connect (GTK_OBJECT (pwin->profile_func_clist), "click_column",
 			   GTK_SIGNAL_FUNC (profile_func_click_column), NULL);
 
-       gtk_signal_connect (GTK_OBJECT (profile_caller_clist), "button_press_event",
-			   GTK_SIGNAL_FUNC (profile_ref_button_press), NULL);
-       gtk_signal_connect (GTK_OBJECT (profile_child_clist), "button_press_event",
-			   GTK_SIGNAL_FUNC (profile_ref_button_press), NULL);
+       gtk_signal_connect (GTK_OBJECT (pwin->profile_caller_clist), "button_press_event",
+			   GTK_SIGNAL_FUNC (profile_ref_button_press), pwin);
+       gtk_signal_connect (GTK_OBJECT (pwin->profile_child_clist), "button_press_event",
+			   GTK_SIGNAL_FUNC (profile_ref_button_press), pwin);
        
-       leak_block_clist = glade_xml_get_widget (xml, "leak-block-clist");
-       leak_stack_clist =  glade_xml_get_widget (xml, "leak-stack-clist");
+       pwin->leak_block_clist = glade_xml_get_widget (xml, "leak-block-clist");
+       pwin->leak_stack_clist =  glade_xml_get_widget (xml, "leak-stack-clist");
 
-       gtk_clist_set_column_width (GTK_CLIST (leak_stack_clist), 0, 250);
-       gtk_clist_set_column_width (GTK_CLIST (leak_stack_clist), 2, 500);
+       gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 0, 250);
+       gtk_clist_set_column_width (GTK_CLIST (pwin->leak_stack_clist), 2, 500);
 
-       gtk_signal_connect (GTK_OBJECT (leak_block_clist), "select_row",
-			   GTK_SIGNAL_FUNC (leak_block_select_row), NULL);
-       gtk_signal_connect (GTK_OBJECT (leak_stack_clist), "button_press_event",
-			   GTK_SIGNAL_FUNC (leak_stack_button_press), NULL);
+       gtk_signal_connect (GTK_OBJECT (pwin->leak_block_clist), "select_row",
+			   GTK_SIGNAL_FUNC (leak_block_select_row), pwin);
+       gtk_signal_connect (GTK_OBJECT (pwin->leak_stack_clist), "button_press_event",
+			   GTK_SIGNAL_FUNC (leak_stack_button_press), pwin);
 
-       usage_max_label = glade_xml_get_widget (xml, "usage-max-label");
-       usage_canvas = glade_xml_get_widget (xml, "usage-canvas");
+       pwin->usage_max_label = glade_xml_get_widget (xml, "usage-max-label");
+       pwin->usage_canvas = glade_xml_get_widget (xml, "usage-canvas");
 
-       set_white_bg (usage_canvas);
-       gtk_signal_connect (GTK_OBJECT (usage_canvas), "size_allocate",
-			   GTK_SIGNAL_FUNC (usage_canvas_size_allocate), NULL);
+       set_white_bg (pwin->usage_canvas);
+       gtk_signal_connect (GTK_OBJECT (pwin->usage_canvas), "size_allocate",
+			   GTK_SIGNAL_FUNC (usage_canvas_size_allocate), pwin);
               
        vpaned = glade_xml_get_widget (xml, "profile-vpaned");
        gtk_paned_set_position (GTK_PANED (vpaned), 150);
@@ -1051,18 +1218,25 @@ create_main_window (void)
 
        glade_xml_signal_autoconnect (xml);
        gtk_object_destroy (GTK_OBJECT (xml));
+
+       return pwin;
 }
 
 int
 main(int argc, char **argv)
 {
        static const struct poptOption memprof_popt_options [] = {
-	       { NULL, '\0', 0, NULL, 0 }
+	       { "follow-fork", '\0', POPT_ARG_NONE, &default_follow_fork, 0,
+		 N_("Create new windows for forked processes"), NULL },
+	       { "follow-exec", '\0', POPT_ARG_NONE, &default_follow_exec, 0,
+		 N_("Retain windows for processes after exec()"), NULL },
+	       { NULL, '\0', 0, NULL, 0 },
        };
        poptContext ctx;
 
        int init_results;
        const char **startup_args;
+       ProcessWindow *initial_window;
 
        bindtextdomain (PACKAGE, GNOMELOCALEDIR);
        textdomain (PACKAGE);
@@ -1080,18 +1254,19 @@ main(int argc, char **argv)
 	       show_error (ERROR_FATAL, _("Cannot find memprof.glade"));
        }
 
-       create_main_window();
-       process_init();
+       process_init(create_child_process);
+
+       initial_window = process_window_new();
 
        gnome_config_get_vector ("/MemProf/Options/skip_funcs=" DEFAULT_SKIP,
 				&n_skip_funcs, &skip_funcs);
        stack_command = gnome_config_get_string ("/MemProf/Options/stack_command=" DEFAULT_STACK_COMMAND);
 
-       gtk_widget_show (main_window);
+       gtk_widget_show (initial_window->main_window);
 
        startup_args = poptGetArgs (ctx);
        if (startup_args)
-	       run_file ((char **)startup_args);
+	       run_file (initial_window, (char **)startup_args);
        poptFreeContext (ctx);
        
        gtk_main ();

@@ -20,8 +20,17 @@ AC_PROG_CC
 AM_PROG_CC_STDC
 AC_PROG_INSTALL
 
+changequote(,)dnl
+if test "x$GCC" = "xyes"; then
+  case " $CFLAGS " in
+  *[\ \	]-Wall[\ \	]*) ;;
+  *) CFLAGS="$CFLAGS -Wall" ;;
+  esac
+fi
+changequote([,])dnl
+
 dnl Initialize gettext
-ALL_LINGUAS="fr ja sv"
+ALL_LINGUAS="fr ja sv it"
 AM_GNU_GETTEXT
 
 dnl GNOME checks (not using macros/ directory)
