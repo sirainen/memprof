@@ -1,3 +1,41 @@
+Sat Aug 10 23:38:52 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* memintercept-utils.[ch] Makefile.am: Split off part of 
+	memintercept.c (the stuff that doesn't really have anything 
+	to do with memory interception) into a separate file.
+
+	* memintercept.c: Use a trick from libc's memusage
+	to avoid the need for the starter malloc stuff, which
+	should make MemProf work with C++. (Fixes #53991)
+
+	* memintercept.c: Redo thread creation using 
+	atomic-increment/decrement to allocate from a fixed
+	number of slots 
+
+	* memintercept.c: Override fork() clone() as well
+	as __fork(), __clone(). (Fixes #66512, Soeren Sandmann)
+
+	* process.c (process_dump_stack): If the filename/line
+	wasn't found, don't try to print it.
+
+	* server.c process.c: A couple of debugging enhancements.
+
+	* server.c (control_func): Remove the 
+	"Unexpected connection from PID" warning - it occurs in
+	in legitimate cases when we aren't following forks.
+
+	* server.c (mp_server_class_init): Use VOID__OBJECT
+	for the marshaller (#86874, Gustavo Giraldez)
+
+	* server.c: When "following exec", set the pid on
+	the new process. (#86874, Gustavo Giraldez)
+
+	* server.c (mp_server_remove_process): Account for
+	the process being overwritten for --follow-exec.
+
+	* testmemprof.c (main): Remove the sleep; the fact that
+	we catch programs on exit means that it isn't needed.
+
 Sun Aug 11 15:29:54 2002  Kristian Rietveld  <kris@gtk.org>
 
 	* Release 0.5.0

@@ -141,7 +141,7 @@ mp_server_class_init (MPServerClass *class)
 				      G_SIGNAL_RUN_LAST,
 				      G_STRUCT_OFFSET (MPServerClass, process_created),
 				      NULL, NULL,
-				      g_cclosure_marshal_VOID__POINTER,
+				      g_cclosure_marshal_VOID__OBJECT,
 				      G_TYPE_NONE, 1, MP_TYPE_PROCESS);
 
 		initialized = TRUE;
@@ -462,7 +462,12 @@ control_func (GIOChannel  *source,
 		process = mp_server_find_process (server, info.fork.new_pid);
 		if (process) {
 			if (process->follow_exec) {
+				MPProcess *old_process = process;
+				
 				process = process_new (server);
+				process->pid = old_process->pid;
+				process->parent = old_process->parent;
+				
 				mp_server_add_process (server, process); /* Overwrites old process */
 				mp_server_process_created (server, process);
 
@@ -473,7 +478,7 @@ control_func (GIOChannel  *source,
 		if (!process) {
 			parent_process = mp_server_find_process (server, info.fork.pid);
 			if (!parent_process) {
-				g_warning ("Unexpected connection from %d", info.fork.new_pid);
+				/* This is a child of a forked child we aren't tracing, ignore it */
 				goto out;
 			}
 			
@@ -488,6 +493,9 @@ control_func (GIOChannel  *source,
 		break;
 	case MI_CLONE:
 		parent_process = mp_server_find_process (server, info.fork.pid);
+		if (!parent_process)
+			g_error ("Clone of nonexistant parent process\n");
+		
 		process = process_new (server);
 		process_set_status (process, MP_PROCESS_RUNNING);
 		
@@ -551,9 +559,15 @@ mp_server_add_process (MPServer *server, MPProcess *process)
 void
 mp_server_remove_process (MPServer *server, MPProcess *process)
 {
+	MPProcess *in_table;
+	
 	g_return_if_fail (server->pid_table != NULL);
 
-	g_hash_table_remove (server->pid_table, GUINT_TO_POINTER (process->pid));
+	/* In the case of --follow-exec, the process in the table could have been overwritten
+	 */
+	in_table = g_hash_table_lookup (server->pid_table, GUINT_TO_POINTER (process->pid));
+	if (in_table == process)
+		g_hash_table_remove (server->pid_table, GUINT_TO_POINTER (process->pid));
 }
 
 typedef struct {

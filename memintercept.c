@@ -23,23 +23,37 @@
 #define _GNU_SOURCE
 
 #include <malloc.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <dlfcn.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
-#include <stdarg.h>
-#include "memintercept.h"
 
-#include <pthread.h>
+#include "memintercept.h"
+#include "memintercept-utils.h"
 
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
 
-static int initialized = 0;
+/* The code in this file is written to work for threaded operation without
+ * any reference to the thread library in operation. There are only
+ * two places where any interaction between threads is necessary -
+ * allocation of new slots in the pids[] array, and a parent thread
+ * waiting for a child thread to start.
+ */
+
+typedef struct {
+	uint32_t ref_count;
+	pid_t pid;
+	int outfd;
+	pid_t clone_pid;	/* See comments in clone_thunk */
+} ThreadInfo;
+
+static void new_process (ThreadInfo *thread,
+			 pid_t       old_pid,
+			 MIOperation operation);
 
 static int (*old_execve) (const char *filename,
 			  char *const argv[],
@@ -57,215 +71,150 @@ static void * (*old_realloc) (void *ptr, size_t size);
 static void (*old_free) (void *ptr);
 static void (*old__exit) (int status);
 
-#define MAX_THREADS 128
-
-static pthread_mutex_t malloc_mutex = PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+static int initialized = 0;
 static int tracing = 1;
 
-static int pids[MAX_THREADS];
-static int outfds[MAX_THREADS];
+#define MAX_THREADS 128
+
+static ThreadInfo threads[MAX_THREADS];
 static char *socket_path = NULL;
 static unsigned int seqno = 0;
 
-#define STARTER_SIZE 1024
-static char starter_mem[STARTER_SIZE];
-int starter_alloced = 0;
-int starter_last = 0;
+#define ENABLE_DEBUG
 
-#undef ENABLE_DEBUG
+#ifdef ENABLE_DEBUG
+#define MI_DEBUG(arg) mi_debug arg
+#else /* !ENABLE_DEBUG */
+#define MI_DEBUG(arg) (void)0
+#endif /* ENABLE_DEBUG */
 
-#define MI_LOCK() pthread_mutex_lock (&malloc_mutex);
-#define MI_UNLOCK() pthread_mutex_unlock (&malloc_mutex);
+static ThreadInfo *
+allocate_thread (pid_t pid)
+{
+	int i;
+	
+	for (i = 0; i < MAX_THREADS; i++) {
+		if (threads[i].ref_count == 0) {
+			unsigned int new_count = mi_atomic_increment (&threads[i].ref_count);
+			if (new_count == 1) {
+				threads[i].pid = pid;
+				threads[i].clone_pid = 0;
+				return &threads[i];
+			} else
+				mi_atomic_decrement (&threads[i].ref_count);
+		}
+	}
+	
+	mi_debug ("Can't find free thread slot");
+	_exit(1);
+
+	return NULL;
+}
+
+static void
+release_thread (ThreadInfo *thread)
+{
+	thread->pid = 0;
+	mi_atomic_decrement (&thread->ref_count);
+}
+
+static ThreadInfo *
+find_thread (pid_t pid)
+{
+	int i;
+#if 1
+	ThreadInfo *thread;
+#else
+	/* Over-optimized GCC/GLibc extension happy version
+	 * Requires gcc-3.2 and glibc-2.3.
+	 */
+	static __thread ThreadInfo *thread = NULL;
+	int i;
+
+	if (__builtin_expect (thread == NULL, 0))
+		return thread;
+#endif	
+
+	for (i=0; i < MAX_THREADS; i++)
+		if (threads[i].pid == pid) {
+			thread = &threads[i];
+
+			if (thread->clone_pid) {
+				/* See comments in clone_thunk() */
+				new_process (thread, thread->clone_pid, MI_CLONE);
+				thread->clone_pid = 0;
+			}
+
+			return thread;
+		}
+
+	mi_debug ("Thread not found");
+	_exit(1);
+
+	return NULL;
+}
+
+static void
+initialize ()
+{
+	/* It's possible to get recursion here, since dlsym() can trigger
+	 * memory allocation. To deal with this, we flag the initialization
+	 * condition specially, then use the special knowledge that it's
+	 * OK for malloc to fail during initialization (libc degrades
+	 * gracefully), so we just return NULL from malloc(), realloc().
+	 *
+	 * This trick is borrowed from from libc's memusage.
+	 */
+	initialized = -1;
+	old_malloc = dlsym(RTLD_NEXT, "__libc_malloc");
+	old_realloc = dlsym(RTLD_NEXT, "__libc_realloc");
+	old_free = dlsym(RTLD_NEXT, "__libc_free");
+	old_calloc = dlsym(RTLD_NEXT, "__libc_calloc");
+	old_memalign = dlsym(RTLD_NEXT, "__libc_memalign");
+	old_execve = dlsym(RTLD_NEXT, "execve");
+	old_fork = dlsym(RTLD_NEXT, "__fork");
+	old_vfork = dlsym(RTLD_NEXT, "__vfork");
+	old_clone = dlsym(RTLD_NEXT, "__clone");
+	old__exit = dlsym(RTLD_NEXT, "_exit");
+	initialized = 1;
+}
 
 static void
 abort_unitialized (const char *call)
 {
-	static const char msg[] = "MemProf: unexpected library call during initialization: ";
-	
-	write (2, msg, sizeof(msg));
-	write (2, call, strlen (call));
-	write (2, "\n", 1);
+	mi_printf (2, "MemProf: unexpected library call during initialization: %s\n", call);
 	abort();
 }
 
-#ifdef ENABLE_DEBUG
 static void
-write_unsigned (unsigned long num, unsigned int radix)
+stop_tracing (int fd)
 {
-	char buffer[64];
-	unsigned long tmp;
-	char c;
-	int i, n;
+	MI_DEBUG (("Stopping tracing\n"));
 
-	if (!num) {
-		write (2, "0", 1);
-		return;
-	} 
-
-	if (radix == 16)
-		write (2, "0x", 2);
-	else if (radix == 8)
-		write (2, "0", 2);
-	
-	n = 0;
-	tmp = num;
-	while (tmp) {
-		tmp /= radix;
-		n++;
-	}
-
-	i = n;
-	while (num) {
-		i--;
-		c = (num % radix);
-		if (c < 10)
-			buffer[i] = c + '0';
-		else
-			buffer[i] = c + 'a' - 10;
-		num /= radix;
-	}
-
-	write (2, buffer, n);
-}
-
-static void
-write_signed (long num, unsigned int radix)
-{
-	if (num < 0) {
-		write (2, "-", 1);
-		num = -num;
-	}
-
-	write_unsigned (num, radix);
-}
-
-static void
-debug (const char *format, ...)
-{
-	const char *p, *q;
-	int argi;
-	size_t argsize;
-	const void *argp;
-	const char *args = NULL;
-	long argl = 0;
-	va_list va;
-	
-	va_start (va, format);
-
-	p = q = format;
-	while ((p = strchr (p, '%'))) {
-		int is_size = 0;
-			
-		write (2, q, p - q);
-		q = p + 2;
-
-	again:
-		switch (*(p + 1)) {
-		case 'z':
-			is_size = 1;
-			q++;
-			p++;
-			goto again;
-		case 'd':
-		case 'u':
-		case 'x':
-			if (is_size) {
-				argsize = va_arg (va, size_t);
-				argl = argsize;
-			} else {
-				argi = va_arg (va, int);
-				argl = argi;
-			}
-			break;
-		case 'p':
-			argp = va_arg (va, void *);
-			argl = (long)argp;
-			break;
-		case 's':
-			args = va_arg (va, const char *);
-			break;
-		}
-
-		switch (*(p + 1)) {
-		case '%':
-			write (2, "%", 1);
-			break;
-		case 'z':
-			is_size = 1;
-			q++;
-			p++;
-			goto again;
-			break;
-		case 'P':
-			write_signed (getpid(), 10);
-			break;
-		case 'd':
-			write_signed (argl, 10);
-			break;
-		case 'u':
-			write_unsigned (argl, 10);
-			break;
-		case 'p':
-		case 'x':
-			write_unsigned (argl, 16);
-			break;
-		case 's':
-			write (2, args, strlen (args));
-			break;
-		case 0:
-			q--;
-			break;
-		}
-		p = q;
-	}
-
-	va_end (va);
-
-	write (2, q, strlen (q));
-}
-#define DEBUG(arg) debug arg
-#else /* !ENABLE_DEBUG */
-#define DEBUG(arg) (void)0
-#endif /* ENABLE_DEBUG */
-
-static int
-write_all (int fd, void *buf, int total)
-{
-	int count;
-	int written = 0;
-
-	while (written < total) {
-		/* Use send() to avoid EPIPE errors */
-		count = send (fd, buf + written, total - written, MSG_NOSIGNAL);
-		if (count < 0) {
-			if (errno != EINTR)
-				goto error;
-		} else {
-			if (count == 0)
-				goto error;
-			written += count;
-		}
-	}
-
-	return 1;
-
- error:
 	tracing = 0;
 	close (fd);
 	putenv ("_MEMPROF_SOCKET=");
-	return 0;
 }
 
 static void
-new_process (pid_t old_pid, MIOperation operation)
+new_process (ThreadInfo *thread,
+	     pid_t old_pid,
+	     MIOperation operation)
 {
 	MIInfo info;
 	struct sockaddr_un addr;
 	int addrlen;
 	char response;
 	int outfd;
-	int i, count;
+	int count;
+	
 	int old_errno = errno;
+#ifdef ENABLE_DEBUG
+	static const char *const operation_names[] = { NULL, NULL, NULL, NULL, "NEW", "FORK", "CLONE", NULL };
+#endif	
+
+	MI_DEBUG (("New process, operation = %s, old_pid = %d\n",
+		   operation_names[operation], old_pid));
 
 	memset (&addr, 0, sizeof(addr));
 
@@ -277,18 +226,17 @@ new_process (pid_t old_pid, MIOperation operation)
 
 	outfd = socket (PF_UNIX, SOCK_STREAM, 0);
 	if (outfd < 0) {
-			write (2, "FRUG", 4);
-			_exit(1);
+		mi_perror ("error creating socket");
+		_exit(1);
 	}
 	
 	if (connect (outfd, (struct sockaddr *)&addr, addrlen) < 0) {
-		fprintf (stderr, "Error connecting to memprof: %s!\n",
-			 strerror (errno));
+		mi_perror ("Error connecting to memprof");
 		_exit (1);
 	}
 	if (fcntl (outfd, F_SETFD, FD_CLOEXEC) < 0) {
-			write (2, "FRAG", 4);
-			_exit(1);
+		mi_perror ("error calling fcntl");
+		_exit(1);
 	}
 
 	info.fork.operation = operation;
@@ -297,18 +245,15 @@ new_process (pid_t old_pid, MIOperation operation)
 	info.fork.new_pid = getpid();
 	info.fork.seqno = 0;
 
-	while (1) {
-		for (i = 0; outfds[i] && i < MAX_THREADS; i++)
-			/* nothing */;
-		outfds[i] = outfd;
-		if (outfds[i] == outfd)
-			break;
-	}
-	pids[i] = info.fork.new_pid;
+	if (!thread)
+		thread = allocate_thread (info.fork.new_pid);
 
-	if (!write_all (outfd, &info, sizeof (MIInfo)))
+	thread->outfd = outfd;
+
+	if (!mi_write (outfd, &info, sizeof (MIInfo))) {
+		stop_tracing (outfd);
 		count = 0;
-	else {
+	} else {
 		while (1) {
 			count = read (outfd, &response, 1);
 			if (count >= 0 || errno != EINTR)
@@ -317,37 +262,48 @@ new_process (pid_t old_pid, MIOperation operation)
 	}
 
 	if (count != 1 || !response) {
-		/* Stop tracing */
-		tracing = 0;
-		close (outfd);
-		DEBUG (("PID %d", getpid()));
-		write (2, " STOP\n", 6);
-		putenv ("_MEMPROF_SOCKET=");
+		stop_tracing (outfd);
 	}
 
 	errno = old_errno;
 }
 
 static void 
-memprof_init ()
+memprof_init (void)
 {
 	int old_errno = errno;
 
 	socket_path = getenv ("_MEMPROF_SOCKET");
 	
 	if (!socket_path) {
-		fprintf(stderr, "libmemintercept: must be used with memprof\n");
-		exit(1);
+		mi_printf (2, "libmemintercept: must be used with memprof\n");
+		exit (1);
 	}
 
-	DEBUG (("PID %d, _MEMPROF_SOCKET = %s\n", getpid(), socket_path));
+	MI_DEBUG (("_MEMPROF_SOCKET = %s\n", socket_path));
 	
 	if (socket_path[0] == '\0') /* tracing off */
 		tracing = 0;
 	else
-		new_process (0, MI_NEW);
+		new_process (NULL, 0, MI_NEW);
 
 	errno = old_errno;
+}
+
+static int
+check_init ()
+{
+	if (initialized <= 0) {
+		if (initialized < 0)
+			return 0;
+
+		initialize ();
+	}
+	
+	if (!socket_path)
+		memprof_init ();
+
+	return 1;
 }
 
 #define OUT_BUF_SIZE 4096
@@ -360,7 +316,7 @@ stack_trace (MIInfo *info)
 	void **sp;
 	char outbuf[OUT_BUF_SIZE];
 	void **stack_buffer = NULL;
-	int i;
+	ThreadInfo *thread;
 	int old_errno = errno;
 	
 	MIInfo *outinfo;
@@ -379,7 +335,7 @@ stack_trace (MIInfo *info)
 	
 	while (sp) {
 		if (n - 2 == STACK_MAX_SIZE) {
-			fprintf (stderr, "Stack too large for atomic write, truncating!\n");
+			mi_printf (2, "libmemintercept.so: Stack too large, truncating!\n");
 			break;
 		/* Skip over __libc_malloc and hook */
 		} else if (n > 1) {
@@ -393,15 +349,10 @@ stack_trace (MIInfo *info)
 	outinfo->alloc.pid = getpid();
 	outinfo->alloc.seqno = seqno++;
 
-	for (i=0; pids[i] && i<MAX_THREADS; i++)
-		if (pids[i] == outinfo->alloc.pid)
-			break;
-
-	if (i == MAX_THREADS) {
-		write (2, "ARGH", 4);
-	}
-
-	write_all (outfds[i], outbuf, sizeof (MIInfo) + outinfo->alloc.stack_size * sizeof(void *));
+	thread = find_thread (outinfo->alloc.pid);
+	
+	if (!mi_write (thread->outfd, outbuf, sizeof (MIInfo) + outinfo->alloc.stack_size * sizeof(void *)))
+		stop_tracing (thread->outfd);
 
 	errno = old_errno;
 }
@@ -412,30 +363,8 @@ __libc_malloc (size_t size)
 	void *result;
 	MIInfo info;
 
-	if (!old_malloc) {
-		/* oh s*** we are being called at initialization and can't
-		 * depend upon anything!
-		 */
-		size = (size + 3) & ~3;
-		if (starter_alloced + size > STARTER_SIZE) {
-			static const char msg[] = "MemProf: Starter malloc exceeded available space\n";
-			write (2, msg, sizeof(msg));
-			abort ();
-		} else {
-			result = starter_mem + starter_alloced;
-			starter_last = starter_alloced;
-			starter_alloced += size;
-		}
-
-		DEBUG (("Starter malloc: %p (%zu)\n", result, size));
-		
-		return result;
-	}
-	
-	MI_LOCK ();
-
-	if (!socket_path)
-		memprof_init();
+	if (!check_init ())
+		return NULL; /* See comment in initialize() */
 
 	result = (*old_malloc) (size);
 
@@ -448,8 +377,6 @@ __libc_malloc (size_t size)
 		stack_trace (&info);
 	}
 		
-	MI_UNLOCK ();
-	
 	return result;
 }
 
@@ -465,13 +392,8 @@ __libc_memalign (size_t boundary, size_t size)
 	void *result;
 	MIInfo info;
 
-	if (!initialized)
+	if (!check_init ())
 		abort_unitialized ("memalign");
-	
-	MI_LOCK ();
-	
-	if (!socket_path)
-		memprof_init();
 
 	result = (*old_memalign) (boundary, size);
 
@@ -484,8 +406,6 @@ __libc_memalign (size_t boundary, size_t size)
 		stack_trace (&info);
 	}
 
-	MI_UNLOCK ();
-	
 	return result;
 }
 
@@ -500,7 +420,9 @@ __libc_calloc (size_t nmemb, size_t size)
 {
 	int total = nmemb * size;
 	void *result = __libc_malloc (total);
-	memset (result, 0, total);
+
+	if (result)
+		memset (result, 0, total);
 	
 	return result;
 }
@@ -517,14 +439,9 @@ __libc_realloc (void *ptr, size_t size)
 	void *result;
 	MIInfo info;
 
-	if (!initialized)
-		abort_unitialized ("realloc");
-	
-	MI_LOCK ();
+	if (!check_init ("__libc_realloc"))
+		return NULL;/* See comment in initialize() */
 
-	if (!socket_path)
-		memprof_init();
-	
 	result = (*old_realloc) (ptr, size);
 
 	if (tracing) {
@@ -536,8 +453,6 @@ __libc_realloc (void *ptr, size_t size)
 		stack_trace (&info);
 	}
 
-	MI_UNLOCK ();
-	
 	return result;
 }
      
@@ -552,26 +467,8 @@ __libc_free (void *ptr)
 {
 	MIInfo info;
 
-	if ((ptr >= (void *)starter_mem &&
-	     ptr < (void *)(starter_mem + starter_alloced))) {
-		/* Freeing memory allocated from starter pool */
-		DEBUG (("Starter free: %p", ptr));
-
-		if (ptr == starter_mem + starter_last)
-			starter_alloced = starter_last;
-		else
-			DEBUG ((" (ignored"));
-		DEBUG (("\n"));
+	if (!check_init ())
 		return;
-	}
-
-	if (!initialized)
-		abort_unitialized ("free");
-	
-	MI_LOCK ();
-	
-	if (!socket_path)
-		memprof_init();
 
 	(*old_free) (ptr);
 
@@ -583,8 +480,6 @@ __libc_free (void *ptr)
 
 		stack_trace (&info);
 	}
-
-	MI_UNLOCK ();
 }
 
 void
@@ -596,17 +491,19 @@ free (void *ptr)
 int
 __fork (void)
 {
-	if (!initialized)
+	if (!check_init ())
 		abort_unitialized ("__fork");
-	
+
 	if (tracing) {
 		int pid;
 		int old_pid = getpid();
+
+		find_thread (old_pid); /* Make sure we're registered */
 		
 		pid = (*old_fork) ();
 
 		if (!pid) /* New child process */
-			new_process (old_pid, MI_FORK);
+			new_process (NULL, old_pid, MI_FORK);
 
 		return pid;
 	} else 
@@ -614,19 +511,27 @@ __fork (void)
 }
 
 int
+fork (void)
+{
+	return __fork ();
+}
+
+int
 __vfork (void)
 {
-	if (!initialized)
+	if (!check_init ())
 		abort_unitialized ("__vfork");
-	
+
 	if (tracing) {
 		int pid;
 		int old_pid = getpid();
+
+		find_thread (old_pid); /* Make sure we're registered */
 		
 		pid = (*old_vfork) ();
 
 		if (!pid) /* New child process */
-			new_process (old_pid, MI_FORK);
+			new_process (NULL, old_pid, MI_FORK);
 
 		return pid;
 	} else 
@@ -634,13 +539,13 @@ __vfork (void)
 }
 
 int
-execve (const char *filename,
-	char *const argv[],
-	char *const envp[])
+__execve (const char *filename,
+	  char *const argv[],
+	  char *const envp[])
 {
-	if (!initialized)
-		abort_unitialized ("execve");
-	
+	if (!check_init ())
+		abort_unitialized ("__execve");
+
 	if (tracing) {
 		/* Nothing */
 	} else {
@@ -653,8 +558,6 @@ execve (const char *filename,
 	return (*old_execve) (filename, argv, envp);
 }
 
-/* Some scary primitive threading support */
-
 typedef struct 
 {
 	int started;
@@ -663,13 +566,22 @@ typedef struct
 	pid_t pid;
 } CloneData;
 
-int clone_thunk (void *arg)
+static int
+clone_thunk (void *arg)
 {
+	ThreadInfo *thread;
 	CloneData *data = arg;
 	int (*fn)(void *) = data->fn;
 	void *sub_arg = data->arg;
 
-	new_process (data->pid, MI_CLONE);
+	/* At this point, we can't call new_process(), because errno
+	 * still points to our parent's errno structure. (We assume
+	 * getpid() is safe, but about anythhing else could be dangerous.)
+	 * So, we simply allocate the structure for the thread and delay
+	 * the initialization.
+	 */
+	thread = allocate_thread (getpid());
+	thread->clone_pid = data->pid;
 	data->started = 1;
 
 	return (*fn) (sub_arg);
@@ -683,74 +595,81 @@ int __clone (int (*fn) (void *arg),
 	volatile CloneData data;
 	int pid;
 
-	if (!initialized)
-		abort_unitialized ("clone");
-	
+	if (!check_init ())
+		abort_unitialized ("__clone");
+
 	if (tracing) {
 		data.started = 0;
 		data.fn = fn;
 		data.arg = arg;
 		data.pid = getpid();
 		
+		find_thread (data.pid); /* Make sure we're registered */
+		
 		pid = (*old_clone) (clone_thunk, child_stack, flags, (void *)&data);
 
 		while (!data.started)
 			/* Wait */;
+
+		MI_DEBUG (("Clone: child=%d\n", pid));
 
 		return pid;
 	} else
 		return (*old_clone) (fn, child_stack, flags, arg);
 }
 
+int clone (int (*fn) (void *arg),
+	   void *child_stack,
+	   int   flags,
+	   void *arg)
+{
+	return __clone (fn, child_stack, flags, arg);
+}
+
 void
 _exit (int status)
 {
-	if (!initialized)
+	MI_DEBUG (("Exiting\n"));
+	
+	if (initialized <= 0)
 		abort_unitialized ("exit");
 	
 	if (tracing) {
 		MIInfo info;
-		int i;
+		ThreadInfo *thread;
 		int count;
 		char response;
 		info.any.operation = MI_EXIT;
 		info.any.seqno = seqno++;
 		info.any.pid = getpid();
-		
-		for (i=0; pids[i] && i<MAX_THREADS; i++)
-			if (pids[i] == info.any.pid)
-				break;
 
-		if (write_all (outfds[i], &info, sizeof (MIInfo)))
+		thread = find_thread (info.any.pid);
+		
+		if (mi_write (thread->outfd, &info, sizeof (MIInfo)))
 			/* Wait for a response before really exiting
 			 */
 			while (1) {
-				count = read (outfds[i], &response, 1);
+				count = read (thread->outfd, &response, 1);
 				if (count >= 0 || errno != EINTR)
 					break;
 			}
 
-		close (outfds[i]);
-		
+		close (thread->outfd);
+		thread->pid = 0;
+		release_thread (thread);
 	}
 	
 	(*old__exit) (status);
 }
 
-static void initialize () __attribute__ ((constructor));
+/* This is not, strictly speaking, necessary, since we'll initialize
+ * upon demand, but it ensures sure that we always initialize
+ * as promptly as possible.
+ */
+static void construct () __attribute__ ((constructor));
 
-static void initialize () 
+static void construct () 
 {
-	old_malloc = dlsym(RTLD_NEXT, "__libc_malloc");
-	old_realloc = dlsym(RTLD_NEXT, "__libc_realloc");
-	old_free = dlsym(RTLD_NEXT, "__libc_free");
-	old_calloc = dlsym(RTLD_NEXT, "__libc_calloc");
-	old_memalign = dlsym(RTLD_NEXT, "__libc_memalign");
-	old_execve = dlsym(RTLD_NEXT, "execve");
-	old_fork = dlsym(RTLD_NEXT, "__fork");
-	old_vfork = dlsym(RTLD_NEXT, "__vfork");
-	old_clone = dlsym(RTLD_NEXT, "__clone");
-	old__exit = dlsym(RTLD_NEXT, "_exit");
-
-	initialized = 1;
+	if (initialized <= 0) 
+		initialize ();
 }

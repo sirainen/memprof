@@ -19,7 +19,5 @@ int main()
   block = malloc(1000);
   free(block);
 
-  sleep (1000);
-  
   return 0;
 }

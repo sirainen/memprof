@@ -366,7 +366,10 @@ process_dump_stack (MPProcess *process, FILE *out, gint stack_size, void **stack
       
 		if (process_find_line (process, stack[i],
 				       &filename, &functionname, &line)) {
-			fprintf(out, "\t%s(): %s:%u\n", functionname, filename, line);
+			if (filename)
+				fprintf(out, "\t%s(): %s:%u\n", functionname, filename, line);
+			else
+				fprintf(out, "\t%s()\n", functionname);
 			free (functionname);
 		} else
 			fprintf(out, "\t[%p]\n", stack[i]);
@@ -504,7 +507,7 @@ process_command (MPProcess *process, MIInfo *info, void **stack)
 		if (info->alloc.old_ptr != NULL) {
 			block = g_hash_table_lookup (process->block_table, info->alloc.old_ptr);
 			if (!block) {
-				g_warning ("Block %p not found!\n", info->alloc.old_ptr);
+				g_warning ("Block %p not found (pid=%d)!\n", info->alloc.old_ptr, process->pid);
 				process_dump_stack (process, stderr, info->alloc.stack_size, stack);
 			}
 			else {

@@ -27,7 +27,9 @@ memprof_LDFLAGS = -export-dynamic
 
 libmemintercept_la_SOURCES =    \
 	memintercept.c		\
-	memintercept.h
+	memintercept.h		\
+	memintercept-utils.c	\
+	memintercept-utils.h
 
 libmemintercept_la_LDFLAGS = -module -avoid-version
 libmemintercept_la_LIBADD = -ldl
