@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2001-02-09 15:11-0500\n"
+"POT-Creation-Date: 2001-04-04 09:15+0300\n"
 "PO-Revision-Date: 2000-06-27 17:59+0200\n"
 "Last-Translator: Yuri Syrota <rasta@renome.rovno.ua>\n"
 "Language-Team: Ukrainian <uk@li.org>\n"
