@@ -1,3 +1,10 @@
+2002-03-19  Ole Laursen  <olau@hardworking.dk>
+
+	* da.po: Updated Danish translation.
+	
+	* update.*, README.tools: Removed since intltool-update takes care
+	of this job nowadays.
+
 2002-03-17  Tõivo Leedjärv  <toivo@linux.ee>
 
 	* et.po: Updated Estonian translation and converted to UTF-8.

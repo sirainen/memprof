@@ -11,20 +11,20 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2002-03-02 15:26+0100\n"
-"PO-Revision-Date: 2002-03-02 15:26+0100\n"
+"POT-Creation-Date: 2002-03-19 21:51+0100\n"
+"PO-Revision-Date: 2002-03-19 21:51+0100\n"
 "Last-Translator: Ole Laursen <olau@hardworking.dk>\n"
 "Language-Team: Danish <dansk@klid.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: main.c:531
+#: main.c:528
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Kørsel af '%s' mislykkedes"
 
-#: main.c:657
+#: main.c:654
 msgid "Really quit MemProf?"
 msgstr "Vil du virkelig afslutte Hukommelsesprofilering?"
 
@@ -33,44 +33,44 @@ msgstr "Vil du virkelig afslutte Hukommelsesprofilering?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:702 memprof-strings.c:7
+#: main.c:699 memprof-strings.c:7
 msgid "MemProf"
 msgstr "Hukommelsesprofilering"
 
-#: main.c:795
+#: main.c:792
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kunne ikke finde kørbar fil for '%s'"
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Error"
 msgstr "Hukommelsesprofileringsfejl"
 
-#: main.c:1367
+#: main.c:1391
 msgid "MemProf Warning"
 msgstr "Hukommelsesprofileringsadvarsel"
 
-#: main.c:1613
+#: main.c:1637
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig frigøre den afsluttede proces?"
 
-#: main.c:1615
+#: main.c:1639
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig frigøre den kørende proces?"
 
-#: main.c:1635
+#: main.c:1659
 msgid "Really kill running process?"
 msgstr "Vil du virkelig dræbe den kørende proces?"
 
-#: main.c:1665
+#: main.c:1689
 msgid "Create new windows for forked processes"
 msgstr "Opret nye vinduer for fraspaltede processer"
 
-#: main.c:1667
+#: main.c:1691
 msgid "Retain windows for processes after exec()"
 msgstr "Behold vinduer for processer efter exec()"
 
-#: main.c:1697
+#: main.c:1721
 msgid "Cannot find memprof.glade2"
 msgstr "Kan ikke finde memprof.glade2"
 
@@ -122,7 +122,7 @@ msgstr "Følg _exec()"
 msgid "Run Program"
 msgstr "Kør program"
 
-#: memprof-strings.c:20 memprof-strings.c:74
+#: memprof-strings.c:20 memprof-strings.c:61
 msgid "Run"
 msgstr "Kør"
 
@@ -240,90 +240,94 @@ msgid "Memory Profiling Tool"
 msgstr "Hukommelsesprofilering"
 
 #: memprof-strings.c:57
-msgid "Functions to Skip:"
-msgstr "Funktioner der springes over:"
-
-#: memprof-strings.c:58 memprof-strings.c:63
-msgid "label37"
-msgstr "etiket37"
-
-#: memprof-strings.c:59 memprof-strings.c:64
-msgid "Add..."
-msgstr "Tilføj..."
-
-#: memprof-strings.c:60 memprof-strings.c:65
-msgid "Delete"
-msgstr "Slet"
-
-#: memprof-strings.c:61 memprof-strings.c:66
-msgid "Defaults"
-msgstr "Standardværdier"
-
-#: memprof-strings.c:62
-msgid "Regular expressions to Skip:"
-msgstr "Regulære udtryk der springes over:"
-
-#: memprof-strings.c:67
-msgid "Profile Options"
-msgstr "Profileringsindstillinger"
-
-#: memprof-strings.c:68
-msgid "Command to run on double click in stack trace:"
-msgstr "Kommando som skal køres ved dobbelklik i stakefterfølgning:"
-
-#: memprof-strings.c:69
-msgid "Leak Detection Options"
-msgstr "Lækagefindingsindstillinger"
-
-#: memprof-strings.c:70
 msgid "Adding Skip Function"
 msgstr "Tilføjer oversprunget funktion"
 
-#: memprof-strings.c:71 memprof-strings.c:81
+#: memprof-strings.c:58 memprof-strings.c:68
 msgid "Add"
 msgstr "Tilføj"
 
-#: memprof-strings.c:72
+#: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr ""
 "Indtast navnet på en funktion der skal overspringes ved beregning af profiler"
 
-#: memprof-strings.c:73
+#: memprof-strings.c:60
 msgid "Run Executable"
 msgstr "Kør fil"
 
-#: memprof-strings.c:75
+#: memprof-strings.c:62
 msgid "Enter pathname to a executable"
 msgstr "Indtast sti til kørbar fil"
 
-#: memprof-strings.c:76
+#: memprof-strings.c:63
 msgid "MemProf - Processes"
 msgstr "Hukommelsesprofilering - processer"
 
-#: memprof-strings.c:77
+#: memprof-strings.c:64
 msgid "PID"
 msgstr "PID"
 
-#: memprof-strings.c:78
+#: memprof-strings.c:65
 msgid "Command Line"
 msgstr "Kommandolinje"
 
-#: memprof-strings.c:79
+#: memprof-strings.c:66
 msgid "Status"
 msgstr "Status"
 
-#: memprof-strings.c:80
+#: memprof-strings.c:67
 msgid "Adding Skip Regular Expression"
 msgstr "Tilføjer oversprunget regulært udtryk"
 
-#: memprof-strings.c:82
+#: memprof-strings.c:69
 msgid ""
 "Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
 "Indtast et regulært udtryk med navne på funktioner der skal springes over "
 "ved beregning af profiler"
 
-#: leakdetect.c:585 profile.c:201
+#: memprof-strings.c:70
+msgid "Preferences"
+msgstr "Indstillinger"
+
+#: memprof-strings.c:71
+msgid "Functions to Skip:"
+msgstr "Funktioner der springes over:"
+
+#: memprof-strings.c:72 memprof-strings.c:77
+msgid "label37"
+msgstr "etiket37"
+
+#: memprof-strings.c:73 memprof-strings.c:78
+msgid "Add..."
+msgstr "Tilføj..."
+
+#: memprof-strings.c:74 memprof-strings.c:79
+msgid "Delete"
+msgstr "Slet"
+
+#: memprof-strings.c:75 memprof-strings.c:80
+msgid "Defaults"
+msgstr "Standardværdier"
+
+#: memprof-strings.c:76
+msgid "Regular expressions to Skip:"
+msgstr "Regulære udtryk der springes over:"
+
+#: memprof-strings.c:81
+msgid "Profile Options"
+msgstr "Profileringsindstillinger"
+
+#: memprof-strings.c:82
+msgid "Command to run on double click in stack trace:"
+msgstr "Kommando som skal køres ved dobbelklik i stakefterfølgning:"
+
+#: memprof-strings.c:83
+msgid "Leak Detection Options"
+msgstr "Lækagefindingsindstillinger"
+
+#: leakdetect.c:585 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åbne filen: %s\n"
