@@ -63,6 +63,11 @@ typedef struct {
   gchar *name;
 } Symbol;
 
+gboolean symbol_equal (gconstpointer s1, gconstpointer s2);
+guint    symbol_hash  (gconstpointer symbol);
+Symbol * symbol_copy  (const Symbol *symbol);
+void     symbol_free  (Symbol *symbol);
+
 typedef void (*SectionFunc) (void *addr, guint size, gpointer user_data);
 
 typedef enum {

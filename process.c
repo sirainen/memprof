@@ -278,7 +278,7 @@ locate_map (MPProcess *process, guint addr)
 	return map;
 }
 
-Symbol *
+const Symbol *
 process_locate_symbol (MPProcess *process, guint addr)
 {
 	Symbol *data;
@@ -988,5 +988,70 @@ process_block_foreach (MPProcess                 *process,
 	info.data = data;
 
 	g_hash_table_foreach (block_table, block_table_foreach_func, &info);
+}
+
+static gboolean
+my_str_equal (const char *s1, const char *s2)
+{
+	if (s1 == NULL && s2 == NULL)
+		return TRUE;
+
+	if (s1 == NULL || s2 == NULL)
+		return FALSE;
+
+	return strcmp (s1, s2) == 0;
+}
+
+gboolean
+symbol_equal (gconstpointer s1, gconstpointer s2)
+{
+	const Symbol *sym1 = s1;
+	const Symbol *sym2 = s2;
+
+	if (s1 == NULL && s2 == NULL)
+		return TRUE;
+
+	if (s1 == NULL || s2 == NULL)
+		return FALSE;
+
+	return (my_str_equal (sym1->name, sym2->name)) && (sym1->addr == sym2->addr);
+}
+
+guint
+symbol_hash  (gconstpointer s)
+{
+	const Symbol *symbol = s;
+
+	if (!s)
+		return 0;
+	
+	return symbol->name? g_str_hash (symbol->name) : 0 + symbol->addr;
+}
+
+Symbol *
+symbol_copy  (const Symbol *orig)
+{
+	Symbol *symbol;
+
+	if (!orig)
+		return NULL;
+
+	symbol = g_new0 (Symbol, 1);
+
+	symbol->name = g_strdup (orig->name);
+	symbol->addr = orig->addr;
+	symbol->size = orig->size;
+
+	return symbol;
+}
+
+void
+symbol_free  (Symbol *symbol)
+{
+	if (!symbol)
+		return;
+
+	g_free (symbol->name);
+	g_free (symbol);
 }
 

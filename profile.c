@@ -29,7 +29,7 @@ block_create_stack_list (Block *block, MPProcess *process, GHashTable *skip_hash
     
     for (element = block->stack; !STACK_ELEMENT_IS_ROOT (element); element = element->parent)
     {
-	Symbol *symbol = process_locate_symbol (process, (guint)element->address);
+	const Symbol *symbol = process_locate_symbol (process, (guint)element->address);
 	
 	if (symbol && symbol->name && g_hash_table_lookup (skip_hash, symbol->name))
 	    continue;
@@ -46,20 +46,22 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
     GList *list;
     GPtrArray *roots = profile->roots;
     ProfileNode *parent = NULL;
-    GHashTable *seen_symbols = g_hash_table_new (g_direct_hash, g_direct_equal);
+    GHashTable *seen_symbols = g_hash_table_new_full (symbol_hash, symbol_equal,
+						      (GDestroyNotify)symbol_free, NULL);
     
     for (list = stack; list != NULL; list = list->next)
     {
 	StackElement *element = list->data;
 	ProfileNode *match = NULL;
-	Symbol *symbol = process_locate_symbol (profile->process, (guint)element->address);
+	const Symbol *symbol =
+	    process_locate_symbol (profile->process, (guint)element->address);
 	int i;
 	
 	for (i = 0; i < roots->len; ++i)
 	{
 	    ProfileNode *node = roots->pdata[i];
 	    
-	    if (node->symbol == symbol)
+	    if (symbol_equal (node->symbol, symbol))
 		match = node;
 	}
 	
@@ -69,7 +71,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 	    
 	    match = g_new (ProfileNode, 1);
 	    
-	    match->symbol = symbol;
+	    match->symbol = symbol_copy (symbol);
 	    match->total = 0;
 	    match->self = 0;
 	    
@@ -83,7 +85,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 		match->next = next_node;
 	    else
 		match->next = NULL;
-	    g_hash_table_insert (profile->nodes_by_symbol, symbol, match);
+	    g_hash_table_insert (profile->nodes_by_symbol, symbol_copy (symbol), match);
 	    
 	    match->children = g_ptr_array_new ();
 	    match->parent = parent;
@@ -91,7 +93,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 	    g_ptr_array_add (roots, match);
 	}
 	
-	g_hash_table_insert (seen_symbols, symbol, GINT_TO_POINTER (1));
+	g_hash_table_insert (seen_symbols, symbol_copy (symbol), GINT_TO_POINTER (1));
 	
 	match->total += size;
 	if (!list->next)
@@ -175,7 +177,8 @@ profile_create (MPProcess *process, GSList *skip_funcs)
     profile->functions = g_ptr_array_new ();
     profile->n_bytes = 0;
     profile->process = process;
-    profile->nodes_by_symbol = g_hash_table_new (g_direct_hash, g_direct_equal);
+    profile->nodes_by_symbol = g_hash_table_new_full (symbol_hash, symbol_equal,
+						      (GDestroyNotify)symbol_free, NULL);
     
     profile_build_tree (profile, blocks, skip_funcs);
     
@@ -199,6 +202,8 @@ profile_node_free (ProfileNode *node)
     
     for (i = 0; i < node->children->len; ++i)
 	profile_node_free (node->children->pdata[i]);
+    if (node->symbol)
+	symbol_free (node->symbol);
     g_ptr_array_free (node->children, TRUE);
     g_free (node);
 }
@@ -240,7 +245,8 @@ add_trace_to_tree (GPtrArray *roots, GList *trace, guint size)
     GList *nodes_to_unmark_recursive = NULL;
     ProfileDescendantTreeNode *parent = NULL;
     
-    GHashTable *seen_symbols = g_hash_table_new (g_direct_hash, g_direct_equal);
+    GHashTable *seen_symbols = g_hash_table_new_full (symbol_hash, symbol_equal,
+						      (GDestroyNotify)symbol_free, NULL);
     
     for (list = trace; list != NULL; list = list->next)
     {
@@ -252,7 +258,7 @@ add_trace_to_tree (GPtrArray *roots, GList *trace, guint size)
 	{
 	    ProfileDescendantTreeNode *tree_node = roots->pdata[i];
 	    
-	    if (tree_node->symbol == node->symbol)
+	    if (symbol_equal (tree_node->symbol, node->symbol))
 		match = tree_node;
 	}
 	
@@ -280,7 +286,7 @@ add_trace_to_tree (GPtrArray *roots, GList *trace, guint size)
 		seen_symbols = g_hash_table_new (g_direct_hash, g_direct_equal);
 		
 		for (node = match; node != NULL; node = node->parent)
-		    g_hash_table_insert (seen_symbols, node->symbol, node);
+		    g_hash_table_insert (seen_symbols, symbol_copy (node->symbol), node);
 		
 	    }
 	}
@@ -289,7 +295,7 @@ add_trace_to_tree (GPtrArray *roots, GList *trace, guint size)
 	{
 	    match = g_new (ProfileDescendantTreeNode, 1);
 	    
-	    match->symbol = node->symbol;
+	    match->symbol = symbol_copy (node->symbol);
 	    match->non_recursion = 0;
 	    match->total = 0;
 	    match->self = 0;
@@ -320,7 +326,7 @@ add_trace_to_tree (GPtrArray *roots, GList *trace, guint size)
 	if (!list->next)
 	    match->self += size;
 	
-	g_hash_table_insert (seen_symbols, node->symbol, match);
+	g_hash_table_insert (seen_symbols, symbol_copy (node->symbol), match);
 	
 	roots = match->children;
 	parent = match;
@@ -419,7 +425,9 @@ GPtrArray *
 profile_func_create_caller_list     (ProfileFunc	     *func)
 {
     GPtrArray *result = g_ptr_array_new ();
-    GHashTable *callers_by_symbol = g_hash_table_new (g_direct_hash, g_direct_equal);
+    GHashTable *callers_by_symbol = g_hash_table_new_full (
+	symbol_hash, symbol_equal,
+	(GDestroyNotify)symbol_free, NULL);
     GHashTable *marked_callers = g_hash_table_new (g_direct_hash, g_direct_equal);
     ProfileFunc *spontaneous = NULL;
     ProfileNode *node;
@@ -436,7 +444,8 @@ profile_func_create_caller_list     (ProfileFunc	     *func)
 		caller->self = 0;
 		caller->node = node->parent;
 		
-		g_hash_table_insert (callers_by_symbol, node->parent->symbol, caller);
+		g_hash_table_insert (
+		    callers_by_symbol, symbol_copy (node->parent->symbol), caller);
 		g_ptr_array_add (result, caller);
 	    }
 	}
