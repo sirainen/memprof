@@ -1488,12 +1488,14 @@ stack_command_entry_update (GtkWidget *entry,
 					 new_value, NULL);
 }
 
-static void
+static gboolean
 stack_command_entry_focus_out (GtkWidget *entry,
 			       GdkEventFocus *ev,
 			       gpointer data)
 {
 	stack_command_entry_update (entry, NULL);
+	
+	return FALSE;
 }
 
 void

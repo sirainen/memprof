@@ -1,3 +1,9 @@
+2004-06-30  Narayana Pattipati  <narayana.pattipati@wipro.com>
+
+	* main.c (stack_command_entry_focus_out): Return FALSE to enable
+	entry handle the focus out event. Fixes the crash reported in
+	bugzilla bug#145198.
+
 2004-05-01  Adam Weinberger  <adamw@gnome.org>
 
 	* configure.in: Added en_CA to ALL_LINGUAS.
