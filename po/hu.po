@@ -7,8 +7,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof-VERSION\n"
-"POT-Creation-Date: 2003-07-11 11:01+0200\n"
-"PO-Revision-Date: 2003-07-11 11:16+0200\n"
+"POT-Creation-Date: 2003-08-08 21:37+0200\n"
+"PO-Revision-Date: 2003-08-08 21:38+0200\n"
 "Last-Translator: Andras Timar <timar@gnome.hu>\n"
 "Language-Team: Hungarian <hu@gnome.hu>\n"
 "MIME-Version: 1.0\n"
@@ -59,7 +59,7 @@ msgstr "Tényleg lekapcsolódjak a futó folyamatról?"
 # main.c:1631
 #: main.c:2000
 msgid "Really kill running process?"
-msgstr "Tényleg megszakítsam a futó folyamatot?"
+msgstr "Tényleg kilőjem a futó folyamatot?"
 
 # main.c:1661
 #: main.c:2037
@@ -146,7 +146,8 @@ msgstr "Parancssor"
 
 #: memprof.glade.h:15
 msgid "Command to run on double click in stack trace:"
-msgstr "Elindítandó program a vereminformáció valamely során való dupla kattintáskor"
+msgstr ""
+"Elindítandó program a vereminformáció valamely során való dupla kattintáskor"
 
 #: memprof.glade.h:16
 msgid ""
@@ -211,11 +212,11 @@ msgstr "_Profil létrehozása"
 
 #: memprof.glade.h:30 tree.c:98
 msgid "Kill"
-msgstr "Megszakítás"
+msgstr "Kilövés"
 
 #: memprof.glade.h:31
 msgid "Kill Program"
-msgstr "Program megszakítása"
+msgstr "Program kilövése"
 
 #: memprof.glade.h:32
 msgid "Leak Detection Options"
@@ -324,7 +325,7 @@ msgstr "_Súgó"
 
 #: memprof.glade.h:59
 msgid "_Kill"
-msgstr "_Megszakítás"
+msgstr "_Kilövés"
 
 # memprof-strings.c:11
 #: memprof.glade.h:60
