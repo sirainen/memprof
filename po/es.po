@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Memprof 0.1\n"
-"POT-Creation-Date: 2002-08-11 15:31+0200\n"
+"POT-Creation-Date: 2002-08-30 04:39+0200\n"
 "PO-Revision-Date: 2002-07-19 16:19GMT-03:00\n"
 "Last-Translator: Pablo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Español <traductores@es.gnome.org>\n"
@@ -14,100 +14,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 0.9.6\n"
 
-#: main.c:530
-#, c-format
-msgid "Executation of \"%s\" failed"
-msgstr "La ejecución de «%s» ha fallado"
-
-#: main.c:661
-msgid "Really quit MemProf?"
-msgstr "¿Realmente salir de MemProf?"
-
-#: main.c:707 memprof.glade.h:36
-msgid "MemProf"
-msgstr "MemProf"
-
-#: main.c:801
-#, c-format
-msgid "Cannot find executable for \"%s\""
-msgstr "No se puede encontrar el ejecutable para «%s»"
-
-#: main.c:1410
-msgid "MemProf Error"
-msgstr "Error de MemProf"
-
-#: main.c:1410
-msgid "MemProf Warning"
-msgstr "Advertencia de MemProf"
-
-#: main.c:1660
-msgid "Really detach from finished process?"
-msgstr "¿Realmente desconectarse de los procesos terminados?"
-
-#: main.c:1662
-msgid "Really detach from running process?"
-msgstr "¿Realmente desconectarse de los procesos ejecutándose?"
-
-#: main.c:1692
-msgid "Really kill running process?"
-msgstr "¿Realmente matar los procesos ejecutándose?"
-
-#: main.c:1725
-msgid "Create new windows for forked processes"
-msgstr "Crear nuevas ventanas para los procesos ejecutados (forked processes)"
-
-#: main.c:1727
-msgid "Retain windows for processes after exec()"
-msgstr "Retener las ventanas para procesos después de exec()"
-
-#: main.c:1764
-msgid "Cannot find memprof.glade"
-msgstr "No se puede encontrar memprof.glade"
-
-#: leakdetect.c:587 profile.c:203
+#: leakdetect.c:584 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "No se puede abrir el archivo de salida: %s\n"
 
-#: process.c:815
-msgid "Initial"
-msgstr "Inicial"
+#: main.c:534
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "La ejecución de «%s» ha fallado"
 
-#: process.c:818
-msgid "Starting"
-msgstr "Comenzando"
+#: main.c:665
+msgid "Really quit MemProf?"
+msgstr "¿Realmente salir de MemProf?"
 
-#: process.c:821
-msgid "Running"
-msgstr "Ejecutando"
+#: main.c:711 memprof.glade.h:34
+msgid "MemProf"
+msgstr "MemProf"
 
-#: process.c:824
-msgid "Exiting"
-msgstr "Saliendo"
+#: main.c:805
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "No se puede encontrar el ejecutable para «%s»"
 
-#: process.c:827 process.c:830
-msgid "Defunct"
-msgstr "Defunct"
+#: main.c:1416
+msgid "MemProf Error"
+msgstr "Error de MemProf"
 
-#: server.c:245
-msgid "Cannot find libmemintercept.so"
-msgstr "No se puede encontrar libmemintercept.so"
+#: main.c:1416
+msgid "MemProf Warning"
+msgstr "Advertencia de MemProf"
 
-#: tree.c:91
-msgid "Show"
-msgstr "Mostrar"
+#: main.c:1666
+msgid "Really detach from finished process?"
+msgstr "¿Realmente desconectarse de los procesos terminados?"
 
-#: tree.c:94
-msgid "Hide"
-msgstr "Ocultar"
+#: main.c:1668
+msgid "Really detach from running process?"
+msgstr "¿Realmente desconectarse de los procesos ejecutándose?"
 
-#: tree.c:98 memprof.glade.h:31
-msgid "Kill"
-msgstr "Matar"
+#: main.c:1698
+msgid "Really kill running process?"
+msgstr "¿Realmente matar los procesos ejecutándose?"
 
-#: tree.c:101
-msgid "Detach"
-msgstr "Desconectar"
+#: main.c:1731
+msgid "Create new windows for forked processes"
+msgstr "Crear nuevas ventanas para los procesos ejecutados (forked processes)"
+
+#: main.c:1733
+msgid "Retain windows for processes after exec()"
+msgstr "Retener las ventanas para procesos después de exec()"
+
+#: main.c:1770
+msgid "Cannot find memprof.glade"
+msgstr "No se puede encontrar memprof.glade"
 
 #: memprof.glade.h:1
 msgid "# of Allocations:"
@@ -126,54 +86,50 @@ msgid "32k"
 msgstr "32k"
 
 #: memprof.glade.h:5
-msgid "Add..."
-msgstr "Agregar..."
-
-#: memprof.glade.h:6
 msgid "Adding Skip Function"
 msgstr "Agregando función ignorada"
 
-#: memprof.glade.h:7
+#: memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
 msgstr "Agregando expresión regular ignorada"
 
-#: memprof.glade.h:8
+#: memprof.glade.h:7
 msgid "Address"
 msgstr "Direcciones"
 
-#: memprof.glade.h:9
+#: memprof.glade.h:8
 msgid "Bytes"
 msgstr "Bytes"
 
-#: memprof.glade.h:10
+#: memprof.glade.h:9
 msgid "Bytes / Allocation:"
 msgstr "Bytes / asignación:"
 
-#: memprof.glade.h:11
+#: memprof.glade.h:10
 msgid "Caller"
 msgstr "Llamador"
 
-#: memprof.glade.h:12
+#: memprof.glade.h:11
 msgid "Callers"
 msgstr "Llamadores"
 
-#: memprof.glade.h:13
+#: memprof.glade.h:12
 msgid "Check for Leaks"
 msgstr "Buscar pérdidas"
 
-#: memprof.glade.h:14
+#: memprof.glade.h:13
 msgid "Children"
 msgstr "Hijo"
 
-#: memprof.glade.h:15
+#: memprof.glade.h:14
 msgid "Command Line"
 msgstr "Línea de comando"
 
-#: memprof.glade.h:16
+#: memprof.glade.h:15
 msgid "Command to run on double click in stack trace:"
 msgstr "Comando a ejecutar al hacer doble clic sobre la pila de ejecución:"
 
-#: memprof.glade.h:17
+#: memprof.glade.h:16
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
@@ -181,189 +137,229 @@ msgstr ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
 "Rietveld"
 
-#: memprof.glade.h:18
+#: memprof.glade.h:17
 msgid "Create Profile"
 msgstr "Crear perfil"
 
-#: memprof.glade.h:19
+#: memprof.glade.h:18
 msgid "Defaults"
 msgstr "Predeterminados"
 
-#: memprof.glade.h:20
-msgid "Delete"
-msgstr "Borrar"
-
-#: memprof.glade.h:21
-msgid ""
-"Enter a regular expression of function names to skip when computing profiles"
+#: memprof.glade.h:19
+msgid "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Ingrese una expresión regular de nombres de función a ignorar cuando se "
 "calculan los perfiles"
 
-#: memprof.glade.h:22
-msgid "Enter pathname to a executable"
+#: memprof.glade.h:20
+msgid "Enter pathname to an executable"
 msgstr "Ingrese la ruta hacia un ejecutable"
 
-#: memprof.glade.h:23
+#: memprof.glade.h:21
 msgid "Enter the name of a function to skip when computing profiles"
-msgstr ""
-"Ingrese el nombre de una función a ignorar cuando se calculan los perfiles"
+msgstr "Ingrese el nombre de una función a ignorar cuando se calculan los perfiles"
 
-#: memprof.glade.h:24
+#: memprof.glade.h:22
 msgid "File"
 msgstr "Archivo"
 
-#: memprof.glade.h:25
+#: memprof.glade.h:23
 msgid "Follow _exec()"
 msgstr "Seguir _exec()"
 
-#: memprof.glade.h:26
+#: memprof.glade.h:24
 msgid "Follow _fork()"
 msgstr "Seguir _fork()"
 
-#: memprof.glade.h:27
+#: memprof.glade.h:25
 msgid "Function"
 msgstr "Función"
 
-#: memprof.glade.h:28
+#: memprof.glade.h:26
 msgid "Functions to Skip:"
 msgstr "Funciones a ignorar:"
 
-#: memprof.glade.h:29
+#: memprof.glade.h:27
 msgid "Generate _Leak Report"
 msgstr "Generar reporte de _pérdidas"
 
-#: memprof.glade.h:30
+#: memprof.glade.h:28
 msgid "Generate _Profile"
 msgstr "Generar _perfil"
 
-#: memprof.glade.h:32
+#: memprof.glade.h:29 tree.c:98
+msgid "Kill"
+msgstr "Matar"
+
+#: memprof.glade.h:30
 msgid "Kill Program"
 msgstr "Matar programa"
 
-#: memprof.glade.h:33
+#: memprof.glade.h:31
 msgid "Leak Detection Options"
 msgstr "Opciones de detección de pérdidas"
 
-#: memprof.glade.h:34
+#: memprof.glade.h:32
 msgid "Leaks"
 msgstr "Pérdidas"
 
-#: memprof.glade.h:35
+#: memprof.glade.h:33
 msgid "Line"
 msgstr "Línea"
 
-#: memprof.glade.h:37
+#: memprof.glade.h:35
 msgid "MemProf - Processes"
 msgstr "Procesos de MemProf"
 
-#: memprof.glade.h:38
+#: memprof.glade.h:36
 msgid "Memory Profiling Tool"
 msgstr "Herramienta de control de memoria"
 
-#: memprof.glade.h:39
+#: memprof.glade.h:37
 msgid "PID"
 msgstr "PID"
 
-#: memprof.glade.h:40
+#: memprof.glade.h:38
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: memprof.glade.h:41
+#: memprof.glade.h:39
 msgid "Process _Tree"
 msgstr "Árbol de pro_cesos"
 
-#: memprof.glade.h:42
+#: memprof.glade.h:40
 msgid "Profile"
 msgstr "Perfil"
 
-#: memprof.glade.h:43
+#: memprof.glade.h:41
 msgid "Profile Options"
 msgstr "Opciones de perfil"
 
-#: memprof.glade.h:44
+#: memprof.glade.h:42
 msgid "Regular expressions to Skip:"
 msgstr "Expresiones regulares a ignorar:"
 
-#: memprof.glade.h:45
+#: memprof.glade.h:43
 msgid "Run"
 msgstr "Ejecutar"
 
-#: memprof.glade.h:46
+#: memprof.glade.h:44
 msgid "Run Executable"
 msgstr "Ejecutar ejecutable"
 
-#: memprof.glade.h:47
+#: memprof.glade.h:45
 msgid "Run Program"
 msgstr "Ejecutar programa"
 
-#: memprof.glade.h:48
+#: memprof.glade.h:46
 msgid "Save"
 msgstr "Guardar"
 
-#: memprof.glade.h:49
+#: memprof.glade.h:47
 msgid "Save Report"
 msgstr "Guardar reporte"
 
-#: memprof.glade.h:50
+#: memprof.glade.h:48
 msgid "Save _Leak Info..."
 msgstr "Guardar información de la _pérdida..."
 
-#: memprof.glade.h:51
+#: memprof.glade.h:49
 msgid "Save _Profile..."
 msgstr "Guardar _perfil..."
 
-#: memprof.glade.h:52
+#: memprof.glade.h:50
 msgid "Self"
 msgstr "Propio"
 
-#: memprof.glade.h:53
+#: memprof.glade.h:51
 msgid "Size"
 msgstr "Tamaño"
 
-#: memprof.glade.h:54
+#: memprof.glade.h:52
 msgid "Stack Trace"
 msgstr "Pila de ejecución"
 
-#: memprof.glade.h:55
+#: memprof.glade.h:53
 msgid "Status"
 msgstr "Estado"
 
-#: memprof.glade.h:56
+#: memprof.glade.h:54
 msgid "Total"
 msgstr "Total"
 
-#: memprof.glade.h:57
+#: memprof.glade.h:55
 msgid "Total Bytes:"
 msgstr "Bytes totales:"
 
-#: memprof.glade.h:58
+#: memprof.glade.h:56
 msgid "_Detach"
 msgstr "_Desconectar"
 
-#: memprof.glade.h:59
+#: memprof.glade.h:57
 msgid "_File"
 msgstr "_Archivo"
 
-#: memprof.glade.h:60
+#: memprof.glade.h:58
 msgid "_Help"
 msgstr "A_yuda"
 
-#: memprof.glade.h:61
+#: memprof.glade.h:59
 msgid "_Kill"
 msgstr "_Matar"
 
-#: memprof.glade.h:62
+#: memprof.glade.h:60
 msgid "_Process"
 msgstr "_Procesos"
 
-#: memprof.glade.h:63
+#: memprof.glade.h:61
 msgid "_Run Program..."
 msgstr "E_jecutar programa..."
 
-#: memprof.glade.h:64
+#: memprof.glade.h:62
 msgid "_Settings"
 msgstr "_Preferencias"
+
+#: process.c:847
+msgid "Initial"
+msgstr "Inicial"
+
+#: process.c:850
+msgid "Starting"
+msgstr "Comenzando"
+
+#: process.c:853
+msgid "Running"
+msgstr "Ejecutando"
+
+#: process.c:856
+msgid "Exiting"
+msgstr "Saliendo"
+
+#: process.c:859 process.c:862
+msgid "Defunct"
+msgstr "Defunct"
+
+#: server.c:245
+msgid "Cannot find libmemintercept.so"
+msgstr "No se puede encontrar libmemintercept.so"
+
+#: tree.c:91
+msgid "Show"
+msgstr "Mostrar"
+
+#: tree.c:94
+msgid "Hide"
+msgstr "Ocultar"
+
+#: tree.c:101
+msgid "Detach"
+msgstr "Desconectar"
+
+#~ msgid "Add..."
+#~ msgstr "Agregar..."
+
+#~ msgid "Delete"
+#~ msgstr "Borrar"
 
 #~ msgid "Copyright Red Hat, Inc., 1999-2000"
 #~ msgstr "Copyright Red Hat, Inc., 1999-2000"
@@ -376,3 +372,4 @@ msgstr "_Preferencias"
 
 #~ msgid "label37"
 #~ msgstr "label37"
+
