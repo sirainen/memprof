@@ -1,23 +1,23 @@
-# Copyright (C) 2000 Free Software Foundation, Inc.
-# Valek Filippov <frob@df.ru>, 2000.
+# Copyright (C) 2000-2002 Free Software Foundation, Inc.
+# Valek Filippov <frob@df.ru>, 2000-2002.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
-"POT-Creation-Date: 2001-02-09 15:11-0500\n"
-"PO-Revision-Date: 2000-08-27 15:09+04:00\n"
+"POT-Creation-Date: 2002-03-08 16:58+0300\n"
+"PO-Revision-Date: 2002-03-08 17:00+03:00\n"
 "Last-Translator: Valek Filippov <frob@df.ru>\n"
-"Language-Team: Russian <ru@li.org>\n"
+"Language-Team: Russian <gnome-cyr@gnome.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=koi8-r\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: main.c:530
+#: main.c:531
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Выполнение \"%s\" не удалось"
 
-#: main.c:656
+#: main.c:657
 msgid "Really quit MemProf?"
 msgstr "Действительно выйти из MemProf?"
 
@@ -26,46 +26,46 @@ msgstr "Действительно выйти из MemProf?"
 #. * Add this file to your project's POTFILES.in.
 #. * DO NOT compile it as part of your application.
 #.
-#: main.c:704 memprof-strings.c:7
+#: main.c:702 memprof-strings.c:7
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:797
+#: main.c:795
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Невозможно найти исполняемую программу для \"%s\""
 
-#: main.c:1365
+#: main.c:1367
 msgid "MemProf Error"
 msgstr "Ошибка MemProf"
 
-#: main.c:1365
+#: main.c:1367
 msgid "MemProf Warning"
 msgstr "Предупреждение MemProf"
 
-#: main.c:1609
+#: main.c:1613
 msgid "Really detach from finished process?"
 msgstr "Отсоединить от завершенного процесса?"
 
-#: main.c:1611
+#: main.c:1615
 msgid "Really detach from running process?"
 msgstr "Отсоединить от запущенного процесса?"
 
-#: main.c:1631
+#: main.c:1635
 msgid "Really kill running process?"
 msgstr "Уничтожить запущенный процесс?"
 
-#: main.c:1661
+#: main.c:1665
 msgid "Create new windows for forked processes"
 msgstr "Создать новое окно для порожденного процесса"
 
-#: main.c:1663
+#: main.c:1667
 msgid "Retain windows for processes after exec()"
 msgstr "Сохранять окна для процессов после exec()"
 
-#: main.c:1689
-msgid "Cannot find memprof.glade"
-msgstr "Не удалось найти memprof.glade"
+#: main.c:1697
+msgid "Cannot find memprof.glade2"
+msgstr "Не удалось найти memprof.glade2"
 
 #: memprof-strings.c:8
 msgid "_Run..."
@@ -111,13 +111,17 @@ msgstr "Отследить fork()"
 msgid "Follow _exec()"
 msgstr "Отследить exec()"
 
-#: memprof-strings.c:19 memprof-strings.c:21
+#: memprof-strings.c:19
 msgid "Run Program"
 msgstr "Запуск программы"
 
 #: memprof-strings.c:20 memprof-strings.c:74
 msgid "Run"
 msgstr "Запустить"
+
+#: memprof-strings.c:21
+msgid "Kill Program"
+msgstr "Уничтожить программу"
 
 #: memprof-strings.c:22 tree.c:97
 msgid "Kill"
@@ -306,37 +310,37 @@ msgstr "Добавить регулярное выражение для пропуска"
 
 #: memprof-strings.c:82
 msgid ""
-"Enter a regular expression of function names to skip when computing profiles"
+"Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
 "Введите регулярное выражение имен функций для пропуска при вычислении "
 "профилей"
 
-#: leakdetect.c:587 profile.c:192
+#: leakdetect.c:585 profile.c:201
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Невозможно открыть файл вывода: %s\n"
 
-#: process.c:807
+#: process.c:814
 msgid "Initial"
 msgstr "Инициализовать"
 
-#: process.c:810
+#: process.c:817
 msgid "Starting"
 msgstr "Запуск"
 
-#: process.c:813
+#: process.c:820
 msgid "Running"
 msgstr "Запуск"
 
-#: process.c:816
+#: process.c:823
 msgid "Exiting"
 msgstr "Выход"
 
-#: process.c:819 process.c:822
+#: process.c:826 process.c:829
 msgid "Defunct"
 msgstr ""
 
-#: server.c:238
+#: server.c:242
 msgid "Cannot find libmemintercept.so"
 msgstr "Не удалось найти libmemintercept.so"
 
