@@ -1,3 +1,11 @@
+Sat Aug 10 14:15:06 2002  Owen Taylor  <otaylor@redhat.com>
+
+	* memprof.spec.in: Cleanups, one few fixes.
+
+	* Makefile.am: Remove memprof-strings.c from EXTRA_DIST,
+	add intltool-*.in, make dist-hook depend on memprof.spec,
+	so we get an up-to-date version.
+	
 Sat Aug 10 20:14:11 2002  Kristian Rietveld  <kris@gtk.org>
 
 	* NEWS: a few tweaks

@@ -48,7 +48,9 @@ EXTRA_DIST =			\
 	memprof.glade	  	\
 	memprof.spec.in		\
 	memprof.png         	\
-	memprof-strings.c	\
+	intltool-extract.in	\
+	intltool-merge.in	\
+	intltool-update.in	\
 	$(schema_DATA)
 
 Developmentdir = $(datadir)/applications
@@ -77,7 +79,7 @@ copyrights:
 	   fi;								  \
 	done
 
-dist-hook:
+dist-hook: memprof.spec
 	if grep '^- Version @VERSION@' $(srcdir)/memprof.spec.in ; then : ; else \
 	   perl -ni.bak -e \
 	      'print; if (/^%changelog/) { chomp ($$date = `date +"%a %b %d %Y"`); print "* $$date Owen Taylor <otaylor\@redhat.com>\n- Version @VERSION@\n\n"; }' \

@@ -1,18 +1,17 @@
-%define    prefix  /usr
-
 Summary: Tool for memory profiling and leak detection
 Name: memprof
 Version: @VERSION@
 Release: 1
+# Serial is one for historical Red Hat reasons
+Serial: 1
 License: GPL
 Group: Development/Debuggers
 Source: memprof-%{version}.tar.gz
-Requires: libgnomeui >= 2.0.0
-Requires: libglade2 >= 2.0.0
-BuildRoot: /var/tmp/%{name}-root
+BuildRoot: %{_tmppath}/%{name}-%{version}-root
+ExclusiveArch: i386
+
 BuildRequires: libgnomeui-devel >= 2.0.0
 BuildRequires: libglade2-devel >= 2.0.0
-ExclusiveArch: i386
 
 %description
 Memprof is a tool for profiling memory usage and
@@ -22,40 +21,42 @@ binaries without need for recompilation.
 %setup -q
 
 %build
-CFLAGS="$RPM_OPT_FLAGS" ./configure --prefix=%{prefix}
+%configure
 make
 
 %install
 rm -rf $RPM_BUILD_ROOT
 export GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
-make prefix=$RPM_BUILD_ROOT%{prefix} install
+make DESTDIR=$RPM_BUILD_ROOT install
 unset GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL
-strip $RPM_BUILD_ROOT%{prefix}/bin/*
+
+%find_lang %name
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 SCHEMAS="memprof.schemas"
 for S in $SCHEMAS; do
-  gconftool-2 --makefile-install-rule %{_sysconfigdir}/gconf/schemas/$S > /dev/null
+  gconftool-2 --makefile-install-rule %{_sysconfdir}/gconf/schemas/$S > /dev/null
 done
 
-%files
+%files -f %{name}.lang
 %defattr(-, root, root)
 
 %doc README AUTHORS NEWS
-%{prefix}/bin/*
-%{prefix}/lib/*
-%{prefix}/share/pixmaps/memprof.png
-%{prefix}/share/applications/memprof.desktop
-%{prefix}/share/memprof
-%{prefix}/share/locale/*/*/*
-%{prefix}/etc/gconf/schemas/*.schemas
+%{_bindir}/*
+%{_libdir}/libmemintercept.so
+%{_datadir}/pixmaps/memprof.png
+%{_datadir}/applications/memprof.desktop
+%{_datadir}/memprof
+%{_sysconfdir}/gconf/schemas/*.schemas
 
 %changelog
+* Sat Aug 10 2002 Owen Taylor <otaylor@redhat.com>
+- Cleanups from Red Hat spec file, minor fixes.
+
 * Sat Aug 10 2002 Kristian Rietveld <kris@gtk.org>
 - Version 0.5.0
 - Updates deps, files and handle installation of gconf schemas.
