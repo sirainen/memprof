@@ -1,8 +1,10 @@
 [Desktop Entry]
 Name=MemProf
 Name[sv]=MemProf
+Name[da]=MemProf
 Comment=Memory Profiling tool
 Comment[sv]=Minnesprofileringsverktyg
+Comment[da]=Værktøj til hukommelsesprofilering
 Comment[it]=Strumento di profilo della memoria
 Exec=memprof
 Terminal=0
