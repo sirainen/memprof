@@ -56,7 +56,7 @@ AC_CHECK_LIB(iberty, cplus_demangle,:,
   AC_CHECK_LIB(iberty, cplus_demangle_opname, LIBS="$LIBS -ldl",
     AC_MSG_ERROR([*** libiberty required to compile MemProf]), -ldl))
 
-AC_CHECK_LIB(bfd, bfd_get_error, MEMPROF_LIBS="$MEMPROF_LIBS -lbfd -liberty", 
+AC_CHECK_LIB(bfd, bfd_get_error, [MEMPROF_LIBS="$MEMPROF_LIBS -Wl,-Bstatic -lbfd -liberty -Wl,-Bdynamic"], 
   AC_MSG_ERROR([*** libbfd required to compile MemProf]),
   -liberty)
 
