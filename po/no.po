@@ -1,4 +1,4 @@
-# Norwegian translation of memprof (bokmål dialect).
+# Norwegian translation of memprof (bokmÃ¥l dialect).
 # Copyright (C) 2000 Free Software Foundation, Inc.
 # Kjartan Maraas <kmaraas@gnome.org>, 2000.
 #
@@ -10,13 +10,13 @@ msgstr ""
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <no@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
 #: main.c:528
 #, c-format
 msgid "Executation of \"%s\" failed"
-msgstr "Kjøring av \"%s\" feilet"
+msgstr "KjÃ¸ring av \"%s\" feilet"
 
 #: main.c:654
 msgid "Really quit MemProf?"
@@ -34,7 +34,7 @@ msgstr "MemProf"
 #: main.c:792
 #, c-format
 msgid "Cannot find executable for \"%s\""
-msgstr "Kunne ikke finne kjørbar fil for \"%s\""
+msgstr "Kunne ikke finne kjÃ¸rbar fil for \"%s\""
 
 #: main.c:1391
 msgid "MemProf Error"
@@ -50,11 +50,11 @@ msgstr "Vil du virkelig koble fra avsluttet prosess?"
 
 #: main.c:1639
 msgid "Really detach from running process?"
-msgstr "Vil du virkelig koble fra kjørende prosess?"
+msgstr "Vil du virkelig koble fra kjÃ¸rende prosess?"
 
 #: main.c:1659
 msgid "Really kill running process?"
-msgstr "Vil du virkelig drepe kjørende prosess?"
+msgstr "Vil du virkelig drepe kjÃ¸rende prosess?"
 
 #: main.c:1689
 msgid "Create new windows for forked processes"
@@ -70,7 +70,7 @@ msgstr "Kan ikke finne memprof.glade2"
 
 #: memprof-strings.c:8
 msgid "_Run..."
-msgstr "Kjø_r..."
+msgstr "KjÃ¸_r..."
 
 #: memprof-strings.c:9
 msgid "Save _Profile..."
@@ -106,19 +106,19 @@ msgstr "Prosesstre"
 
 #: memprof-strings.c:17
 msgid "Follow _fork()"
-msgstr "Følg _fork()"
+msgstr "FÃ¸lg _fork()"
 
 #: memprof-strings.c:18
 msgid "Follow _exec()"
-msgstr "Følg _exec()"
+msgstr "FÃ¸lg _exec()"
 
 #: memprof-strings.c:19
 msgid "Run Program"
-msgstr "Kjør program"
+msgstr "KjÃ¸r program"
 
 #: memprof-strings.c:20 memprof-strings.c:61
 msgid "Run"
-msgstr "Kjør"
+msgstr "KjÃ¸r"
 
 #: memprof-strings.c:21
 msgid "Kill Program"
@@ -207,7 +207,7 @@ msgstr "Adresse"
 
 #: memprof-strings.c:48
 msgid "Size"
-msgstr "Størrelse"
+msgstr "StÃ¸rrelse"
 
 #: memprof-strings.c:49
 msgid "Caller"
@@ -231,7 +231,7 @@ msgstr "Copyright Red Hat, Inc., 1999-2000"
 
 #: memprof-strings.c:56
 msgid "Memory Profiling Tool"
-msgstr "Minneprofileringsverktøy"
+msgstr "MinneprofileringsverktÃ¸y"
 
 #: memprof-strings.c:57
 msgid "Adding Skip Function"
@@ -244,12 +244,12 @@ msgstr "Legg til"
 #: memprof-strings.c:59
 msgid "Enter the name of a function to skip when computing  profiles"
 msgstr ""
-"Skriv inn navnet på en funksjon som ikke skal tas med under beregning av "
+"Skriv inn navnet pÃ¥ en funksjon som ikke skal tas med under beregning av "
 "profiler"
 
 #: memprof-strings.c:60
 msgid "Run Executable"
-msgstr "Kjør eksekverbar fil"
+msgstr "KjÃ¸r eksekverbar fil"
 
 #: memprof-strings.c:62
 msgid "Enter pathname to a executable"
@@ -273,13 +273,13 @@ msgstr "Status"
 
 #: memprof-strings.c:67
 msgid "Adding Skip Regular Expression"
-msgstr "Legger til \"hopp over regulære uttrykk\""
+msgstr "Legger til \"hopp over regulÃ¦re uttrykk\""
 
 #: memprof-strings.c:69
 msgid ""
 "Enter a regular expression of function names to skip when computing  profiles"
 msgstr ""
-"Skriv inn et regulært uttrykk med funksjonsnavn som ikke skal tas med under "
+"Skriv inn et regulÃ¦rt uttrykk med funksjonsnavn som ikke skal tas med under "
 "beregning av profiler"
 
 #: memprof-strings.c:70
@@ -308,7 +308,7 @@ msgstr "Standardverdier"
 
 #: memprof-strings.c:76
 msgid "Regular expressions to Skip:"
-msgstr "Regulære uttrykk som skal hoppes over:"
+msgstr "RegulÃ¦re uttrykk som skal hoppes over:"
 
 #: memprof-strings.c:81
 msgid "Profile Options"
@@ -316,7 +316,7 @@ msgstr "Alternativer for profilering"
 
 #: memprof-strings.c:82
 msgid "Command to run on double click in stack trace:"
-msgstr "Kommando som skal kjøres ved dobbeltklikk i stack trace:"
+msgstr "Kommando som skal kjÃ¸res ved dobbeltklikk i stack trace:"
 
 #: memprof-strings.c:83
 msgid "Leak Detection Options"
@@ -325,7 +325,7 @@ msgstr "Alternativer for lekkasjedeteksjon"
 #: leakdetect.c:585 profile.c:202
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr "Kan ikke åpne utdata-filen: %s\n"
+msgstr "Kan ikke Ã¥pne utdata-filen: %s\n"
 
 #: process.c:814
 msgid "Initial"
@@ -337,7 +337,7 @@ msgstr "Starter"
 
 #: process.c:820
 msgid "Running"
-msgstr "Kjører"
+msgstr "KjÃ¸rer"
 
 #: process.c:823
 msgid "Exiting"
