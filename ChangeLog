@@ -1,3 +1,7 @@
+2000-10-31  Zbigniew Chyla  <cyba@gnome.pl>
+
+	* configure.in: Added pl to ALL_LINGUAS.
+
 2000-10-18  Christophe Merlet  <christophe@merlet.net>
 
 	* memprof.desktop: Added French strings.
