@@ -1,7 +1,12 @@
+2004-04-13  Gustavo Maciel Dias Vieira  <gdvieira@zaz.com.br>
+
+	* pt_BR.po: Updated Brazilian Portuguese translation done by
+	Raphael Higino <raphaelh@uai.com.br>.
+
 2004-04-10  Evandro Fernandes Giovanini <evandrofg@ig.com.br>
- 
-        * pt_BR.po: Updated Brazilian Portuguese translation
-        from Raphael Higino <raphaelh@uai.com.br>.
+
+	* pt_BR.po: Updated Brazilian Portuguese translation from Raphael
+	Higino <raphaelh@uai.com.br>.
 
 2004-04-09  Gareth Owen  <gowen72@yahoo.com>
 
@@ -10,11 +15,11 @@
 
 2004-04-07  Yuriy Syrota  <rasta@cvs.gnome.org>
 
-        * uk.po: Updated Ukrainian translation.
+	* uk.po: Updated Ukrainian translation.
 
 2004-03-20  Robert Sedak  <robert.sedak@sk.htnet.hr>
 
-        * hr.po: Updated Croatian translation.
+	* hr.po: Updated Croatian translation.
 
 2004-03-09  Yukihiro Nakai  <nakai@gnome.gr.jp>
 

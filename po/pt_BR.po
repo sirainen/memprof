@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: memprof\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2004-04-09 14:59+0200\n"
-"PO-Revision-Date: 2004-04-09 17:37-0300\n"
+"PO-Revision-Date: 2004-04-11 15:09-0300\n"
 "Last-Translator: Raphael Higino <raphaelh@uai.com.br>\n"
 "Language-Team: Brazilian Portuguese <ldp-br@bazar.conectiva.com.br>, <gnome-l10-br@cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
@@ -170,7 +170,7 @@ msgstr "Verificar Perdas"
 
 #: memprof.glade.h:12
 msgid "Command to run on double click in stack trace:"
-msgstr "Comando para executar ao dar um clique duplo em procura de pilha:"
+msgstr "Comando para executar ao dar um clique duplo em rastreamento de pilha:"
 
 #: memprof.glade.h:13
 msgid ""
@@ -299,7 +299,7 @@ msgstr "Salvar _Perfil..."
 
 #: memprof.glade.h:45
 msgid "Stack Trace"
-msgstr "Marcador de Pilha"
+msgstr "Rastreamento de Pilha"
 
 #: memprof.glade.h:46
 msgid "Total Bytes:"
