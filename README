@@ -5,11 +5,10 @@ Requirements
 
  For the interface, memprof requires:
 
-  - GTK+        
-  - gnome-libs  
-  - libglade
-    (Debian users need both the libglade-dev and libglade-gnome0-dev
-     packages)
+  - GTK+ 2.0
+  - gconf 2.0
+  - libgnomeui 2.0
+  - libglade 2.0
 
  For the backend, memprof currently requires:
 
@@ -19,20 +18,29 @@ Requirements
   - GNU libc (2.0 or 2.1 will work, but 2.0 may produce warnings 
               when compiling)
 
-Install
-=======
+Installation
+============
 
 ./configure
 make
 make install
 
+How to report bugs
+==================
+
+Bugs should be reported to the GNOME bug tracking system.
+(http://bugzilla.gnome.org/, project memprof). You will need to create an
+account for yourself.
+
+Mailing list
+============
+
+You can find information about subscribing to the memprof mailing list
+at: http://mail.gnome.org/mailman/listinfo/memprof-list/.
+
 License
 =======
 
-Memprof is Copyright Red Hat Inc, 1999, and licensed
-under the terms of the GNU General Public License.
-See the file COPYING for details.
-
-
-
-
+Memprof is Copyright 1999, 2000, 2001, Red Hat Inc, Copyright 2002,
+Kristian Rietveld, and licensed under the terms of the GNU General
+Public License. See the file COPYING for details.

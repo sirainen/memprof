@@ -1,0 +1,24 @@
+Overview of changes in MemProf 0.5.0
+====================================
+
+* Port to GNOME2 platform [Kristian Rietveld]
+* Updated icon and added .desktop file [Anders Carlsson, Seth Nickell]
+* Various bug fixes [Owen Taylor, Soeren Sandmann, Michael Meeks]
+* New and updated translations:
+	- es (Carlos Perello Marin, Pablo del Campo)
+	- zh_CN (Wang Jian, He Qiangqiang)
+	- ms (Hasbullah Bin Pit)
+	- pt (Duarte Loreto)
+	- sk (Stanislav Visnovsky)
+	- vi (Pablo Saratxaga)
+	- de (Christian Meyer)
+	- az (Pablo Saratxaga)
+	- ca (Pablo Saratxaga)
+	- da (Ole Laursen)
+	- pl (Zbigniew Chyla)
+	- fr (Christophe Merlet, Laurent Richard)
+	- sv (Christian Rose)
+	- no (Kjartan Maraas)
+	- ru (Valek Filippov)
+	- et (Toivo Leedjarv)
+	- nl (Taco Witte)

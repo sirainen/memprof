@@ -1,3 +1,7 @@
+Sat Aug 10 19:39:59 2002  Kristian Rietveld  <kris@gtk.org>
+
+	* README, NEWS: updates for 0.5.0.
+
 Tue Aug  6 21:14:00 2002  Owen Taylor  <otaylor@redhat.com>
 
 	* memintercept.c (debug): Add a mini-printf implementation, use
