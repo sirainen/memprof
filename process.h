@@ -130,7 +130,7 @@ gboolean    process_find_line       (MPProcess          *process,
 void        process_dump_stack      (MPProcess          *process,
 				     FILE               *out,
 				     StackElement       *stack);
-Symbol *    process_locate_symbol   (MPProcess          *process,
+const Symbol *process_locate_symbol (MPProcess          *process,
 				     guint               addr);
 
 char **     process_parse_exec      (const char         *exec_string);
