@@ -1,3 +1,7 @@
+2004-02-07  Robert Sedak  <robert.sedak@sk.htnet.hr>
+ 
+         * configure.in: Added "hr" (Croatian) to ALL_LINGUAS.
+
 Fri Jan 23 12:20:47 2004  Soeren Sandmann  <sandmann@daimi.au.dk>
 
 	* profile.c (profile_func_create_caller_list): Fix yet another

@@ -1,11 +1,11 @@
-# Translation of memprof to Croatian
-# Copyright (C) Croatian team
+# Translation of memprof to Croatiann
+# Copyright (C) Croatiann team
 # Translators: Automatski Prijevod <>,Danijel Studen <dstuden@vuka.hr>,Denis Lackovic <delacko@fly.srk.fer.hr>,Jerko Škifić <skific@riteh.hr>,
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0\n"
-"POT-Creation-Date: 2003-11-06 18:12+0100\n"
-"PO-Revision-Date: 2003-12-30 20:47+CET\n"
+"POT-Creation-Date: 2004-02-01 17:11+0100\n"
+"PO-Revision-Date: 2004-02-05 23:51+CET\n"
 "Last-Translator: auto\n"
 "Language-Team: Croatian <lokalizacija@linux.hr>\n"
 "MIME-Version: 1.0\n"
@@ -14,12 +14,10 @@ msgstr ""
 "X-Generator: TransDict server\n"
 
 #: leakdetect.c:584
-#, c-format
 msgid "Cannot open output file: %s\n"
 msgstr ""
 
 #: main.c:777
-#, c-format
 msgid "Executation of \"%s\" failed"
 msgstr ""
 
@@ -28,7 +26,6 @@ msgid "MemProf"
 msgstr ""
 
 #: main.c:1028
-#, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr ""
 
@@ -331,23 +328,23 @@ msgstr "_Postavke"
 msgid "translator_credits"
 msgstr "lokalizacija@linux.hr"
 
-#: process.c:886
+#: process.c:888
 msgid "Initial"
 msgstr ""
 
-#: process.c:889
+#: process.c:891
 msgid "Starting"
 msgstr "Početak"
 
-#: process.c:892
+#: process.c:894
 msgid "Running"
 msgstr "Izvodi se"
 
-#: process.c:895
+#: process.c:897
 msgid "Exiting"
 msgstr "Izlazim"
 
-#: process.c:898 process.c:901
+#: process.c:900 process.c:903
 msgid "Defunct"
 msgstr ""
 
