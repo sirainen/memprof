@@ -42,10 +42,10 @@ static GtkTreeStore *store;
 extern char *glade_file;
 
 static GtkWidget *
-make_menu_item (const char *label, GtkSignalFunc cb)
+make_menu_item (const char *label, GCallback cb)
 {
 	GtkWidget *menu_item = gtk_menu_item_new_with_label (label);
-	gtk_signal_connect (GTK_OBJECT (menu_item), "activate", cb, NULL);
+	g_signal_connect (menu_item, "activate", cb, NULL);
 	gtk_widget_show (menu_item);
 	
 	return menu_item;
@@ -54,7 +54,7 @@ make_menu_item (const char *label, GtkSignalFunc cb)
 static ProcessWindow *
 get_process_window (GtkWidget *menu_item)
 {
-	return gtk_object_get_data (GTK_OBJECT (menu_item->parent), "process-window");
+	return g_object_get_data (G_OBJECT (menu_item->parent), "process-window");
 }
 
 static void
@@ -99,17 +99,17 @@ popup_menu (ProcessWindow *pwin, gint button, guint32 time)
 	if (!menu) {
 		menu = gtk_menu_new ();
 
-		show_item = make_menu_item (_("Show"), GTK_SIGNAL_FUNC (show_cb));
-		gtk_menu_append (GTK_MENU (menu), show_item);
+		show_item = make_menu_item (_("Show"), G_CALLBACK (show_cb));
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), show_item);
 
-		hide_item = make_menu_item (_("Hide"), GTK_SIGNAL_FUNC (hide_cb));
-		gtk_menu_append (GTK_MENU (menu), hide_item);
+		hide_item = make_menu_item (_("Hide"), G_CALLBACK (hide_cb));
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), hide_item);
 		
-		gtk_menu_append (GTK_MENU (menu),
-				 make_menu_item (_("Kill"), GTK_SIGNAL_FUNC (tree_kill_cb)));
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu),
+				       make_menu_item (_("Kill"), G_CALLBACK (tree_kill_cb)));
 
-		gtk_menu_append (GTK_MENU (menu),
-				 make_menu_item (_("Detach"), GTK_SIGNAL_FUNC (tree_detach_cb)));
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu),
+				       make_menu_item (_("Detach"), G_CALLBACK (tree_detach_cb)));
 	}
 
 	if (process_window_visible (pwin)) {
@@ -120,7 +120,7 @@ popup_menu (ProcessWindow *pwin, gint button, guint32 time)
 		gtk_widget_set_sensitive (hide_item, FALSE);
 	}
 	
-	gtk_object_set_data (GTK_OBJECT (menu), "process-window", pwin);
+	g_object_set_data (G_OBJECT (menu), "process-window", pwin);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, button, time);
 }
 

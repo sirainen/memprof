@@ -587,7 +587,7 @@ input_func (GIOChannel  *source,
 	MPProcess *input_process = data;
 	MPProcess *process = NULL;
   
-	g_io_channel_read (source, (char *)&info, sizeof(info), &count);
+	g_io_channel_read_chars (source, (char *)&info, sizeof(info), &count, NULL);
 
 	if (count == 0) {
 		g_io_channel_unref (input_process->input_channel);
@@ -608,7 +608,7 @@ input_func (GIOChannel  *source,
 			StackStash *stash = get_stack_stash (input_process);
 			
 			stack_buffer = g_alloca (sizeof (void *) * info.alloc.stack_size);
-			g_io_channel_read (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count);
+			g_io_channel_read_chars (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count, NULL);
 			stack = stack_stash_store (stash, stack_buffer, info.alloc.stack_size);
 
 		} else if (info.operation == MI_EXIT) {
@@ -944,7 +944,7 @@ process_detach (MPProcess *process)
 			char response = 0;
 			write (fd, &response, 1);
 		} else {
-			g_io_channel_close (process->input_channel);
+			g_io_channel_shutdown (process->input_channel, TRUE, NULL);
 			process_set_status (process, MP_PROCESS_DETACHED);
 		}
 	}

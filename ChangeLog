@@ -1,3 +1,7 @@
+Sat Sep 20 16:43:42 2003  Owen Taylor  <otaylor@redhat.com>
+
+	* main.c process.c tree.c: Clean up deprecated usages.
+
 Sat Sep 20 16:30:00 2003  Owen Taylor  <otaylor@redhat.com>
 
 	* treeviewutils.[ch]: Move tree view utilities from main.c to here.

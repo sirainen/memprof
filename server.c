@@ -162,6 +162,8 @@ mp_server_init (MPServer *server)
 	create_control_socket (server);
 
 	channel = g_io_channel_unix_new (server->socket_fd);
+	g_io_channel_set_encoding (channel, NULL, NULL);
+	
 	server->control_watch = g_io_add_watch (channel, G_IO_IN | G_IO_HUP, control_func, server);
 	g_io_channel_unref (channel);
 
@@ -362,6 +364,8 @@ ensure_cleanup ()
 			fatal ("bind: %s\n", g_strerror (errno));
 
 		channel = g_io_channel_unix_new (terminate_pipe[0]);
+		g_io_channel_set_encoding (channel, NULL, NULL);
+		
 		g_io_add_watch (channel, G_IO_IN, terminate_io_handler, NULL);
 		g_io_channel_unref (channel);
 		
@@ -561,6 +565,8 @@ control_func (GIOChannel  *source,
 
 	if (process) {
 		process->input_channel = g_io_channel_unix_new (newfd);
+		g_io_channel_set_encoding (process->input_channel, NULL, NULL);
+		
 		process_start_input (process);
 		response = 1;
 	}

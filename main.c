@@ -824,16 +824,12 @@ get_filename (const gchar *title,
 	
 	gtk_label_set_text (GTK_LABEL (GTK_FILE_SELECTION (fs)->selection_text),
 			    prompt_text);
-	gtk_signal_connect (GTK_OBJECT (GTK_FILE_SELECTION (fs)->ok_button),
-			    "clicked",
-			    GTK_SIGNAL_FUNC (filename_ok_clicked), &filename);
-	gtk_signal_connect_object (GTK_OBJECT (GTK_FILE_SELECTION (fs)->cancel_button),
-				   "clicked",
-				   GTK_SIGNAL_FUNC (gtk_widget_destroy), 
-				   GTK_OBJECT (fs));
-	gtk_signal_connect (GTK_OBJECT (fs),
-			    "destroy",
-			    GTK_SIGNAL_FUNC (gtk_main_quit), NULL);
+	g_signal_connect (GTK_FILE_SELECTION (fs)->ok_button, "clicked",
+			  G_CALLBACK (filename_ok_clicked), &filename);
+	g_signal_connect_swapped (GTK_FILE_SELECTION (fs)->cancel_button, "clicked",
+				  G_CALLBACK (gtk_widget_destroy), fs);
+	g_signal_connect (fs, "destroy",
+			  G_CALLBACK (gtk_main_quit), NULL);
 	
 	gtk_widget_show (fs);
 	gtk_main();
@@ -861,7 +857,7 @@ pwin_from_widget (GtkWidget *widget)
 	} else
 		app = gtk_widget_get_toplevel (widget);
 		
-	return gtk_object_get_data (GTK_OBJECT (app), "process-window");
+	return g_object_get_data (G_OBJECT (app), "process-window");
 }
 
 void
@@ -974,10 +970,10 @@ init_process (ProcessWindow *pwin, MPProcess *process)
 			       update_status,
 			       pwin);
 
-	g_signal_connect (G_OBJECT (process), "status_changed",
-			G_CALLBACK (status_changed_cb), pwin);
-	g_signal_connect (G_OBJECT (process), "reset",
-			G_CALLBACK (reset_cb), pwin);
+	g_signal_connect (process, "status_changed",
+			  G_CALLBACK (status_changed_cb), pwin);
+	g_signal_connect (process, "reset",
+			  G_CALLBACK (reset_cb), pwin);
 
 	tree_window_add (pwin);
 }
@@ -1044,9 +1040,9 @@ run_cb (GtkWidget *widget)
        run_dialog = get_widget (xml, "RunDialog");
        entry = get_widget (xml, "RunDialog-entry");
 
-       gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
-				  GTK_SIGNAL_FUNC (gtk_widget_activate),
-				  GTK_OBJECT (get_widget (xml, "RunDialog-run")));
+       g_signal_connect_swapped (entry, "activate",
+				 G_CALLBACK (gtk_widget_activate),
+				 get_widget (xml, "RunDialog-run"));
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1182,7 +1178,7 @@ generate_leak_cb (GtkWidget *widget)
 		}
 		
 		leaks_fill (pwin);
-		gtk_notebook_set_page (GTK_NOTEBOOK (pwin->main_notebook), 1);
+		gtk_notebook_set_current_page (GTK_NOTEBOOK (pwin->main_notebook), 1);
 
 		process_start_input (pwin->process);
 	}
@@ -1205,7 +1201,7 @@ generate_profile_cb (GtkWidget *widget)
 		process_start_input (pwin->process);
 		profile_fill (pwin);
 
-		gtk_notebook_set_page (GTK_NOTEBOOK (pwin->main_notebook), 0);
+		gtk_notebook_set_current_page (GTK_NOTEBOOK (pwin->main_notebook), 0);
 	}
 }
 
@@ -1280,9 +1276,9 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        dialog = get_widget (xml, "SkipAddDialog");
        entry = get_widget (xml, "SkipAddDialog-entry");
 
-       gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
-				  GTK_SIGNAL_FUNC (gtk_widget_activate),
-				  GTK_OBJECT (get_widget (xml, "SkipAddDialog-add")));
+       g_signal_connect_swapped (entry, "activate",
+				 G_CALLBACK (gtk_widget_activate),
+				 get_widget (xml, "SkipAddDialog-add"));
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1387,9 +1383,9 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
        dialog = get_widget (xml, "SkipRegexesAddDialog");
        entry = get_widget (xml, "SkipRegexesAddDialog-entry");
 
-       gtk_signal_connect_object (GTK_OBJECT (entry), "activate",
-				  GTK_SIGNAL_FUNC (gtk_widget_activate),
-				  GTK_OBJECT (get_widget (xml, "SkipRegexesAddDialog-add")));
+       g_signal_connect_swapped (entry, "activate",
+				 G_CALLBACK (gtk_widget_activate),
+				 get_widget (xml, "SkipRegexesAddDialog-add"));
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1549,36 +1545,36 @@ preferences_cb (GtkWidget *widget)
        skip_regexes_fill ();
 
        gtk_entry_set_text (GTK_ENTRY (stack_command_entry), stack_command);
-       g_signal_connect (G_OBJECT (stack_command_entry), "activate",
+       g_signal_connect (stack_command_entry, "activate",
 			 G_CALLBACK (stack_command_entry_update), NULL);
-       g_signal_connect (G_OBJECT (stack_command_entry), "focus_out_event",
+       g_signal_connect (stack_command_entry, "focus_out_event",
 			 G_CALLBACK (stack_command_entry_focus_out), NULL);
 
        button = get_widget (xml, "skip-add-button");
-       g_signal_connect (G_OBJECT (button), "clicked",
+       g_signal_connect (button, "clicked",
 			 G_CALLBACK (skip_add_cb), xml);
        button = get_widget (xml, "skip-delete-button");
-       g_signal_connect (G_OBJECT (button), "clicked",
+       g_signal_connect (button, "clicked",
 			 G_CALLBACK (skip_delete_cb), xml);
        button = get_widget (xml, "skip-defaults-button");
-       g_signal_connect (G_OBJECT (button), "clicked",
+       g_signal_connect (button, "clicked",
 			 G_CALLBACK (skip_defaults_cb), xml);
 
        button = get_widget (xml, "skip-regexes-add-button");
-       g_signal_connect (G_OBJECT (button), "clicked",
+       g_signal_connect (button, "clicked",
 			 G_CALLBACK (skip_regexes_add_cb), xml);
        button = get_widget (xml, "skip-regexes-delete-button");
-       g_signal_connect (G_OBJECT (button), "clicked",
+       g_signal_connect (button, "clicked",
 			 G_CALLBACK (skip_regexes_delete_cb), xml);
        button = get_widget (xml, "skip-regexes-defaults-button");
-       g_signal_connect (G_OBJECT (button), "clicked",
+       g_signal_connect (button, "clicked",
 			 G_CALLBACK (skip_regexes_defaults_cb), xml);
 
        glade_xml_signal_autoconnect (xml);
 
-       g_signal_connect (G_OBJECT (property_box), "destroy",
+       g_signal_connect (property_box, "destroy",
 			 G_CALLBACK (preferences_destroy_cb), &(pref_dialog_xml));
-       g_signal_connect (G_OBJECT (property_box), "response",
+       g_signal_connect (property_box, "response",
 			 G_CALLBACK (preferences_response_cb), NULL);
 
        gtk_widget_show_all (property_box);
@@ -1785,7 +1781,7 @@ setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view
 
 	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_descendants_tree_view), FALSE);
 
-	g_signal_connect (G_OBJECT (tree_view), "row-activated",
+	g_signal_connect (tree_view, "row-activated",
 			  G_CALLBACK (profile_descendants_row_activated), pwin);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
@@ -1798,7 +1794,7 @@ setup_profile_caller_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	add_sample_column (tree_view, _("Self"), PROFILE_CALLER_SELF);
 	add_sample_column (tree_view, _("Total"), PROFILE_CALLER_TOTAL);
 	
-	g_signal_connect (G_OBJECT (tree_view), "row-activated",
+	g_signal_connect (tree_view, "row-activated",
 			  G_CALLBACK (profile_caller_row_activated), pwin);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
@@ -1823,7 +1819,7 @@ setup_leak_block_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	add_plain_text_column (tree_view, _("Caller"), LEAK_BLOCK_CALLER);
 	
 	g_signal_connect (selection, "changed",
-			  GTK_SIGNAL_FUNC (leak_block_selection_changed), pwin);
+			  G_CALLBACK (leak_block_selection_changed), pwin);
 }
 
 static void
@@ -1843,7 +1839,7 @@ setup_leak_stack_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	add_plain_text_column (tree_view, _("File"), LEAK_STACK_FILE);
 
 	g_signal_connect (tree_view, "row-activated",
-			  GTK_SIGNAL_FUNC (leak_stack_row_activated), pwin);
+			  G_CALLBACK (leak_stack_row_activated), pwin);
 }
 
 static ProcessWindow *
@@ -1875,15 +1871,15 @@ process_window_new (void)
 					 fullfilename);
 	g_free (fullfilename);
 	
-	gtk_signal_connect (GTK_OBJECT (pwin->main_window), "delete_event",
-			    GTK_SIGNAL_FUNC (hide_and_check_quit), pwin);
+	g_signal_connect (pwin->main_window, "delete_event",
+			  G_CALLBACK (hide_and_check_quit), pwin);
 	
 	
 	gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 500, 400);
 	
-	gtk_object_set_data_full (GTK_OBJECT (pwin->main_window),
-				  "process-window",
-				  pwin, (GDestroyNotify)process_window_free);
+	g_object_set_data_full (G_OBJECT (pwin->main_window),
+				"process-window",
+				pwin, (GDestroyNotify)process_window_free);
 	
 	pwin->main_notebook = get_widget (xml, "main-notebook");
 	
@@ -1922,8 +1918,8 @@ process_window_new (void)
 	pwin->usage_canvas = get_widget (xml, "usage-canvas");
 	
 	set_white_bg (pwin->usage_canvas);
-	gtk_signal_connect (GTK_OBJECT (pwin->usage_canvas), "size_allocate",
-			    GTK_SIGNAL_FUNC (usage_canvas_size_allocate), pwin);
+	g_signal_connect (pwin->usage_canvas, "size_allocate",
+			  G_CALLBACK (usage_canvas_size_allocate), pwin);
 	
 	pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
 						      gnome_canvas_rect_get_type (),
@@ -2222,8 +2218,8 @@ main(int argc, char **argv)
        mp_server_set_profile_type (global_server, profile_type);
        mp_server_set_interval (global_server, profile_interval);
        
-       g_signal_connect (G_OBJECT (global_server), "process_created",
-		       G_CALLBACK (process_created_cb), NULL);
+       g_signal_connect (global_server, "process_created",
+			 G_CALLBACK (process_created_cb), NULL);
        
        initial_window = process_window_new ();
 
