@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2001-02-09 11:48-0500\n"
+"POT-Creation-Date: 2001-02-09 15:11-0500\n"
 "PO-Revision-Date: 2000-08-10 16:08+0200\n"
 "Last-Translator: Quico Llach <quico@softcatala.org>\n"
 "Language-Team: Catalan <linux@softcatala.org>\n"
@@ -320,29 +320,29 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "No es pot obrir el fitxer de sortida: %s\n"
 
-#: process.c:806
+#: process.c:807
 msgid "Initial"
 msgstr ""
 
-#: process.c:809
+#: process.c:810
 msgid "Starting"
 msgstr ""
 
-#: process.c:812
+#: process.c:813
 #, fuzzy
 msgid "Running"
 msgstr "Executa"
 
-#: process.c:815
+#: process.c:816
 msgid "Exiting"
 msgstr ""
 
-#: process.c:818 process.c:821
+#: process.c:819 process.c:822
 #, fuzzy
 msgid "Defunct"
 msgstr "Valors predeterminats"
 
-#: server.c:214
+#: server.c:238
 #, fuzzy
 msgid "Cannot find libmemintercept.so"
 msgstr "No es pot trobar memprof.glade"

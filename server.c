@@ -21,7 +21,10 @@
 
 #include <errno.h>
 #include <stdlib.h>
+#include <signal.h>
+#include <unistd.h>
 #include <sys/un.h>
+#include <sys/stat.h>
 #include <sys/socket.h>
 
 #include <gtk/gtksignal.h>
@@ -29,6 +32,15 @@
 
 #include "memintercept.h"
 #include "server.h"
+
+/* If USE_SOCKET_DIRECTORY is defined, then the temporary sockets will
+ * be created as /tmp/memprof.UID/server.PID. Otherwise, they will
+ * be created as /tmp/memprof.XXXXXX. Despite calling mktemp(), the
+ * latter should be completely safe, because unix domain socket creation
+ * will fail with EADDRINUSE if the file already exists.
+ */
+
+#undef USE_SOCKET_DIRECTORY
 
 #define SOCKET_TEMPLATE "memprof.XXXXXX"
 
@@ -66,12 +78,24 @@ struct _MPServerClass {
 /* Global list of socket paths so we can cleanup in an atexit() function
  */
 static GSList *socket_paths;
+static int terminate_pipe[2];
 
 enum {
 	PROCESS_CREATED,
 	LAST_SIGNAL
 };
 static guint server_signals[LAST_SIGNAL] = { 0 };
+
+static void
+fatal (const char *format, ...)
+{
+	va_list va;
+
+	va_start (va, format);
+	vfprintf (stderr, format, va);
+
+	exit (1);
+}
 
 GtkType
 mp_server_get_type (void)
@@ -230,15 +254,86 @@ static void
 cleanup_socket (void)
 {
 	g_slist_foreach (socket_paths, (GFunc)unlink, NULL);
+
+#ifdef USE_SOCKET_DIRECTORY
+	/* We try to remove the directory ; if there are other copies of memprof running, we expect
+	 * this to fail
+	 */
+	{
+		char *tmpdir = tmpdir = g_strdup_printf ("%s/memprof.%d", g_get_tmp_dir(), getuid());
+		if (rmdir (tmpdir) != 0) {
+			if (errno != ENOTEMPTY)
+				g_warning ("Unlinking %s failed with error: %s\n", tmpdir, g_strerror (errno));
+		}
+		
+		g_free (tmpdir);
+	}
+#endif
+}
+
+static void
+term_handler (int signum)
+{
+	static int terminated = 0;
+	char c = signum;
+
+	if (terminated)
+		exit(1);	/* Impatient user, risk reentrancy problems  */
+	
+	terminated = 1;
+
+	write (terminate_pipe[1], &c, 1);
+}
+
+static gboolean
+terminate_io_handler (GIOChannel  *channel,
+		      GIOCondition condition,
+		      gpointer     data)
+{
+	char c;
+	
+	read (terminate_pipe[0], &c, 1);
+
+	fprintf (stderr, "memprof: Caught signal %d (%s), cleaning up\n", c, g_strsignal(c));
+
+	exit (1);
+}
+
+static void
+ensure_cleanup ()
+{
+	static gboolean added_cleanup;
+	GIOChannel *channel;
+
+	if (!added_cleanup) {
+		g_atexit (cleanup_socket);
+
+		signal (SIGINT, term_handler);
+		signal (SIGTERM, term_handler);
+		if (pipe (terminate_pipe) < 0)
+			fatal ("bind: %s\n", g_strerror (errno));
+
+		channel = g_io_channel_unix_new (terminate_pipe[0]);
+		g_io_add_watch (channel, G_IO_IN, terminate_io_handler, NULL);
+		g_io_channel_unref (channel);
+		
+		added_cleanup = TRUE;
+	}
 }
 
 static void
 create_control_socket (MPServer *server)
 {
-	static gboolean added_cleanup;
 	struct sockaddr_un addr;
 	int addrlen;
+	int retry_count = 5;
+	mode_t old_mask = umask (077);
 
+#ifdef USE_SOCKET_DIRECTORY
+	char *tmpdir = g_strdup_printf ("%s/memprof.%d", g_get_tmp_dir(), getuid());
+	struct stat st_buf;
+#endif
+	
 	memset (&addr, 0, sizeof(addr));
 
 	addr.sun_family = AF_UNIX;
@@ -248,11 +343,45 @@ create_control_socket (MPServer *server)
 		g_error ("socket: %s\n", g_strerror (errno));
 
  retry:
+	if (retry_count-- == 0)
+		fatal ("Too many retries while creating control socket\n");
+
 	if (server->socket_path)
 		g_free (server->socket_path);
 
+#ifdef USE_SOCKET_DIRECTORY	
+	if (stat (tmpdir, &st_buf) == 0) {
+		if (!S_ISDIR(st_buf.st_mode) || st_buf.st_uid != getuid())
+			fatal ("memprof: %s not owned by user or is not a directory\n", tmpdir);
+
+		if (chmod (tmpdir, 0700) != 0) {
+			if (errno == ENOENT) {
+				g_warning ("%s vanished, retrying\n", tmpdir);
+				goto retry;
+			} else
+				fatal ("memprof: cannot set permissions on %s: %s\n", tmpdir, g_strerror (errno));
+		}
+
+	} else if (errno == ENOENT) {
+		if (mkdir (tmpdir, 0700) != 0) { 
+			if (errno == EEXIST)
+				goto retry;
+			else
+				fatal ("memprof: Cannot create %s, %d", tmpdir, g_strerror (errno));
+		}
+	} else
+		fatal ("memprof: error calling stat() on %s: %s\n", tmpdir, g_strerror (errno));
+
+	server->socket_path = g_strdup_printf ("%s/server.%d", tmpdir, getpid());
+	if (g_file_exists (server->socket_path)) {
+		g_warning ("Stale memprof socket %s, removing\n", server->socket_path);
+		unlink (server->socket_path);
+	}
+		
+#else  /* !USE_SOCKET_DIRECTORY */
 	server->socket_path = g_concat_dir_and_file (g_get_tmp_dir(), SOCKET_TEMPLATE);
 	mktemp (server->socket_path);
+#endif /* USE_SOCKET_DIRECTORY */
 
 	strncpy (addr.sun_path, server->socket_path, sizeof (addr.sun_path));
 	addrlen = sizeof(addr.sun_family) + strlen (addr.sun_path);
@@ -263,18 +392,21 @@ create_control_socket (MPServer *server)
 		if (errno == EADDRINUSE)
 			goto retry;
 		else
-			g_error ("bind: %s\n", g_strerror (errno));
+			fatal ("bind: %s\n", g_strerror (errno));
 	}
 
-	if (!added_cleanup) {
-		g_atexit (cleanup_socket);
-		added_cleanup = TRUE;
-	}
+	ensure_cleanup ();
 
 	socket_paths = g_slist_prepend (socket_paths, server->socket_path);
 
 	if (listen (server->socket_fd, 8) < 0)
-		g_error ("listen: %s\n", g_strerror (errno));
+		fatal ("listen: %s\n", g_strerror (errno));
+
+	umask (old_mask);
+	
+#ifdef USE_SOCKET_DIRECTORY	
+	g_free (tmpdir);
+#endif	
 }
 
 static void

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2001-02-09 11:48-0500\n"
+"POT-Creation-Date: 2001-02-09 15:11-0500\n"
 "PO-Revision-Date: 2001-01-23 18:19:58+0900\n"
 "Last-Translator: Simos Xenitellis <simos@hellug.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
@@ -321,27 +321,27 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Αδυναμία ανοίγματος αρχείου εξόδου: %s\n"
 
-#: process.c:806
+#: process.c:807
 msgid "Initial"
 msgstr "Αρχικό"
 
-#: process.c:809
+#: process.c:810
 msgid "Starting"
 msgstr "Προς εκκίνηση"
 
-#: process.c:812
+#: process.c:813
 msgid "Running"
 msgstr "Σε εκτέλεση"
 
-#: process.c:815
+#: process.c:816
 msgid "Exiting"
 msgstr "Σε τερματισμό"
 
-#: process.c:818 process.c:821
+#: process.c:819 process.c:822
 msgid "Defunct"
 msgstr "Εκλιπών"
 
-#: server.c:214
+#: server.c:238
 msgid "Cannot find libmemintercept.so"
 msgstr "Δε μπορεί να βρεθεί το libmemintercept.so"
 

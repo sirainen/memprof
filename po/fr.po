@@ -8,7 +8,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.4.0\n"
-"POT-Creation-Date: 2001-02-09 11:48-0500\n"
+"POT-Creation-Date: 2001-02-09 15:11-0500\n"
 "PO-Revision-Date: 2000-10-18 18:12+02:00\n"
 "Last-Translator: Christophe Merlet (RedFox) <christophe@merlet.net>\n"
 "Language-Team: GNOME French Team <gnomefr@gnomefr.traduc.org>\n"
@@ -321,27 +321,27 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Ne peut ouvrir le fichier de sortie : %s\n"
 
-#: process.c:806
+#: process.c:807
 msgid "Initial"
 msgstr "Initial"
 
-#: process.c:809
+#: process.c:810
 msgid "Starting"
 msgstr "Démarrage"
 
-#: process.c:812
+#: process.c:813
 msgid "Running"
 msgstr "Exécution"
 
-#: process.c:815
+#: process.c:816
 msgid "Exiting"
 msgstr "Sortie"
 
-#: process.c:818 process.c:821
+#: process.c:819 process.c:822
 msgid "Defunct"
 msgstr "Disfonctionnement"
 
-#: server.c:214
+#: server.c:238
 msgid "Cannot find libmemintercept.so"
 msgstr "Ne peut trouver libmemintercept.so"
 

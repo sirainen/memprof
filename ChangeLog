@@ -1,3 +1,13 @@
+Fri Feb  9 14:54:08 2001  Owen Taylor  <otaylor@redhat.com>
+
+	* configure.in: Another attempt at 0.4.1. 
+
+	* server.c (create_control_socket): Added #ifdef'd out
+	code for creating entries in /tmp/memprof.UID/server.PID
+	if the warnings about mktemp() disturb you -- they shouldn't.
+
+	* server.c: Catch SIGTERM/SIGINT to clean up temporary file correctly.
+
 Fri Feb  9 11:49:10 2001  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Release 0.4.1

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: memprof-0.3.0\n"
-"POT-Creation-Date: 2001-02-09 11:48-0500\n"
+"POT-Creation-Date: 2001-02-09 15:11-0500\n"
 "PO-Revision-Date: 2000-02-21 20:31+0200\n"
 "Last-Translator: Lauris Kaplinski <luaris@ariman.ee>\n"
 "Language-Team: Estonian <linux-l@eenet.ee>\n"
@@ -328,29 +328,29 @@ msgstr "Sisestage funktsiooni nimi, mis profiili arvutamisel vahele jätta"
 msgid "Cannot open output file: %s\n"
 msgstr "Ei suuda avada väljundfaili: %s\n"
 
-#: process.c:806
+#: process.c:807
 msgid "Initial"
 msgstr ""
 
-#: process.c:809
+#: process.c:810
 msgid "Starting"
 msgstr ""
 
-#: process.c:812
+#: process.c:813
 #, fuzzy
 msgid "Running"
 msgstr "Käivita"
 
-#: process.c:815
+#: process.c:816
 msgid "Exiting"
 msgstr ""
 
-#: process.c:818 process.c:821
+#: process.c:819 process.c:822
 #, fuzzy
 msgid "Defunct"
 msgstr "Vaikimisi"
 
-#: server.c:214
+#: server.c:238
 #, fuzzy
 msgid "Cannot find libmemintercept.so"
 msgstr "Ei leia faili memprof.glade"
