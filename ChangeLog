@@ -1,3 +1,12 @@
+Sun Jul  9 19:23:21 2000  Owen Taylor  <otaylor@redhat.com>
+
+	* leakdetect.c: Add <string.h>
+
+	* memintercept.c: Allow in a small way for frees from
+	starter block - allow last block to be freed, otherwise 
+	ignore the free. Also, better code for debugging problems
+	at startup.
+
 Fri Jul  7 16:24:53 2000  Owen Taylor  <otaylor@redhat.com>
 
 	* configure.in: Release 0.4.0

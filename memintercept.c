@@ -37,6 +37,8 @@
 #include <sys/types.h>
 #include <sys/un.h>
 
+static int initialized = 0;
+
 static int (*old_execve) (const char *filename,
 			  char *const argv[],
 			  char *const envp[]);
@@ -65,24 +67,61 @@ static unsigned int seqno = 0;
 #define STARTER_SIZE 1024
 static char starter_mem[STARTER_SIZE];
 int starter_alloced = 0;
+int starter_last = 0;
+
+/* #define DEBUG */
 
 #define MI_LOCK() pthread_mutex_lock (&malloc_mutex);
 #define MI_UNLOCK() pthread_mutex_unlock (&malloc_mutex);
 
-#if 0
 static void
-write_num (int num)
+abort_unitialized (const char *call)
 {
-	char c;
-	while (num) {
-		c = (num % 10) + '0';
-		num /= 10;
-		write (2, &c, 1);
-	}
-	c = '\n';
-	write (2, &c, 1);
+	static const char msg[] = "MemProf: unexpected library call during initialization: ";
+	
+	write (2, msg, sizeof(msg));
+	write (2, call, strlen (call));
+	write (2, "\n", 1);
+	abort();
 }
-#endif
+
+#ifdef DEBUG
+static void
+write_num (unsigned long num)
+{
+	char buffer[64];
+	unsigned long tmp;
+	char c;
+	int i, n;
+
+	if (!num) {
+		write (2, "0", 1);
+		return;
+	} 
+
+	write (2, "0x", 2);
+	
+	n = 0;
+	tmp = num;
+	while (tmp) {
+		tmp /= 16;
+		n++;
+	}
+
+	i = n;
+	while (num) {
+		i--;
+		c = (num % 16);
+		if (c < 10)
+			buffer[i] = c + '0';
+		else
+			buffer[i] = c + 'a' - 10;
+		num /= 16;
+	}
+
+	write (2, buffer, n);
+}
+#endif DEBUG
 
 static int
 write_all (int fd, void *buf, int total)
@@ -268,12 +307,27 @@ __libc_malloc (size_t size)
 		 */
 		size = (size + 3) & ~3;
 		if (starter_alloced + size > STARTER_SIZE) {
-			abort();
+			static const char msg[] = "MemProf: Starter malloc exceeded available space\n";
+			write (2, msg, sizeof(msg));
+			abort ();
 		} else {
 			result = starter_mem + starter_alloced;
+			starter_last = starter_alloced;
 			starter_alloced += size;
 		}
 
+#ifdef DEBUG
+		{
+			static const char msg[] = "Starter malloc: ";
+		
+			write (2, msg, sizeof (msg));
+			write_num ((unsigned long)result);
+			write (2, " (", 2);
+			write_num (size);
+			write (2, ")\n", 2);
+		}
+#endif DEBUG		
+		
 		return result;
 	}
 	
@@ -310,6 +364,9 @@ __libc_memalign (size_t boundary, size_t size)
 	void *result;
 	MIInfo info;
 
+	if (!initialized)
+		abort_unitialized ("memalign");
+	
 	MI_LOCK ();
 	
 	if (!socket_path)
@@ -359,6 +416,9 @@ __libc_realloc (void *ptr, size_t size)
 	void *result;
 	MIInfo info;
 
+	if (!initialized)
+		abort_unitialized ("realloc");
+	
 	MI_LOCK ();
 
 	if (!socket_path)
@@ -391,6 +451,29 @@ __libc_free (void *ptr)
 {
 	MIInfo info;
 
+	if ((ptr >= (void *)starter_mem &&
+	     ptr < (void *)(starter_mem + starter_alloced))) {
+		/* Freeing memory allocated from starter pool */
+#ifdef DEBUG		
+		static const char msg[] = "Starter free: ";
+		
+		write (2, msg, sizeof (msg));
+		write_num ((unsigned long)ptr);
+#endif DEBUG
+
+		if (ptr == starter_mem + starter_last)
+			starter_alloced = starter_last;
+#ifdef DEBUG
+		else
+			write (2, " (ignored)", 10);
+		write (2, "\n", 1);
+#endif DEBUG		
+		return;
+	}
+
+	if (!initialized)
+		abort_unitialized ("free");
+	
 	MI_LOCK ();
 	
 	if (!socket_path)
@@ -419,6 +502,9 @@ free (void *ptr)
 int
 fork (void)
 {
+	if (!initialized)
+		abort_unitialized ("fork");
+	
 	if (tracing) {
 		int pid;
 		int old_pid = getpid();
@@ -438,6 +524,9 @@ execve (const char *filename,
 	char *const argv[],
 	char *const envp[])
 {
+	if (!initialized)
+		abort_unitialized ("execve");
+	
 	if (tracing) {
 		/* Nothing */
 	} else {
@@ -480,6 +569,9 @@ int __clone (int (*fn) (void *arg),
 	volatile CloneData data;
 	int pid;
 
+	if (!initialized)
+		abort_unitialized ("clone");
+	
 	if (tracing) {
 		data.started = 0;
 		data.fn = fn;
@@ -499,6 +591,9 @@ int __clone (int (*fn) (void *arg),
 void
 _exit (int status)
 {
+	if (!initialized)
+		abort_unitialized ("exit");
+	
 	if (tracing) {
 		MIInfo info;
 		int i;
@@ -541,4 +636,6 @@ static void initialize ()
 	old_fork = dlsym(RTLD_NEXT, "fork");
 	old_clone = dlsym(RTLD_NEXT, "__clone");
 	old__exit = dlsym(RTLD_NEXT, "_exit");
+
+	initialized = 1;
 }
