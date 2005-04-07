@@ -1,14 +1,14 @@
 # Traditional Chinese Messages for the memprof
 # Copyright (C) 2001-2004 Free Software Foundation, Inc.
 # He Qiangqiang <carton@263.net>, 2001
-# Wei-Lun Chao <chaoweilun@pcmail.com.tw>, 2004
+# Wei-Lun Chao <chaoweilun@pcmail.com.tw>, 2004, 05
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: MemProf 0.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2005-03-05 06:34+0800\n"
-"PO-Revision-Date: 2004-10-24 21:50+0800\n"
+"POT-Creation-Date: 2005-04-08 00:53+0800\n"
+"PO-Revision-Date: 2005-04-08 00:57+0800\n"
 "Last-Translator: Wei-Lun Chao <chaoweilun@pcmail.com.tw>\n"
 "Language-Team: Chinese <zh-l10n@linux.org.tw>\n"
 "MIME-Version: 1.0\n"
@@ -36,7 +36,7 @@ msgstr "找不到「%s」的可執行檔案"
 
 #: ../main.c:1131
 msgid "Saving is disabled at the moment"
-msgstr ""
+msgstr "目前儲存功能已關閉"
 
 #: ../main.c:1708
 msgid "MemProf Error"
@@ -48,7 +48,7 @@ msgstr "MemProf 警告"
 
 #: ../main.c:1777 ../main.c:1790 ../main.c:1805
 msgid "Name"
-msgstr ""
+msgstr "名稱"
 
 #: ../main.c:1778 ../main.c:1791 ../main.c:1806
 msgid "Self"
@@ -60,7 +60,7 @@ msgstr "總和"
 
 #: ../main.c:1792
 msgid "Cumulative"
-msgstr ""
+msgstr "累計"
 
 #: ../main.c:1829
 msgid "Address"
@@ -96,7 +96,7 @@ msgstr "真的從正在執行的行程中脫離？"
 
 #: ../main.c:2093
 msgid "Really kill running process?"
-msgstr "真的要砍除正在執行的行程？"
+msgstr "真的要砍掉正在執行的行程？"
 
 #: ../main.c:2130
 msgid "Create new windows for forked processes"
@@ -108,15 +108,15 @@ msgstr "在行程執行了 exec() 後保留視窗"
 
 #: ../main.c:2134
 msgid "Type of profiling information to collect"
-msgstr ""
+msgstr "要收集的摘要資訊類型"
 
 #: ../main.c:2136
 msgid "Number of samples/sec for time profile (1k=1000)"
-msgstr ""
+msgstr "時間摘要中每秒取樣數目 (1k=1000)"
 
 #: ../main.c:2185
 msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
-msgstr ""
+msgstr "--profile 的引數必須是 'memory'、'cycles' 或 'time' 其中之一\n"
 
 #: ../main.c:2226
 msgid "Cannot find memprof.glade"
@@ -128,7 +128,7 @@ msgstr "分配記憶體次數："
 
 #: ../memprof.glade.h:2
 msgid "*"
-msgstr ""
+msgstr "*"
 
 #: ../memprof.glade.h:3
 msgid "0"
@@ -143,13 +143,12 @@ msgid "32k"
 msgstr "32k"
 
 #: ../memprof.glade.h:6
-#, fuzzy
 msgid "<b>Callers</b>"
-msgstr "呼叫者"
+msgstr "<b>呼叫者</b>"
 
 #: ../memprof.glade.h:7
 msgid "<b>Descendants</b>"
-msgstr ""
+msgstr "<b>從屬者</b>"
 
 #: ../memprof.glade.h:8
 msgid "Adding Skip Function"
@@ -172,12 +171,12 @@ msgid "Command to run on double click in stack trace:"
 msgstr "在堆疊追蹤時連按兩下所執行的命令："
 
 #: ../memprof.glade.h:13
-#, fuzzy
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
 msgstr ""
-"版權所有 1999, 2000, 2001, Red Hat, Inc.;版權所有 2002, Kristian Rietveld"
+"版權所有 1999, 2000, 2001, Red Hat, Inc.\n"
+"版權所有 2002, Kristian Rietveld"
 
 #: ../memprof.glade.h:15
 msgid "Create Profile"
@@ -185,12 +184,12 @@ msgstr "建立記憶體使用摘要"
 
 #: ../memprof.glade.h:16
 msgid "Defaults"
-msgstr "預設"
+msgstr "預設值"
 
 #: ../memprof.glade.h:17
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
-msgstr "輸入在計算記憶體摘要時忽略的函式名的正規表示式"
+msgstr "輸入在計算記憶體摘要時忽略的函式名之正規表示式"
 
 #: ../memprof.glade.h:18
 msgid "Enter pathname to an executable"
@@ -222,11 +221,11 @@ msgstr "產生記憶體使用摘要(_P)"
 
 #: ../memprof.glade.h:25 ../tree.c:109
 msgid "Kill"
-msgstr "砍除"
+msgstr "砍掉"
 
 #: ../memprof.glade.h:26
 msgid "Kill Program"
-msgstr "砍除程式"
+msgstr "砍掉程式"
 
 #: ../memprof.glade.h:27
 msgid "Leak Detection Options"
@@ -266,7 +265,7 @@ msgstr "要忽略的函式名正規表示式："
 
 #: ../memprof.glade.h:37
 msgid "Reset"
-msgstr ""
+msgstr "重置"
 
 #: ../memprof.glade.h:38
 msgid "Run"
@@ -318,7 +317,7 @@ msgstr "求助(_H)"
 
 #: ../memprof.glade.h:50
 msgid "_Kill"
-msgstr "砍除(_K)"
+msgstr "砍掉(_K)"
 
 #: ../memprof.glade.h:51
 msgid "_Process"
@@ -335,6 +334,11 @@ msgstr "設定(_S)"
 #: ../memprof.glade.h:54
 msgid "translator_credits"
 msgstr ""
+"GNOME 中文化郵件論壇\n"
+"community@linuxhall.org\n"
+"\n"
+"Wei-Lun Chao <chaoweilun@pcmail.com.tw>, 2004, 05\n"
+"He Qiangqiang <carton@263.net>, 2001"
 
 #: ../process.c:902
 msgid "Initial"
@@ -357,9 +361,9 @@ msgid "Defunct"
 msgstr "已死行程"
 
 #: ../server.c:288
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot find %s"
-msgstr "找不到「%s」的可執行檔案"
+msgstr "找不到「%s」"
 
 #: ../tree.c:102
 msgid "Show"
@@ -384,15 +388,3 @@ msgstr "命令列"
 #: ../tree.c:182
 msgid "Status"
 msgstr "狀態"
-
-#~ msgid "Really quit MemProf?"
-#~ msgstr "真的要退出 MemProf？"
-
-#~ msgid "Bytes"
-#~ msgstr "位元組數"
-
-#~ msgid "Children"
-#~ msgstr "子行程"
-
-#~ msgid "Cannot find libmemintercept.so"
-#~ msgstr "找不到 libmemintercept.so"
