@@ -1,0 +1,388 @@
+# translation of memprof.HEAD.po to Nepali
+# This file is distributed under the same license as the PACKAGE package.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER.
+# Pawan Chitrakar <pawan@mpp.org.np>, 2005.
+# Kapil Timilsina <lipak21@gmail.com>, 2005.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: memprof.HEAD\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2005-08-28 07:28+0545\n"
+"PO-Revision-Date: 2005-06-27 12:42+0545\n"
+"Last-Translator: Kapil Timilsina <lipak21@gmail.com>\n"
+"Language-Team: Nepali <info@mpp.org.np>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.9.1\n"
+"Plural-Forms: nplural=2;plural=(n!=1)\n"
+
+#: ../leakdetect.c:503
+#, c-format
+msgid "Cannot open output file: %s\n"
+msgstr "निर्यात फाइल खोल्न सकिँदैन: %s\n"
+
+#: ../main.c:777
+#, c-format
+msgid "Executation of \"%s\" failed"
+msgstr "\"%s\" को कार्यान्वयन गर्न असफल"
+
+#: ../main.c:921 ../memprof.glade.h:29
+msgid "MemProf"
+msgstr "मेमप्रोफ"
+
+#: ../main.c:1028
+#, c-format
+msgid "Cannot find executable for \"%s\""
+msgstr "\"%s\" को लागि कार्यान्वयन पत्ता लगाउन सकिएन"
+
+#: ../main.c:1131
+msgid "Saving is disabled at the moment"
+msgstr "बचत गर्न अहिले असक्षम"
+
+#: ../main.c:1708
+msgid "MemProf Error"
+msgstr "मेम्प्रोफ गल्ती"
+
+#: ../main.c:1708
+msgid "MemProf Warning"
+msgstr "मेम्प्रोफ चेतावनी"
+
+#: ../main.c:1777 ../main.c:1790 ../main.c:1805
+msgid "Name"
+msgstr "नाम"
+
+#: ../main.c:1778 ../main.c:1791 ../main.c:1806
+msgid "Self"
+msgstr "स्वयम"
+
+#: ../main.c:1779 ../main.c:1807
+msgid "Total"
+msgstr "जम्मा"
+
+#: ../main.c:1792
+msgid "Cumulative"
+msgstr "बढ्दै जाने"
+
+#: ../main.c:1829
+msgid "Address"
+msgstr "ठेगाना"
+
+#: ../main.c:1830
+msgid "Size"
+msgstr "आकार"
+
+#: ../main.c:1831
+msgid "Caller"
+msgstr "कलर"
+
+#: ../main.c:1849
+msgid "Function"
+msgstr "कार्य"
+
+#: ../main.c:1850
+msgid "Line"
+msgstr "रेखा"
+
+#: ../main.c:1851
+msgid "File"
+msgstr "फाईल"
+
+#: ../main.c:2061
+msgid "Really detach from finished process?"
+msgstr "सकिएको प्रकृयाबाट के तपाई साँच्चै छुटाउन चाहनुहुन्छ?"
+
+#: ../main.c:2063
+msgid "Really detach from running process?"
+msgstr "चालु प्रकृयाबाट के तपाई साँच्चै छुटाउन चाहनुहुन्छ?"
+
+#: ../main.c:2093
+msgid "Really kill running process?"
+msgstr "चालु प्रकृयालाई तपाई बन्द गर्न चाहनुहुन्छ?"
+
+#: ../main.c:2130
+msgid "Create new windows for forked processes"
+msgstr "फर्क्ड प्रकृयाको लागि नयाँ सन्झ्याल बनाउनुहोस्"
+
+#: ../main.c:2132
+msgid "Retain windows for processes after exec()"
+msgstr "कार्यान्वयन पछि प्रकृयाको लागि सन्झ्याल राख्नुहोस्"
+
+#: ../main.c:2134
+msgid "Type of profiling information to collect"
+msgstr "संकलनको लागि प्रोफाइलिङ्ग सूचनाको प्रकार"
+
+#: ../main.c:2136
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "नमुनाको संख्या/सेकेन्ड समय प्रोफाइलको लागि (१के=१०००)"
+
+#: ../main.c:2185
+msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
+msgstr "तर्क को --प्रोफाइल एकको 'मेमोरी', 'साइकल', वा 'समय' हुनुपर्छ\n"
+
+#: ../main.c:2226
+msgid "Cannot find memprof.glade"
+msgstr "मेम्प्रोफ ग्लेड पत्ता लगाउन सकिएन"
+
+#: ../memprof.glade.h:1
+msgid "# of Allocations:"
+msgstr "# एलोकेसनहरुको:"
+
+#: ../memprof.glade.h:2
+msgid "*"
+msgstr "*"
+
+#: ../memprof.glade.h:3
+msgid "0"
+msgstr "०"
+
+#: ../memprof.glade.h:4
+msgid "0k"
+msgstr "ओके"
+
+#: ../memprof.glade.h:5
+msgid "32k"
+msgstr "३२के"
+
+#: ../memprof.glade.h:6
+msgid "<b>Callers</b>"
+msgstr "<b>कलरहरु</b>"
+
+#: ../memprof.glade.h:7
+msgid "<b>Descendants</b>"
+msgstr "<b>वंशजहरु</b>"
+
+#: ../memprof.glade.h:8
+msgid "Adding Skip Function"
+msgstr "फड्काउने कार्य जोड्दै"
+
+#: ../memprof.glade.h:9
+msgid "Adding Skip Regular Expression"
+msgstr "फड्काउने नियमित अभिव्यक्ति जोड्दै"
+
+#: ../memprof.glade.h:10
+msgid "Bytes / Allocation:"
+msgstr "बाइट्स / एलोकेसन"
+
+#: ../memprof.glade.h:11
+msgid "Check for Leaks"
+msgstr "चुहावटको लागि जाँच्नुहोस्"
+
+#: ../memprof.glade.h:12
+msgid "Command to run on double click in stack trace:"
+msgstr "आदेश दोहोरो क्लिकमा स्ट्याक ट्रेस भित्र चालु गर्न"
+
+#: ../memprof.glade.h:13
+msgid ""
+"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+"Copyright 2002, Kristian Rietveld"
+msgstr ""
+"प्रतिलिपि अधिकार १९९९, २०००, २००१, रातो ह्याट, कम्पनी.\n"
+"प्रतिलिपि अधिकार २००२, क्रिष्टियन रिट्भेल्ड"
+
+#: ../memprof.glade.h:15
+msgid "Create Profile"
+msgstr "प्रोफाइल बनाउनुहोस्"
+
+#: ../memprof.glade.h:16
+msgid "Defaults"
+msgstr "पूर्वनिर्धारित"
+
+#: ../memprof.glade.h:17
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr "प्रोफाइलहरु संगणन गर्दा फड्काउनको लागि कार्यको नियमित अभिव्यक्त्ति राख्नुहोस्"
+
+#: ../memprof.glade.h:18
+msgid "Enter pathname to an executable"
+msgstr "कार्यान्वयनको लागि बाटोनाम राख्नुहोस्"
+
+#: ../memprof.glade.h:19
+msgid "Enter the name of a function to skip when computing profiles"
+msgstr "प्रोफाइलहरु संगणन गर्दा फड्काउनको लागि कार्यको नाम राख्नुहोस्"
+
+#: ../memprof.glade.h:20
+msgid "Follow _exec()"
+msgstr "अनुगमन _कार्यान्वयन()"
+
+#: ../memprof.glade.h:21
+msgid "Follow _fork()"
+msgstr "अनुगमन _फर्क()"
+
+#: ../memprof.glade.h:22
+msgid "Functions to Skip:"
+msgstr "कार्यहरू फड्काउनको लागि:"
+
+#: ../memprof.glade.h:23
+msgid "Generate _Leak Report"
+msgstr "उत्पन्न _चुहावट प्रतिवेदन"
+
+#: ../memprof.glade.h:24
+msgid "Generate _Profile"
+msgstr "उत्पन्न _ प्रोफाइल"
+
+#: ../memprof.glade.h:25 ../tree.c:109
+msgid "Kill"
+msgstr "नास गर्नुहोस्"
+
+#: ../memprof.glade.h:26
+msgid "Kill Program"
+msgstr "कार्यक्रम नास गर्नुहोस्"
+
+#: ../memprof.glade.h:27
+msgid "Leak Detection Options"
+msgstr "चुहावट पत्ता लगाउने विकल्पहरु"
+
+#: ../memprof.glade.h:28
+msgid "Leaks"
+msgstr "चुहावटहरु"
+
+#: ../memprof.glade.h:30
+msgid "MemProf - Processes"
+msgstr "मेम्प्रोफ - प्रक्रियाहरु"
+
+#: ../memprof.glade.h:31
+msgid "Memory Profiling Tool"
+msgstr "स्मृति प्रोफाइलिङ्ग औजार"
+
+#: ../memprof.glade.h:32
+msgid "Preferences"
+msgstr "प्राथमिकताहरु"
+
+#: ../memprof.glade.h:33
+msgid "Process _Tree"
+msgstr "प्रक्रिया _ ट्री॒"
+
+#: ../memprof.glade.h:34
+msgid "Profile"
+msgstr "प्रोफाइल"
+
+#: ../memprof.glade.h:35
+msgid "Profile Options"
+msgstr "प्रोफाइल विकल्पहरु"
+
+#: ../memprof.glade.h:36
+msgid "Regular expressions to Skip:"
+msgstr "फड्काउनको लागि नियमित अभिव्यक्त्तिहरु:"
+
+#: ../memprof.glade.h:37
+msgid "Reset"
+msgstr "फेरि मिलाउनुहोस्"
+
+#: ../memprof.glade.h:38
+msgid "Run"
+msgstr "सञ्चालन गर्नुहोस्"
+
+#: ../memprof.glade.h:39
+msgid "Run Executable"
+msgstr "कार्यान्वयन सञ्चालन गर्नुहोस्"
+
+#: ../memprof.glade.h:40
+msgid "Run Program"
+msgstr "कार्यक्रम सञ्चालन गर्नुहोस्"
+
+#: ../memprof.glade.h:41
+msgid "Save"
+msgstr "संग्रह गर्नुहोस्"
+
+#: ../memprof.glade.h:42
+msgid "Save Report"
+msgstr "प्रतिवेदन संग्रह गर्नुहोस्"
+
+#: ../memprof.glade.h:43
+msgid "Save _Leak Info..."
+msgstr "चुहावट सूचना बचत गर्नुहोस्..."
+
+#: ../memprof.glade.h:44
+msgid "Save _Profile..."
+msgstr "प्रोफाइल संग्रह गर्नुहोस्..."
+
+#: ../memprof.glade.h:45
+msgid "Stack Trace"
+msgstr "थाक ट्रेस"
+
+#: ../memprof.glade.h:46
+msgid "Total Bytes:"
+msgstr "जम्मा बाइट्स:"
+
+#: ../memprof.glade.h:47
+msgid "_Detach"
+msgstr "छुट्टयाउनुहोस"
+
+#: ../memprof.glade.h:48
+msgid "_File"
+msgstr "फाईल"
+
+#: ../memprof.glade.h:49
+msgid "_Help"
+msgstr "मद्दत"
+
+#: ../memprof.glade.h:50
+msgid "_Kill"
+msgstr "नास गर्नुहोला"
+
+#: ../memprof.glade.h:51
+msgid "_Process"
+msgstr "प्रक्रिया"
+
+#: ../memprof.glade.h:52
+msgid "_Run Program..."
+msgstr "प्रोग्राम सञ्चालन गर्नुहोस्"
+
+#: ../memprof.glade.h:53
+msgid "_Settings"
+msgstr "_मिलानहरु"
+
+#: ../memprof.glade.h:54
+msgid "translator_credits"
+msgstr "अनुवादकको श्रेय"
+
+#: ../process.c:902
+msgid "Initial"
+msgstr "इनिसियल"
+
+#: ../process.c:905
+msgid "Starting"
+msgstr "सुरु भइरहेको"
+
+#: ../process.c:908
+msgid "Running"
+msgstr "चालु रहेको"
+
+#: ../process.c:911
+msgid "Exiting"
+msgstr "बाहिर जादैछ"
+
+#: ../process.c:914 ../process.c:917
+msgid "Defunct"
+msgstr "डिफङ्क्ट"
+
+#: ../server.c:288
+#, c-format
+msgid "Cannot find %s"
+msgstr "पत्ता लगाउन सकिएन %s"
+
+#: ../tree.c:102
+msgid "Show"
+msgstr "देखाउनुहोस्"
+
+#: ../tree.c:105
+msgid "Hide"
+msgstr "लुकाउनु"
+
+#: ../tree.c:112
+msgid "Detach"
+msgstr "छुट्टयाउनुहोस्"
+
+#: ../tree.c:180
+msgid "PID"
+msgstr "पिआइडि"
+
+#: ../tree.c:181
+msgid "Command Line"
+msgstr "आदेश रेखा"
+
+#: ../tree.c:182
+msgid "Status"
+msgstr "वस्तुस्थिति"
