@@ -45,8 +45,16 @@
  * waiting for a child thread to start.
  */
 
+/*
+ * For the new NPTL implementation, all threads return the
+ * same 'getpid' - so instead we use a thread variable.
+ */
+#define NPTL
+
 typedef struct {
+#ifdef NPTL
 	uint32_t ref_count;
+#endif
 	pid_t pid;
 	int outfd;
 	pid_t clone_pid;	/* See comments in clone_thunk */
@@ -77,7 +85,7 @@ static MIBool tracing = MI_TRUE;
 static ThreadInfo threads[MAX_THREADS];
 static char *socket_path = NULL;
 static char socket_buf[64];
-static unsigned int seqno = 0;
+static uint32_t seqno = 0;
 
 #undef ENABLE_DEBUG
 
@@ -87,72 +95,79 @@ static unsigned int seqno = 0;
 #define MI_DEBUG(arg) (void)0
 #endif /* ENABLE_DEBUG */
 
+#ifdef NPTL
+static __thread ThreadInfo global_per_thread = { 0, };
+#endif
+
 static ThreadInfo *
-allocate_thread (pid_t pid)
+allocate_thread (void)
 {
+	ThreadInfo *thread = NULL;
+#ifdef NPTL
+	thread = &global_per_thread;
+#else
 	int i;
 	
 	for (i = 0; i < MAX_THREADS; i++) {
 		if (threads[i].ref_count == 0) {
 			unsigned int new_count = mi_atomic_increment (&threads[i].ref_count);
 			if (new_count == 1) {
-				threads[i].pid = pid;
-				threads[i].clone_pid = 0;
-				return &threads[i];
+				thread = &threads[i];
+				break;
 			} else
 				mi_atomic_decrement (&threads[i].ref_count);
 		}
 	}
-	
-	mi_debug ("Can't find free thread slot");
-	tracing = MI_FALSE;
-	_exit(1);
+	if (!thread) {
+		mi_debug ("Can't find free thread slot");
+		tracing = MI_FALSE;
+		_exit(1);
+	}
+#endif	
+	thread->pid = getpid();
+	thread->clone_pid = 0;
 
-	return NULL;
+	return thread;
 }
 
 static void
 release_thread (ThreadInfo *thread)
 {
 	thread->pid = 0;
+#ifndef NPTL
 	mi_atomic_decrement (&thread->ref_count);
+#endif
 }
 
 static ThreadInfo *
-find_thread (pid_t pid)
+find_thread (void)
 {
-	int i;
-#if 1
 	ThreadInfo *thread;
+#ifdef NPTL
+	thread = &global_per_thread;
 #else
-	/* Over-optimized GCC/GLibc extension happy version
-	 * Requires gcc-3.2 and glibc-2.3.
-	 */
-	static __thread ThreadInfo *thread = NULL;
 	int i;
-
-a	if (__builtin_expect (thread == NULL, 0))
-		return thread;
-#endif	
+	pid_t pid = getpid();
 
 	for (i=0; i < MAX_THREADS; i++)
 		if (threads[i].pid == pid) {
 			thread = &threads[i];
-
-			if (thread->clone_pid) {
-				/* See comments in clone_thunk() */
-				new_process (thread, thread->clone_pid, MI_CLONE);
-				thread->clone_pid = 0;
-			}
-
-			return thread;
+			break;
 		}
+#endif
+	if (!thread) {
+			mi_debug ("Thread not found\n");
+			tracing = MI_FALSE;
+			_exit(1);
+	}
 
-	mi_debug ("Thread not found\n");
-	tracing = MI_FALSE;
-	_exit(1);
-
-	return NULL;
+	if (thread->clone_pid) {
+			/* See comments in clone_thunk() */
+			new_process (thread, thread->clone_pid, MI_CLONE);
+			thread->clone_pid = 0;
+	}
+	
+	return thread;
 }
 
 static void
@@ -249,9 +264,11 @@ new_process (ThreadInfo *thread,
 	info.fork.seqno = 0;
 
 	if (!thread)
-		thread = allocate_thread (info.fork.new_pid);
+			thread = allocate_thread ();
 
 	thread->outfd = outfd;
+
+	MI_DEBUG (("new_process op %d\n", info.any.operation));
 
 	if (!mi_write (outfd, &info, sizeof (MIInfo))) {
 		stop_tracing (outfd);
@@ -329,11 +346,20 @@ mi_write_stack (int      n_frames,
 	ThreadInfo *thread;
 	int old_errno = errno;
 
+	if (n_frames < 0)
+	{
+			MI_DEBUG (("mi_write_stack - elide bogus foo\n"));
+			return;
+	}
+
+	MI_DEBUG (("mi_write_stack op 0x%x stack size %d\n",
+			   info->any.operation, n_frames));
+
 	info->alloc.stack_size = n_frames;
 	info->alloc.pid = getpid();
-	info->alloc.seqno = seqno++;
+	info->alloc.seqno = mi_atomic_increment (&seqno) - 1;
 
-	thread = find_thread (info->alloc.pid);
+	thread = find_thread ();
 	
 	if (!mi_write (thread->outfd, info, sizeof (MIInfo)) ||
 	    !mi_write (thread->outfd, frames, n_frames * sizeof(void *)))
@@ -352,7 +378,7 @@ __fork (void)
 		int pid;
 		int old_pid = getpid();
 
-		find_thread (old_pid); /* Make sure we're registered */
+		find_thread (); /* Make sure we're registered */
 		
 		pid = (*old_fork) ();
 
@@ -380,7 +406,7 @@ __vfork (void)
 		int pid;
 		int old_pid = getpid();
 
-		find_thread (old_pid); /* Make sure we're registered */
+		find_thread (); /* Make sure we're registered */
 		
 		pid = (*old_vfork) ();
 
@@ -434,7 +460,7 @@ clone_thunk (void *arg)
 	 * So, we simply allocate the structure for the thread and delay
 	 * the initialization.
 	 */
-	thread = allocate_thread (getpid());
+	thread = allocate_thread ();
 	thread->clone_pid = data->pid;
 	data->started = 1;
 
@@ -452,14 +478,14 @@ int __clone (int (*fn) (void *arg),
 
 	if (!mi_check_init ())
 		abort_unitialized ("__clone");
-
+	
 	if (tracing) {
 		data.started = 0;
 		data.fn = fn;
 		data.arg = arg;
 		data.pid = getpid();
 		
-		find_thread (data.pid); /* Make sure we're registered */
+		find_thread (); /* Make sure we're registered */
 		
 		pid = (*old_clone) (clone_thunk, child_stack, flags, (void *)&data, xarg1, xarg2, xarg3, xarg4);
 
@@ -490,12 +516,12 @@ exit_wait (void)
 	int count;
 	char response;
 	info.any.operation = MI_EXIT;
-	info.any.seqno = seqno++;
+	info.any.seqno = mi_atomic_increment (&seqno) - 1;
 	info.any.pid = getpid();
 	
 	mi_stop ();
 	
-	thread = find_thread (info.any.pid);
+	thread = find_thread ();
 	
 	if (mi_write (thread->outfd, &info, sizeof (MIInfo)))
 		/* Wait for a response before really exiting

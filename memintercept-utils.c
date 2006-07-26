@@ -1,3 +1,4 @@
+#include <stdio.h>
 /* -*- mode: C; c-file-style: "linux" -*- */
 
 /* MemProf -- memory profiler and leak detector
@@ -250,7 +251,10 @@ mi_write (int         fd,
 		count = send (fd, buf + written, total - written, MSG_NOSIGNAL);
 		if (count < 0) {
 			if (errno != EINTR)
+			{
+				mi_debug ("mi_write error %d\n", errno);
 				return 0;
+			}
 		} else {
 			if (count == 0)
 				return 0;

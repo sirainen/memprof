@@ -81,6 +81,7 @@ add_plain_text_column (GtkTreeView *view, const gchar *title, gint model_column)
 	GtkTreeViewColumn *column;
 
 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 	column = gtk_tree_view_column_new_with_attributes (title, renderer,
 							   "text", model_column,
 							   NULL);
@@ -148,7 +149,7 @@ add_double_format_column (GtkTreeView *view, const gchar *title, gint model_colu
 	column = gtk_tree_view_column_new ();
 	gtk_tree_view_column_set_title  (column, title);
 	gtk_tree_view_column_pack_start (column, renderer, TRUE);
-	gtk_tree_view_column_set_resizable (column, TRUE);
+	gtk_tree_view_column_set_resizable (column, FALSE);
 
 	column_info->column = model_column;
 	column_info->format = g_strdup (format);
@@ -169,6 +170,7 @@ add_pointer_column (GtkTreeView *view, const gchar *title, gint model_column)
 	GtkTreeViewColumn *column;
 
 	renderer = gtk_cell_renderer_text_new ();
+	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 
 	column = gtk_tree_view_column_new ();
 	if (title)

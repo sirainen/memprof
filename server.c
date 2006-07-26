@@ -164,7 +164,8 @@ mp_server_init (MPServer *server)
 	channel = g_io_channel_unix_new (server->socket_fd);
 	g_io_channel_set_encoding (channel, NULL, NULL);
 	
-	server->control_watch = g_io_add_watch (channel, G_IO_IN | G_IO_HUP, control_func, server);
+	server->control_watch = g_io_add_watch (channel, G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
+											control_func, server);
 	g_io_channel_unref (channel);
 
 	g_object_ref (G_OBJECT (server));
@@ -366,7 +367,7 @@ ensure_cleanup ()
 		channel = g_io_channel_unix_new (terminate_pipe[0]);
 		g_io_channel_set_encoding (channel, NULL, NULL);
 		
-		g_io_add_watch (channel, G_IO_IN, terminate_io_handler, NULL);
+		g_io_add_watch (channel, G_IO_IN | G_IO_PRI, terminate_io_handler, NULL);
 		g_io_channel_unref (channel);
 		
 		added_cleanup = TRUE;

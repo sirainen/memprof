@@ -352,8 +352,8 @@ process_map_sections (Map *map, SectionFunc func, gpointer user_data)
 				/* bfd_section_size() gives 0 for old versions of binutils, so peek
 				 * into the internals instead. :-(
 				 */
-				/* (*func) (addr, bfd_section_size (map->abfd, section), user_data); */
-				(*func) (addr, section->_cooked_size, user_data);
+				(*func) (addr, bfd_section_size (map->abfd, section), user_data);
+//				(*func) (addr, section->_cooked_size, user_data);
 			}
 		}
 }

@@ -1,5 +1,59 @@
 2006-07-26  Michael Meeks  <michael.meeks@novell.com>
 
+	* merge sled-fixes.
+
+	* main.c, treeviewutils.c: fix auto-elipsizing,
+	and column sizing evilness - particularly useful for
+	C++ with -huge- symbol names.
+
+2006-07-26  Michael Meeks  <michael.meeks@novell.com>
+
+	* stack-frame.c (mi_call_with_backtrace): add
+	guard to avoid rtld related deadlock from allocation
+	from inside 'backtrace' itself.
+
+	* process.c (input_func): blank info before read,
+	add assertions,
+
+	* memprof.glade: add record button.
+
+	* main.c: fix treeview selection crashers.
+	(record_button_toggled_cb): add record button so
+	you can stop recording events and read the profile.
+	(string_view_init): set column renderer to be
+	ellipsizing and resizeable.
+
+	* bfdutils.c (process_map_sections): assume we
+	have a modern libbfd - with bfd_section_size by
+	default.
+
+	* autogen.sh: require automake 1.8 to play nicely
+	on modern systems.
+
+	* intercept.c (mi_write_stack): if n_frames is
+	negative (uh-huh) then drop the stack rather than
+	breaking the protocol. Add protocol mi_debug.
+
+2005-06-14  Michael Meeks  <michael.meeks@novell.com>
+
+	* intercept.c (allocate_thread, find_thread):
+	update signatures and re-work for NPTL which gives
+	the same getpid() for each process: fixes all the
+	threading problems.
+
+	* process.c (input_func): reset the info structure
+	between messages; defensively.
+
+2005-06-13  Michael Meeks  <michael.meeks@novell.com>
+
+	* server.c (ensure_cleanup, mp_server_init),
+	* process.c (process_start_input): use a fuller set
+	of G_IO_ flags for various conditions.
+
+	* intercept.c (exit_wait, mi_write_stack): use atomic
+	increment for seqno - if we get out of step process.c
+	bombs with an ever-growing sorted GList.
+
 	* Tag SLED_FIXES_ANCHOR & branch: sled-fixes
 
 2006-04-18  Kjartan Maraas  <kmaraas@gnome.org>

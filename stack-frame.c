@@ -47,11 +47,14 @@ mi_call_with_backtrace (int to_skip, void callback (int, void **, void *), void 
 {
     int bufsiz = 128, count;
     void **buf;
+	static __thread int in_backtrace = 0;
 
 again:
     buf = alloca (bufsiz * sizeof (void *));
 
-    count = backtrace (buf, bufsiz);
+	if (!(in_backtrace++))
+			count = backtrace (buf, bufsiz);
+	in_backtrace--;
     
     if (count == bufsiz)
     {

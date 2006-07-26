@@ -600,6 +600,8 @@ input_func (GIOChannel  *source,
 	MPProcess *process = NULL;
   
 	do {
+		memset (&info, 0, sizeof (info));
+		info.operation = -1;
 		count = 0;
 		if (g_io_channel_get_flags(source) & G_IO_FLAG_IS_READABLE)
 			g_io_channel_read_chars (source, (char *)&info, sizeof(info), &count, NULL);
@@ -615,13 +617,17 @@ input_func (GIOChannel  *source,
 		} else {
 			StackElement *stack = NULL;
 
+//			fprintf (stderr, "Read size %d op 0x%x\n", count, info.operation);
+
 			if (info.operation == MI_MALLOC ||
 			    info.operation == MI_REALLOC ||
 			    info.operation == MI_FREE ||
 			    info.operation == MI_TIME) {
 				void **stack_buffer = NULL;
 				StackStash *stash = get_stack_stash (input_process);
-			
+
+				g_assert (count >= sizeof (MIInfoAlloc));
+
 				stack_buffer = g_alloca (sizeof (void *) * info.alloc.stack_size);
 				g_io_channel_read_chars (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count, NULL);
 				stack = stack_stash_store (stash, stack_buffer, info.alloc.stack_size);
@@ -667,7 +673,7 @@ process_start_input (MPProcess *process)
 	if (!process->input_tag && process->input_channel)
 		process->input_tag = g_io_add_watch_full (process->input_channel,
 							  G_PRIORITY_LOW,
-							  G_IO_IN | G_IO_HUP,
+							  G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL,
 							  input_func, process, NULL);
 }
 

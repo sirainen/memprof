@@ -410,7 +410,11 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 	GtkSortType old_sort_type;
 	gboolean was_sorted;
 
-	gtk_tree_selection_get_selected (selection, (GtkTreeModel **)&store, &selected);
+	if (!gtk_tree_selection_get_selected (selection, (GtkTreeModel **)&store, &selected))
+	{
+		g_warning ("No selection");
+		return;
+	}
 
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &selected,
 			    PROFILE_FUNC_FUNC, &func,
@@ -509,6 +513,8 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 	gtk_tree_sortable_sort_column_changed (GTK_TREE_SORTABLE (list_store));
 
+    gtk_tree_view_columns_autosize (GTK_TREE_VIEW (pwin->profile_caller_tree_view));
+
 	g_object_unref (G_OBJECT (list_store));
 	
 	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_caller_tree_view), TRUE);
@@ -579,6 +585,8 @@ profile_fill (ProcessWindow *pwin)
 
 	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_func_tree_view), TRUE);
 
+    gtk_tree_view_columns_autosize (GTK_TREE_VIEW (pwin->profile_func_tree_view));
+
 	g_object_unref (G_OBJECT (store));
 }
 
@@ -596,7 +604,7 @@ leak_block_get_selected (ProcessWindow *pwin)
 	Block *block =  NULL;
 
 	selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (pwin->leak_block_tree_view));
-	if (gtk_tree_selection_get_selected (selection, &model, &iter))
+	if (selection && gtk_tree_selection_get_selected (selection, &model, &iter))
 		gtk_tree_model_get (model, &iter, LEAK_BLOCK_BLOCK, &block, -1);
 
 	return block;
@@ -604,7 +612,7 @@ leak_block_get_selected (ProcessWindow *pwin)
 
 static void
 leak_block_selection_changed (GtkTreeSelection *selection,
-			      ProcessWindow    *pwin)
+							  ProcessWindow    *pwin)
 {
 	GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (pwin->leak_stack_tree_view));
 	GtkListStore *store = GTK_LIST_STORE (model);
@@ -1008,6 +1016,7 @@ run_file (ProcessWindow *pwin, char **args)
 	path = process_find_exec (args);
 	
 	if (path) {
+		g_warning ("Process new '%s'\n", path);
 		MPProcess *process = process_new (global_server);
 		process_run (process, path, args);
 
@@ -1226,6 +1235,18 @@ reset_profile_cb (GtkWidget *widget)
 		process_clear_input (pwin->process);
 }
 
+void
+record_button_toggled_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = pwin_from_widget (widget);
+
+	if (gtk_toggle_tool_button_get_active
+			(GTK_TOGGLE_TOOL_BUTTON (widget)))
+		process_start_input (pwin->process);
+	else
+		process_stop_input (pwin->process);
+}
+
 static void
 string_view_init (GtkTreeView *tree_view)
 {
@@ -1238,10 +1259,14 @@ string_view_init (GtkTreeView *tree_view)
 	column = gtk_tree_view_column_new ();
 
 	renderer = gtk_cell_renderer_text_new ();
-	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	g_object_set (renderer, "ellipsize", PANGO_ELLIPSIZE_END, NULL);
 	gtk_tree_view_column_set_attributes (column, renderer, "text", 0, NULL);
+	gtk_tree_view_column_pack_start (column, renderer, TRUE);
+	gtk_tree_view_column_set_resizable (column, TRUE);
 
 	gtk_tree_view_append_column (tree_view, column);
+
+	gtk_tree_view_columns_autosize (tree_view);
 }
 
 static void
@@ -1339,6 +1364,8 @@ skip_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkTreeSelection *skip_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (skip_tree_view));
        GtkTreeModel *skip_model;
        GtkTreeIter iter;
+
+	   g_return_if_fail (skip_selection != NULL);
 
 	if (gtk_tree_selection_get_selected (skip_selection, &skip_model, &iter)) {
 		int selected_row = list_iter_get_index (skip_model, &iter);
@@ -1447,6 +1474,8 @@ skip_regexes_delete_cb (GtkWidget *widget, GladeXML *preferences_xml)
        GtkTreeSelection *regexes_selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (regexes_tree_view));
        GtkTreeModel *regexes_model;
        GtkTreeIter iter;
+
+	   g_return_if_fail (regexes_selection != NULL);
 
 	if (gtk_tree_selection_get_selected (regexes_selection, &regexes_model, &iter)) {
 		int selected_row = list_iter_get_index (regexes_model, &iter);
@@ -1773,12 +1802,15 @@ static void
 setup_profile_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
 	GtkTreeSelection *selection;
+	GtkTreeViewColumn *col;
 	
-	add_plain_text_column (tree_view, _("Name"), PROFILE_FUNC_NAME);
+	col = add_plain_text_column (tree_view, _("Name"), PROFILE_FUNC_NAME);
 	add_sample_column (tree_view, _("Self"), PROFILE_FUNC_SELF);
 	add_sample_column (tree_view, _("Total"), PROFILE_FUNC_TOTAL);
+	gtk_tree_view_column_set_expand (col, TRUE);
 
 	selection = gtk_tree_view_get_selection (tree_view);
+	g_return_if_fail (selection != NULL);
 	g_signal_connect (selection, "changed", G_CALLBACK (profile_selection_changed), pwin);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
@@ -1787,9 +1819,12 @@ setup_profile_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 static void
 setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
-	add_plain_text_column (tree_view, _("Name"), PROFILE_DESCENDANTS_NAME);
+	GtkTreeViewColumn *col;
+
+	col = add_plain_text_column (tree_view, _("Name"), PROFILE_DESCENDANTS_NAME);
 	add_sample_column (tree_view, _("Self"), PROFILE_DESCENDANTS_SELF);
 	add_sample_column (tree_view, _("Cumulative"), PROFILE_DESCENDANTS_NONRECURSE);
+	gtk_tree_view_column_set_expand (col, TRUE);
 
 	gtk_widget_set_sensitive (GTK_WIDGET (pwin->profile_descendants_tree_view), FALSE);
 
@@ -1802,9 +1837,12 @@ setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view
 static void
 setup_profile_caller_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
-	add_plain_text_column (tree_view, _("Name"), PROFILE_CALLER_NAME);
+	GtkTreeViewColumn *col;
+
+	col = add_plain_text_column (tree_view, _("Name"), PROFILE_CALLER_NAME);
 	add_sample_column (tree_view, _("Self"), PROFILE_CALLER_SELF);
 	add_sample_column (tree_view, _("Total"), PROFILE_CALLER_TOTAL);
+	gtk_tree_view_column_set_expand (col, TRUE);
 	
 	g_signal_connect (tree_view, "row-activated",
 			  G_CALLBACK (profile_caller_row_activated), pwin);
@@ -1818,13 +1856,15 @@ setup_leak_block_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (tree_view);
 	GtkListStore *store;
 
+	g_return_if_fail (selection != NULL);
+
 	store = gtk_list_store_new (4,
 				    G_TYPE_POINTER,
 				    G_TYPE_INT,
 				    G_TYPE_STRING,
 				    G_TYPE_POINTER);
 
-	gtk_tree_view_set_model (GTK_TREE_VIEW (tree_view), GTK_TREE_MODEL (store));
+	gtk_tree_view_set_model (tree_view, GTK_TREE_MODEL (store));
 	
 	add_pointer_column (tree_view, _("Address"), LEAK_BLOCK_ADDR);
 	add_plain_text_column (tree_view, _("Size"), LEAK_BLOCK_SIZE);
@@ -1832,6 +1872,8 @@ setup_leak_block_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	
 	g_signal_connect (selection, "changed",
 			  G_CALLBACK (leak_block_selection_changed), pwin);
+
+	gtk_tree_view_columns_autosize (tree_view);
 }
 
 static void
@@ -1852,6 +1894,8 @@ setup_leak_stack_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 
 	g_signal_connect (tree_view, "row-activated",
 			  G_CALLBACK (leak_stack_row_activated), pwin);
+
+	gtk_tree_view_columns_autosize (tree_view);
 }
 
 static ProcessWindow *

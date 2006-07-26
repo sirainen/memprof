@@ -226,6 +226,7 @@ mi_start (void)
 			profile_type = SPEED_PROF_ITIMER;
 		else
 			success = 0;
+
 	} else if (strcmp (type_string, "cycles") == 0) {
 		if (mi_perfctr_start (profile_interval))
 			profile_type = SPEED_PROF_PERFCTR;
