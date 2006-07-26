@@ -1,3 +1,7 @@
+2006-07-26  Michael Meeks  <michael.meeks@novell.com>
+
+	* Tag SLED_FIXES_ANCHOR & branch: sled-fixes
+
 2006-04-18  Kjartan Maraas  <kmaraas@gnome.org>
 
 	* configure.in: Remove obsolete entry for no_NO
