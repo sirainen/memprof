@@ -1696,6 +1696,7 @@ about_cb (GtkWidget *widget)
 
        gtk_window_set_transient_for (GTK_WINDOW (dialog),
                                      GTK_WINDOW (pwin->main_window));
+       g_object_set (G_OBJECT (dialog), "name", PACKAGE_NAME, NULL);
        g_object_set (G_OBJECT (dialog), "version", VERSION, NULL);
 
        gtk_widget_show (dialog);

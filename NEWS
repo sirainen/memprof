@@ -1,3 +1,51 @@
+Overview of changes in MemProf 0.6
+==================================
+
+* It works again [Michael Meeks]
+* Rewritten profiling module that handles recursion better [Soren Sandmann]
+* Display the call tree of functions [Soren]
+* Many bug fixes [John Gardiner Myers, Owen Taylor, James Henstridge, Soren]
+* New and updated translations:
+	- am (Daniel Yacob)
+	- az (Metin Amiroff)
+	- be (Dmitry G. Mastrukov)
+	- ca (Jordi Mallach)
+	- cs (Miloslav Trmac, Stanislav Brabec)
+	- da (Ole Laursen)
+	- de (Christian Meyer, Christian Neumair, Frank Arnold, 
+		Hendrik Richter)
+	- el (Kostas Papadimas)
+	- en_CA (Adam Weinberger)
+	- en_GB (David Lodge, Gareth Owen)
+	- es (Francisco Javier F. Serrador, Pablo Gonzalo del Campo)
+	- fi (Ilkka Tuohela, Christophe Merlet)
+	- hr (Robert Sedak)
+	- hu (Andras Timar)
+	- it (Alessio Frusciante)
+	- ja (Takeshi AIHANA, Yukihiro Nakai)
+	- lv (Artis Trops)
+	- ml (Guntupalli Karunakar)
+	- ms (Hasbullah Bin Pit)
+	- nb (Kjartan Maraas)
+	- ne (Pawan Chitrakar)
+	- nl (Vincent van Adrighem)
+	- no (Kjartan Maraas)
+	- pl (Artur Flinta, Zbigniew Chyla)
+	- pt_BR (Evandro Fernandes Giovanini, Gustavo Maciel Dias Vieira, 
+		 Gustavo Noronha Silva, Raphael Higino)
+	- pt (Duarte Loreto)
+	- ru (Nickolay V. Shmyrev, Valek Filippov)
+	- rw (Steve Murphy)
+	- sk (Marcel Telka, Stanislav Visnovsky)
+	- sr (Danilo Šegan)
+	- sv (Christian Rose, Daniel Nylander)
+	- ta (Abel Cheung, Fatih Demir)
+	- tr (Baris Cicek)
+	- uk (Yuriy Syrota)
+	- vi (Clytie Siddall, Pablo Saratxaga)
+	- zh_CN (Wang Jian)
+	- zh_TW (Abel Cheung, Wei-Lun Chao)
+
 Overview of changes in MemProf 0.5.1
 ====================================
 
