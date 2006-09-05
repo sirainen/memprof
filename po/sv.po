@@ -1,8 +1,8 @@
 # Swedish messages for memprof.
 # Copyright (C) 1999, 2000, 2001, 2002, 2003, 2006 Free Software Foundation, Inc.
+# Daniel Nylander <po@danielnylander.se>, 2006.
 # Martin Norbäck <d95mback@dtek.chalmers.se>, 1999.
 # Christian Rose <menthos@menthos.com>, 2000, 2001, 2002, 2003.
-# Daniel Nylander <po@danielnylander.se>, 2006.
 #
 # $Id$
 #
@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2006-04-12 20:15+0200\n"
-"PO-Revision-Date: 2006-04-12 21:11+0100\n"
+"POT-Creation-Date: 2006-09-05 05:18+0200\n"
+"PO-Revision-Date: 2006-09-05 08:49+0100\n"
 "Last-Translator: Daniel Nylander <po@danielnylander.se>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -23,111 +23,111 @@ msgstr ""
 msgid "Cannot open output file: %s\n"
 msgstr "Kan inte öppna utmatningsfil: %s\n"
 
-#: ../main.c:777
+#: ../main.c:785
 #, c-format
 msgid "Executation of \"%s\" failed"
 msgstr "Körning av \"%s\" misslyckades"
 
-#: ../main.c:921
-#: ../memprof.glade.h:29
+#: ../main.c:929
+#: ../memprof.glade.h:28
 msgid "MemProf"
 msgstr "MemProf"
 
-#: ../main.c:1028
+#: ../main.c:1037
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kan inte hitta programfil för \"%s\""
 
-#: ../main.c:1131
+#: ../main.c:1140
 msgid "Saving is disabled at the moment"
 msgstr "Sparande är inaktiverat för tillfället"
 
-#: ../main.c:1708
+#: ../main.c:1738
 msgid "MemProf Error"
 msgstr "MemProf-fel"
 
-#: ../main.c:1708
+#: ../main.c:1738
 msgid "MemProf Warning"
 msgstr "MemProf-varning"
 
-#: ../main.c:1777
-#: ../main.c:1790
-#: ../main.c:1805
+#: ../main.c:1808
+#: ../main.c:1825
+#: ../main.c:1843
 msgid "Name"
 msgstr "Namn"
 
-#: ../main.c:1778
-#: ../main.c:1791
-#: ../main.c:1806
+#: ../main.c:1809
+#: ../main.c:1826
+#: ../main.c:1844
 msgid "Self"
 msgstr "Själv"
 
-#: ../main.c:1779
-#: ../main.c:1807
+#: ../main.c:1810
+#: ../main.c:1845
 msgid "Total"
 msgstr "Totalt"
 
-#: ../main.c:1792
+#: ../main.c:1827
 msgid "Cumulative"
 msgstr "Kumulativt"
 
-#: ../main.c:1829
+#: ../main.c:1870
 msgid "Address"
 msgstr "Adress"
 
-#: ../main.c:1830
+#: ../main.c:1871
 msgid "Size"
 msgstr "Storlek"
 
-#: ../main.c:1831
+#: ../main.c:1872
 msgid "Caller"
 msgstr "Anropare"
 
-#: ../main.c:1849
+#: ../main.c:1892
 msgid "Function"
 msgstr "Funktion"
 
-#: ../main.c:1850
+#: ../main.c:1893
 msgid "Line"
 msgstr "Rad"
 
-#: ../main.c:1851
+#: ../main.c:1894
 msgid "File"
 msgstr "Fil"
 
-#: ../main.c:2061
+#: ../main.c:2106
 msgid "Really detach from finished process?"
 msgstr "Verkligen lösgöra från avslutad process?"
 
-#: ../main.c:2063
+#: ../main.c:2108
 msgid "Really detach from running process?"
 msgstr "Verkligen lösgöra från körande process?"
 
-#: ../main.c:2093
+#: ../main.c:2138
 msgid "Really kill running process?"
 msgstr "Verkligen döda körande process?"
 
-#: ../main.c:2130
+#: ../main.c:2175
 msgid "Create new windows for forked processes"
 msgstr "Skapa nya fönster för grenade processer"
 
-#: ../main.c:2132
+#: ../main.c:2177
 msgid "Retain windows for processes after exec()"
 msgstr "Bibehåll fönster för processer efter exec()"
 
-#: ../main.c:2134
+#: ../main.c:2179
 msgid "Type of profiling information to collect"
 msgstr "Typ av profileringsinformation att inhämta"
 
-#: ../main.c:2136
+#: ../main.c:2181
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Antal sampel/sekund för tidsprofil (1k=1000)"
 
-#: ../main.c:2185
+#: ../main.c:2230
 msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
 msgstr "Argument till --profile måste vara en av \"memory\", \"cycles\" eller \"time\"\n"
 
-#: ../main.c:2226
+#: ../main.c:2271
 msgid "Cannot find memprof.glade"
 msgstr "Kan inte hitta memprof.glade"
 
@@ -136,50 +136,46 @@ msgid "# of Allocations:"
 msgstr "Antal allokeringar:"
 
 #: ../memprof.glade.h:2
-msgid "*"
-msgstr "*"
-
-#: ../memprof.glade.h:3
 msgid "0"
 msgstr "0"
 
-#: ../memprof.glade.h:4
+#: ../memprof.glade.h:3
 msgid "0k"
 msgstr "0k"
 
-#: ../memprof.glade.h:5
+#: ../memprof.glade.h:4
 msgid "32k"
 msgstr "32k"
 
-#: ../memprof.glade.h:6
+#: ../memprof.glade.h:5
 msgid "<b>Callers</b>"
 msgstr "<b>Anropare</b>"
 
-#: ../memprof.glade.h:7
+#: ../memprof.glade.h:6
 msgid "<b>Descendants</b>"
 msgstr "<b>Avkomlingar</b>"
 
-#: ../memprof.glade.h:8
+#: ../memprof.glade.h:7
 msgid "Adding Skip Function"
 msgstr "Lägger till funktion som ska hoppas över"
 
-#: ../memprof.glade.h:9
+#: ../memprof.glade.h:8
 msgid "Adding Skip Regular Expression"
 msgstr "Lägger till reguljärt uttryck som ska hoppas över"
 
-#: ../memprof.glade.h:10
+#: ../memprof.glade.h:9
 msgid "Bytes / Allocation:"
 msgstr "Byte / allokering:"
 
-#: ../memprof.glade.h:11
+#: ../memprof.glade.h:10
 msgid "Check for Leaks"
 msgstr "Leta efter läckor"
 
-#: ../memprof.glade.h:12
+#: ../memprof.glade.h:11
 msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skall köras vid dubbelklickning på stackvisningen:"
 
-#: ../memprof.glade.h:13
+#: ../memprof.glade.h:12
 msgid ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
@@ -187,86 +183,90 @@ msgstr ""
 "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
 "Copyright 2002, Kristian Rietveld"
 
-#: ../memprof.glade.h:15
+#: ../memprof.glade.h:14
 msgid "Create Profile"
 msgstr "Skapa profil"
 
-#: ../memprof.glade.h:16
+#: ../memprof.glade.h:15
 msgid "Defaults"
 msgstr "Standardvärden"
 
-#: ../memprof.glade.h:17
+#: ../memprof.glade.h:16
 msgid "Enter a regular expression of function names to skip when computing profiles"
 msgstr "Ange ett reguljärt uttryck på funktionsnamn som ska hoppas över när profiler beräknas"
 
-#: ../memprof.glade.h:18
+#: ../memprof.glade.h:17
 msgid "Enter pathname to an executable"
 msgstr "Ange sökvägen till ett program"
 
-#: ../memprof.glade.h:19
+#: ../memprof.glade.h:18
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr "Ange namnet på en funktion som ska hoppas över när profiler beräknas"
 
-#: ../memprof.glade.h:20
+#: ../memprof.glade.h:19
 msgid "Follow _exec()"
 msgstr "Följ _exec()"
 
-#: ../memprof.glade.h:21
+#: ../memprof.glade.h:20
 msgid "Follow _fork()"
 msgstr "Följ _fork()"
 
-#: ../memprof.glade.h:22
+#: ../memprof.glade.h:21
 msgid "Functions to Skip:"
 msgstr "Funktioner som ska hoppas över:"
 
-#: ../memprof.glade.h:23
+#: ../memprof.glade.h:22
 msgid "Generate _Leak Report"
 msgstr "Skapa _läckagerapport"
 
-#: ../memprof.glade.h:24
+#: ../memprof.glade.h:23
 msgid "Generate _Profile"
 msgstr "Skapa _profil"
 
-#: ../memprof.glade.h:25
+#: ../memprof.glade.h:24
 #: ../tree.c:109
 msgid "Kill"
 msgstr "Döda"
 
-#: ../memprof.glade.h:26
+#: ../memprof.glade.h:25
 msgid "Kill Program"
 msgstr "Döda program"
 
-#: ../memprof.glade.h:27
+#: ../memprof.glade.h:26
 msgid "Leak Detection Options"
 msgstr "Läckagedetektionsalternativ"
 
-#: ../memprof.glade.h:28
+#: ../memprof.glade.h:27
 msgid "Leaks"
 msgstr "Läckor"
 
-#: ../memprof.glade.h:30
+#: ../memprof.glade.h:29
 msgid "MemProf - Processes"
 msgstr "MemProf - Processer"
 
-#: ../memprof.glade.h:31
+#: ../memprof.glade.h:30
 msgid "Memory Profiling Tool"
 msgstr "Minnesprofileringsverktyg"
 
-#: ../memprof.glade.h:32
+#: ../memprof.glade.h:31
 msgid "Preferences"
 msgstr "Inställningar"
 
-#: ../memprof.glade.h:33
+#: ../memprof.glade.h:32
 msgid "Process _Tree"
 msgstr "Process_träd"
 
-#: ../memprof.glade.h:34
+#: ../memprof.glade.h:33
 msgid "Profile"
 msgstr "Profil"
 
-#: ../memprof.glade.h:35
+#: ../memprof.glade.h:34
 msgid "Profile Options"
 msgstr "Profileringsalternativ"
+
+#: ../memprof.glade.h:35
+msgid "Record"
+msgstr "Spela in"
 
 #: ../memprof.glade.h:36
 msgid "Regular expressions to Skip:"
@@ -346,30 +346,32 @@ msgstr ""
 "Daniel Nylander\n"
 "Christian Rose\n"
 "Martin Norbäck\n"
-"Skicka synpunkter på översättningen till tp-sv@listor.tp-sv.se"
+"\n"
+"Skicka synpunkter på översättningen till\n"
+"tp-sv@listor.tp-sv.se"
 
-#: ../process.c:902
+#: ../process.c:908
 msgid "Initial"
 msgstr "Initialt"
 
-#: ../process.c:905
+#: ../process.c:911
 msgid "Starting"
 msgstr "Startar"
 
-#: ../process.c:908
+#: ../process.c:914
 msgid "Running"
 msgstr "Kör"
 
-#: ../process.c:911
+#: ../process.c:917
 msgid "Exiting"
 msgstr "Avslutar"
 
-#: ../process.c:914
-#: ../process.c:917
+#: ../process.c:920
+#: ../process.c:923
 msgid "Defunct"
 msgstr "Död"
 
-#: ../server.c:288
+#: ../server.c:289
 #, c-format
 msgid "Cannot find %s"
 msgstr "Kan inte hitta %s"
@@ -398,6 +400,8 @@ msgstr "Kommandorad"
 msgid "Status"
 msgstr "Status"
 
+#~ msgid "*"
+#~ msgstr "*"
 #~ msgid "Callers"
 #~ msgstr "Anropare"
 #~ msgid "Descendants"
