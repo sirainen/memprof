@@ -67,16 +67,11 @@ struct _ProcessWindow {
 	GtkWidget *leak_stack_tree_view;
 
 	GtkWidget *usage_max_label;
-	GtkWidget *usage_canvas;
+	GtkWidget *usage_area;
 
 	guint usage_max;
 	guint usage_high;
 	guint usage_leaked;
-
-	GnomeCanvasItem *usage_frame;
-	GnomeCanvasItem *usage_current_bar;
-	GnomeCanvasItem *usage_high_bar;
-	GnomeCanvasItem *usage_leak_bar;
 
 	guint status_update_timeout;
 
@@ -162,27 +157,65 @@ get_widget (GladeXML   *glade,
  ************************************************************/
 
 static void
-update_bars (ProcessWindow *pwin)
+draw_bar (GtkWidget *widget, int red, int green, int blue,
+	  int size)
 {
-	gint bytes_used;
+	GdkGC *gc = gdk_gc_new (widget->window);
+ 	GdkColor color;
 
+	color.red = red;
+	color.green = green;
+	color.blue = blue;
+
+	gdk_gc_set_rgb_fg_color (gc, &color);
+
+	gdk_draw_rectangle (widget->window, gc, TRUE,
+			    0, 0, size, widget->allocation.height);
+
+	color.red = 0;
+	color.green = 0;
+	color.blue = 0;
+	
+	gdk_gc_set_rgb_fg_color (gc, &color);
+
+	gdk_draw_rectangle (widget->window, gc, FALSE,
+			    0, 0, size - 1, widget->allocation.height - 1);
+	
+	g_object_unref (gc);
+}
+
+static gboolean
+on_usage_area_expose (GtkWidget *widget, GdkEvent *event,
+		      gpointer data)
+{
+	ProcessWindow *pwin = data;
+	int width;
+	int bytes_used;
+	int leak_size;
+	int high_size;
+	int current_size;
+
+	width = widget->allocation.width;
+
+	/* background */
+	draw_bar (widget, 0xffff, 0xffff, 0xffff, width);
+
+	/* bars */
 	if (pwin->process)
 		bytes_used = pwin->process->bytes_used;
 	else
 		bytes_used = 0;
+
+	/* bars */
+	leak_size    = (width * ((double)pwin->usage_leaked / pwin->usage_max));
+	high_size    = (width * ((double)pwin->usage_high / pwin->usage_max));
+	current_size = (width * ((double)bytes_used / pwin->usage_max));
 	
-	gnome_canvas_item_set (pwin->usage_current_bar,
-			       "x2", ((double)pwin->usage_canvas->allocation.width *
-				      (double)bytes_used / pwin->usage_max),
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_high_bar,
-			       "x2", ((double)pwin->usage_canvas->allocation.width *
-				      (double)pwin->usage_high / pwin->usage_max),
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_leak_bar,
-			       "x2", ((double)pwin->usage_canvas->allocation.width *
-				      (double)pwin->usage_leaked / pwin->usage_max),
-			       NULL);
+	draw_bar (widget, 0x0000, 0x0000, 0xffff, high_size);
+	draw_bar (widget, 0xffff, 0xffff, 0x0000, current_size);
+	draw_bar (widget, 0xffff, 0x0000, 0x0000, leak_size);
+
+	return TRUE;
 }
 
 static gboolean
@@ -223,37 +256,12 @@ update_status (gpointer data)
 
 	pwin->usage_high = MAX (pwin->process->bytes_used, pwin->usage_high);
 
-	update_bars (pwin);
+	gtk_widget_queue_draw (pwin->usage_area);
 	
 	return TRUE;
 }
 
-static void
-usage_canvas_size_allocate (GtkWidget     *widget,
-			    GtkAllocation *allocation,
-			    ProcessWindow *pwin)
-{
-	gnome_canvas_set_scroll_region (GNOME_CANVAS (widget),
-					0, 0,
-					allocation->width, allocation->height);
-		
-	gnome_canvas_item_set (pwin->usage_frame,
-			       "x2", (double)allocation->width - 1,
-			       "y2", (double)allocation->height - 1,
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_current_bar,
-			       "y2", (double)allocation->height - 1,
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_high_bar,
-			       "y2", (double)allocation->height - 1,
-			       NULL);
-	gnome_canvas_item_set (pwin->usage_leak_bar,
-			       "y2", (double)allocation->height - 1,
-			       NULL);
-}
-					    
 
-
 /************************************************************
  * GUI for profiles
  ************************************************************/
@@ -970,7 +978,8 @@ process_window_reset (ProcessWindow *pwin)
 	pwin->usage_leaked = 0;
 	
 	gtk_window_set_title (GTK_WINDOW (pwin->main_window), "MemProf");
-	update_bars (pwin);
+
+	gtk_widget_queue_draw (pwin->usage_area);
 }
 
 static void
@@ -1751,13 +1760,6 @@ show_error (GtkWidget *parent_window,
 }
 
 static void
-set_white_bg (GtkWidget *widget)
-{
-	GdkColor white = { 0, 0xffff, 0xffff, 0xffff };
-	gtk_widget_modify_bg (widget, GTK_STATE_NORMAL, &white);
-}
-
-static void
 process_window_free (ProcessWindow *pwin)
 {
 	/* FIXME: we leak the process structure */
@@ -1972,40 +1974,10 @@ process_window_new (void)
 	setup_leak_stack_tree_view (pwin, GTK_TREE_VIEW (pwin->leak_stack_tree_view));
 
 	pwin->usage_max_label = get_widget (xml, "usage-max-label");
-	pwin->usage_canvas = get_widget (xml, "usage-canvas");
+	pwin->usage_area = get_widget (xml, "usage-area");
 	
-	set_white_bg (pwin->usage_canvas);
-	g_signal_connect (pwin->usage_canvas, "size_allocate",
-			  G_CALLBACK (usage_canvas_size_allocate), pwin);
-	
-	pwin->usage_high_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-						      gnome_canvas_rect_get_type (),
-						      "x1", 0.0,
-						      "y1", 0.0,
-						      "outline_color", "black", 
-						      "fill_color", "blue",
-						      NULL);
-	pwin->usage_current_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-							 gnome_canvas_rect_get_type (),
-							 "x1", 0.0,
-							 "y1", 0.0,
-							 "outline_color", "black", 
-							 "fill_color", "yellow",
-							 NULL);
-	pwin->usage_leak_bar = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-						      gnome_canvas_rect_get_type (),
-						      "x1", 0.0,
-						      "y1", 0.0,
-						      "outline_color", "black", 
-						      "fill_color", "red",
-						      NULL);
-	pwin->usage_frame = gnome_canvas_item_new (gnome_canvas_root (GNOME_CANVAS (pwin->usage_canvas)),
-						   gnome_canvas_rect_get_type (),
-						   "x1", 0.0,
-						   "y1", 0.0,
-						   "outline_color", "black", 
-						   "fill_color", NULL,
-						   NULL);
+	g_signal_connect (pwin->usage_area, "expose_event",
+			  G_CALLBACK (on_usage_area_expose), pwin);
 	
 	vpaned = get_widget (xml, "profile-vpaned");
 	gtk_paned_set_position (GTK_PANED (vpaned), 150);
@@ -2292,6 +2264,7 @@ main(int argc, char **argv)
        stack_command = gconf_client_get_string (gconf_client_get_default (),
 						"/apps/memprof/stack_command",
 						NULL);
+       
        gconf_client_notify_add (gconf_client_get_default (),
 			        "/apps/memprof/stack_command",
 			        preferences_stack_command_notify,
