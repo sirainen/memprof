@@ -35,12 +35,11 @@
 
 #include <glib-object.h>
 
-#include <libgnome/libgnome.h>
-
 #include "memintercept.h"
 #include "memprof.h"
 #include "process.h"
 #include "server.h"
+#include <glib/gi18n.h>
 
 enum {
 	STATUS_CHANGED,
@@ -714,7 +713,7 @@ process_find_exec (char **args)
 {
 	int i;
   
-	if (g_file_exists(args[0])) {
+	if (g_file_test(args[0], G_FILE_TEST_EXISTS)) {
 		if (!g_path_is_absolute (args[0]))
 			return g_strconcat ("./", args[0], NULL);
 		else
@@ -727,8 +726,8 @@ process_find_exec (char **args)
 		{
 			paths = g_strsplit (pathenv, ":", -1);
 			for (i=0; paths[i]; i++) {
-				path = g_concat_dir_and_file (paths[i], args[0]);
-				if (g_file_exists (path))
+				path = g_build_filename (paths[i], args[0], NULL);
+				if (g_file_test (path, G_FILE_TEST_EXISTS))
 					break;
 				else {
 					g_free (path);

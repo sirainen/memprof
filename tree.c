@@ -21,7 +21,7 @@
 /*====*/
 
 #include <glade/glade.h>
-#include <gnome.h>
+#include <glib/gi18n.h>
 
 #include "gui.h"
 #include "treeviewutils.h"

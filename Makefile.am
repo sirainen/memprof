@@ -60,7 +60,7 @@ INCLUDES = 					   \
 	$(MEMPROF_CFLAGS) 			   \
 	-DDATADIR=\"$(pkgdatadir)\"		   \
 	-DPKGLIBDIR=\"$(pkglibdir)\"		   \
-	-DGNOMELOCALEDIR=\""$(datadir)/locale"\"
+	-DLOCALEDIR=\""$(datadir)/locale"\"
 
 schemadir = @GCONF_SCHEMA_FILE_DIR@
 schema_DATA = memprof.schemas

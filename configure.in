@@ -44,16 +44,17 @@ AC_DEFINE_DIR(DEBUGDIR, debugdir,
 dnl GNOME checks (using pkg-config macros) and getting cflags and libs
 GTK_REQUIRED=2.0.0
 GCONF_REQUIRED=1.1.8
-LIBGNOMEUI_REQUIRED=1.112.1
 LIBGLADE_REQUIRED=1.99.9
 
 PKG_CHECK_MODULES(MEMPROF,
 [
 	gtk+-2.0 >= $GTK_REQUIRED
 	gconf-2.0 >= $GCONF_REQUIRED
-        libgnomeui-2.0 >= $LIBGNOMEUI_REQUIRED
         libglade-2.0 >= $LIBGLADE_REQUIRED
 ])
+
+AC_CHECK_LIB(popt, poptGetContext, LIBS="$LIBS -lpopt",
+   AC_MSG_ERROR([*** popt required to compile MemProf]))
 
 AC_SUBST(MEMPROF_CFLAGS)
 

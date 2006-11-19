@@ -1,3 +1,11 @@
+2006-11-19  Soren Sandmann <sandmann@redhat.com>
+
+	* autogen.sh, Makefile.am, configure.in, leakdetect.c, main.c,
+	* memprof.glade, process.c, server.c, tree.c: 
+	Remove dependency on libgnome and libgnomeui. 
+	Improve default window size
+	Break option parsing.
+
 2006-11-18  Soren Sandmann <sandmann@redhat.com>
 
 	* main.c, memprof.glade: Replace GnomeCanvas with GtkDrawingArea

@@ -45,7 +45,11 @@
 #include "profile.h"
 #include "server.h"
 #include "treeviewutils.h"
-#include <gnome.h>
+#include <string.h>
+#include <stdlib.h>
+#include <glib/gi18n.h>
+#include <glib/gprintf.h>
+#include <popt.h>
 
 struct _ProcessWindow {
 	MPProcess *process;
@@ -132,7 +136,9 @@ char *stack_command = NULL;
 
 GSList *process_windows = NULL;
 
-static GladeXML *pref_dialog_xml = NULL; /* We save this around, so we can prevent multiple property boxes from being opened at once */
+static GladeXML *pref_dialog_xml = NULL; /* We save this around, so we can
+					  * prevent multiple property boxes from being opened at once
+					  */
 
 static MPProfileType profile_type;
 
@@ -758,7 +764,8 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 		GString *command = g_string_new (NULL);
 		char *p = stack_command;
 		char buf[32];
-		char *args[3];
+		char *cmdline;
+		GError *err = NULL;
 
 		while (*p) {
 			if (*p == '%') {
@@ -784,16 +791,18 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 		
 		free (functionname);
 
-		args[0] = "/bin/sh";
-		args[1] = "-c";
-		args[2] = command->str;
+		cmdline = g_strdup_printf ("/bin/sh -c %s", command->str);
 
-		if (gnome_execute_async (NULL, 3, args) == -1) {
+		if (!g_spawn_command_line_async (cmdline, &err)) {
 			show_error (pwin->main_window,
-				    ERROR_MODAL, _("Executation of \"%s\" failed"),
-				    command->str);
+				    ERROR_MODAL, _("Executation of \"%s\" failed: %s"),
+				    command->str, err->message);
+			
+			g_error_free (err);
 		}
 
+		g_free (cmdline);
+		
 		g_string_free (command, FALSE);
 	}
 }
@@ -1334,13 +1343,13 @@ skip_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 
 		       if (strchr (text, ' ')) {
-			       GtkWidget *error = gnome_error_dialog_parented ("Function names cannot contain spaces",									       GTK_WINDOW (dialog));
-			       gnome_dialog_run (GNOME_DIALOG (error));
+				/* FIXME: these dialogs pop up below the window. Of course this
+				 * entire piece of UI needs to die anyway
+				 */
+				show_error (NULL, ERROR_MODAL, _("Function names cannot contain spaces"));
 			       g_free (text);
 		       } else if (strlen (text) == 0) {
-			       GtkWidget *error = gnome_error_dialog_parented ("Function name cannot be blank",
-									       GTK_WINDOW (dialog));
-			       gnome_dialog_run (GNOME_DIALOG (error));
+				show_error (NULL, ERROR_MODAL, "Function name cannot be blank");
 			       g_free (text);
 		       } else {
 			       GtkTreeIter iter;
@@ -1442,14 +1451,14 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 	       if (gtk_dialog_run (GTK_DIALOG (dialog)) == 1) {
 		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
 		       
+			/* FIXME: These error dialogs pop up below the window, but this
+			 * entire UI needs to die anyway.
+			 */
 		       if (strchr (text, ' ')) {
-			       GtkWidget *error = gnome_error_dialog_parented ("Function names cannot contain spaces",									       GTK_WINDOW (dialog));
-			       gnome_dialog_run (GNOME_DIALOG (error));
+				show_error (NULL, ERROR_MODAL, "Function names cannot contain spaces");
 			       g_free (text);
 		       } else if (strlen (text) == 0) {
-			       GtkWidget *error = gnome_error_dialog_parented ("Function name cannot be blank",
-									       GTK_WINDOW (dialog));
-			       gnome_dialog_run (GNOME_DIALOG (error));
+				show_error (NULL, ERROR_MODAL, "Function name cannot be blank");
 			       g_free (text);
 		       } else {
 			       GtkTreeIter iter;
@@ -1465,7 +1474,6 @@ skip_regexes_add_cb (GtkWidget *widget, GladeXML *preferences_xml)
 						      GCONF_VALUE_STRING, skip_regexes, NULL);
 
 			       g_free (text);
-
 			       break;
 		       }
 	       } else {
@@ -1694,21 +1702,20 @@ follow_exec_cb (GtkWidget *widget)
 void
 about_cb (GtkWidget *widget)
 {
-       GladeXML *xml;
-       GtkWidget *dialog;
-
+#define OSLASH "\303\270"
        ProcessWindow *pwin = pwin_from_widget (widget);
 	
-       xml = glade_xml_new (glade_file, "About", NULL);
-       dialog = get_widget (xml, "About");
-       g_object_unref (G_OBJECT (xml));
-
-       gtk_window_set_transient_for (GTK_WINDOW (dialog),
-                                     GTK_WINDOW (pwin->main_window));
-       g_object_set (G_OBJECT (dialog), "name", PACKAGE_NAME, NULL);
-       g_object_set (G_OBJECT (dialog), "version", VERSION, NULL);
-
-       gtk_widget_show (dialog);
+	/* FIXME: restore credits */
+	gtk_show_about_dialog (GTK_WINDOW (pwin->main_window),
+#if 0
+			       "logo", pwin->icon,
+#endif
+			       "name", "MemProf",
+#if 0
+			       "copyright", "Copyright 2004-2006, S"OSLASH"ren Sandmann",
+#endif
+			       "version", PACKAGE_VERSION,
+			       NULL);
 }
 
 static void
@@ -1731,7 +1738,7 @@ show_error (GtkWidget *parent_window,
 	GtkWidget *dialog;
 
 	va_start (args, format);
-	vasprintf (&message, format, args);
+	g_vasprintf (&message, format, args);
 	va_end (args);
 
 	dialog = gtk_message_dialog_new (parent_window ? GTK_WINDOW (parent_window) : NULL,
@@ -1740,7 +1747,7 @@ show_error (GtkWidget *parent_window,
 					   GTK_MESSAGE_ERROR :
 					   GTK_MESSAGE_WARNING,
 					 GTK_BUTTONS_OK, message);
-	free (message);
+	g_free (message);
 
 	gtk_window_set_title (GTK_WINDOW (dialog),
 			      (error == ERROR_FATAL) ?
@@ -1901,6 +1908,26 @@ setup_leak_stack_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	gtk_tree_view_columns_autosize (tree_view);
 }
 
+static void
+set_default_size (GtkWindow *window)
+{
+	GdkScreen *screen;
+	int monitor_num;
+	GdkRectangle monitor;
+	int width, height;
+	GtkWidget *widget = GTK_WIDGET (window);
+	
+	screen = gtk_widget_get_screen (widget);
+	monitor_num = gdk_screen_get_monitor_at_window (screen, widget->window);
+	
+	gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
+	
+	width = monitor.width * 3 / 4;
+	height = monitor.height * 3 / 4;
+	
+	gtk_window_resize (window, width, height);
+}
+
 static ProcessWindow *
 process_window_new (void)
 {
@@ -1910,6 +1937,7 @@ process_window_new (void)
 	GtkWidget *hpaned;
 	ProcessWindow *pwin;
 	GtkWidget *menuitem;
+	GError *err = NULL;
 	
 	pwin = g_new0 (ProcessWindow, 1);
 	process_windows = g_slist_prepend (process_windows, pwin);
@@ -1925,16 +1953,23 @@ process_window_new (void)
 	xml = glade_xml_new (glade_file, "MainWindow", NULL);
 	
 	pwin->main_window = get_widget (xml, "MainWindow");
-	fullfilename = gnome_program_locate_file (NULL, GNOME_FILE_DOMAIN_PIXMAP, "memprof.png", FALSE, NULL);
-	gnome_window_icon_set_from_file (GTK_WINDOW (pwin->main_window),
-					 fullfilename);
+	gtk_widget_realize (pwin->main_window);
+	
+	fullfilename = g_strdup ("./memprof.png");
+	
+	if (!g_file_test (fullfilename, G_FILE_TEST_EXISTS))
+		fullfilename = g_build_filename (DATADIR, "memprof.png", NULL);
+	
+	
+	gtk_window_set_icon_from_file (GTK_WINDOW (pwin->main_window), fullfilename, &err);
+	
 	g_free (fullfilename);
 	
 	g_signal_connect (pwin->main_window, "delete_event",
 			  G_CALLBACK (hide_and_check_quit), pwin);
 	
 	
-	gtk_window_set_default_size (GTK_WINDOW (pwin->main_window), 500, 400);
+	set_default_size (GTK_WINDOW (pwin->main_window));
 	
 	g_object_set_data_full (G_OBJECT (pwin->main_window),
 				"process-window",
@@ -2138,6 +2173,10 @@ sigchld_handler (int signum)
 int
 main(int argc, char **argv)
 {
+	/* FIXME: Option parsing is broken at the moment. Should
+	 * port to goption
+	 */
+	
        static char *profile_type_string = NULL;
        static char *profile_rate_string = NULL;
        static int profile_interval = 1000;
@@ -2154,28 +2193,23 @@ main(int argc, char **argv)
 	       { NULL, '\0', 0, NULL, 0 },
        };
        poptContext ctx;
-
-       GnomeProgram *program;
        const char **startup_args;
        ProcessWindow *initial_window;
 	
+	gtk_init (&argc, &argv);
 
        /* Set up a handler for SIGCHLD to avoid zombie children
 	*/
        signal (SIGCHLD, sigchld_handler);
 
-       bindtextdomain (GETTEXT_PACKAGE, GNOMELOCALEDIR);
+	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
        textdomain (GETTEXT_PACKAGE);
 
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
        bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif
 
-       program = gnome_program_init (PACKAGE, VERSION,
-				     LIBGNOMEUI_MODULE,
-				     argc, argv,
-				     GNOME_PARAM_POPT_TABLE, memprof_popt_options,
-				     NULL);
+	ctx = poptGetContext ("memprof", argc, (const char **)argv, memprof_popt_options, 0);
 
        /* If the user didn't specify the profile type explicitely,
 	* we guess from the executable name.
@@ -2229,17 +2263,11 @@ main(int argc, char **argv)
 	       profile_interval = (int) (0.5 + 1000000 / (rate * multiplier));
        }
 
-       g_object_get (G_OBJECT (program),
-		     GNOME_PARAM_POPT_CONTEXT, &ctx,
-		     NULL);
-
-       glade_gnome_init ();
-
        glade_file = "./memprof.glade";
-       if (!g_file_exists (glade_file)) {
-	       glade_file = g_concat_dir_and_file (DATADIR, "memprof.glade");
+	if (!g_file_test (glade_file, G_FILE_TEST_EXISTS)) {
+		glade_file = g_build_filename (DATADIR, "memprof.glade", NULL);
        }
-       if (!g_file_exists (glade_file)) {
+	if (!g_file_test (glade_file, G_FILE_TEST_EXISTS)) {
 	       show_error (NULL, ERROR_FATAL, _("Cannot find memprof.glade"));
        }
 
@@ -2281,8 +2309,10 @@ main(int argc, char **argv)
        gtk_widget_show (initial_window->main_window);
 
        startup_args = poptGetArgs (ctx);
+	
        if (startup_args)
 	       run_file (initial_window, (char **)startup_args);
+	
        poptFreeContext (ctx);
 
        gtk_main ();

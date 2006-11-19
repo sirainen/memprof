@@ -29,7 +29,7 @@
 #include <sys/socket.h>
 
 #include <glib-object.h>
-#include <libgnome/libgnome.h>
+#include <glib/gi18n.h>
 
 #include "memintercept.h"
 #include "server.h"
@@ -182,7 +182,7 @@ mp_server_finalize (GObject *object)
 		g_hash_table_destroy (server->pid_table);
 	close (server->socket_fd);
 
-	g_slist_remove (socket_paths, server->socket_path);
+	socket_paths = g_slist_remove (socket_paths, server->socket_path);
 	g_free (server->socket_path);
 }
 
@@ -276,7 +276,7 @@ find_lib_location (MPServer *server)
 	
 	lib_location = NULL;
 	for (dirname = directories; *dirname; dirname++) {
-		char *path = g_concat_dir_and_file (*dirname, basename);
+		char *path = g_build_filename (*dirname, basename, NULL);
 		if (!access (path, R_OK)) {
 			lib_location = path;
 			break;
@@ -432,7 +432,7 @@ create_control_socket (MPServer *server)
 	}
 		
 #else  /* !USE_SOCKET_DIRECTORY */
-	server->socket_path = g_concat_dir_and_file (g_get_tmp_dir(), SOCKET_TEMPLATE);
+	server->socket_path = g_build_filename (g_get_tmp_dir(), SOCKET_TEMPLATE, NULL);
 	mktemp (server->socket_path);
 #endif /* USE_SOCKET_DIRECTORY */
 

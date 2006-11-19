@@ -30,7 +30,7 @@
 #include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <unistd.h>
-#include <libgnome/libgnome.h>	/* For i18n */
+#include <glib/gi18n.h>
 
 #include "memprof.h"
 #include "process.h"
