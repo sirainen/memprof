@@ -42,7 +42,7 @@ AC_DEFINE_DIR(DEBUGDIR, debugdir,
               [Look for global separate debug info in this path])
 	
 dnl GNOME checks (using pkg-config macros) and getting cflags and libs
-GTK_REQUIRED=2.0.0
+GTK_REQUIRED=2.6.0
 GCONF_REQUIRED=1.1.8
 LIBGLADE_REQUIRED=1.99.9
 
@@ -52,9 +52,6 @@ PKG_CHECK_MODULES(MEMPROF,
 	gconf-2.0 >= $GCONF_REQUIRED
         libglade-2.0 >= $LIBGLADE_REQUIRED
 ])
-
-AC_CHECK_LIB(popt, poptGetContext, LIBS="$LIBS -lpopt",
-   AC_MSG_ERROR([*** popt required to compile MemProf]))
 
 AC_SUBST(MEMPROF_CFLAGS)
 

@@ -1,5 +1,12 @@
 2006-11-19  Soren Sandmann <sandmann@redhat.com>
 
+	* configure.in: Remove popt dependency, bump gtk+
+	requirement to 2.6
+
+	* main.c: Port to GOption
+
+2006-11-19  Soren Sandmann <sandmann@redhat.com>
+
 	* autogen.sh, Makefile.am, configure.in, leakdetect.c, main.c,
 	* memprof.glade, process.c, server.c, tree.c: 
 	Remove dependency on libgnome and libgnomeui. 

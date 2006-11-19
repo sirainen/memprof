@@ -49,7 +49,6 @@
 #include <stdlib.h>
 #include <glib/gi18n.h>
 #include <glib/gprintf.h>
-#include <popt.h>
 
 struct _ProcessWindow {
 	MPProcess *process;
@@ -2170,46 +2169,56 @@ sigchld_handler (int signum)
 	errno = old_errno;
 }
 
+static char *profile_type_string = NULL;
+static char *profile_rate_string = NULL;
+static int profile_interval = 1000;
+
+static const GOptionEntry entries[] = 
+{
+	{ "follow-fork", '\0', 0, G_OPTION_ARG_NONE, &default_follow_fork,
+	  N_("Create new windows for forked processes"), NULL },
+	{ "follow-exec", '\0', 0, G_OPTION_ARG_NONE, &default_follow_exec,
+	  N_("Retain windows for processes after exec()"), NULL },
+	{ "profile", '\0', 0, G_OPTION_ARG_STRING, &profile_type_string,
+	  N_("Type of profiling information to collect"), "memory/cycles/time" },
+	{ "rate", '\0', 0, G_OPTION_ARG_STRING, &profile_rate_string,
+	  N_("Number of samples/sec for time profile (1k=1000)"), NULL },
+	{ NULL }
+};
+	
+static void
+parse_options (int *argc, char ***argv)
+{
+	GError *err = NULL;
+	GOptionContext *context;
+
+	context = g_option_context_new ("- A memory profiler");
+	
+	g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
+	g_option_context_add_group (context, gtk_get_option_group (TRUE));
+	g_option_context_parse (context, argc, argv, &err);
+}
+
 int
 main(int argc, char **argv)
 {
-	/* FIXME: Option parsing is broken at the moment. Should
-	 * port to goption
-	 */
-	
-       static char *profile_type_string = NULL;
-       static char *profile_rate_string = NULL;
-       static int profile_interval = 1000;
-
-       static const struct poptOption memprof_popt_options [] = {
-	       { "follow-fork", '\0', POPT_ARG_NONE, &default_follow_fork, 0,
-		 N_("Create new windows for forked processes"), NULL },
-	       { "follow-exec", '\0', POPT_ARG_NONE, &default_follow_exec, 0,
-		 N_("Retain windows for processes after exec()"), NULL },
-	       { "profile", '\0', POPT_ARG_STRING, &profile_type_string, 0,
-		 N_("Type of profiling information to collect"), "memory/cycles/time" },
-	       { "rate", '\0', POPT_ARG_STRING, &profile_rate_string, 0,
-		 N_("Number of samples/sec for time profile (1k=1000)"), NULL },
-	       { NULL, '\0', 0, NULL, 0 },
-       };
-       poptContext ctx;
        const char **startup_args;
        ProcessWindow *initial_window;
+       
+       gtk_init (&argc, &argv);
+       
+       parse_options (&argc, &argv);
 	
-	gtk_init (&argc, &argv);
-
        /* Set up a handler for SIGCHLD to avoid zombie children
 	*/
        signal (SIGCHLD, sigchld_handler);
-
-	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+	
+       bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
        textdomain (GETTEXT_PACKAGE);
 
 #ifdef HAVE_BIND_TEXTDOMAIN_CODESET
        bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
 #endif
-
-	ctx = poptGetContext ("memprof", argc, (const char **)argv, memprof_popt_options, 0);
 
        /* If the user didn't specify the profile type explicitely,
 	* we guess from the executable name.
@@ -2308,12 +2317,8 @@ main(int argc, char **argv)
 
        gtk_widget_show (initial_window->main_window);
 
-       startup_args = poptGetArgs (ctx);
-	
-       if (startup_args)
-	       run_file (initial_window, (char **)startup_args);
-	
-       poptFreeContext (ctx);
+       if (argc > 1)
+	       run_file (initial_window, (char **)(argv + 1));
 
        gtk_main ();
 
