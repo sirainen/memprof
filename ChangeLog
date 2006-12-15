@@ -1,3 +1,7 @@
+2006-12-15  Pema Geyleg  <pgeyleg@gmail.com>
+
+	* configure.in: Added 'dz' to ALL_LINGUAS
+
 2006-11-19  Soren Sandmann <sandmann@redhat.com>
 
 	* configure.in: Remove popt dependency, bump gtk+
