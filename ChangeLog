@@ -1,5 +1,10 @@
 2007-08-11  Soren Sandmann <sandmann@daimi.au.dk>
 
+	* Makefile.am (install-exec-hook): Install speedprof in
+	DESTDIR. Bug 377176 - patch from Patrick Williams. 
+
+2007-08-11  Soren Sandmann <sandmann@daimi.au.dk>
+
 	* autogen.sh: Run intltoolize in autogen.sh
 
 2007-02-19  Soren Sandmann <sandmann@redhat.com>

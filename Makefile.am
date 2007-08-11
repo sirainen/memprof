@@ -93,7 +93,7 @@ install-data-local:
 	$(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 
 install-exec-hook:
-	cd $(bindir) && ln -sf memprof speedprof
+	cd $(DESTDIR)$(bindir) && ln -sf memprof speedprof
 
 .PHONY: copyrights
 
