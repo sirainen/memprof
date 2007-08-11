@@ -1,3 +1,7 @@
+2007-08-11  Soren Sandmann <sandmann@daimi.au.dk>
+
+	* autogen.sh: Run intltoolize in autogen.sh
+
 2007-02-19  Soren Sandmann <sandmann@redhat.com>
 
 	* autogen.sh: Copy this from somewhere else since that makes it
