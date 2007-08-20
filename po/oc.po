@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: memprof 0.6\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-03-04 04:58+0100\n"
-"PO-Revision-Date: 2007-08-07 12:10+0200\n"
+"PO-Revision-Date: 2007-08-20 18:32+0200\n"
 "Last-Translator: Yannig MARCHEGAY (Kokoyaya) <yannig@marchegay.org>\n"
 "Language-Team: Occitan (post 1500) <ubuntu-l10n-oci@lists.ubuntu.com>\n"
 "MIME-Version: 1.0\n"
@@ -29,7 +29,7 @@ msgstr ""
 
 #: ../main.c:945
 msgid "MemProf"
-msgstr ""
+msgstr "MemProf"
 
 #: ../main.c:1054
 #, c-format
@@ -145,7 +145,7 @@ msgstr ""
 
 #: ../memprof.glade.h:4
 msgid "32k"
-msgstr ""
+msgstr "32 k"
 
 #: ../memprof.glade.h:5
 msgid "<b>Callers</b>"
@@ -218,11 +218,11 @@ msgstr ""
 
 #: ../memprof.glade.h:22 ../tree.c:109
 msgid "Kill"
-msgstr ""
+msgstr "Tuar"
 
 #: ../memprof.glade.h:23
 msgid "Kill Program"
-msgstr ""
+msgstr "Tuar lo programa"
 
 #: ../memprof.glade.h:24
 msgid "Leak Detection Options"
@@ -274,7 +274,7 @@ msgstr ""
 
 #: ../memprof.glade.h:36
 msgid "Run Program"
-msgstr ""
+msgstr "Aviar lo programa"
 
 #: ../memprof.glade.h:37
 msgid "Save"
@@ -322,7 +322,7 @@ msgstr "_Ajuda"
 
 #: ../memprof.glade.h:48
 msgid "_Kill"
-msgstr ""
+msgstr "_Tuar"
 
 #: ../memprof.glade.h:49
 msgid "_Preferences"
