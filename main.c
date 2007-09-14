@@ -1153,10 +1153,6 @@ save_leak_cb (GtkWidget *widget)
 void
 save_profile_cb (GtkWidget *widget)
 {
-	show_error (pwin_from_widget (widget)->main_window,
-		    ERROR_WARNING, _("Saving is disabled at the moment"));
-	
-#if 0
 	static gchar *suggestion = NULL;
 	gchar *filename;
 
@@ -1172,7 +1168,6 @@ save_profile_cb (GtkWidget *widget)
 			profile_write (pwin->profile, filename);
 		}
 	}
-#endif
 }
 
 void

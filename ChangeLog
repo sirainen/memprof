@@ -1,3 +1,8 @@
+2007-09-14  Jonathan Pryor  <jpryor@novell.com>
+
+	* main.c, profile.c: Add support to save the memory profile to a file.
+	  Patch reviewed by Michael Meeks.
+
 2007-08-11  Soren Sandmann <sandmann@daimi.au.dk>
 
 	* Makefile.am (install-exec-hook): Install speedprof in

@@ -19,7 +19,9 @@
 /*=====*/
 
 #include "profile.h"
+#include <errno.h>
 #include <glib.h>
+#include <glib/gi18n.h>
 
 static GList *
 block_create_stack_list (Block *block, MPProcess *process, GHashTable *skip_hash)
@@ -518,8 +520,198 @@ profile_caller_list_free	     (GPtrArray		     *caller_list)
     g_ptr_array_free (caller_list, TRUE);
 }
 
+static gint
+compare_profile_funcs (gconstpointer a, gconstpointer b)
+{
+	const ProfileFunc *pa = * (const ProfileFunc**) a;
+	const ProfileFunc *pb = * (const ProfileFunc**) b;
+	if (pa->total > pb->total)
+		return -1;
+	if (pa->total < pb->total)
+		return 1;
+	return 0;
+}
+
+static GPtrArray *
+create_sorted_profile_funcs (GPtrArray *funcs)
+{
+	int i;
+	GPtrArray *functions;
+
+	functions = g_ptr_array_sized_new (funcs->len);
+
+	for (i = 0; i < funcs->len; ++i)
+		g_ptr_array_add (functions, funcs->pdata [i]);
+
+	g_ptr_array_sort (functions, compare_profile_funcs);
+
+	return functions;
+}
+
+static gint
+compare_descendant_tree_nodes (gconstpointer a, gconstpointer b)
+{
+	const ProfileDescendantTreeNode *pa = * (const ProfileDescendantTreeNode **) a;
+	const ProfileDescendantTreeNode *pb = * (const ProfileDescendantTreeNode **) b;
+	if (pa->total > pb->total)
+		return -1;
+	if (pa->total < pb->total)
+		return 1;
+	return 0;
+}
+
+static GPtrArray *
+create_sorted_descendant_tree_nodes (GPtrArray *funcs)
+{
+	int i;
+	GPtrArray *functions;
+
+	functions = g_ptr_array_sized_new (funcs->len);
+
+	for (i = 0; i < funcs->len; ++i)
+		g_ptr_array_add (functions, funcs->pdata [i]);
+
+	g_ptr_array_sort (functions, compare_descendant_tree_nodes);
+
+	return functions;
+}
+
+static void
+output_callers (FILE* out, ProfileFunc *func)
+{
+	int i;
+	GPtrArray *profile_callers, *callers;
+
+	profile_callers = profile_func_create_caller_list (func);
+	callers         = create_sorted_profile_funcs (profile_callers);
+
+	fprintf (out, "  Callers (with count) that contribute at least for 1%%:\n");
+
+	for (i = 0; i < callers->len; ++i) {
+		const gchar* name;
+		unsigned int percent;
+		ProfileFunc *caller = callers->pdata [i];
+
+		if (caller->node) {
+			if (caller->node->symbol)
+				name = caller->node->symbol->name;
+			else
+				name = "???";
+		}
+		else
+			name = "<spontaneous>";
+		percent = (caller->total * 100)/ func->total;
+		if (percent < 1)
+			continue;
+		fprintf (out, "    %10d %10d %3d %% %s\n", 
+				caller->self, caller->total, percent, name);
+	}
+
+	profile_caller_list_free (profile_callers);
+	g_ptr_array_free (callers, 1);
+}
+
+static void
+output_descendants (FILE* out, ProfileFunc *func)
+{
+	int i;
+	ProfileDescendantTree *descendant_tree;
+	ProfileDescendantTreeNode *node;
+	GPtrArray *children;
+
+	descendant_tree = profile_func_create_descendant_tree (func);
+	node            = descendant_tree->roots->pdata [0];
+	children        = create_sorted_descendant_tree_nodes (node->children);
+
+	fprintf (out, "  Descendants (with count) that contribute at least for 1%%:\n");
+
+	for (i = 0; i < children->len; ++i) {
+		const gchar* name;
+		unsigned int percent;
+		ProfileDescendantTreeNode *child = children->pdata [i];
+
+		if (child->symbol) {
+			name = child->symbol->name;
+		}
+		else
+			name = "???";
+		percent = (child->total * 100)/ node->total;
+		if (percent < 1)
+			continue;
+		fprintf (out, "    %10d %10d %3d %% %s\n", 
+				child->self, child->total, percent, name);
+	}
+
+	profile_descendant_tree_free (descendant_tree);
+	g_ptr_array_free (children, 1);
+}
+
+static void
+output_profile_summary (FILE *out, guint n_bytes, GPtrArray *functions)
+{
+	int i;
+
+	fprintf (out, "      self      total total %% symbol\n");
+	fprintf (out, " --------- ---------- ------- ------------\n");
+
+	for (i = 0; i < functions->len; ++i) {
+		const gchar *name;
+		ProfileFunc *func = functions->pdata [i];
+		if (func->node->symbol)
+			name = func->node->symbol->name;
+		else
+			name = "???";
+		fprintf (out, "%10d %10d %5.2f %% %s\n", 
+				func->self, func->total,
+				func->total * 100.0 / (double) n_bytes,
+				name);
+	}
+}
+
+static void
+output_profile_details (FILE *out, guint n_bytes, GPtrArray *functions)
+{
+	int i;
+
+	for (i = 0; i < functions->len; ++i) {
+		const gchar *name;
+		ProfileFunc *func = functions->pdata [i];
+		if (func->node->symbol)
+			name = func->node->symbol->name;
+		else
+			name = "???";
+		fprintf (out, "########################\n");
+		fprintf (out, "%10d %10d %5.2f %% %s\n",
+				func->self, func->total,
+				func->total * 100.0 / (double) n_bytes,
+				name);
+		output_callers (out, func);
+		output_descendants (out, func);
+	}
+}
+
 void
 profile_write (Profile *profile, const gchar *outfile)
 {
-    /* FIXME */
+	FILE *out;
+	int i;
+	GPtrArray *functions;
+
+	out = fopen (outfile, "w");
+	if (!out) {
+		show_error (NULL, ERROR_MODAL, _("Cannot open output file: %s\n"),
+        	g_strerror (errno));
+		return;
+	}
+
+	functions = create_sorted_profile_funcs (profile->functions);
+
+	fprintf (out, "Total number of bytes profiled: %u\n", profile->n_bytes);
+
+	output_profile_summary (out, profile->n_bytes, functions);
+	output_profile_details (out, profile->n_bytes, functions);
+
+	g_ptr_array_free (functions, 1);
+	fclose (out);
 }
+
