@@ -28,7 +28,7 @@ typedef struct ProfileDescendantTree		ProfileDescendantTree;
 typedef struct ProfileDescendantTreeNode	ProfileDescendantTreeNode;
 
 struct ProfileNode {
-    Symbol *		symbol;
+    char *		symbol;
 
     guint		total;
     guint		self;
@@ -44,7 +44,7 @@ struct ProfileNode {
 
 struct ProfileDescendantTreeNode
 {
-    Symbol *			symbol;
+    char *			symbol;
 
     guint			self;
     guint			non_recursion;

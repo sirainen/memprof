@@ -1,5 +1,11 @@
 2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
 
+	* memprof.h (struct): Move Symbol struct into process.c
+
+	* profile.c: Use strings instead of symbol structs
+
+2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
+
 	* stackstash.c: Replace with the one from Sysprof.
 
 	* main.c, profile.c: Update to new API

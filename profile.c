@@ -31,9 +31,9 @@ block_create_stack_list (Block *block, MPProcess *process, GHashTable *skip_hash
 
     for (element = block->stack; element != NULL; element = element->parent)
     {
-	const Symbol *symbol = process_locate_symbol (process, (guint)element->address);
+	const char *symbol = process_locate_symbol (process, (guint)element->address);
 
-	if (symbol && symbol->name && g_hash_table_lookup (skip_hash, symbol->name))
+	if (symbol && g_hash_table_lookup (skip_hash, symbol))
 	    continue;
 	
 	stack = g_list_prepend (stack, element);
@@ -55,7 +55,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
     {
 	StackNode *element = list->data;
 	ProfileNode *match = NULL;
-	const Symbol *symbol =
+	const char *symbol =
 	    process_locate_symbol (profile->process, (guint)element->address);
 	int i;
 	
@@ -594,7 +594,7 @@ output_callers (FILE* out, ProfileFunc *func)
 
 		if (caller->node) {
 			if (caller->node->symbol)
-				name = caller->node->symbol->name;
+				name = caller->node->symbol;
 			else
 				name = "???";
 		}
@@ -631,7 +631,7 @@ output_descendants (FILE* out, ProfileFunc *func)
 		ProfileDescendantTreeNode *child = children->pdata [i];
 
 		if (child->symbol) {
-			name = child->symbol->name;
+			name = child->symbol;
 		}
 		else
 			name = "???";
@@ -658,7 +658,7 @@ output_profile_summary (FILE *out, guint n_bytes, GPtrArray *functions)
 		const gchar *name;
 		ProfileFunc *func = functions->pdata [i];
 		if (func->node->symbol)
-			name = func->node->symbol->name;
+			name = func->node->symbol;
 		else
 			name = "???";
 		fprintf (out, "%10d %10d %5.2f %% %s\n", 
@@ -677,7 +677,7 @@ output_profile_details (FILE *out, guint n_bytes, GPtrArray *functions)
 		const gchar *name;
 		ProfileFunc *func = functions->pdata [i];
 		if (func->node->symbol)
-			name = func->node->symbol->name;
+			name = func->node->symbol;
 		else
 			name = "???";
 		fprintf (out, "########################\n");

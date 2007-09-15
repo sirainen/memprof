@@ -275,7 +275,7 @@ get_sort_info (GtkTreeView *view, int *sort_column, GtkSortType *sort_type)
 }
 
 static void
-profile_func_list_goto_symbol (ProcessWindow *pwin, Symbol *symbol)
+profile_func_list_goto_symbol (ProcessWindow *pwin, char *symbol)
 {
 	GtkTreeModel *function_list;
 	GtkTreeIter iter;
@@ -317,7 +317,7 @@ profile_descendants_row_activated (GtkTreeView *treeview,
 	GtkTreeModel *descendants_store;
 	ProcessWindow *pwin = data;
 	GtkTreeIter iter;
-	Symbol *desc_symbol;
+	char *desc_symbol;
 
 	descendants_store = gtk_tree_view_get_model (treeview);
 	if (!gtk_tree_model_get_iter (descendants_store, &iter, path))
@@ -337,7 +337,7 @@ profile_caller_row_activated (GtkTreeView *treeview,
 	GtkTreeModel *caller_list;
 	ProcessWindow *pwin = data;
 	GtkTreeIter iter;
-	Symbol *caller_symbol;
+	char *caller_symbol;
 
 	caller_list = gtk_tree_view_get_model (treeview);
 	if (!gtk_tree_model_get_iter (caller_list, &iter, path))
@@ -379,7 +379,7 @@ add_node (GtkTreeStore *store, int n_samples,
 	gtk_tree_store_insert (store, &iter, (GtkTreeIter *)parent, 0);
 
 	if (node->symbol)
-		name = node->symbol->name;
+		name = node->symbol;
 	else
 		name = "???";
 
@@ -484,7 +484,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 		if (caller->node) {
 			if (caller->node->symbol)
-				name = caller->node->symbol->name;
+				name = caller->node->symbol;
 			else
 				name = "???";
 		}
@@ -561,7 +561,7 @@ profile_fill (ProcessWindow *pwin)
 		g_assert (func);
 
 		if (func->node->symbol)
-			name = func->node->symbol->name;
+			name = func->node->symbol;
 		else
 			name = "???";
 		

@@ -117,6 +117,11 @@ block_unref (Block *block)
 /************************************************************
  * Code to map addresses to object files
  ************************************************************/
+typedef struct {
+  guint addr;
+  guint size;
+  gchar *name;
+} Symbol;
 
 static gint
 compare_address (const void *symbol1, const void *symbol2)
@@ -285,7 +290,7 @@ locate_map (MPProcess *process, guint addr)
 	return map;
 }
 
-const Symbol *
+const char *
 process_locate_symbol (MPProcess *process, guint addr)
 {
 	Symbol *data;
@@ -298,7 +303,7 @@ process_locate_symbol (MPProcess *process, guint addr)
 		return NULL;
 
 	if (!map->symbols || (map->symbols->len == 0))
-		return (Symbol*)map;
+		return map->name;
   
 	if (map->do_offset)
 		addr -= map->addr;
@@ -322,7 +327,7 @@ process_locate_symbol (MPProcess *process, guint addr)
 		/* Size is not included in generic bfd data, so we
 		 * ignore it for now. (It is ELF specific)
 		 */
-		return &data[first];
+		return (&data[first])->name;
 #if 0
 		if (addr < data[first].addr + data[first].size)
 			return &data[first];
@@ -332,7 +337,7 @@ process_locate_symbol (MPProcess *process, guint addr)
 	}
 	else
 	{
-		return &data[last];
+		return (&data[last])->name;
 #if 0
 		if (addr < data[last].addr + data[last].size)
 			return &data[last];
@@ -1014,68 +1019,36 @@ process_block_foreach (MPProcess                 *process,
 static gboolean
 my_str_equal (const char *s1, const char *s2)
 {
-	if (s1 == NULL && s2 == NULL)
-		return TRUE;
-
-	if (s1 == NULL || s2 == NULL)
-		return FALSE;
-
-	return strcmp (s1, s2) == 0;
+	return s1 == s2;
 }
 
 gboolean
 symbol_equal (gconstpointer s1, gconstpointer s2)
 {
-	const Symbol *sym1 = s1;
-	const Symbol *sym2 = s2;
-
-	if (s1 == NULL && s2 == NULL)
-		return TRUE;
-
-	if (s1 == NULL || s2 == NULL)
-		return FALSE;
-
-	return (my_str_equal (sym1->name, sym2->name)) && (sym1->addr == sym2->addr);
+	return s1 == s2;
 }
 
 guint
 symbol_hash  (gconstpointer s)
 {
-	const Symbol *symbol = s;
+	const char *symbol = s;
 
-	if (!s)
-		return 0;
-	
-	return symbol->name? g_str_hash (symbol->name) : 0 + symbol->addr;
+	return g_str_hash (s);
 }
 
-Symbol *
-symbol_copy  (const Symbol *orig)
+char *
+symbol_copy  (const char *orig)
 {
-	Symbol *symbol;
-
 	if (!orig)
 		return NULL;
 
-	symbol = g_new0 (Symbol, 1);
-
-	symbol->name = g_strdup (orig->name);
-	symbol->addr = orig->addr;
-	symbol->size = orig->size;
-
-	g_assert (symbol_equal (symbol, orig));
-	g_assert (symbol_hash (symbol) == symbol_hash (orig));
-	
-	return symbol;
+	return orig;
 }
 
 void
-symbol_free  (Symbol *symbol)
+symbol_free  (char *symbol)
 {
 	if (!symbol)
 		return;
-
-	g_free (symbol->name);
-	g_free (symbol);
 }
 

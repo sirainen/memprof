@@ -58,16 +58,10 @@ typedef struct {
   gboolean prepared : 1;
 } Map;
 
-typedef struct {
-  guint addr;
-  guint size;
-  gchar *name;
-} Symbol;
-
 gboolean symbol_equal (gconstpointer s1, gconstpointer s2);
 guint    symbol_hash  (gconstpointer symbol);
-Symbol * symbol_copy  (const Symbol *symbol);
-void     symbol_free  (Symbol *symbol);
+char *   symbol_copy  (const char *symbol);
+void     symbol_free  (char *symbol);
 
 typedef void (*SectionFunc) (void *addr, guint size, gpointer user_data);
 
