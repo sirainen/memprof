@@ -62,9 +62,6 @@ INCLUDES = 					   \
 	-DPKGLIBDIR=\"$(pkglibdir)\"		   \
 	-DLOCALEDIR=\""$(datadir)/locale"\"
 
-schemadir = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = memprof.schemas
-
 EXTRA_DIST =			\
 	memprof.desktop		\
 	leak.png		\
@@ -87,10 +84,6 @@ DISTCLEANFILES =		\
 	intltool-extract	\
 	intltool-merge		\
 	intltool-update
-
-install-data-local:
-	GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) \
-	$(GCONFTOOL) --makefile-install-rule $(srcdir)/$(schema_DATA)
 
 install-exec-hook:
 	cd $(DESTDIR)$(bindir) && ln -sf memprof speedprof
