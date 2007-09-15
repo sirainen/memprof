@@ -1,5 +1,15 @@
 2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
 
+	Replace symbol resolution code with sysprof code. Remove
+	dependency on libbfd and libiberty.
+
+	* binparser.[ch], elfparser.[ch], binfile.[ch], demangle.c: New
+	files.
+
+	* bfdutils.c: delete
+
+2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
+
 	* memprof.h (struct): Move Symbol struct into process.c
 
 	* profile.c: Use strings instead of symbol structs

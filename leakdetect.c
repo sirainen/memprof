@@ -177,17 +177,10 @@ read_stack_maps (MPProcess *process)
 				Map *map;
 
 				map = g_new (Map, 1);
-				map->prepared = FALSE;
-				map->addr = start;
+				map->start = start;
 				map->size = end - start;
 				map->name = NULL;
-				map->abfd = NULL;
-				map->section = NULL;
-				map->symbols = NULL;
-				map->syms = NULL;
-				map->symcount = 0;
-
-				map->do_offset = TRUE;
+				map->offset = 0;
 
 				result = g_list_prepend (result, map);
 			}
@@ -214,19 +207,19 @@ add_stack_root (MPProcess *process, GSList *block_list,
 	while (tmp_list) {
 		Map *map = tmp_list->data;
 
-		if (end_stack >= map->addr &&
-		    end_stack < map->addr + map->size) {
+		if (end_stack >= map->start &&
+		    end_stack < map->start + map->size) {
 			Block *block;
 			
 			block = g_new (Block, 1);
 			block->refcount = 1;
 			block->flags = BLOCK_IS_ROOT;
 			block->addr = (void *)end_stack;
-			if (start_stack > map->addr &&
-			    start_stack < map->addr + map->size)
+			if (start_stack > map->start &&
+			    start_stack < map->start + map->size)
 				block->size = start_stack - end_stack;
 			else
-				block->size = map->addr + map->size - end_stack;
+				block->size = map->start + map->size - end_stack;
 			block->stack = NULL;
 
 			return g_slist_prepend (block_list, block);

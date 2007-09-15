@@ -7,7 +7,6 @@ pkgdata_DATA = memprof.glade leak.xpm leak.png memprof.png
 pkglib_LTLIBRARIES = libmemintercept.la libspeedintercept.la
 
 memprof_SOURCES =	        \
-	bfdutils.c		\
 	gui.h			\
 	inode.c			\
 	leakdetect.c		\
@@ -24,7 +23,14 @@ memprof_SOURCES =	        \
 	stackstash.h		\
 	treeviewutils.c		\
 	treeviewutils.h		\
-	tree.c
+	tree.c			\
+	binfile.h		\
+	binfile.c		\
+	elfparser.h		\
+	elfparser.c		\
+	binparser.h		\
+	binparser.c		\
+	demangle.c
 
 memprof_LDADD = $(MEMPROF_LIBS)
 memprof_LDFLAGS = -export-dynamic

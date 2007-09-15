@@ -134,43 +134,11 @@ compare_address (const void *symbol1, const void *symbol2)
 void
 prepare_map (Map *map)
 {
-	GArray *result;
-	Symbol symbol;
-	int i;
-
 	g_return_if_fail (!map->prepared);
-  
+
+	map->binfile = bin_file_new (map->name);
+	
 	map->prepared = TRUE;
-
-	read_bfd (map);
-  
-	if (map->syms) {
-		result = g_array_new (FALSE, FALSE, sizeof(Symbol));
-
-		for (i = 0; i < map->symcount; i++) {
-			/* FIXME: is strcmp() agaings ".text" really right? */
-			if ((map->syms[i]->flags & BSF_FUNCTION) &&
-			    (strcmp (map->syms[i]->section->name, ".text") == 0))
-			{
-				symbol.addr = bfd_asymbol_value(map->syms[i]);
-				symbol.size = 0;
-				symbol.name = demangle (map, bfd_asymbol_name(map->syms[i]));
-				g_array_append_vals (result, &symbol, 1);
-			}
-		}
-
-		/* Sort the symbols by address */
-      
-		qsort (result->data, result->len, sizeof(Symbol), compare_address);
-  
-		map->symbols =result;
-
-		/* Check for position independent executable */
-		if (!map->do_offset && map->symbols->len &&
-		    map->addr > ((Symbol*)map->symbols->data)[map->symbols->len - 1].addr) {
-			map->do_offset = TRUE;
-		}
-	}
 }
 
 static void
@@ -178,9 +146,6 @@ process_read_maps (MPProcess *process)
 {
 	gchar buffer[1024];
 	FILE *in;
-	gchar perms[26];
-	gchar file[256];
-	guint start, end, major, minor, inode;
   
 	snprintf (buffer, 1023, "/proc/%d/maps", process->pid);
 
@@ -194,51 +159,30 @@ process_read_maps (MPProcess *process)
 	}
 
 	while (fgets(buffer, 1023, in)) {
-		int count = sscanf (buffer, "%x-%x %15s %*x %x:%x %u %255s",
-				    &start, &end, perms, &major, &minor, &inode, file);
-		if (count >= 6)	{
-			if (strcmp (perms, "r-xp") == 0) {
-				Map *map;
-				dev_t device = makedev(major, minor);
-
-				map = g_new (Map, 1);
-				map->prepared = FALSE;
-				map->addr = start;
-				map->size = end - start;
-
-				if (count == 7)
-					map->name = g_strdup (file);
-				else
-					map->name = locate_inode (device, inode);
-
-				map->abfd = NULL;
-				map->section = NULL;
-				map->symbols = NULL;
-				map->syms = NULL;
-				map->symcount = 0;
-
-				map->do_offset = TRUE;
-
-				if (map->name) {
-					struct stat stat1, stat2;
-					char *progname = g_strdup_printf ("/proc/%d/exe", process->pid);
-		  
-					if (stat (map->name, &stat1) != 0)
-						g_warning ("Cannot stat %s: %s\n", map->name,
-							   g_strerror (errno));
-					else
-						if (stat (progname, &stat2) != 0)
-							g_warning ("Cannot stat %s: %s\n", process->program_name,
-								   g_strerror (errno));
-						else
-							map->do_offset = !(stat1.st_ino == stat2.st_ino &&
-									   stat1.st_dev == stat2.st_dev);
-
-					g_free (progname);
-				}
-
-				process->map_list = g_list_prepend (process->map_list, map);
-			}
+		char file[256];
+		int count;
+		gulong start;
+		gulong end;
+		gulong offset;
+		gulong inode;
+		
+		count = sscanf (
+			buffer, "%lx-%lx %*15s %lx %*x:%*x %lu %255s", 
+			&start, &end, &offset, &inode, file);
+		if (count == 5)
+		{
+			Map *map;
+			
+			map = g_new (Map, 1);
+			map->prepared = FALSE;
+			map->start = start;
+			map->size = end - start;
+			
+			map->offset = offset;
+			
+			map->name = g_strdup (file);
+			
+			process->map_list = g_list_prepend (process->map_list, map);
 		}
 	}
 
@@ -254,8 +198,8 @@ real_locate_map (MPProcess *process, guint addr)
 	{
 		Map *tmp_map = tmp_list->data;
       
-		if ((addr >= tmp_map->addr) &&
-		    (addr < tmp_map->addr + tmp_map->size))
+		if ((addr >= tmp_map->start) &&
+		    (addr < tmp_map->start + tmp_map->size))
 			return tmp_map;
       
 		tmp_list = tmp_list->next;
@@ -293,58 +237,18 @@ locate_map (MPProcess *process, guint addr)
 const char *
 process_locate_symbol (MPProcess *process, guint addr)
 {
-	Symbol *data;
-	Map *map;
-  
-	guint first, middle, last;
+	Map *map = locate_map (process, addr);
+	const BinSymbol *symbol;
 
-	map = locate_map (process, addr);
 	if (!map)
 		return NULL;
 
-	if (!map->symbols || (map->symbols->len == 0))
-		return map->name;
-  
-	if (map->do_offset)
-		addr -= map->addr;
+	addr -= map->start;
+	addr += map->offset;
+	
+	symbol = bin_file_lookup_symbol (map->binfile, addr);
 
-	first = 0;
-	last = map->symbols->len - 1;
-	middle = last;
-
-	data = (Symbol *)map->symbols->data;
-
-	if (addr < data[last].addr) {
-		/* Invariant: data[first].addr <= val < data[last].addr */
-
-		while (first < last - 1) {
-			middle = (first + last) / 2;
-			if (addr < data[middle].addr) 
-				last = middle;
-			else
-				first = middle;
-		}
-		/* Size is not included in generic bfd data, so we
-		 * ignore it for now. (It is ELF specific)
-		 */
-		return (&data[first])->name;
-#if 0
-		if (addr < data[first].addr + data[first].size)
-			return &data[first];
-		else
-			return NULL;
-#endif
-	}
-	else
-	{
-		return (&data[last])->name;
-#if 0
-		if (addr < data[last].addr + data[last].size)
-			return &data[last];
-		else
-			return NULL;
-#endif
-	}
+	return bin_symbol_get_name (map->binfile, symbol);
 }
 
 gboolean 
@@ -352,15 +256,16 @@ process_find_line (MPProcess *process, void *address,
 		   const char **filename, char **functionname,
 		   unsigned int *line)
 {
-	Map *map = locate_map (process, (guint)address);
-	if (map) {
-		bfd_vma addr = (bfd_vma)address;
-		if (map->do_offset)
-			addr -= map->addr;
-		return find_line (map, addr, filename, functionname, line);
+	char *s = process_locate_symbol (process, address);
+
+	if (s)
+	{
+		*filename = NULL;
+		*functionname = s;
+		*line = -1;
 	}
-	else
-		return FALSE;
+
+	return TRUE;
 }
 
 void
@@ -382,6 +287,33 @@ process_dump_stack (MPProcess *process, FILE *out, StackNode *stack)
 		} else
 			fprintf(out, "\t[%p]\n", stack->address);
 	}
+}
+
+
+void 
+process_map_sections (Map *map, SectionFunc func, gpointer user_data)
+{
+	/* FIXME: this should be reinstated */
+	
+#if 0
+	asection *section;
+
+	if (map->abfd)
+		for (section = map->abfd->sections; section; section = section->next) {
+			if (strcmp (section->name, ".bss") == 0 ||
+			    strcmp (section->name, ".data") == 0) {
+				void *addr = (void *)section->vma;
+				if (map->do_offset)
+					addr += map->addr;
+	    
+				/* bfd_section_size() gives 0 for old versions of binutils, so peek
+				 * into the internals instead. :-(
+				 */
+				(*func) (addr, bfd_section_size (map->abfd, section), user_data);
+//				(*func) (addr, section->_cooked_size, user_data);
+			}
+		}
+#endif
 }
 
 void 
