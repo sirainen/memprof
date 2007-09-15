@@ -283,7 +283,6 @@ process_dump_stack (MPProcess *process, FILE *out, StackNode *stack)
 				fprintf(out, "\t%s(): %s:%u\n", functionname, filename, line);
 			else
 				fprintf(out, "\t%s()\n", functionname);
-			free (functionname);
 		} else
 			fprintf(out, "\t[%p]\n", stack->address);
 	}

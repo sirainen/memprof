@@ -1,5 +1,11 @@
 2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
 
+	* main.c: Demangle names
+
+	* process.c: Remove invalid free()
+
+2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
+
 	Replace symbol resolution code with sysprof code. Remove
 	dependency on libbfd and libiberty.
 

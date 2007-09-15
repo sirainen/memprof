@@ -47,6 +47,7 @@
 #include <stdlib.h>
 #include <glib/gi18n.h>
 #include <glib/gprintf.h>
+#include "elfparser.h"
 
 struct _ProcessWindow {
 	MPProcess *process;
@@ -367,6 +368,45 @@ set_sample (GtkTreeModel *model, GtkTreeIter *iter, int column, guint value, gui
 		set_double (model, iter, column, 100 * (double)value / n_samples);
 }
 
+static GQueue *free_us;
+int idle_id;
+
+static gboolean
+do_idle_free (gpointer d)
+{
+	GList *list;
+
+	for (list = free_us->head; list; list = list->next)
+		g_free (list->data);
+	
+	idle_id = 0;
+	
+	return FALSE;
+}
+
+static char *
+idle_free (char *d)
+{
+	if (!free_us)
+		free_us = g_queue_new ();
+
+	g_queue_push_tail (free_us, d);
+
+	if (!idle_id)
+		idle_id = g_idle_add (do_idle_free, NULL);
+	
+	return d;
+}
+
+static char *
+get_name (const char *name)
+{
+	if (name)
+		return idle_free (elf_demangle (name));
+	else
+		return idle_free (g_strdup ("???"));
+}
+
 static void
 add_node (GtkTreeStore *store, int n_samples,
 	  const GtkTreeIter *parent, ProfileDescendantTreeNode *node)
@@ -379,15 +419,17 @@ add_node (GtkTreeStore *store, int n_samples,
 	gtk_tree_store_insert (store, &iter, (GtkTreeIter *)parent, 0);
 
 	if (node->symbol)
-		name = node->symbol;
+		name = elf_demangle (node->symbol);
 	else
-		name = "???";
+		name = g_strdup ("???");
 
 	gtk_tree_store_set (store, &iter,
 			    PROFILE_DESCENDANTS_NAME, name,
 			    PROFILE_DESCENDANTS_SYMBOL, node->symbol,
 			    -1);
 
+	g_free (name);
+	
 	set_sample (model, &iter, PROFILE_DESCENDANTS_SELF, node->self, n_samples);
 	set_sample (model, &iter, PROFILE_DESCENDANTS_NONRECURSE, node->non_recursion, n_samples);
 	set_sample (model, &iter, PROFILE_DESCENDANTS_TOTAL, node->total, n_samples);
