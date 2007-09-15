@@ -59,7 +59,7 @@ static void process_reinit (MPProcess *process);
  */
 typedef struct {
 	MIInfo info;
-	StackElement *stack;
+	StackNode *stack;
 } Command;
 
 static gint
@@ -73,7 +73,7 @@ queue_compare (gconstpointer a, gconstpointer b)
 }
 
 static void
-queue_command (MPProcess *process, MIInfo *info, StackElement *stack)
+queue_command (MPProcess *process, MIInfo *info, StackNode *stack)
 {
 	Command *command = g_new (Command, 1);
 	command->info = *info;
@@ -83,7 +83,7 @@ queue_command (MPProcess *process, MIInfo *info, StackElement *stack)
 }
 
 static gboolean
-unqueue_command (MPProcess *process, MIInfo *info, StackElement **stack)
+unqueue_command (MPProcess *process, MIInfo *info, StackNode **stack)
 {
 	Command *command = process->command_queue->data;
 	GList *tmp_list;
@@ -359,9 +359,9 @@ process_find_line (MPProcess *process, void *address,
 }
 
 void
-process_dump_stack (MPProcess *process, FILE *out, StackElement *stack)
+process_dump_stack (MPProcess *process, FILE *out, StackNode *stack)
 {
-	for (; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent)
+	for (; stack != NULL; stack = stack->parent)
 	{
 		const char *filename;
 		char *functionname;
@@ -485,7 +485,7 @@ process_reinit (MPProcess *process)
 	}
 
 	if (process->stack_stash) {
-		stack_stash_free (process->stack_stash);
+		stack_stash_unref (process->stack_stash);
 		process->stack_stash = NULL;
 	}
 
@@ -497,7 +497,7 @@ static StackStash *
 get_stack_stash (MPProcess *process)
 {
 	if (!process->stack_stash)
-		process->stack_stash = stack_stash_new ();
+		process->stack_stash = stack_stash_new (NULL);
 
 	return process->stack_stash;
 }
@@ -510,7 +510,7 @@ process_exec_reset (MPProcess *process)
 }
 
 static void
-process_command (MPProcess *process, MIInfo *info, StackElement *stack)
+process_command (MPProcess *process, MIInfo *info, StackNode *stack)
 {
 	GHashTable *block_table;
 	Block *block;
@@ -614,7 +614,7 @@ input_func (GIOChannel  *source,
 		
 			return FALSE;
 		} else {
-			StackElement *stack = NULL;
+			StackNode *stack = NULL;
 
 //			fprintf (stderr, "Read size %d op 0x%x\n", count, info.operation);
 
@@ -629,7 +629,7 @@ input_func (GIOChannel  *source,
 
 				stack_buffer = g_alloca (sizeof (void *) * info.alloc.stack_size);
 				g_io_channel_read_chars (source, (char *)stack_buffer, sizeof(void *) * info.alloc.stack_size, &count, NULL);
-				stack = stack_stash_store (stash, stack_buffer, info.alloc.stack_size);
+				stack = stack_stash_add_trace (stash, stack_buffer, info.alloc.stack_size, -1);
 
 			} else if (info.operation == MI_EXIT) {
 				process_set_status (input_process, MP_PROCESS_EXITING);
@@ -703,7 +703,7 @@ process_clear_input (MPProcess *process)
 	}
 
 	if (process->stack_stash) {
-		stack_stash_free (process->stack_stash);
+		stack_stash_unref (process->stack_stash);
 		process->stack_stash = NULL;
 	}
 }

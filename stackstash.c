@@ -1,8 +1,6 @@
-/* -*- mode: C; c-file-style: "linux" -*- */
-
-/* MemProf -- memory profiler and leak detector
- * Copyright 1999, 2000, 2001, 2002, Red Hat, Inc.
- * Copyright 2002, Kristian Rietveld
+/* Sysprof -- Sampling, systemwide CPU profiler
+ * Copyright 2004, Red Hat, Inc.
+ * Copyright 2004, 2005, Soeren Sandmann
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,298 +16,322 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-/*====*/
 
-#include <stdlib.h>
-#include <glib.h>
 #include "stackstash.h"
 
-/* #define BUILD_TEST_CASE */
+struct StackStash
+{
+    int			ref_count;
+    StackNode *		root;
+    GHashTable *	nodes_by_data;
+    GDestroyNotify	destroy;
 
-#ifdef BUILD_TEST_CASE
-static size_t test_unique_bytes = 0;
-static size_t test_bytes_used = 0;
-static int test_nodes_used = 0;
-static int test_n_singletons = 0;
-#endif
-
-struct _StackStash {
-	StackElement *root;
+    StackNode *		cached_nodes;
+    GPtrArray *		blocks;
 };
 
-static StackElement *
-stack_element_new (void)
+StackNode *
+stack_node_new (StackStash *stash)
 {
-	StackElement *element = g_new (StackElement, 1);
+    StackNode *node;
 
-	element->n_children = 0;
-	element->children = NULL;
+    if (!stash->cached_nodes)
+    {
+#define BLOCK_SIZE 32768
+#define N_NODES (BLOCK_SIZE / sizeof (StackNode))
 
-#ifdef BUILD_TEST_CASE	
-	test_bytes_used += sizeof (StackElement);
-	test_nodes_used++;
-#endif
-
-	return element;
-}
-
-static void
-stack_element_free (StackElement *element)
-{
-#ifdef BUILD_TEST_CASE	
-	test_bytes_used -= element->n_children * sizeof (StackElement *);
-	test_bytes_used -= sizeof (StackElement);
-	test_nodes_used--;
-#endif
-	
-	g_free (element->children);
-	g_free (element);
-}
-
-static void
-insert_child (StackElement *element,
-	      StackElement *child)
-{
-	StackElement **old_children;
-	StackElement **old_child, **new_child;
-	int n_children = element->n_children;
-
-	element->n_children = n_children + 1;
-
-	old_children = element->children;
-	element->children = g_new (StackElement *, n_children + 1);
-
-	old_child = old_children;
-	new_child = element->children;
-		
-	while (n_children && (*old_child)->address < child->address) {
-		*new_child++ = *old_child++;
-		n_children--;
-	}
-	*new_child++ = child;
-	while (n_children) {
-		*new_child++ = *old_child++;
-		n_children--;
-	}
-	
-	g_free (old_children);
-
-#ifdef BUILD_TEST_CASE
-	if (element->n_children == 1)
-		test_n_singletons++;
-	else if (element->n_children == 2)
-		test_n_singletons--;
-	test_bytes_used += sizeof (StackElement *);
-#endif
-}
-
-StackStash *
-stack_stash_new (void)
-{
-	StackStash *stash = g_new (StackStash, 1);
-
-	stash->root = stack_element_new ();
-	stash->root->parent = NULL;
-	stash->root->address = NULL;
-
-	return stash;
-}
-
-StackElement *
-stack_stash_store (StackStash *stash,
-		   gpointer   *addresses,
-		   int         n_addresses)
-{
-	StackElement *current;
-	
-	current = stash->root;
-	
-	while (n_addresses)
-	{
-		int first = 0;
-		int last = current->n_children;
-		gpointer address = addresses[n_addresses - 1];
-
-		while (first < last) {
-			int mid = (first + last) / 2;
-			if (address == current->children[mid]->address) {
-				current = current->children[mid];
-				goto next_address;
-			} else if (address < current->children[mid]->address) {
-				last = mid;
-			} else
-				first = mid + 1;
-		}
-
-		break;
-		
-	next_address:
-		n_addresses--;
-	}
-
-	while (n_addresses) {
-		StackElement *next = stack_element_new ();
-		next->address = addresses[n_addresses - 1];
-		next->parent = current;
-
-		insert_child (current, next);
-		
-		current = next;
-		n_addresses--;
-	}
-
-  return current;
-}
-
-static void
-free_element_recurse (StackElement *element)
-{
+	StackNode *block = g_malloc (BLOCK_SIZE);
 	int i;
-	
-	for (i = 0; i < element->n_children; i++)
-		free_element_recurse (element->children[i]);
 
-	stack_element_free (element);
+	for (i = 0; i < N_NODES; ++i)
+	{
+	    block[i].next = stash->cached_nodes;
+	    stash->cached_nodes = &(block[i]);
+	}
+
+	g_ptr_array_add (stash->blocks, block);
+    }
+
+    node = stash->cached_nodes;
+    stash->cached_nodes = node->next;
+
+    node->siblings = NULL;
+    node->children = NULL;
+    node->address = NULL;
+    node->parent = NULL;
+    node->size = 0;
+    node->next = NULL;
+    node->total = 0;
+    
+    return node;
+}
+
+/* "destroy", if non-NULL, is called once on every address */
+static StackStash *
+create_stack_stash (GDestroyNotify destroy)
+{
+    StackStash *stash = g_new (StackStash, 1);
+
+    stash->root = NULL;
+    stash->nodes_by_data = g_hash_table_new (g_direct_hash, g_direct_equal);
+    stash->ref_count = 1;
+    stash->destroy = destroy;
+    
+    stash->cached_nodes = NULL;
+    stash->blocks = g_ptr_array_new ();
+
+    return stash;
+}
+
+/* Stach */
+StackStash *
+stack_stash_new (GDestroyNotify destroy)
+{
+    return create_stack_stash (destroy);
+}
+
+
+static void
+free_key (gpointer key,
+	  gpointer value,
+	  gpointer data)
+{
+    GDestroyNotify destroy = data;
+
+    destroy (key);
+}
+
+static void
+stack_stash_free (StackStash *stash)
+{
+    int i;
+    
+    if (stash->destroy)
+    {
+	g_hash_table_foreach (stash->nodes_by_data, free_key,
+			      stash->destroy);
+    }
+    
+    g_hash_table_destroy (stash->nodes_by_data);
+
+    for (i = 0; i < stash->blocks->len; ++i)
+	g_free (stash->blocks->pdata[i]);
+    
+    g_ptr_array_free (stash->blocks, TRUE);
+    
+    g_free (stash);
+}
+
+static void
+decorate_node (StackStash *stash,
+	       StackNode  *node)
+{
+    StackNode *n;
+    gboolean toplevel = TRUE;
+
+    /* FIXME: we will probably want to do this lazily,
+     * and more efficiently (only walk the tree once).
+     */
+    for (n = node->parent; n != NULL; n = n->parent)
+    {
+	if (n->address == node->address)
+	{
+	    toplevel = FALSE;
+	    break;
+	}
+    }
+
+    node->toplevel = toplevel;
+
+    node->next = g_hash_table_lookup (
+	stash->nodes_by_data, node->address);
+    g_hash_table_insert (
+	stash->nodes_by_data, node->address, node);
+}
+
+StackNode *
+stack_stash_add_trace (StackStash *stash,
+		       gpointer     *addrs,
+		       int         n_addrs,
+		       int         size)
+{
+    StackNode **location = &(stash->root);
+    StackNode *parent = NULL;
+    int i;
+
+    if (!n_addrs)
+	return NULL;
+
+    for (i = n_addrs - 1; i >= 0; --i)
+    {
+	StackNode *match = NULL;
+	StackNode *n;
+
+	for (n = *location; n != NULL; n = n->siblings)
+	{
+	    if (n->address == (gpointer)addrs[i])
+	    {
+		match = n;
+		break;
+	    }
+	}
+
+	if (!match)
+	{
+	    match = stack_node_new (stash);
+	    match->address = (gpointer)addrs[i];
+	    match->siblings = *location;
+	    match->parent = parent;
+	    *location = match;
+
+	    decorate_node (stash, match);
+	}
+
+	match->total += size;
+
+	location = &(match->children);
+	parent = match;
+    }
+
+    parent->size += size;
+
+    return parent;
+}
+
+static void
+do_callback (StackNode *node,
+	     GList *trace,
+	     StackFunction func,
+	     gpointer data)
+{
+    GList link;
+
+    if (trace)
+	trace->prev = &link;
+	
+    link.next = trace;
+    link.prev = NULL;
+    
+    while (node)
+    {
+	link.data = node->address;
+	
+	if (node->size)
+	    func (&link, node->size, data);
+	
+	do_callback (node->children, &link, func, data);
+	
+	node = node->siblings;
+    }
+
+    if (trace)
+	trace->prev = NULL;
 }
 
 void
-stack_stash_free (StackStash *stash)
+stack_stash_foreach   (StackStash      *stash,
+		       StackFunction    stack_func,
+		       gpointer         data)
 {
-	free_element_recurse (stash->root);
-	g_free (stash);
+    do_callback (stash->root, NULL, stack_func, data);
 }
 
-#ifdef BUILD_TEST_CASE
-guint
-stack_trace_hash (const void *trace)
+void
+stack_node_foreach_trace (StackNode     *node,
+			  StackFunction  func,
+			  gpointer       data)
 {
-	guint result = 0;
-	const guint32 *p = trace;
-	guint32 n_elements = *p;
+    GList link;
 
-	while (n_elements--) {
-		p++;
-		result ^= *p;
-	}
+    link.next = NULL;
+    link.data = node->address;
+    link.prev = NULL;
 
-	return result;
+    if (node->size)
+	func (&link, node->size, data);
+    
+    do_callback (node->children, &link, func, data);
 }
 
-gboolean
-stack_trace_equal (const void *trace_a,
-		   const void *trace_b)
+void
+stack_stash_unref (StackStash *stash)
 {
-	const guint32 *p = trace_a;
-	const guint32 *q = trace_b;
-
-	guint32 n_elements = *p;
-	if (n_elements != *q)
-		return FALSE;
-	
-	while (n_elements--) {
-		p++;
-		q++;
-		if (*p != *q)
-			return FALSE;
-	}
-
-	return TRUE;
-}
-
-void *
-stack_trace_copy (const void *trace)
-{
-	size_t n_bytes = sizeof (guint32) * (1 + *(guint32 *)trace);
-	test_unique_bytes += n_bytes;
-	return g_memdup (trace, n_bytes);
-}
-
-int main (void)
-{
-	char *bytes;
-	guint32 *p;
-	size_t len;
-	GError *err = NULL;
-	int n_traces, i;
-	StackStash *stash;
-	StackElement **traces;
-	int n_unique = 0;;
-
-	GHashTable *unique_hash = g_hash_table_new_full (stack_trace_hash, stack_trace_equal,
-							 (GDestroyNotify)g_free, NULL);
-	
-	GTimer *timer = g_timer_new ();
-	
-	if (!g_file_get_contents ("stacktrace.test", &bytes, &len, &err)) {
-		g_message ("Cannot read stracktrace.test: %s\n", err->message);
-		exit (1);
-	}
-	
-	/* Count the number of stacktraces
-	 */
-	g_timer_start (timer);
-	
-	n_traces = 0;
-	p = (guint32 *)bytes;
-	while (p < (guint32 *)(bytes + len)) {
-		guint32 n_elements = *p;
-
-		if (!g_hash_table_lookup (unique_hash, p)) { 
-			g_hash_table_insert (unique_hash, stack_trace_copy (p), GUINT_TO_POINTER (1));
-			n_unique++;
-		}
-		
-		p += n_elements + 1;
-		n_traces++;
-	}
-	g_timer_stop (timer);
-	g_print ("Preparation took %g seconds\n", g_timer_elapsed (timer, NULL));
-	
-	traces = g_new (StackElement *, n_traces);
-
-	/* Insert them all
-	 */
-	g_timer_start (timer);
-
-	stash = stack_stash_new ();
-	
-	p = (guint32 *)bytes;
-	for (i = 0; i < n_traces; i++) {
-		guint32 n_elements = *p;
-		p++;
-		traces[i] = stack_stash_store (stash, (gpointer *)p, n_elements);
-		p += n_elements;
-	}
-
-	g_timer_stop (timer);
-	g_print ("Inserted %d stacktraces, %zd bytes (unique: %d/%zd):\n\t%g seconds, using %zd bytes, %d nodes, %d nodes with one child\n",
-		 n_traces, len,
-		 n_unique, test_unique_bytes,
-		 g_timer_elapsed (timer, NULL), test_bytes_used, test_nodes_used, test_n_singletons);
-
-	/* Now verify the inserted traces
-	 */
-	p = (guint32 *)bytes;
-	for (i = 0; i < n_traces; i++) {
-		StackElement *tmp_element = traces[i];
-		guint32 n_elements = *p;
-		p++;
-		
-		while (n_elements--) {
-			g_assert (tmp_element->address == *(gpointer *)p);
-			g_assert (tmp_element->parent);
-			tmp_element = tmp_element->parent;
-			p++;
-		}
-		g_assert (!tmp_element->parent);
-	}
-
-	g_free (traces);
+    stash->ref_count--;
+    if (stash->ref_count == 0)
 	stack_stash_free (stash);
-	g_hash_table_destroy (unique_hash);
-	g_free (bytes);
-	g_timer_destroy (timer);
-
-	return 0;
 }
-#endif /* BUILD_TEST_CASE */
+
+StackStash *
+stack_stash_ref (StackStash *stash)
+{
+    stash->ref_count++;
+    return stash;
+}
+
+StackNode *
+stack_stash_find_node (StackStash      *stash,
+		       gpointer         data)
+{
+    g_return_val_if_fail (stash != NULL, NULL);
+    
+    return g_hash_table_lookup (stash->nodes_by_data, data);
+}
+
+typedef struct
+{
+    StackNodeFunc func;
+    gpointer	  data;
+} Info;
+
+static void
+do_foreach (gpointer key, gpointer value, gpointer data)
+{
+    Info *info = data;
+
+    info->func (value, info->data);
+}
+
+void
+stack_stash_foreach_by_address (StackStash *stash,
+				StackNodeFunc func,
+				gpointer      data)
+{
+    Info info;
+    info.func = func;
+    info.data = data;
+	
+    g_hash_table_foreach (stash->nodes_by_data, do_foreach, &info);
+}
+
+StackNode  *
+stack_stash_get_root   (StackStash *stash)
+{
+    return stash->root;
+}
+
+static void
+build_hash_table (StackNode *node,
+		  StackStash *stash)
+{
+    if (!node)
+	return;
+
+    build_hash_table (node->siblings, stash);
+    build_hash_table (node->children, stash);
+
+    node->next = g_hash_table_lookup (
+	stash->nodes_by_data, node->address);
+    g_hash_table_insert (
+	stash->nodes_by_data, node->address, node);
+}
+
+void
+stack_stash_set_root (StackStash     *stash,
+		      StackNode      *root)
+{
+    g_return_if_fail (stash->root == NULL);
+    g_return_if_fail (g_hash_table_size (stash->nodes_by_data) == 0);
+    
+    stash->root = root;
+    build_hash_table (stash->root, stash);
+}

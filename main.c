@@ -621,7 +621,7 @@ leak_block_selection_changed (GtkTreeSelection *selection,
 	GtkTreeModel *model = gtk_tree_view_get_model (GTK_TREE_VIEW (pwin->leak_stack_tree_view));
 	GtkListStore *store = GTK_LIST_STORE (model);
 	Block *block = leak_block_get_selected (pwin);
-	StackElement *stack;
+	StackNode *stack;
 
 	gtk_list_store_clear (store);
 	
@@ -630,7 +630,7 @@ leak_block_selection_changed (GtkTreeSelection *selection,
 
 	tree_view_unset_sort_ids (GTK_TREE_VIEW (pwin->leak_stack_tree_view));
 	
-	for (stack = block->stack; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent) {
+	for (stack = block->stack; stack != NULL; stack = stack->parent) {
 		GtkTreeIter iter;
 		const char *filename;
 		char *functionname;
@@ -678,9 +678,9 @@ leaks_fill (ProcessWindow *pwin)
 		unsigned int line;
 		
 		Block *block = tmp_list->data;
-		StackElement *stack;
+		StackNode *stack;
 
-		for (stack = block->stack; !STACK_ELEMENT_IS_ROOT (stack); stack = stack->parent) {
+		for (stack = block->stack; stack != NULL; stack = stack->parent) {
 			if (process_find_line (pwin->process, stack->address,
 					       &filename, &functionname, &line)) {
 				GSList *tmp_list;
@@ -744,7 +744,7 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 	char *functionname;
 	unsigned int line;
 
-	StackElement *stack = block->stack;
+	StackNode *stack = block->stack;
 	while (frame--)
 		stack = stack->parent;
 

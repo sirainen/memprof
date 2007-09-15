@@ -1,8 +1,6 @@
-/* -*- mode: C; c-file-style: "linux" -*- */
-
-/* MemProf -- memory profiler and leak detector
- * Copyright 1999, 2000, 2001, 2002, Red Hat, Inc.
- * Copyright 2002, Kristian Rietveld
+/* Sysprof -- Sampling, systemwide CPU profiler
+ * Copyright 2004, Red Hat, Inc.
+ * Copyright 2004, 2005, Soeren Sandmann
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,46 +16,59 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-/*====*/
+
+#ifndef STACK_STASH_H
+#define STACK_STASH_H
 
 #include <glib.h>
 
-/*
- * StackStash: a data structure for storing a set of stack traces as a tree.
- */
+typedef struct StackStash StackStash;
+typedef struct StackNode StackNode;
 
-#ifndef __STACK_STASH_H__
-#define __STACK_STASH_H__
-
-typedef struct _StackElement StackElement;
-typedef struct _StackStash StackStash;
-
-struct _StackElement
+struct StackNode
 {
-	/* Address from stack trace */
-	void *address;
+    gpointer	address;
 
-	/* Pointer to parent StackElement; NULL means that this
-	 * element is the dummy root element of the tree, and
-	 * thus should be ignored.
-	 */
-	void *parent;
-	
-	int n_children;
+    guint	total : 32;
+    guint	size : 31;
+    guint	toplevel : 1;
+    
+    StackNode *	parent;
+    StackNode *	siblings;
+    StackNode *	children;
 
-	StackElement **children;
+    StackNode * next;
 };
 
-#define STACK_ELEMENT_IS_ROOT(element) ((element)->parent == NULL)
+typedef void (* StackFunction) (GList   *trace,
+				gint     size,
+				gpointer data);
 
-StackStash *stack_stash_new   (void);
-void        stack_stash_free  (StackStash *stash);
+typedef void (* StackNodeFunc) (StackNode *node,
+				gpointer data);
 
-/* The first element in addresses is the top frame in the stack;
- * the returned StackElement points to the StackElement for that address.
- */
-StackElement *stack_stash_store (StackStash *stash,
-				 gpointer   *addresses,
-				 int         n_addresses);
+/* Stach */
+StackStash *stack_stash_new                (GDestroyNotify  destroy);
+StackNode * stack_node_new                 (StackStash     *stash);
+StackNode * stack_stash_add_trace          (StackStash     *stash,
+					    gpointer       *addrs,
+					    gint            n_addrs,
+					    int             size);
+void        stack_stash_foreach            (StackStash     *stash,
+					    StackFunction   stack_func,
+					    gpointer        data);
+void        stack_node_foreach_trace       (StackNode      *node,
+					    StackFunction   stack_func,
+					    gpointer        data);
+StackNode  *stack_stash_find_node          (StackStash     *stash,
+					    gpointer        address);
+void        stack_stash_foreach_by_address (StackStash     *stash,
+					    StackNodeFunc   func,
+					    gpointer        data);
+StackNode  *stack_stash_get_root           (StackStash     *stash);
+StackStash *stack_stash_ref                (StackStash     *stash);
+void        stack_stash_unref              (StackStash     *stash);
+void	    stack_stash_set_root	   (StackStash     *stash,
+					    StackNode      *root);
 
-#endif /* __STACK_STASH_H__ */
+#endif

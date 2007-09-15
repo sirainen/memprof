@@ -26,13 +26,13 @@
 static GList *
 block_create_stack_list (Block *block, MPProcess *process, GHashTable *skip_hash)
 {
-    StackElement *element;
+    StackNode *element;
     GList *stack = NULL;
-    
-    for (element = block->stack; !STACK_ELEMENT_IS_ROOT (element); element = element->parent)
+
+    for (element = block->stack; element != NULL; element = element->parent)
     {
 	const Symbol *symbol = process_locate_symbol (process, (guint)element->address);
-	
+
 	if (symbol && symbol->name && g_hash_table_lookup (skip_hash, symbol->name))
 	    continue;
 	
@@ -53,7 +53,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 
     for (list = stack; list != NULL; list = list->next)
     {
-	StackElement *element = list->data;
+	StackNode *element = list->data;
 	ProfileNode *match = NULL;
 	const Symbol *symbol =
 	    process_locate_symbol (profile->process, (guint)element->address);
@@ -122,7 +122,7 @@ profile_build_tree (Profile *profile, GList *blocks, GSList *skip_funcs)
     {
 	Block *block = list->data;
 	GList *stack = block_create_stack_list (block, profile->process, skip_hash);
-	
+
 	profile_add_stack_trace (profile, stack, block->size);
 	
 	g_list_free (stack);

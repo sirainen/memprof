@@ -39,7 +39,7 @@ typedef struct {
   guint flags;
   void *addr;
   guint size;
-  StackElement *stack;
+  StackNode *stack;
 
   gint refcount;
 } Block;
