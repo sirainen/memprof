@@ -1411,7 +1411,7 @@ setup_profile_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	GtkTreeSelection *selection;
 	GtkTreeViewColumn *col;
 	
-	col = add_plain_text_column (tree_view, _("Name"), PROFILE_FUNC_NAME);
+	col = add_plain_text_column (tree_view, _("Functions"), PROFILE_FUNC_NAME);
 	add_sample_column (tree_view, _("Self"), PROFILE_FUNC_SELF);
 	add_sample_column (tree_view, _("Total"), PROFILE_FUNC_TOTAL);
 	gtk_tree_view_column_set_expand (col, TRUE);
@@ -1428,7 +1428,7 @@ setup_profile_descendants_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view
 {
 	GtkTreeViewColumn *col;
 
-	col = add_plain_text_column (tree_view, _("Name"), PROFILE_DESCENDANTS_NAME);
+	col = add_plain_text_column (tree_view, _("Descendants"), PROFILE_DESCENDANTS_NAME);
 	add_sample_column (tree_view, _("Self"), PROFILE_DESCENDANTS_SELF);
 	add_sample_column (tree_view, _("Cumulative"), PROFILE_DESCENDANTS_NONRECURSE);
 	gtk_tree_view_column_set_expand (col, TRUE);
@@ -1446,7 +1446,7 @@ setup_profile_caller_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
 	GtkTreeViewColumn *col;
 
-	col = add_plain_text_column (tree_view, _("Name"), PROFILE_CALLER_NAME);
+	col = add_plain_text_column (tree_view, _("Callers"), PROFILE_CALLER_NAME);
 	add_sample_column (tree_view, _("Self"), PROFILE_CALLER_SELF);
 	add_sample_column (tree_view, _("Total"), PROFILE_CALLER_TOTAL);
 	gtk_tree_view_column_set_expand (col, TRUE);

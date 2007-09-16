@@ -1,8 +1,8 @@
-2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
+2007-09-16  Soren Sandmann <sandmann@daimi.au.dk>
 
-	* main.c: Demangle names
-
-	* process.c: Remove invalid free()
+	* memprof.glade: Rearrange the treeviews. Delete bold labels.
+	
+	* main.c: More descriptive names for treeview columns.
 
 2007-09-15  Soren Sandmann <sandmann@daimi.au.dk>
 
