@@ -1,5 +1,10 @@
 2007-09-16  Soren Sandmann <sandmann@daimi.au.dk>
 
+	* main.c: Get rid of TOTAL column. Merge calls to
+	gtk_tree_store_set().
+
+2007-09-16  Soren Sandmann <sandmann@daimi.au.dk>
+
 	* memprof.glade: Rearrange the treeviews. Delete bold labels.
 	
 	* main.c: More descriptive names for treeview columns.

@@ -96,7 +96,6 @@ enum {
 	PROFILE_DESCENDANTS_NAME,
 	PROFILE_DESCENDANTS_SELF,
 	PROFILE_DESCENDANTS_NONRECURSE,
-	PROFILE_DESCENDANTS_TOTAL,
 	PROFILE_DESCENDANTS_SYMBOL
 };
 
@@ -416,6 +415,8 @@ add_node (GtkTreeStore *store, int n_samples,
 	gchar *name;
 	int i;
 
+	g_return_if_fail (GTK_IS_TREE_STORE (store));
+
 	gtk_tree_store_insert (store, &iter, (GtkTreeIter *)parent, 0);
 
 	if (node->symbol)
@@ -423,17 +424,25 @@ add_node (GtkTreeStore *store, int n_samples,
 	else
 		name = g_strdup ("???");
 
-	gtk_tree_store_set (store, &iter,
-			    PROFILE_DESCENDANTS_NAME, name,
-			    PROFILE_DESCENDANTS_SYMBOL, node->symbol,
-			    -1);
+	if (profile_type == MP_PROFILE_MEMORY) {
+		gtk_tree_store_set (store, &iter,
+				    PROFILE_DESCENDANTS_NAME, name,
+				    PROFILE_DESCENDANTS_SELF, (double)node->self,
+				    PROFILE_DESCENDANTS_NONRECURSE, (double)node->non_recursion,
+				    PROFILE_DESCENDANTS_SYMBOL, node->symbol,
+				    -1);
+	}
+	else {
+		gtk_tree_store_set (store, &iter,
+				    PROFILE_DESCENDANTS_NAME, name,
+				    PROFILE_DESCENDANTS_SELF, (100.0 * node->self) / n_samples,
+				    PROFILE_DESCENDANTS_NONRECURSE, (100.0 * node->non_recursion) / n_samples,
+				    PROFILE_DESCENDANTS_SYMBOL, node->symbol,
+				    -1);
+	}
 
 	g_free (name);
 	
-	set_sample (model, &iter, PROFILE_DESCENDANTS_SELF, node->self, n_samples);
-	set_sample (model, &iter, PROFILE_DESCENDANTS_NONRECURSE, node->non_recursion, n_samples);
-	set_sample (model, &iter, PROFILE_DESCENDANTS_TOTAL, node->total, n_samples);
-
 	for (i = 0; i < node->children->len; ++i)
 		add_node (store, n_samples, &iter, node->children->pdata[i]);
 }
@@ -470,9 +479,8 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 				    &old_sort_column, &old_sort_type);
 	
 	/* fill descendants tree */
-	tree_store = gtk_tree_store_new (5,
+	tree_store = gtk_tree_store_new (4,
 					 G_TYPE_STRING,
-					 G_TYPE_DOUBLE,
 					 G_TYPE_DOUBLE,
 					 G_TYPE_DOUBLE,
 					 G_TYPE_POINTER);
