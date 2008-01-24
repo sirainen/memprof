@@ -57,7 +57,7 @@ compare_blocks (const void *a, const void *b)
 }
 
 static gboolean
-read_proc_stat (int pid, char *status, guint *start_stack, guint *end_stack)
+read_proc_stat (int pid, char *status, gsize *start_stack, gsize *end_stack)
 {
 	gchar *fname;
 	gulong tstart_stack;
@@ -161,7 +161,7 @@ read_stack_maps (MPProcess *process)
 	FILE *in;
 	gchar perms[26];
 	gchar file[256];
-	guint start, end, major, minor, inode;
+	gsize start, end, major, minor, inode;
   
 	snprintf (buffer, 1023, "/proc/%d/maps", process->pid);
 
@@ -197,7 +197,7 @@ add_stack_root (MPProcess *process, GSList *block_list,
 		GList *map_list)
 {
 	GList *tmp_list;
-	guint start_stack, end_stack;
+	gsize start_stack, end_stack;
 
 	tmp_list = map_list;
 
@@ -345,9 +345,9 @@ scan_block (pid_t pid, int memfd, GSList *block_list,
 	    GPtrArray *block_arr, Block *block)
 {
 	void **mem;
-	gint i;
+	gsize i;
 	void *addr;
-	size_t length = (block->size + 3) / 4;
+	gsize length = (block->size + 3) / 4;
 
 	addr = g_new (void *, length);
 	mem = (void **)addr;
@@ -358,7 +358,7 @@ scan_block (pid_t pid, int memfd, GSList *block_list,
 					 &mem[i]);
 		if (errno)
 		{
-			g_warning ("Cannot read word %d/%d in block %p: %s\n",
+			g_warning ("Cannot read word %zd/%zd in block %p: %s\n",
 				   i, length, block->addr, g_strerror (errno));
 			g_free (addr);
 			return block_list;

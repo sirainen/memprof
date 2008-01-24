@@ -349,7 +349,7 @@ mi_write_stack (int      n_frames,
 	ThreadInfo *thread;
 	int old_errno = errno;
 
-	if (n_frames < 0)
+	if (n_frames < 0 || n_frames > 20000)
 	{
 			MI_DEBUG (("mi_write_stack - elide bogus foo\n"));
 			return;
