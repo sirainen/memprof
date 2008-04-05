@@ -53,6 +53,9 @@ PKG_CHECK_MODULES(MEMPROF,
 
 AC_SUBST(MEMPROF_CFLAGS)
 
+AC_CHECK_HEADER([bfd.h],[],
+                [AC_MSG_ERROR([Cannot continue: bfd.h not found. Do you have binutils-dev installed?])])
+
 if ! uname | grep Linux > /dev/null ; then
   AC_MSG_ERROR([*** MemProf only works on linux])
 fi
