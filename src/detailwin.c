@@ -41,23 +41,14 @@
 #include "gui.h"
 #include "memprof.h"
 
-#define MEMSTATS 4096
-
-typedef struct _DW
-{
-   ProcessWindow *pwin;
-   GtkWidget *win, *da1, *da2;
-   guint memstats[MEMSTATS][2];
-} DW;
-
 static void
-dw_draw_memstats(DW *dw)
+dw_draw_memstats(ProcessWindow *pwin)
 {
    GtkWidget *widget;
    GdkPixmap *pixmap;
    gint64 i, j, x, y, w, h, hh;
 
-   widget = dw->da1;
+   widget = pwin->time_graph;
    w = widget->allocation.width;
    h = widget->allocation.height;
    if (!widget->window) return;
@@ -70,8 +61,8 @@ dw_draw_memstats(DW *dw)
      {
 	x = w - i;
 	if (x < 0) break;
-	if (dw->pwin->usage_high > 0)
-	  hh = (h * dw->memstats[i][1]) / dw->pwin->usage_high;
+	if (pwin->usage_high > 0)
+	  hh = (h * pwin->memstats[i][1]) / pwin->usage_high;
 	else
 	  hh = 0;
 	y = h - hh;
@@ -79,8 +70,8 @@ dw_draw_memstats(DW *dw)
 			   widget->style->base_gc[GTK_STATE_SELECTED],
 			   TRUE,
 			   x, y, 1, hh);
-	if (dw->pwin->usage_high > 0)
-	  hh = (h * dw->memstats[i][0]) / dw->pwin->usage_high;
+	if (pwin->usage_high > 0)
+	  hh = (h * pwin->memstats[i][0]) / pwin->usage_high;
 	else
 	  hh = 0;
 	y = h - hh;
@@ -89,7 +80,7 @@ dw_draw_memstats(DW *dw)
 			   TRUE,
 			   x, y, 1, hh);
      }
-   if (dw->pwin->usage_high > 0)
+   if (pwin->usage_high > 0)
      {
 	GdkGC *gc;
 
@@ -97,10 +88,10 @@ dw_draw_memstats(DW *dw)
 	gdk_gc_copy(gc, widget->style->dark_gc[GTK_STATE_NORMAL]);
 	gdk_gc_set_line_attributes(gc, 0, GDK_LINE_ON_OFF_DASH,
 				   GDK_CAP_BUTT, GDK_JOIN_MITER);
-	for (j = 0, i = 0; i < dw->pwin->usage_high; i += (256 * 1024), j++)
+	for (j = 0, i = 0; i < pwin->usage_high; i += (256 * 1024), j++)
 	  {
 	     if (j > 3) j = 0;
-	     y = h - ((i * h) / dw->pwin->usage_high);
+	     y = h - ((i * h) / pwin->usage_high);
 	     if (j == 0)
 	       gdk_draw_line(pixmap, widget->style->dark_gc[GTK_STATE_NORMAL],
 			     0, y, w, y);
@@ -177,7 +168,7 @@ dw_draw_memmap_foreach(gpointer key, gpointer value, gpointer data)
 }
 
 static void
-dw_draw_memmap(DW *dw)
+dw_draw_memmap(ProcessWindow *pwin)
 {
    GtkWidget *widget;
    GdkPixmap *pixmap;
@@ -185,7 +176,7 @@ dw_draw_memmap(DW *dw)
    Mem mem;
    GList *l;
 
-   widget = dw->da2;
+   widget = pwin->mem_map;
    w = widget->allocation.width;
    h = widget->allocation.height;
    if (!widget->window) return;
@@ -208,7 +199,7 @@ dw_draw_memmap(DW *dw)
 	gulong start, end;
 	guint major, minor, inode;
 
-	snprintf(buffer, 1023, "/proc/%d/maps", dw->pwin->process->pid);
+	snprintf(buffer, 1023, "/proc/%d/maps", pwin->process->pid);
 
 	in = fopen(buffer, "r");
         while (fgets(buffer, 1023, in))
@@ -252,7 +243,7 @@ dw_draw_memmap(DW *dw)
    mem.bpp = (bpl + w - 1) / w;
    if (mem.bpp < 1) mem.bpp = 1;
 
-   g_hash_table_foreach(dw->pwin->process->block_table,
+   g_hash_table_foreach(pwin->process->block_table,
 			dw_draw_memmap_foreach,
 			&mem);
 
@@ -265,133 +256,34 @@ dw_draw_memmap(DW *dw)
    gdk_pixmap_unref(pixmap);
 }
 
-static gboolean
-on_da1_expose_event(GtkWidget *widget, GdkEventExpose  *event, gpointer user_data)
+gboolean
+time_graph_expose_event(GtkWidget *widget, GdkEventExpose  *event, ProcessWindow *pwin)
 {
-   DW *dw;
-
-   dw = user_data;
-   if (!dw->pwin->process) return FALSE;
-   dw_draw_memstats(dw);
+   if (!pwin->process) return FALSE;
+   dw_draw_memstats(pwin);
    return FALSE;
 }
 
-static gboolean
-on_da2_expose_event(GtkWidget *widget, GdkEventExpose  *event, gpointer user_data)
+gboolean
+mem_map_expose_event(GtkWidget *widget, GdkEventExpose  *event, ProcessWindow *pwin)
 {
-   DW *dw;
-
-   dw = user_data;
-   if (!dw->pwin->process) return FALSE;
-   dw_draw_memmap(dw);
+   if (!pwin->process) return FALSE;
+   dw_draw_memmap(pwin);
    return FALSE;
 }
 
 void
 dw_update(ProcessWindow *pwin)
 {
-   DW *dw;
    guint i;
-
-   dw = pwin->detailwin_data;
-   if (!dw) return;
    if (!pwin->process) return;
    for (i = MEMSTATS - 1; i > 0; i--)
      {
-	dw->memstats[i][0] = dw->memstats[i - 1][0];
-	dw->memstats[i][1] = dw->memstats[i - 1][1];
+	pwin->memstats[i][0] = pwin->memstats[i - 1][0];
+	pwin->memstats[i][1] = pwin->memstats[i - 1][1];
      }
-   dw->memstats[0][0] = pwin->process->bytes_used;
-   dw->memstats[0][1] = pwin->usage_high;
-   dw_draw_memstats(dw);
-   dw_draw_memmap(dw);
-}
-
-void
-dw_init(ProcessWindow *pwin)
-{
-   DW *dw;
-
-   GtkWidget *win;
-   GtkWidget *notebook1;
-   GtkWidget *frame1;
-   GtkWidget *alignment1;
-   GtkWidget *da1;
-   GtkWidget *label1;
-   GtkWidget *frame2;
-   GtkWidget *alignment2;
-   GtkWidget *da2;
-   GtkWidget *label2;
-
-   dw = calloc(1, sizeof(DW));
-   pwin->detailwin_data = dw;
-   dw->pwin = pwin;
-
-   win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
-   gtk_window_set_title (GTK_WINDOW (win), "Extra Details");
-   gtk_window_set_default_size (GTK_WINDOW (win), 400, 300);
-
-   notebook1 = gtk_notebook_new ();
-   gtk_widget_show (notebook1);
-   gtk_container_add (GTK_CONTAINER (win), notebook1);
-   gtk_container_set_border_width (GTK_CONTAINER (notebook1), 4);
-
-   frame1 = gtk_frame_new (NULL);
-   gtk_widget_show (frame1);
-   gtk_container_add (GTK_CONTAINER (notebook1), frame1);
-   gtk_container_set_border_width (GTK_CONTAINER (frame1), 4);
-   gtk_frame_set_shadow_type (GTK_FRAME (frame1), GTK_SHADOW_IN);
-
-   alignment1 = gtk_alignment_new (0.5, 0.5, 1, 1);
-   gtk_widget_show (alignment1);
-   gtk_container_add (GTK_CONTAINER (frame1), alignment1);
-
-   da1 = gtk_drawing_area_new ();
-   gtk_widget_show (da1);
-   gtk_container_add (GTK_CONTAINER (alignment1), da1);
-
-   label1 = gtk_label_new ("Time Graph");
-   gtk_widget_show (label1);
-   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 0), label1);
-
-   frame2 = gtk_frame_new (NULL);
-   gtk_widget_show (frame2);
-   gtk_container_add (GTK_CONTAINER (notebook1), frame2);
-   gtk_container_set_border_width (GTK_CONTAINER (frame2), 4);
-   gtk_frame_set_shadow_type (GTK_FRAME (frame2), GTK_SHADOW_IN);
-
-   alignment2 = gtk_alignment_new (0.5, 0.5, 1, 1);
-   gtk_widget_show (alignment2);
-   gtk_container_add (GTK_CONTAINER (frame2), alignment2);
-
-   da2 = gtk_drawing_area_new ();
-   gtk_widget_show (da2);
-   gtk_container_add (GTK_CONTAINER (alignment2), da2);
-
-   label2 = gtk_label_new ("Memory Usage Maps");
-   gtk_widget_show (label2);
-   gtk_notebook_set_tab_label (GTK_NOTEBOOK (notebook1), gtk_notebook_get_nth_page (GTK_NOTEBOOK (notebook1), 1), label2);
-
-   dw->win = win;
-   dw->da1 = da1;
-   dw->da2 = da2;
-
-   g_signal_connect ((gpointer) da1, "expose_event",
-		     G_CALLBACK (on_da1_expose_event),
-		     dw);
-   g_signal_connect ((gpointer) da2, "expose_event",
-		     G_CALLBACK (on_da2_expose_event),
-		     dw);
-
-   gtk_widget_show(win);
-}
-
-void
-dw_shutdown(ProcessWindow *pwin)
-{
-   DW *dw;
-
-   dw = pwin->detailwin_data;
-   free(dw);
-   pwin->detailwin_data = NULL;
+   pwin->memstats[0][0] = pwin->process->bytes_used;
+   pwin->memstats[0][1] = pwin->usage_high;
+   dw_draw_memstats(pwin);
+   dw_draw_memmap(pwin);
 }

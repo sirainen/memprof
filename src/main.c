@@ -1310,8 +1310,6 @@ process_window_free (ProcessWindow *pwin)
 static void
 process_window_destroy (ProcessWindow *pwin)
 {
-	dw_shutdown(pwin);
-
 	if (pwin->status_update_timeout)
 		g_source_remove (pwin->status_update_timeout);
 
@@ -1555,10 +1553,16 @@ process_window_new (void)
 		gtk_widget_hide (get_widget (xml, "reset-profile-button"));
 	}
 	
+	pwin->time_graph = get_widget(xml, "time-graph");
+	pwin->mem_map = get_widget(xml, "mem-map");
+	g_signal_connect(pwin->time_graph, "expose_event",
+				G_CALLBACK (time_graph_expose_event), pwin);
+	g_signal_connect(pwin->mem_map, "expose_event",
+				G_CALLBACK (mem_map_expose_event), pwin);
+
 	glade_xml_signal_autoconnect (xml);
 	g_object_unref (G_OBJECT (xml));
 
-	dw_init(pwin);
 	return pwin;
 }
 

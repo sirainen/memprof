@@ -27,6 +27,7 @@
 #include "process.h"
 #include "server.h"
 
+#define MEMSTATS 4096
 
 typedef struct _ProcessWindow ProcessWindow;
 
@@ -58,7 +59,9 @@ struct _ProcessWindow {
 
 	guint status_update_timeout;
 
-	void *detailwin_data;
+	GtkWidget *time_graph;
+	GtkWidget *mem_map;
+	guint memstats[MEMSTATS][2];
 };
 
 void tree_window_show   (void);
@@ -77,8 +80,8 @@ void        process_window_maybe_detach (ProcessWindow *pwin);
 gboolean hide_and_check_quit (GtkWidget *window);
 void     check_quit          (void);
 
-void dw_init(ProcessWindow *pwin);
-void dw_shutdown(ProcessWindow *pwin);
+gboolean time_graph_expose_event(GtkWidget *widget, GdkEventExpose *event, ProcessWindow *pwin);
+gboolean mem_map_expose_event(GtkWidget *widget, GdkEventExpose *event, ProcessWindow *pwin);
 void dw_update(ProcessWindow *pwin);
 
 #endif
