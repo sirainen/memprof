@@ -494,12 +494,12 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 		if (caller->node) {
 			if (caller->node->symbol)
-				name = caller->node->symbol;
+				name = elf_demangle(caller->node->symbol);
 			else
-				name = "???";
+				name = g_strdup("???");
 		}
 		else
-			name = "<spontaneous>";
+			name = g_strdup("<spontaneous>");
 			
 		gtk_list_store_append (list_store, &iter);
 			
@@ -510,6 +510,8 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 		set_sample (list_model, &iter, PROFILE_CALLER_SELF, caller->self, n_samples);
 		set_sample (list_model, &iter, PROFILE_CALLER_TOTAL, caller->total, n_samples);
+
+		g_free(name);
 	}
 	profile_caller_list_free (caller_list);
 
@@ -571,9 +573,9 @@ profile_fill (ProcessWindow *pwin)
 		g_assert (func);
 
 		if (func->node->symbol)
-			name = func->node->symbol;
+			name = elf_demangle(func->node->symbol);
 		else
-			name = "???";
+			name = g_strdup("???");
 		
 		gtk_list_store_set (store, &iter,
 				    PROFILE_FUNC_NAME, name,
@@ -582,6 +584,8 @@ profile_fill (ProcessWindow *pwin)
 		
 		set_sample (model, &iter, PROFILE_FUNC_SELF, func->self, n_samples);
 		set_sample (model, &iter, PROFILE_FUNC_TOTAL, func->total, n_samples);
+
+		g_free(name);
 	}
 	
 	tree_view_set_sort_ids (GTK_TREE_VIEW (pwin->profile_func_tree_view));
