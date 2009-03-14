@@ -795,7 +795,7 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 
 		if (!g_spawn_command_line_async (cmdline, &err)) {
 			show_error (pwin->main_window,
-				    ERROR_MODAL, _("Executation of \"%s\" failed: %s"),
+				    ERROR_MODAL, _("Execution of \"%s\" failed: %s"),
 				    command->str, err->message);
 			
 			g_error_free (err);
