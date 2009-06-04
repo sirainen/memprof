@@ -45,7 +45,7 @@
 void
 mi_call_with_backtrace (int to_skip, void callback (int, void **, void *), void *data)
 {
-    int bufsiz = 128, count;
+    int bufsiz = 128, count = 0;
     void **buf;
 	static __thread int in_backtrace = 0;
 
