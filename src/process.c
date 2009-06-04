@@ -955,7 +955,7 @@ symbol_hash  (gconstpointer s)
 {
 	const char *symbol = s;
 
-	return g_str_hash (s);
+	return g_str_hash (symbol);
 }
 
 char *
