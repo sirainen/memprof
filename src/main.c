@@ -367,45 +367,6 @@ set_sample (GtkTreeModel *model, GtkTreeIter *iter, int column, guint value, gui
 		set_double (model, iter, column, 100 * (double)value / n_samples);
 }
 
-static GQueue *free_us;
-int idle_id;
-
-static gboolean
-do_idle_free (gpointer d)
-{
-	GList *list;
-
-	for (list = free_us->head; list; list = list->next)
-		g_free (list->data);
-	
-	idle_id = 0;
-	
-	return FALSE;
-}
-
-static char *
-idle_free (char *d)
-{
-	if (!free_us)
-		free_us = g_queue_new ();
-
-	g_queue_push_tail (free_us, d);
-
-	if (!idle_id)
-		idle_id = g_idle_add (do_idle_free, NULL);
-	
-	return d;
-}
-
-static char *
-get_name (const char *name)
-{
-	if (name)
-		return idle_free (elf_demangle (name));
-	else
-		return idle_free (g_strdup ("???"));
-}
-
 static void
 add_node (GtkTreeStore *store, int n_samples,
 	  const GtkTreeIter *parent, ProfileDescendantTreeNode *node)
