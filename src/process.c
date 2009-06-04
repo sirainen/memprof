@@ -860,7 +860,7 @@ process_get_cmdline (MPProcess *process)
 	char *fname;
 	char *result;
 	char *tmp = NULL;
-	int n = 0;
+	size_t n = 0;
 	FILE *in = NULL;
 
 	if (process->status == MP_PROCESS_DEFUNCT)
@@ -874,9 +874,12 @@ process_get_cmdline (MPProcess *process)
 	}
 	g_free (fname);
 
-	getline (&tmp, &n, in);
-	result = g_strdup (tmp);
-	free (tmp);
+	if (getline (&tmp, &n, in) == -1)
+		result = g_strdup ("");
+	else {
+		result = g_strdup (tmp);
+		free (tmp);
+	}
 
 	fclose (in);
 
