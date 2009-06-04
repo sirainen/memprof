@@ -56,7 +56,7 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 	StackNode *element = list->data;
 	ProfileNode *match = NULL;
 	const char *symbol =
-	    process_locate_symbol (profile->process, (guint)element->address);
+	    process_locate_symbol (profile->process, GPOINTER_TO_SIZE(element->address));
 	int i;
 	
 	for (i = 0; i < roots->len; ++i)

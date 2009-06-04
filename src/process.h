@@ -126,7 +126,7 @@ void        process_dump_stack      (MPProcess          *process,
 				     FILE               *out,
 				     StackNode          *stack);
 const char *  process_locate_symbol (MPProcess          *process,
-				     guint               addr);
+				     gsize               addr);
 
 char **     process_parse_exec      (const char         *exec_string);
 char *      process_find_exec       (char              **args);
