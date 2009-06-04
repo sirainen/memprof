@@ -435,7 +435,8 @@ create_control_socket (MPServer *server)
 		
 #else  /* !USE_SOCKET_DIRECTORY */
 	server->socket_path = g_build_filename (g_get_tmp_dir(), SOCKET_TEMPLATE, NULL);
-	mktemp (server->socket_path);
+	if (strlen(mktemp (server->socket_path)) == 0)
+		fatal ("mktemp: %s\n", g_strerror (errno));
 #endif /* USE_SOCKET_DIRECTORY */
 
 	strncpy (addr.sun_path, server->socket_path, sizeof (addr.sun_path));
