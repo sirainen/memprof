@@ -248,12 +248,12 @@ process_find_line (MPProcess *process, void *address,
 		   const char **filename, char **functionname,
 		   unsigned int *line)
 {
-	char *s = process_locate_symbol (process, address);
+	const char *s = process_locate_symbol (process, address);
 
 	if (s)
 	{
 		*filename = NULL;
-		*functionname = s;
+		*functionname = (char*)s;
 		*line = -1;
 	}
 
