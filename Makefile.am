@@ -38,7 +38,7 @@ memprof_SOURCES =	        \
 memprof_LDADD = $(MEMPROF_LIBS)
 memprof_LDFLAGS = -export-dynamic
 
-intercept_sources = 		\
+intercept_sources =		\
 	lib/intercept.c		\
 	lib/intercept.h		\
 	lib/memintercept-utils.c\
@@ -65,8 +65,8 @@ libspeedintercept_la_SOURCES =  \
 libspeedintercept_la_LDFLAGS = -module -avoid-version
 libspeedintercept_la_LIBADD = -ldl
 
-INCLUDES = 					   \
-	$(MEMPROF_CFLAGS) 			   \
+INCLUDES =					   \
+	$(MEMPROF_CFLAGS)			   \
 	-I$(top_srcdir)/lib			   \
 	-DDATADIR=\"$(pkgdatadir)\"		   \
 	-DPKGLIBDIR=\"$(pkglibdir)\"		   \
@@ -76,9 +76,9 @@ EXTRA_DIST =			\
 	memprof.desktop		\
 	leak.png		\
 	leak.xpm		\
-	memprof.glade	  	\
+	memprof.glade		\
 	memprof.spec.in		\
-	memprof.png         	\
+	memprof.png	        \
 	intltool-extract.in	\
 	intltool-merge.in	\
 	intltool-update.in	\
@@ -102,14 +102,14 @@ install-exec-hook:
 
 copyrights:
 	FILES="$(memprof_SOURCES) $(libmemintercept_la_SOURCES)";	  \
-	for i in $$FILES ; do 				  		  \
-           mv $$i $$i.bak; 				  		  \
-           cat copyright-header > $$i;			  		  \
-	   if grep "/\*====\*/" $$i.bak ; then          	 	  \
-	     perl -ne 'print if m!/\*====\*/!..0' $$i.bak >> $$i; 	  \
-	   else						  		  \
-	     echo "/*====*/" >> $$	i;		  		  \
-             cat $$i.bak >> $$i;				  	  \
+	for i in $$FILES ; do						  \
+           mv $$i $$i.bak;						  \
+           cat copyright-header > $$i;					  \
+	   if grep "/\*====\*/" $$i.bak ; then                            \
+	     perl -ne 'print if m!/\*====\*/!..0' $$i.bak >> $$i;	  \
+	   else								  \
+	     echo "/*====*/" >> $$	i;				  \
+             cat $$i.bak >> $$i;					  \
 	   fi;								  \
 	done
 
