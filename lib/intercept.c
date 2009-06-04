@@ -82,7 +82,9 @@ static MIBool tracing = MI_TRUE;
 
 #define MAX_THREADS 128
 
+#ifndef NPTL
 static ThreadInfo threads[MAX_THREADS];
+#endif
 static char *socket_path = NULL;
 static char socket_buf[64];
 static uint32_t seqno = 0;
