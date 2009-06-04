@@ -576,8 +576,8 @@ control_func (GIOChannel  *source,
 
  out:
 	if (newfd >= 0) {
-		write (newfd, &response, 1);
-		if (!response)
+		int ret = write (newfd, &response, 1);
+		if (!response || ret < 0)
 			close (newfd);
 	}
 
