@@ -889,12 +889,14 @@ process_get_cmdline (MPProcess *process)
 void
 process_detach (MPProcess *process)
 {
+	int ret;
+
 	if (process->status != MP_PROCESS_DEFUNCT) {
 		int fd = g_io_channel_unix_get_fd (process->input_channel);
 
 		if (process->status == MP_PROCESS_EXITING) {
 			char response = 0;
-			write (fd, &response, 1);
+			ret = write (fd, &response, 1);
 		} else {
 			g_io_channel_shutdown (process->input_channel, TRUE, NULL);
 			process_set_status (process, MP_PROCESS_DETACHED);
