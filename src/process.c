@@ -944,12 +944,6 @@ process_block_foreach (MPProcess                 *process,
 	g_hash_table_foreach (block_table, block_table_foreach_func, &info);
 }
 
-static gboolean
-my_str_equal (const char *s1, const char *s2)
-{
-	return s1 == s2;
-}
-
 gboolean
 symbol_equal (gconstpointer s1, gconstpointer s2)
 {
