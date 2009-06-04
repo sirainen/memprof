@@ -371,7 +371,6 @@ static void
 add_node (GtkTreeStore *store, int n_samples,
 	  const GtkTreeIter *parent, ProfileDescendantTreeNode *node)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL (store);
 	GtkTreeIter iter;
 	gchar *name;
 	int i;
@@ -1502,7 +1501,6 @@ process_window_new (void)
 	GtkWidget *vpaned;
 	GtkWidget *hpaned;
 	ProcessWindow *pwin;
-	GtkWidget *menuitem;
 	GError *err = NULL;
 	
 	pwin = g_new0 (ProcessWindow, 1);
@@ -1761,7 +1759,6 @@ parse_options (int *argc, char ***argv)
 int
 main(int argc, char **argv)
 {
-       const char **startup_args;
        ProcessWindow *initial_window;
        
        gtk_init (&argc, &argv);
