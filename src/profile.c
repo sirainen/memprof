@@ -694,7 +694,6 @@ void
 profile_write (Profile *profile, const gchar *outfile)
 {
 	FILE *out;
-	int i;
 	GPtrArray *functions;
 
 	out = fopen (outfile, "w");
