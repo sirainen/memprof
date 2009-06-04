@@ -123,14 +123,6 @@ typedef struct {
   gchar *name;
 } Symbol;
 
-static gint
-compare_address (const void *symbol1, const void *symbol2)
-{
-	return (((Symbol *)symbol1)->addr < ((Symbol *)symbol2)->addr) ?
-		-1 : ((((Symbol *)symbol1)->addr == ((Symbol *)symbol2)->addr) ?
-		      0 : 1);
-}
-
 void
 prepare_map (Map *map)
 {
