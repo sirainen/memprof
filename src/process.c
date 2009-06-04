@@ -227,7 +227,7 @@ locate_map (MPProcess *process, guint addr)
 }
 
 const char *
-process_locate_symbol (MPProcess *process, guint addr)
+process_locate_symbol (MPProcess *process, gsize addr)
 {
 	Map *map = locate_map (process, addr);
 	const BinSymbol *symbol;
@@ -248,7 +248,7 @@ process_find_line (MPProcess *process, void *address,
 		   const char **filename, char **functionname,
 		   unsigned int *line)
 {
-	const char *s = process_locate_symbol (process, address);
+	const char *s = process_locate_symbol (process, GPOINTER_TO_SIZE (address));
 
 	if (s)
 	{
