@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
+#include <assert.h>
 
 #include "intercept.h"
 #include "memintercept.h"
@@ -559,6 +560,11 @@ _exit (int status)
 	}
 
 	(*old__exit) (status);
+
+	/* Not reached as old__exit will not return but makes
+	 * the compiler happy.
+	 */
+	assert(0);
 }
 
 static void
