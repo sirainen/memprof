@@ -833,40 +833,22 @@ leak_stack_row_activated (GtkTreeView   *tree_view,
  * File Selection handling
  ************************************************************/
 
-static void
-filename_ok_clicked (GtkWidget *button, gchar **name)
-{
-	GtkWidget *fs = gtk_widget_get_ancestor (button,
-						 gtk_file_selection_get_type());
-  
-	*name = g_strdup (gtk_file_selection_get_filename (GTK_FILE_SELECTION (fs)));
-	gtk_widget_destroy (fs);
-}
-
 static gchar *
-get_filename (const gchar *title, 
-	      const gchar *prompt_text, 
+get_filename (const gchar *title,
 	      const gchar *suggested_name)
 {
-	GtkWidget *fs;
+	GtkWidget *dialog;
 	gchar *filename = NULL;
-	
-	fs = gtk_file_selection_new (title);
-	gtk_file_selection_set_filename (GTK_FILE_SELECTION (fs), 
-					 suggested_name);
-	
-	gtk_label_set_text (GTK_LABEL (GTK_FILE_SELECTION (fs)->selection_text),
-			    prompt_text);
-	g_signal_connect (GTK_FILE_SELECTION (fs)->ok_button, "clicked",
-			  G_CALLBACK (filename_ok_clicked), &filename);
-	g_signal_connect_swapped (GTK_FILE_SELECTION (fs)->cancel_button, "clicked",
-				  G_CALLBACK (gtk_widget_destroy), fs);
-	g_signal_connect (fs, "destroy",
-			  G_CALLBACK (gtk_main_quit), NULL);
-	
-	gtk_widget_show (fs);
-	gtk_main();
-	
+	dialog = gtk_file_chooser_dialog_new (title,
+					      NULL, GTK_FILE_CHOOSER_ACTION_SAVE,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+					      NULL);
+	gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog), suggested_name);
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+	gtk_widget_destroy (dialog);
 	return filename;
 }
 
@@ -1140,13 +1122,14 @@ save_leak_cb (GtkWidget *widget)
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
 	if (pwin->leaks) {
-		filename = get_filename ("Save Leak Report", "Output file",
+		filename = get_filename ("Save Leak Report",
 					 suggestion ? suggestion : "memprof.leak");
 		if (filename) {
 			g_free (suggestion);
 			suggestion = filename;
 			
 			leaks_print (pwin->process, pwin->leaks, filename);
+			g_free (filename);
 		}
 	}
 }
@@ -1160,13 +1143,14 @@ save_profile_cb (GtkWidget *widget)
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
 	if (pwin->profile) {
-		filename = get_filename ("Save Profile", "Output file",
+		filename = get_filename ("Save Profile",
 					 suggestion ? suggestion : "memprof.out");
 		if (filename) {
 			g_free (suggestion);
 			suggestion = filename;
 			
 			profile_write (pwin->profile, filename);
+			g_free (filename);
 		}
 	}
 }
