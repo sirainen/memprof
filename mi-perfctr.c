@@ -25,6 +25,9 @@
 #include <signal.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <ucontext.h>
 #include <unistd.h>
 
@@ -94,7 +97,8 @@ mi_perfctr_start (int interval)
 	
 	MI_DEBUG (("Turning on performance monitoring timer support\n"));
 
-	if ((perfctr_fd = open ("/proc/self/perfctr", O_RDONLY | O_CREAT)) < 0) {
+	if ((perfctr_fd = open ("/proc/self/perfctr", O_RDONLY | O_CREAT,
+				S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH)) < 0) {
 		mi_perror ("Error opening /proc/self/perfctr");
 		goto bail;
 	}
