@@ -134,5 +134,8 @@ char *      process_find_exec       (char              **args);
 void  process_block_foreach (MPProcess                *process,
 			     MPProcessBlockForeachFunc foreach_func,
 			     gpointer                  data);
+gboolean    process_find_line (MPProcess *process, void *address,
+			       const char **filename, char **functionname,
+			       unsigned int *line);
 
 #endif /* __PROCESS_H__ */
