@@ -964,7 +964,7 @@ symbol_copy  (const char *orig)
 	if (!orig)
 		return NULL;
 
-	return orig;
+	return (char *) orig;
 }
 
 void
