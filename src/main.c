@@ -1351,7 +1351,7 @@ show_error (GtkWidget *parent_window,
 					 (error == ERROR_FATAL) ?
 					   GTK_MESSAGE_ERROR :
 					   GTK_MESSAGE_WARNING,
-					 GTK_BUTTONS_OK, message);
+					 GTK_BUTTONS_OK, "%s", message);
 	g_free (message);
 
 	gtk_window_set_title (GTK_WINDOW (dialog),
@@ -1715,7 +1715,7 @@ process_window_maybe_detach (ProcessWindow *pwin)
 					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 					 GTK_MESSAGE_QUESTION,
 					 GTK_BUTTONS_YES_NO,
-					 message);
+					 "%s", message);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 
 	response = gtk_dialog_run (GTK_DIALOG (dialog));
