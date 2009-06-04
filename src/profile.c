@@ -58,7 +58,19 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 	const char *symbol =
 	    process_locate_symbol (profile->process, GPOINTER_TO_SIZE(element->address));
 	int i;
-	
+
+        /*
+         * Workaround for the case that an allocation was made and the
+         * mapped library is gone now. This is happening with Gtk+/Epiphany/WebKit.
+         * One way would be to override dlclose and resolve all symbols within
+         * this address space. FIXME.
+         */
+	if (!symbol) {
+		g_warning ("Symbol at address: %p is null\n", element->address);
+		parent = NULL;
+		continue;
+	}
+
 	for (i = 0; i < roots->len; ++i)
 	{
 	    ProfileNode *node = roots->pdata[i];
