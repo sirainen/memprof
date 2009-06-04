@@ -6,64 +6,68 @@ pkgdata_DATA = memprof.glade leak.xpm leak.png memprof.png
 
 pkglib_LTLIBRARIES = libmemintercept.la libspeedintercept.la
 
+testmemprof_SOURCES =		\
+	tests/testmemprof.c
+
 memprof_SOURCES =	        \
-	gui.h			\
-	inode.c			\
-	leakdetect.c		\
-	leakdetect.h		\
-	main.c			\
-	memprof.h		\
-	process.c		\
-	process.h		\
-	profile.c		\
-	profile.h		\
-	server.c		\
-	server.h		\
-	stackstash.c		\
-	stackstash.h		\
-	treeviewutils.c		\
-	treeviewutils.h		\
-	tree.c			\
-	binfile.h		\
-	binfile.c		\
-	elfparser.h		\
-	elfparser.c		\
-	binparser.h		\
-	binparser.c		\
-	demangle.c
+	src/gui.h		\
+	src/inode.c		\
+	src/leakdetect.c	\
+	src/leakdetect.h	\
+	src/main.c		\
+	src/memprof.h		\
+	src/process.c		\
+	src/process.h		\
+	src/profile.c		\
+	src/profile.h		\
+	src/server.c		\
+	src/server.h		\
+	src/stackstash.c	\
+	src/stackstash.h	\
+	src/treeviewutils.c	\
+	src/treeviewutils.h	\
+	src/tree.c		\
+	src/binfile.h		\
+	src/binfile.c		\
+	src/elfparser.h		\
+	src/elfparser.c		\
+	src/binparser.h		\
+	src/binparser.c		\
+	src/demangle.c
 
 memprof_LDADD = $(MEMPROF_LIBS)
 memprof_LDFLAGS = -export-dynamic
 
 intercept_sources = 		\
-	intercept.c		\
-	intercept.h		\
-	memintercept-utils.c	\
-	memintercept-utils.h	\
-	stack-frame.c		\
-	stack-frame.h
+	lib/intercept.c		\
+	lib/intercept.h		\
+	lib/memintercept-utils.c\
+	lib/memintercept-utils.h\
+	lib/stack-frame.c	\
+	lib/stack-frame.h
 
 
 libmemintercept_la_SOURCES =    \
 	$(intercept_sources)	\
-	memintercept.c		\
-	memintercept.h	
+	lib/memintercept.c	\
+	lib/memintercept.h
 
 libmemintercept_la_LDFLAGS = -module -avoid-version
 libmemintercept_la_LIBADD = -ldl
 
 libspeedintercept_la_SOURCES =  \
 	$(intercept_sources)	\
-	mi-perfctr.c		\
-	mi-perfctr.h		\
-	perfctr.h		\
-	speedintercept.c
+	lib/mi-perfctr.c	\
+	lib/mi-perfctr.h	\
+	lib/perfctr.h		\
+	lib/speedintercept.c
 
 libspeedintercept_la_LDFLAGS = -module -avoid-version
 libspeedintercept_la_LIBADD = -ldl
 
 INCLUDES = 					   \
 	$(MEMPROF_CFLAGS) 			   \
+	-I$(top_srcdir)/lib			   \
 	-DDATADIR=\"$(pkgdatadir)\"		   \
 	-DPKGLIBDIR=\"$(pkglibdir)\"		   \
 	-DLOCALEDIR=\""$(datadir)/locale"\"
