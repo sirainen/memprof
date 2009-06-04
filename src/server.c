@@ -343,8 +343,9 @@ terminate_io_handler (GIOChannel  *channel,
 		      gpointer     data)
 {
 	char c;
+	int ret;
 	
-	read (terminate_pipe[0], &c, 1);
+	ret = read (terminate_pipe[0], &c, 1);
 
 	fprintf (stderr, "memprof: Caught signal %d (%s), cleaning up\n", c, g_strsignal(c));
 
