@@ -327,13 +327,14 @@ term_handler (int signum)
 {
 	static int terminated = 0;
 	char c = signum;
+	int ret;
 
 	if (terminated)
 		exit(1);	/* Impatient user, risk reentrancy problems  */
 	
 	terminated = 1;
 
-	write (terminate_pipe[1], &c, 1);
+	ret = write (terminate_pipe[1], &c, 1);
 }
 
 static gboolean
