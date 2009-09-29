@@ -65,8 +65,8 @@ sigprof_handler (int unused, siginfo_t *si, ucontext_t *ucontext)
     info.alloc.new_ptr = NULL;
     info.alloc.size = 1;
     
-    mi_call_with_signal_backtrace ((void *)ctx->eip, (void *)ctx->ebp, (void *)ctx->esp,
-				   mi_write_stack, &info);
+    mi_call_with_signal_backtrace ((void *)ctx->EIPRIP, (void *)ctx->EBPRBP,
+					(void *)ctx->ESPRSP, mi_write_stack, &info);
 
     if (ioctl (perfctr_fd, VPERFCTR_IRESUME) < 0)
 	    mi_perror ("Error restarting handler interrupt");

@@ -72,7 +72,7 @@ again:
 
 #define HAVE_FRAME_ACCESSORS
 
-#if defined (__GNUC__) && defined (__i386__)
+#if defined (__GNUC__)
 typedef struct stack_frame_struct stack_frame;
 struct stack_frame_struct {
     stack_frame *next;
