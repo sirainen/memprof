@@ -36,12 +36,8 @@
 
 #include <regex.h>
 
-#include "leakdetect.h"
 #include "gui.h"
 #include "memprof.h"
-#include "process.h"
-#include "profile.h"
-#include "server.h"
 #include "treeviewutils.h"
 #include <string.h>
 #include <stdlib.h>
@@ -49,34 +45,6 @@
 #include <glib/gprintf.h>
 #include "elfparser.h"
 
-struct _ProcessWindow {
-	MPProcess *process;
-	Profile *profile;
-	GSList *leaks;
-
-	GtkWidget *main_window;
-	GtkWidget *main_notebook;
-	GtkWidget *n_allocations_label;
-	GtkWidget *profile_status_label;
-	GtkWidget *bytes_per_label;
-	GtkWidget *total_bytes_label;
-
-	GtkWidget *profile_func_tree_view;
-	GtkWidget *profile_caller_tree_view;
-	GtkWidget *profile_descendants_tree_view;
-
-	GtkWidget *leak_block_tree_view;
-	GtkWidget *leak_stack_tree_view;
-
-	GtkWidget *usage_max_label;
-	GtkWidget *usage_area;
-
-	guint usage_max;
-	guint usage_high;
-	guint usage_leaked;
-
-	guint status_update_timeout;
-};
 
 enum {
 	PROFILE_FUNC_NAME,
@@ -253,7 +221,8 @@ update_status (gpointer data)
 	pwin->usage_high = MAX (pwin->process->bytes_used, pwin->usage_high);
 
 	gtk_widget_queue_draw (pwin->usage_area);
-	
+	dw_update(pwin);
+
 	return TRUE;
 }
 
@@ -975,6 +944,7 @@ process_window_reset (ProcessWindow *pwin)
 	gtk_window_set_title (GTK_WINDOW (pwin->main_window), "MemProf");
 
 	gtk_widget_queue_draw (pwin->usage_area);
+	dw_update(pwin);
 }
 
 static void
@@ -1340,6 +1310,8 @@ process_window_free (ProcessWindow *pwin)
 static void
 process_window_destroy (ProcessWindow *pwin)
 {
+	dw_shutdown(pwin);
+
 	if (pwin->status_update_timeout)
 		g_source_remove (pwin->status_update_timeout);
 
@@ -1585,7 +1557,8 @@ process_window_new (void)
 	
 	glade_xml_signal_autoconnect (xml);
 	g_object_unref (G_OBJECT (xml));
-	
+
+	dw_init(pwin);
 	return pwin;
 }
 

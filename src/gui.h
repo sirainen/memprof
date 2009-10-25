@@ -20,9 +20,46 @@
  */
 /*====*/
 
+#ifndef GUI_H
+
+#include "leakdetect.h"
+#include "profile.h"
 #include "process.h"
+#include "server.h"
+
 
 typedef struct _ProcessWindow ProcessWindow;
+
+struct _ProcessWindow {
+	MPProcess *process;
+	Profile *profile;
+	GSList *leaks;
+
+	GtkWidget *main_window;
+	GtkWidget *main_notebook;
+	GtkWidget *n_allocations_label;
+	GtkWidget *profile_status_label;
+	GtkWidget *bytes_per_label;
+	GtkWidget *total_bytes_label;
+
+	GtkWidget *profile_func_tree_view;
+	GtkWidget *profile_caller_tree_view;
+	GtkWidget *profile_descendants_tree_view;
+
+	GtkWidget *leak_block_tree_view;
+	GtkWidget *leak_stack_tree_view;
+
+	GtkWidget *usage_max_label;
+	GtkWidget *usage_area;
+
+	guint usage_max;
+	guint usage_high;
+	guint usage_leaked;
+
+	guint status_update_timeout;
+
+	void *detailwin_data;
+};
 
 void tree_window_show   (void);
 void tree_window_add    (ProcessWindow *window);
@@ -39,3 +76,9 @@ void        process_window_maybe_detach (ProcessWindow *pwin);
 
 gboolean hide_and_check_quit (GtkWidget *window);
 void     check_quit          (void);
+
+void dw_init(ProcessWindow *pwin);
+void dw_shutdown(ProcessWindow *pwin);
+void dw_update(ProcessWindow *pwin);
+
+#endif

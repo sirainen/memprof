@@ -33,7 +33,8 @@ memprof_SOURCES =	        \
 	src/elfparser.c		\
 	src/binparser.h		\
 	src/binparser.c		\
-	src/demangle.c
+	src/demangle.c		\
+	src/detailwin.c
 
 memprof_LDADD = $(MEMPROF_LIBS)
 memprof_LDFLAGS = -export-dynamic
