@@ -622,7 +622,7 @@ leak_block_selection_changed (GtkTreeSelection *selection,
 		if (!process_find_line (pwin->process, stack->address,
 					&filename, &functionname, &line)) {
 			/* 0x3f == '?' -- suppress trigraph warnings */
-			functionname = g_strdup ("(\x3f\x3f\x3f)");
+			functionname = "(\x3f\x3f\x3f)";
 			filename = "(\x3f\x3f\x3f)";
 			line = 0;
 		}
@@ -655,6 +655,7 @@ leaks_fill (ProcessWindow *pwin)
 	tmp_list = pwin->leaks;
 	while (tmp_list) {
 		const char *filename;
+		gboolean free_function = FALSE;
 		char *functionname = NULL;
 		GtkTreeIter iter;
 
@@ -673,7 +674,6 @@ leaks_fill (ProcessWindow *pwin)
 
 				for (tmp_list = skip_funcs; tmp_list != NULL; tmp_list = tmp_list->next) {
 					if (!strcmp (functionname, tmp_list->data)) {
-						free (functionname);
 						functionname = NULL;
 						break;
 					}
@@ -688,7 +688,6 @@ leaks_fill (ProcessWindow *pwin)
 					regcomp (&regex, tmp_list->data, 0);
 
 					if (!regexec (&regex, functionname, 0, NULL, 0)) {
-						free (functionname);
 						functionname = NULL;
 						regfree (&regex);
 						break;
@@ -701,8 +700,10 @@ leaks_fill (ProcessWindow *pwin)
 			if (functionname)
 				break;
 		}
-		if (!functionname)
+		if (!functionname) {
+			free_function = TRUE;
 			functionname = g_strdup ("(\x3f\x3f\x3f)");
+		}
 
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter,
@@ -712,7 +713,8 @@ leaks_fill (ProcessWindow *pwin)
 				    LEAK_BLOCK_BLOCK, block,
 				    -1);
 
-		g_free (functionname);
+		if (free_function)
+			g_free (functionname);
 		
 		tmp_list = tmp_list->next;
 	}
@@ -762,8 +764,6 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 			p++;
 		}
 		
-		free (functionname);
-
 		cmdline = g_strdup_printf ("/bin/sh -c %s", command->str);
 
 		if (!g_spawn_command_line_async (cmdline, &err)) {

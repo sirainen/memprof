@@ -243,6 +243,10 @@ process_locate_symbol (MPProcess *process, gsize addr)
 	return bin_symbol_get_name (map->binfile, symbol);
 }
 
+/**
+ * The string assigned to functionname is owned/shared
+ * by the system and must not be freed.
+ */
 gboolean 
 process_find_line (MPProcess *process, void *address,
 		   const char **filename, char **functionname,
