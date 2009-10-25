@@ -1053,17 +1053,13 @@ run_cb (GtkWidget *widget)
 {
        GladeXML *xml;
        GtkWidget *run_dialog;
-       GtkWidget *entry;
+       GtkWidget *filechooser;
 
        ProcessWindow *pwin = pwin_from_widget (widget);
        
        xml = glade_xml_new (glade_file, "RunDialog", NULL);
        run_dialog = get_widget (xml, "RunDialog");
-       entry = get_widget (xml, "RunDialog-entry");
-
-       g_signal_connect_swapped (entry, "activate",
-				 G_CALLBACK (gtk_widget_activate),
-				 get_widget (xml, "RunDialog-run"));
+       filechooser = get_widget (xml, "RunDialog-chooser");
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1075,7 +1071,10 @@ run_cb (GtkWidget *widget)
 		       char *text;
 		       gboolean result;
 
-		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+		       text = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+		       if (!text)
+			       break;
+
 		       args = process_parse_exec (text);
 
 		       result = run_file (pwin, args);

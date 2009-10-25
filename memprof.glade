@@ -150,14 +150,13 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkEntry" id="RunDialog-entry">
+          <widget class="GtkFileChooserButton" id="RunDialog-chooser">
             <property name="visible">True</property>
-            <property name="can_focus">True</property>
-            <property name="invisible_char">&#x2022;</property>
+            <property name="orientation">vertical</property>
+            <property name="create_folders">False</property>
+            <property name="title" translatable="yes">Select an Executable</property>
           </widget>
           <packing>
-            <property name="expand">False</property>
-            <property name="fill">False</property>
             <property name="position">3</property>
           </packing>
         </child>
