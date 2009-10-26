@@ -3,6 +3,7 @@
 /* MemProf -- memory profiler and leak detector
  * Copyright 1999, 2000, 2001, Red Hat, Inc.
  * Copyright 2002, Kristian Rietveld
+ * Copyright 2009, Holger Hans Peter Freyther
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -37,6 +38,12 @@ static void *(*old_calloc) (size_t nmemb, size_t size);
 static void *(*old_memalign) (size_t boundary, size_t size);
 static void *(*old_realloc) (void *ptr, size_t size);
 static void (*old_free) (void *ptr);
+
+/* helpers for WebKit */
+static void *(*old_fastMalloc) (size_t size);
+static void *(*old_fastCalloc) (size_t nmemb, size_t size);
+static void *(*old_fastRealloc) (void *ptr, size_t size);
+static void (*old_fastFree) (void *ptr);
 
 static void
 abort_unitialized (const char *call)
@@ -215,6 +222,95 @@ free (void *ptr)
 	do_free (ptr);
 }
 
+void *
+_ZN3WTF10fastMallocEj(size_t size)
+{
+	void *result;
+	MIInfo info;
+
+	if (!mi_check_init ())
+		return NULL;/* See comment in initialize() */
+
+	result = (*old_fastMalloc) (size);
+
+	if (mi_tracing ()) {
+		info.alloc.operation = MI_MALLOC;
+		info.alloc.old_ptr = NULL;
+		info.alloc.new_ptr = result;
+		info.alloc.size = size;
+
+		mi_call_with_backtrace (2, mi_write_stack, &info);
+	}
+
+	return result;
+}
+
+void *
+_ZN3WTF11fastReallocEPvj(void *ptr, size_t size)
+{
+	void *result;
+	MIInfo info;
+
+	if (!mi_check_init ())
+		return NULL;/* See comment in initialize() */
+
+	result = (*old_fastRealloc) (ptr, size);
+
+	if (mi_tracing ()) {
+		info.alloc.operation = MI_REALLOC;
+		info.alloc.old_ptr = ptr;
+		info.alloc.new_ptr = result;
+		info.alloc.size = size;
+
+		mi_call_with_backtrace (1, mi_write_stack, &info);
+	}
+
+	return result;
+}
+
+void
+_ZN3WTF8fastFreeEPv(void *ptr)
+{
+	MIInfo info;
+
+	if (!mi_check_init ())
+		return;/* See comment in initialize() */
+
+	(*old_fastFree) (ptr);
+
+	if (mi_tracing ()) {
+		info.alloc.operation = MI_FREE;
+		info.alloc.old_ptr = ptr;
+		info.alloc.new_ptr = NULL;
+		info.alloc.size = 0;
+
+		mi_call_with_backtrace (1, mi_write_stack, &info);
+	}
+}
+
+void *
+_ZN3WTF10fastCallocEjj(size_t nmemb, size_t size)
+{
+	void *result;
+	MIInfo info;
+
+	if (!mi_check_init ())
+		return NULL;/* See comment in initialize() */
+
+	result = (*old_fastCalloc) (nmemb, size);
+
+	if (mi_tracing ()) {
+		info.alloc.operation = MI_MALLOC;
+		info.alloc.old_ptr = NULL;
+		info.alloc.new_ptr = result;
+		info.alloc.size = nmemb * size;
+
+		mi_call_with_backtrace (1, mi_write_stack, &info);
+	}
+
+	return result;
+}
+
 void
 mi_init (void)
 {
@@ -223,6 +319,12 @@ mi_init (void)
 	old_free = dlsym(RTLD_NEXT, "free");
 	old_calloc = dlsym(RTLD_NEXT, "calloc");
 	old_memalign = dlsym(RTLD_NEXT, "memalign");
+
+	/* to ease debugging webkit */
+	old_fastMalloc = dlsym(RTLD_NEXT, "_ZN3WTF10fastMallocEj");
+	old_fastRealloc = dlsym(RTLD_NEXT, "_ZN3WTF11fastReallocEPvj");
+	old_fastFree = dlsym(RTLD_NEXT, "_ZN3WTF8fastFreeEPv");
+	old_fastCalloc = dlsym(RTLD_NEXT, "_ZN3WTF10fastCallocEjj");
 }
 
 void
