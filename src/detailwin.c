@@ -202,6 +202,12 @@ dw_draw_memmap(ProcessWindow *pwin)
 	snprintf(buffer, 1023, "/proc/%d/maps", pwin->process->pid);
 
 	in = fopen(buffer, "r");
+	if (!in)
+	  {
+	     g_warning("Failed to open: '%s'", buffer);
+	     return;
+	  }
+
         while (fgets(buffer, 1023, in))
 	  {
 	     file[0] = 0;
