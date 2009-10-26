@@ -360,7 +360,14 @@ add_leaf_to_tree (ProfileDescendantTree *tree, ProfileNode *leaf, ProfileNode *t
     ProfileNode *node;
     GList *trace = NULL;
     
-    for (node = leaf; node != top->parent; node = node->parent)
+
+    /*
+     * XXX: FIXME: node->parent should always lead to a valid frame
+     * but it does not and more work needs to be done to figure out
+     * why this is the case. This can be easily reproduced with the
+     * GtkLauncher of WebKit/GTK+.
+     */
+    for (node = leaf; node && node != top->parent; node = node->parent)
 	trace = g_list_prepend (trace, node);
     
     add_trace_to_tree (tree->roots, trace, leaf->self);
