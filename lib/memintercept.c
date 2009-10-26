@@ -218,11 +218,11 @@ free (void *ptr)
 void
 mi_init (void)
 {
-	old_malloc = dlsym(RTLD_NEXT, "__libc_malloc");
-	old_realloc = dlsym(RTLD_NEXT, "__libc_realloc");
-	old_free = dlsym(RTLD_NEXT, "__libc_free");
-	old_calloc = dlsym(RTLD_NEXT, "__libc_calloc");
-	old_memalign = dlsym(RTLD_NEXT, "__libc_memalign");
+	old_malloc = dlsym(RTLD_NEXT, "malloc");
+	old_realloc = dlsym(RTLD_NEXT, "realloc");
+	old_free = dlsym(RTLD_NEXT, "free");
+	old_calloc = dlsym(RTLD_NEXT, "calloc");
+	old_memalign = dlsym(RTLD_NEXT, "memalign");
 }
 
 void
