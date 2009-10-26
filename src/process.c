@@ -233,7 +233,7 @@ process_locate_symbol (MPProcess *process, gsize addr)
 	const BinSymbol *symbol;
 
 	if (!map)
-		return NULL;
+		return "<unknown map>";
 
 	addr -= map->start;
 	addr += map->offset;
