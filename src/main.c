@@ -4,6 +4,7 @@
  * Copyright 1999, 2000, 2001, Red Hat, Inc.
  * Copyright 2002, Kristian Rietveld
  * Copyright 2002, Soeren Sandmann (sandmann@daimi.au.dk)
+ * Copyright 2009, Holger Hans Peter Fryther
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1693,6 +1694,7 @@ sigchld_handler (int signum)
 static char *profile_type_string = NULL;
 static char *profile_rate_string = NULL;
 static int profile_interval = 1000;
+static gchar **profile_skip_funcs = NULL;
 
 static const GOptionEntry entries[] = 
 {
@@ -1704,6 +1706,8 @@ static const GOptionEntry entries[] =
 	  N_("Type of profiling information to collect"), "memory/cycles/time" },
 	{ "rate", '\0', 0, G_OPTION_ARG_STRING, &profile_rate_string,
 	  N_("Number of samples/sec for time profile (1k=1000)"), NULL },
+	{ "skip-funcs", '\0', 0, G_OPTION_ARG_STRING_ARRAY, &profile_skip_funcs,
+	  N_("Functions allocating memory"), "function_name" },
 	{ NULL }
 };
 	
@@ -1718,6 +1722,29 @@ parse_options (int *argc, char ***argv)
 	g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
 	g_option_context_add_group (context, gtk_get_option_group (TRUE));
 	g_option_context_parse (context, argc, argv, &err);
+}
+
+static void
+initialize_skip_funcs ()
+{
+	gint i = 0;
+
+	skip_funcs = g_slist_append (skip_funcs, "g_malloc");
+	skip_funcs = g_slist_append (skip_funcs, "g_malloc0");
+	skip_funcs = g_slist_append (skip_funcs, "g_realloc");
+	skip_funcs = g_slist_append (skip_funcs, "g_strdup");
+	skip_funcs = g_slist_append (skip_funcs, "g_strndup");
+	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc");
+	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc0");
+	skip_funcs = g_slist_append (skip_funcs, "strdup");
+	skip_funcs = g_slist_append (skip_funcs, "strndup");
+	skip_funcs = g_slist_append (skip_funcs, "_Znwj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF16fastZeroedMallocEj");
+
+	while (profile_skip_funcs && profile_skip_funcs [i]) {
+		skip_funcs = g_slist_append (skip_funcs, profile_skip_funcs [i]);
+		++i;
+	}
 }
 
 int
@@ -1765,7 +1792,9 @@ main(int argc, char **argv)
 	       g_printerr (_("Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"));
 	       exit (1);
        }
-	       
+
+       initialize_skip_funcs();
+
        if (profile_rate_string) {
 	       int multiplier = 1;
 	       double rate;
