@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-04-13 22:08+0200\n"
+"POT-Creation-Date: 2009-10-27 02:54+0100\n"
 "PO-Revision-Date: 2009-04-13 22:11+0100\n"
 "Last-Translator: Mario Blättermann <mariobl@gnome.org>\n"
 "Language-Team: German <gnome-de@gnome.org>\n"
@@ -17,116 +17,120 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../leakdetect.c:496 ../profile.c:702
+#: ../src/leakdetect.c:496 ../src/profile.c:708
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Die Ausgabedatei konnte nicht geöffnet werden: %s\n"
 
-#: ../main.c:838
-#, c-format
-msgid "Executation of \"%s\" failed: %s"
+#: ../src/main.c:772
+#, fuzzy, c-format
+msgid "Execution of \"%s\" failed: %s"
 msgstr "Ausführen von »%s« fehlgeschlagen: %s"
 
-#: ../main.c:986
+#: ../src/main.c:902
 msgid "MemProf"
 msgstr "MemProf"
 
-#: ../main.c:1095
+#: ../src/main.c:1012
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Ausführbare Datei für »%s« konnte nicht gefunden werden"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 msgid "MemProf Error"
 msgstr "MemProf-Fehler"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 msgid "MemProf Warning"
 msgstr "MemProf-Warnung"
 
-#: ../main.c:1422
+#: ../src/main.c:1340
 msgid "Functions"
 msgstr "Funktionen"
 
-#: ../main.c:1423 ../main.c:1440 ../main.c:1458
+#: ../src/main.c:1341 ../src/main.c:1358 ../src/main.c:1376
 msgid "Self"
 msgstr "Selbst"
 
-#: ../main.c:1424 ../main.c:1459
+#: ../src/main.c:1342 ../src/main.c:1377
 msgid "Total"
 msgstr "Gesamt"
 
-#: ../main.c:1439
+#: ../src/main.c:1357
 msgid "Descendants"
 msgstr "Aufgerufene"
 
-#: ../main.c:1441
+#: ../src/main.c:1359
 msgid "Cumulative"
 msgstr "Kumulativ"
 
-#: ../main.c:1457
+#: ../src/main.c:1375
 msgid "Callers"
 msgstr "Aufrufende"
 
-#: ../main.c:1484
+#: ../src/main.c:1402
 msgid "Address"
 msgstr "Adresse"
 
-#: ../main.c:1485
+#: ../src/main.c:1403
 msgid "Size"
 msgstr "Größe"
 
-#: ../main.c:1486
+#: ../src/main.c:1404
 msgid "Caller"
 msgstr "Aufrufender"
 
-#: ../main.c:1506
+#: ../src/main.c:1424
 msgid "Function"
 msgstr "Funktion"
 
-#: ../main.c:1507
+#: ../src/main.c:1425
 msgid "Line"
 msgstr "Zeile"
 
-#: ../main.c:1508
+#: ../src/main.c:1426
 msgid "File"
 msgstr "Datei"
 
-#: ../main.c:1710
+#: ../src/main.c:1634
 msgid "Really detach from finished process?"
 msgstr "Wirklich vom beendeten Prozess lösen?"
 
-#: ../main.c:1712
+#: ../src/main.c:1636
 msgid "Really detach from running process?"
 msgstr "Wirklich vom laufenden Prozess lösen?"
 
-#: ../main.c:1742
+#: ../src/main.c:1666
 msgid "Really kill running process?"
 msgstr "Den laufenden Prozess wirklich beenden?"
 
-#: ../main.c:1777
+#: ../src/main.c:1702
 msgid "Create new windows for forked processes"
 msgstr "Neues Fenster für abgespaltene Prozesse erzeugen"
 
-#: ../main.c:1779
+#: ../src/main.c:1704
 msgid "Retain windows for processes after exec()"
 msgstr "Fenster für Prozesse nach exec() behalten"
 
-#: ../main.c:1781
+#: ../src/main.c:1706
 msgid "Type of profiling information to collect"
 msgstr "Typ der zu sammelnden Profiling-Informationen"
 
-#: ../main.c:1783
+#: ../src/main.c:1708
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Anzahl der Stichproben/Sekunde für Zeitprofil (1k=1000)"
 
-#: ../main.c:1843
+#: ../src/main.c:1710
+msgid "Functions allocating memory"
+msgstr ""
+
+#: ../src/main.c:1792
 #, c-format
 msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
 msgstr ""
 "Argument von --profile muss entweder »memory«, »cycles«, oder »time« sein\n"
 
-#: ../main.c:1878
+#: ../src/main.c:1829
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade konnte nicht gefunden werden"
 
@@ -178,8 +182,8 @@ msgstr "Vorgaben"
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
-"Geben Sie einen regulären Ausdruck von Funktionsnamen ein, die beim Erstellen "
-"des Profil übersprungen werden sollen"
+"Geben Sie einen regulären Ausdruck von Funktionsnamen ein, die beim "
+"Erstellen des Profil übersprungen werden sollen"
 
 #: ../memprof.glade.h:13
 msgid "Enter pathname to an executable"
@@ -195,182 +199,186 @@ msgstr ""
 msgid "Functions to Skip:"
 msgstr "Zu überspringende Funktionen:"
 
-#: ../memprof.glade.h:16
-msgid "Generate _Leak Report"
-msgstr "Leck-Bericht _erstellen"
-
-#: ../memprof.glade.h:17
-msgid "Generate _Profile"
-msgstr "_Profil erstellen"
-
-#: ../memprof.glade.h:18 ../tree.c:109
+#: ../memprof.glade.h:16 ../src/tree.c:109
 msgid "Kill"
 msgstr "Töten"
 
-#: ../memprof.glade.h:19
+#: ../memprof.glade.h:17
 msgid "Kill Program"
 msgstr "Programm töten"
 
-#: ../memprof.glade.h:20
+#: ../memprof.glade.h:18
 msgid "Leak Detection Options"
 msgstr "Leck-Erkennungsoptionen"
 
-#: ../memprof.glade.h:21
+#: ../memprof.glade.h:19
 msgid "Leaks"
 msgstr "Lecks"
 
-#: ../memprof.glade.h:22
+#: ../memprof.glade.h:20
 msgid "MemProf - Processes"
 msgstr "MemProf - Prozesse"
 
-#: ../memprof.glade.h:23
+#: ../memprof.glade.h:21
+msgid "Memory Usage Maps"
+msgstr ""
+
+#: ../memprof.glade.h:22
 msgid "Preferences"
 msgstr "Einstellungen"
 
-#: ../memprof.glade.h:24
+#: ../memprof.glade.h:23
 msgid "Process _Tree"
 msgstr "Prozess-_Baum"
 
-#: ../memprof.glade.h:25
+#: ../memprof.glade.h:24
 msgid "Profile"
 msgstr "Profil"
 
-#: ../memprof.glade.h:26
+#: ../memprof.glade.h:25
 msgid "Profile Options"
 msgstr "Profil-Optionen"
 
-#: ../memprof.glade.h:27
+#: ../memprof.glade.h:26
 msgid "Record"
 msgstr "Aufnahme"
 
-#: ../memprof.glade.h:28
+#: ../memprof.glade.h:27
 msgid "Regular expressions to Skip:"
 msgstr "Zu überspringende reguläre Ausdrücke:"
 
-#: ../memprof.glade.h:29
+#: ../memprof.glade.h:28
 msgid "Reset"
 msgstr "Zurücksetzen"
 
-#: ../memprof.glade.h:30
+#: ../memprof.glade.h:29
 msgid "Run"
 msgstr "Ausführen"
 
-#: ../memprof.glade.h:31
+#: ../memprof.glade.h:30
 msgid "Run Executable"
 msgstr "Ausführbare Datei starten"
 
-#: ../memprof.glade.h:32
+#: ../memprof.glade.h:31
 msgid "Run Program"
 msgstr "Programm starten"
 
-#: ../memprof.glade.h:33
+#: ../memprof.glade.h:32
 msgid "Save"
 msgstr "Speichern"
 
-#: ../memprof.glade.h:34
+#: ../memprof.glade.h:33
 msgid "Save Report"
 msgstr "Bericht speichern"
 
+#: ../memprof.glade.h:34
+#, fuzzy
+msgid "Select an Executable"
+msgstr "Ausführbare Datei starten"
+
 #: ../memprof.glade.h:35
-msgid "Save _Leak Info..."
-msgstr "_Leck-Informationen speichern …"
-
-#: ../memprof.glade.h:36
-msgid "Save _Profile..."
-msgstr "Profil _speichern …"
-
-#: ../memprof.glade.h:37
 msgid "Stack Trace"
 msgstr "Stacktrace"
 
-#: ../memprof.glade.h:38
+#: ../memprof.glade.h:36
+msgid "Time Graph"
+msgstr ""
+
+#: ../memprof.glade.h:37
 msgid "Total Bytes: "
 msgstr "Byte gesamt:"
 
-#: ../memprof.glade.h:39
-msgid "_About"
-msgstr "_Info"
-
-#: ../memprof.glade.h:40
-msgid "_Close"
-msgstr "_Schließen"
-
-#: ../memprof.glade.h:41
+#: ../memprof.glade.h:38
 msgid "_Detach"
 msgstr "_Lösen"
 
-#: ../memprof.glade.h:42
+#: ../memprof.glade.h:39
 msgid "_File"
 msgstr "_Datei"
 
-#: ../memprof.glade.h:43
+#: ../memprof.glade.h:40
 msgid "_Help"
 msgstr "_Hilfe"
 
-#: ../memprof.glade.h:44
-msgid "_Kill"
-msgstr "_Töten"
-
-#: ../memprof.glade.h:45
+#: ../memprof.glade.h:41
 msgid "_Process"
 msgstr "_Prozess"
 
-#: ../memprof.glade.h:46
-msgid "_Quit"
-msgstr "_Beenden"
-
-#: ../memprof.glade.h:47
-msgid "_Run Program..."
-msgstr "Programm _ausführen …"
-
-#: ../process.c:843
+#: ../src/process.c:839
 msgid "Initial"
 msgstr "Anfang"
 
-#: ../process.c:846
+#: ../src/process.c:842
 msgid "Starting"
 msgstr "Startvorgang"
 
-#: ../process.c:849
+#: ../src/process.c:845
 msgid "Running"
 msgstr "Läuft"
 
-#: ../process.c:852
+#: ../src/process.c:848
 msgid "Exiting"
 msgstr "Beenden"
 
-#: ../process.c:855 ../process.c:858
+#: ../src/process.c:851 ../src/process.c:854
 msgid "Defunct"
 msgstr "Erloschen"
 
-#: ../server.c:289
+#: ../src/server.c:289
 #, c-format
 msgid "Cannot find %s"
 msgstr "%s konnte nicht gefunden werden"
 
-#: ../tree.c:102
+#: ../src/tree.c:102
 msgid "Show"
 msgstr "Zeigen"
 
-#: ../tree.c:105
+#: ../src/tree.c:105
 msgid "Hide"
 msgstr "Verbergen"
 
-#: ../tree.c:112
+#: ../src/tree.c:112
 msgid "Detach"
 msgstr "Lösen"
 
-#: ../tree.c:180
+#: ../src/tree.c:180
 msgid "PID"
 msgstr "Programmkennung"
 
-#: ../tree.c:181
+#: ../src/tree.c:181
 msgid "Command Line"
 msgstr "Befehlszeile"
 
-#: ../tree.c:182
+#: ../src/tree.c:182
 msgid "Status"
 msgstr "Status"
+
+#~ msgid "Generate _Leak Report"
+#~ msgstr "Leck-Bericht _erstellen"
+
+#~ msgid "Generate _Profile"
+#~ msgstr "_Profil erstellen"
+
+#~ msgid "Save _Leak Info..."
+#~ msgstr "_Leck-Informationen speichern …"
+
+#~ msgid "Save _Profile..."
+#~ msgstr "Profil _speichern …"
+
+#~ msgid "_About"
+#~ msgstr "_Info"
+
+#~ msgid "_Close"
+#~ msgstr "_Schließen"
+
+#~ msgid "_Kill"
+#~ msgstr "_Töten"
+
+#~ msgid "_Quit"
+#~ msgstr "_Beenden"
+
+#~ msgid "_Run Program..."
+#~ msgstr "Programm _ausführen …"
 
 #~ msgid "Saving is disabled at the moment"
 #~ msgstr "Im Augenblick ist das Speichern deaktiviert"

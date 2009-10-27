@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof.HEAD.ne\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2007-09-17 13:25+0100\n"
+"POT-Creation-Date: 2009-10-27 02:54+0100\n"
 "PO-Revision-Date: 2007-11-14 14:43+0545\n"
 "Last-Translator: Shyam Krishna Bal <shyamkrishna_bal@yahoo.com>\n"
 "Language-Team: Nepali <info@mpp.org.np>\n"
@@ -21,114 +21,119 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=n !=1\n"
 
-#: ../leakdetect.c:496 ../profile.c:702
+#: ../src/leakdetect.c:496 ../src/profile.c:708
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "निर्गात फाइल खोल्न सकिँदैन: %s\n"
 
-#: ../main.c:838
-#, c-format
-msgid "Executation of \"%s\" failed: %s"
+#: ../src/main.c:772
+#, fuzzy, c-format
+msgid "Execution of \"%s\" failed: %s"
 msgstr "\"%s\" को कार्यान्वयन असफल भयो: %s"
 
-#: ../main.c:986
+#: ../src/main.c:902
 msgid "MemProf"
 msgstr "मेमप्रोफ"
 
-#: ../main.c:1095
+#: ../src/main.c:1012
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "\"%s\" का लागि कार्यान्वयन फेला पार्न सकिँदैन"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 msgid "MemProf Error"
 msgstr "मेम्प्रोफ त्रुटि"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 msgid "MemProf Warning"
 msgstr "मेम्प्रोफ चेतावनी"
 
-#: ../main.c:1422
+#: ../src/main.c:1340
 msgid "Functions"
 msgstr "प्रकार्य"
 
-#: ../main.c:1423 ../main.c:1440 ../main.c:1458
+#: ../src/main.c:1341 ../src/main.c:1358 ../src/main.c:1376
 msgid "Self"
 msgstr "आफै"
 
-#: ../main.c:1424 ../main.c:1459
+#: ../src/main.c:1342 ../src/main.c:1377
 msgid "Total"
 msgstr "जम्मा"
 
-#: ../main.c:1439
+#: ../src/main.c:1357
 msgid "Descendants"
 msgstr "वंशज"
 
-#: ../main.c:1441
+#: ../src/main.c:1359
 msgid "Cumulative"
 msgstr "बढ्दै जाने"
 
-#: ../main.c:1457
+#: ../src/main.c:1375
 msgid "Callers"
 msgstr "कलर"
 
-#: ../main.c:1484
+#: ../src/main.c:1402
 msgid "Address"
 msgstr "ठेगाना"
 
-#: ../main.c:1485
+#: ../src/main.c:1403
 msgid "Size"
 msgstr "साइज"
 
-#: ../main.c:1486
+#: ../src/main.c:1404
 msgid "Caller"
 msgstr "कलर"
 
-#: ../main.c:1506
+#: ../src/main.c:1424
 msgid "Function"
 msgstr "प्रकार्य"
 
-#: ../main.c:1507
+#: ../src/main.c:1425
 msgid "Line"
 msgstr "रेखा"
 
-#: ../main.c:1508
+#: ../src/main.c:1426
 msgid "File"
 msgstr "फाइल"
 
-#: ../main.c:1710
+#: ../src/main.c:1634
 msgid "Really detach from finished process?"
 msgstr "सकिएको प्रकृयाबाट के तपाईँ साँच्चिकै छुटाउन चाहनुहुन्छ ?"
 
-#: ../main.c:1712
+#: ../src/main.c:1636
 msgid "Really detach from running process?"
 msgstr "चालु प्रकृयाबाट के तपाईँ साँच्चिकै छुटाउन चाहनुहुन्छ ?"
 
-#: ../main.c:1742
+#: ../src/main.c:1666
 msgid "Really kill running process?"
 msgstr "चालु प्रकृयालाई तपाईँ बन्द गर्न चाहनुहुन्छ ?"
 
-#: ../main.c:1777
+#: ../src/main.c:1702
 msgid "Create new windows for forked processes"
 msgstr "फ्रोक्ड प्रकृयाका लागि नयाँ सञ्झ्याल बनाउनुहोस्"
 
-#: ../main.c:1779
+#: ../src/main.c:1704
 msgid "Retain windows for processes after exec()"
 msgstr "कार्यान्वयन पछि प्रकृयाका लागि सञ्झ्याल राख्नुहोस्"
 
-#: ../main.c:1781
+#: ../src/main.c:1706
 msgid "Type of profiling information to collect"
 msgstr "सङ्कलनका लागि प्रोफाइलिङ सूचनाको प्रकार"
 
-#: ../main.c:1783
+#: ../src/main.c:1708
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "नमूनाको सङ्ख्या/सेकेन्ड समय प्रोफाइलका लागि (१के=१०००)"
 
-#: ../main.c:1843
+#: ../src/main.c:1710
+msgid "Functions allocating memory"
+msgstr ""
+
+#: ../src/main.c:1792
+#, c-format
 msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
 msgstr "तर्क को --प्रोफाइल एकको 'स्मृती', 'साइकल', वा 'समय' हुनुपर्छ\n"
 
-#: ../main.c:1878
+#: ../src/main.c:1829
 msgid "Cannot find memprof.glade"
 msgstr "memprof.glade फेला पार्न सकेन"
 
@@ -177,8 +182,10 @@ msgid "Defaults"
 msgstr "पूर्वनिर्धारित"
 
 #: ../memprof.glade.h:12
-msgid "Enter a regular expression of function names to skip when computing profiles"
-msgstr "प्रोफाइलहरूसँग गणना गर्दा फड्काउनका लागि कार्यको नियमित अभिव्यक्ति प्रविष्ट गर्नुहोस्"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
+msgstr ""
+"प्रोफाइलहरूसँग गणना गर्दा फड्काउनका लागि कार्यको नियमित अभिव्यक्ति प्रविष्ट गर्नुहोस्"
 
 #: ../memprof.glade.h:13
 msgid "Enter pathname to an executable"
@@ -192,180 +199,183 @@ msgstr "प्रोफाइलहरू गणना गर्दा फड्
 msgid "Functions to Skip:"
 msgstr "फड्काउनका लागि प्रकार्यहरू:"
 
-#: ../memprof.glade.h:16
-msgid "Generate _Leak Report"
-msgstr "चुहावट प्रतिवेदन सिर्जना गर्नुहोस्"
-
-#: ../memprof.glade.h:17
-msgid "Generate _Profile"
-msgstr "प्रोफाइल सिर्जना गर्नुहोस्"
-
-#: ../memprof.glade.h:18 ../tree.c:109
+#: ../memprof.glade.h:16 ../src/tree.c:109
 msgid "Kill"
 msgstr "नष्ट गर्नुहोस्"
 
-#: ../memprof.glade.h:19
+#: ../memprof.glade.h:17
 msgid "Kill Program"
 msgstr "कार्यक्रम नष्ट गर्नुहोस्"
 
-#: ../memprof.glade.h:20
+#: ../memprof.glade.h:18
 msgid "Leak Detection Options"
 msgstr "चुहावट अन्वेषण विकल्पहरु"
 
-#: ../memprof.glade.h:21
+#: ../memprof.glade.h:19
 msgid "Leaks"
 msgstr "चुहावटहरू"
 
-#: ../memprof.glade.h:22
+#: ../memprof.glade.h:20
 msgid "MemProf - Processes"
 msgstr "मेम्प्रोफ - प्रक्रियाहरू"
 
-#: ../memprof.glade.h:23
+#: ../memprof.glade.h:21
+msgid "Memory Usage Maps"
+msgstr ""
+
+#: ../memprof.glade.h:22
 msgid "Preferences"
 msgstr "प्राथमिकताहरू"
 
-#: ../memprof.glade.h:24
+#: ../memprof.glade.h:23
 msgid "Process _Tree"
 msgstr "प्रक्रिया ट्रि"
 
-#: ../memprof.glade.h:25
+#: ../memprof.glade.h:24
 msgid "Profile"
 msgstr "प्रोफाइल"
 
-#: ../memprof.glade.h:26
+#: ../memprof.glade.h:25
 msgid "Profile Options"
 msgstr "प्रोफाइल विकल्पहरू"
 
-#: ../memprof.glade.h:27
+#: ../memprof.glade.h:26
 msgid "Record"
 msgstr "रेकर्ड"
 
-#: ../memprof.glade.h:28
+#: ../memprof.glade.h:27
 msgid "Regular expressions to Skip:"
 msgstr "फड्काउनका लागि नियमित अभिव्यक्तिहरू:"
 
-#: ../memprof.glade.h:29
+#: ../memprof.glade.h:28
 msgid "Reset"
 msgstr "रिसेट गर्नुहोस्"
 
-#: ../memprof.glade.h:30
+#: ../memprof.glade.h:29
 msgid "Run"
 msgstr "चलाउनुहोस्"
 
-#: ../memprof.glade.h:31
+#: ../memprof.glade.h:30
 msgid "Run Executable"
 msgstr "कार्यान्वयन योग्य चलाउनुहोस्"
 
-#: ../memprof.glade.h:32
+#: ../memprof.glade.h:31
 msgid "Run Program"
 msgstr "कार्यक्रम चलाउनुहोस्"
 
-#: ../memprof.glade.h:33
+#: ../memprof.glade.h:32
 msgid "Save"
 msgstr "बचत गर्नुहोस्"
 
-#: ../memprof.glade.h:34
+#: ../memprof.glade.h:33
 msgid "Save Report"
 msgstr "प्रतिवेदन बचत गर्नुहोस्"
 
+#: ../memprof.glade.h:34
+#, fuzzy
+msgid "Select an Executable"
+msgstr "कार्यान्वयन योग्य चलाउनुहोस्"
+
 #: ../memprof.glade.h:35
-msgid "Save _Leak Info..."
-msgstr "चुहावट सूचना बचत गर्नुहोस्..."
-
-#: ../memprof.glade.h:36
-msgid "Save _Profile..."
-msgstr "प्रोफाइल बचत गर्नुहोस्..."
-
-#: ../memprof.glade.h:37
 msgid "Stack Trace"
 msgstr "थाक पदचिन्ह"
 
-#: ../memprof.glade.h:38
+#: ../memprof.glade.h:36
+msgid "Time Graph"
+msgstr ""
+
+#: ../memprof.glade.h:37
 msgid "Total Bytes: "
 msgstr "जम्मा बाइट्स:"
 
-#: ../memprof.glade.h:39
-msgid "_About"
-msgstr "बारेमा"
-
-#: ../memprof.glade.h:40
-msgid "_Close"
-msgstr "बन्द गर्नुहोस्"
-
-#: ../memprof.glade.h:41
+#: ../memprof.glade.h:38
 msgid "_Detach"
 msgstr "छुट्टयाउनुहोस्"
 
-#: ../memprof.glade.h:42
+#: ../memprof.glade.h:39
 msgid "_File"
 msgstr "फाइल"
 
-#: ../memprof.glade.h:43
+#: ../memprof.glade.h:40
 msgid "_Help"
 msgstr "मद्दत"
 
-#: ../memprof.glade.h:44
-msgid "_Kill"
-msgstr "नष्ट गर्नुहोस्"
-
-#: ../memprof.glade.h:45
+#: ../memprof.glade.h:41
 msgid "_Process"
 msgstr "प्रक्रिया"
 
-#: ../memprof.glade.h:46
-msgid "_Quit"
-msgstr "अन्त्य गर्नुहोस्"
-
-#: ../memprof.glade.h:47
-msgid "_Run Program..."
-msgstr "कार्यक्रम चलाउनुहोस्..."
-
-#: ../process.c:843
+#: ../src/process.c:839
 msgid "Initial"
 msgstr "प्रथमाक्षर"
 
-#: ../process.c:846
+#: ../src/process.c:842
 msgid "Starting"
 msgstr "सुरु हुदै"
 
-#: ../process.c:849
+#: ../src/process.c:845
 msgid "Running"
 msgstr "चलिरहेको"
 
-#: ../process.c:852
+#: ../src/process.c:848
 msgid "Exiting"
 msgstr "निस्कदै"
 
-#: ../process.c:855 ../process.c:858
+#: ../src/process.c:851 ../src/process.c:854
 msgid "Defunct"
 msgstr "डिफङ्क्ट"
 
-#: ../server.c:289
+#: ../src/server.c:289
 #, c-format
 msgid "Cannot find %s"
 msgstr "%s फेला पार्न सकेन"
 
-#: ../tree.c:102
+#: ../src/tree.c:102
 msgid "Show"
 msgstr "देखाउनुहोस्"
 
-#: ../tree.c:105
+#: ../src/tree.c:105
 msgid "Hide"
 msgstr "लुकाउनुहोस्"
 
-#: ../tree.c:112
+#: ../src/tree.c:112
 msgid "Detach"
 msgstr "छुट्टयाउनुहोस्"
 
-#: ../tree.c:180
+#: ../src/tree.c:180
 msgid "PID"
 msgstr "पीआईडी"
 
-#: ../tree.c:181
+#: ../src/tree.c:181
 msgid "Command Line"
 msgstr "आदेश रेखा"
 
-#: ../tree.c:182
+#: ../src/tree.c:182
 msgid "Status"
 msgstr "वस्तुस्थिति"
 
+#~ msgid "Generate _Leak Report"
+#~ msgstr "चुहावट प्रतिवेदन सिर्जना गर्नुहोस्"
+
+#~ msgid "Generate _Profile"
+#~ msgstr "प्रोफाइल सिर्जना गर्नुहोस्"
+
+#~ msgid "Save _Leak Info..."
+#~ msgstr "चुहावट सूचना बचत गर्नुहोस्..."
+
+#~ msgid "Save _Profile..."
+#~ msgstr "प्रोफाइल बचत गर्नुहोस्..."
+
+#~ msgid "_About"
+#~ msgstr "बारेमा"
+
+#~ msgid "_Close"
+#~ msgstr "बन्द गर्नुहोस्"
+
+#~ msgid "_Kill"
+#~ msgstr "नष्ट गर्नुहोस्"
+
+#~ msgid "_Quit"
+#~ msgstr "अन्त्य गर्नुहोस्"
+
+#~ msgid "_Run Program..."
+#~ msgstr "कार्यक्रम चलाउनुहोस्..."
