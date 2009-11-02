@@ -1740,6 +1740,9 @@ initialize_skip_funcs ()
 	skip_funcs = g_slist_append (skip_funcs, "strndup");
 	skip_funcs = g_slist_append (skip_funcs, "_Znwj");
 	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF16fastZeroedMallocEj");
+	skip_funcs = g_slist_append (skip_funcs, "_Z7qMallocj");
+	skip_funcs = g_slist_append (skip_funcs, "_Z8qReallocPvj");
+	skip_funcs = g_slist_append (skip_funcs, "_hb_alloc");
 
 	while (profile_skip_funcs && profile_skip_funcs [i]) {
 		skip_funcs = g_slist_append (skip_funcs, profile_skip_funcs [i]);
