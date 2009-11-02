@@ -111,6 +111,7 @@ typedef struct _Mem
 {
    GtkWidget *widget;
    GdkPixmap *pixmap;
+   GdkGC *gc_bg, *gc_bg2, *gc_mem, *gc_mem2, *gc_swapped, *gc_present;
    guint w, h, bpp;
    gulong mtotal;
    GList *regs;
@@ -119,6 +120,7 @@ typedef struct _Mem
 typedef struct _MemReg
 {
    void *start;
+   gchar *file;
    unsigned long size;
    int y, h;
 } MemReg;
@@ -128,40 +130,40 @@ dw_draw_memmap_foreach(gpointer key, gpointer value, gpointer data)
 {
    Mem *mem;
    Block *block;
-   guint x, y, w, i;
+   guint64 x, y, w, i;
    GdkPixmap *pixmap;
    GdkGC *gc;
-   gulong addr;
-   guint bpp, memw;
+   guint64 addr;
+   guint64 bpp, memw;
    GList *l;
    MemReg *reg;
-
-
+   
+   
    mem = data;
    block = value;
    bpp = mem->bpp;
-   addr = (gulong)block->addr;
+   addr = (guint64)block->addr;
    for (i = 0, l = mem->regs; l; l = l->next, i++)
      {
 	reg = l->data;
-	if ((addr >= (gulong)reg->start) &&
-	    (addr < (gulong)(reg->start + reg->size)))
+	if ((addr >= (guint64)reg->start) && 
+	    (addr < (guint64)(reg->start + reg->size)))
 	  break;
 	reg = NULL;
      }
    if (!reg) return;
-   addr = addr - (gulong)reg->start;
-   w = (gulong)(addr + block->size + (bpp / 2)) / bpp;
-   x = (gulong)(addr) / bpp;
+   addr = addr - (guint64)reg->start;
+   w = (guint64)(addr + block->size + (bpp / 2)) / bpp;
+   x = (guint64)(addr) / bpp;
    w -= x;
    memw = mem->w;
    y = reg->y + (x / memw);
    x -= (y * memw);
    pixmap = mem->pixmap;
    if (i & 0x1)
-     gc = mem->widget->style->fg_gc[GTK_STATE_PRELIGHT];
+     gc = mem->gc_mem2;
    else
-     gc = mem->widget->style->fg_gc[GTK_STATE_NORMAL];
+     gc = mem->gc_mem;
    gdk_draw_rectangle(pixmap, gc, TRUE, x, y, w, 1);
    if ((x + w) > mem->w)
      gdk_draw_rectangle(pixmap, gc, TRUE, 0, y + 1, w - (memw - x), 1);
@@ -171,23 +173,82 @@ static void
 dw_draw_memmap(ProcessWindow *pwin)
 {
    GtkWidget *widget;
-   GdkPixmap *pixmap;
-   guint w, h, y, bpl, i;
+   GdkPixmap *pixmap, *stip;
+   guint64 w, h, y, bpl, i;
    Mem mem;
    GList *l;
-
+   GdkColor col;
+   gint regnum = 0;
+   GdkGC *gc_none, *gc_bg, *gc_bg2, *gc_mem, *gc_mem2, *gc_swapped, *gc_present, *gc_divider, *gc_0, *gc_1;
+   
    widget = pwin->mem_map;
    w = widget->allocation.width;
    h = widget->allocation.height;
    if (!widget->window) return;
    pixmap = gdk_pixmap_new(widget->window, w, h, -1);
+   stip = gdk_pixmap_new(widget->window, 2, 2, 1);
+   
+   gc_none = gdk_gc_new(pixmap);
+   gc_bg = gdk_gc_new(pixmap);
+   gc_bg2 = gdk_gc_new(pixmap);
+   gc_mem = gdk_gc_new(pixmap);
+   gc_mem2 = gdk_gc_new(pixmap);
+   gc_swapped = gdk_gc_new(pixmap);
+   gc_present = gdk_gc_new(pixmap);
+   gc_divider = gdk_gc_new(pixmap);
+   gc_0 = gdk_gc_new(stip);
+   gc_1 = gdk_gc_new(stip);
+
+   col.pixel = 0;
+   gdk_gc_set_foreground(gc_0, &col);
+   col.pixel = 1;
+   gdk_gc_set_foreground(gc_1, &col);
+   gdk_draw_rectangle(stip,
+		      gc_0,
+		      TRUE,
+		      0, 0, 2, 2);
+   gdk_draw_rectangle(stip,
+		      gc_1,
+		      TRUE,
+		      1, 0, 1, 1);
+   gdk_draw_rectangle(stip,
+		      gc_1,
+		      TRUE,
+		      0, 1, 1, 1);
+
+   col.red = 0xffff; col.green = 0xffff; col.blue = 0xffff;
+   gdk_gc_set_rgb_fg_color(gc_none, &col);
+   col.red = 0xaaaa; col.green = 0xaaaa; col.blue = 0xaaaa;
+   gdk_gc_set_rgb_fg_color(gc_bg, &col);
+   col.red = 0x8888; col.green = 0x8888; col.blue = 0x8888;
+   gdk_gc_set_rgb_fg_color(gc_bg2, &col);
+   col.red = 0xffff; col.green = 0xffff; col.blue = 0x8888;
+   gdk_gc_set_rgb_fg_color(gc_mem, &col);
+   col.red = 0xcccc; col.green = 0xcccc; col.blue = 0x2222;
+   gdk_gc_set_rgb_fg_color(gc_mem2, &col);
+   col.red = 0x8888; col.green = 0x0000; col.blue = 0x0000;
+   gdk_gc_set_rgb_fg_color(gc_swapped, &col);
+   gdk_gc_set_stipple(gc_swapped, stip);
+   gdk_gc_set_ts_origin(gc_swapped, 0, 0);
+   gdk_gc_set_fill(gc_swapped, GDK_STIPPLED);
+   col.red = 0x6666; col.green = 0xaaaa; col.blue = 0x6666;
+   gdk_gc_set_rgb_fg_color(gc_present, &col);
+   col.red = 0x4444; col.green = 0x4444; col.blue = 0x4444;
+   gdk_gc_set_rgb_fg_color(gc_divider, &col);
+   
    gdk_draw_rectangle(pixmap,
-		      widget->style->base_gc[GTK_STATE_NORMAL],
+		      gc_none,
 		      TRUE,
 		      0, 0, w, h);
    mem.regs = NULL;
    mem.widget = widget;
    mem.pixmap = pixmap;
+   mem.gc_bg = gc_bg;
+   mem.gc_bg2 = gc_bg2;
+   mem.gc_mem = gc_mem;
+   mem.gc_mem2 = gc_mem2;
+   mem.gc_swapped = gc_swapped;
+   mem.gc_present = gc_present;
    mem.w = w;
    mem.h = h;
    mem.mtotal = 0;
@@ -223,43 +284,176 @@ dw_draw_memmap(ProcessWindow *pwin)
 		       reg = g_malloc(sizeof(MemReg));
 		       reg->start = GSIZE_TO_POINTER(start);
 		       reg->size = end - start;
+                       reg->file = g_strdup(file);
 		       mem.mtotal += reg->size;
 		       mem.regs = g_list_append(mem.regs, reg);
+                       regnum++;
 		    }
 	       }
 	  }
         fclose (in);
      }
-   bpl = (mem.mtotal + h - 1) / h;
+   bpl = (mem.mtotal + (h - regnum) - 1) / (h - regnum);
    y = 0;
-   for (i = 0, l = mem.regs; l; l = l->next, i++)
-     {
-	MemReg *reg;
-
-	reg = l->data;
-	reg->h = ((reg->size * h) + bpl - 1) / mem.mtotal;
-	reg->y = y;
-	y += reg->h;
-	if (i & 0x1)
-	  gdk_draw_rectangle(pixmap,
-			     widget->style->base_gc[GTK_STATE_INSENSITIVE],
-			     TRUE,
-			     0, reg->y, w, reg->h);
-     }
    mem.bpp = (bpl + w - 1) / w;
    if (mem.bpp < 1) mem.bpp = 1;
-
+     {
+        gchar buffer[1024];
+        FILE *in;
+        
+        snprintf(buffer, 1023, "/proc/%d/pagemap", pwin->process->pid);
+        in = fopen(buffer, "rb");
+        for (i = 0, l = mem.regs; l; l = l->next, i++)
+          {
+             MemReg *reg;
+             
+             reg = l->data;
+             reg->h = ((reg->size * (h - regnum)) + bpl - 1) / mem.mtotal;
+             reg->y = y;
+             y += reg->h;
+             y += 1;
+             if (i & 0x1)
+               gdk_draw_rectangle(pixmap,
+                                  gc_bg2,
+                                  TRUE,
+                                  0, reg->y, w, reg->h);
+             else
+               gdk_draw_rectangle(pixmap,
+                                  gc_bg,
+                                  TRUE,
+                                  0, reg->y, w, reg->h);
+             gdk_draw_rectangle(pixmap,
+                                gc_divider,
+                                TRUE,
+                                0, reg->y + reg->h, w, 1);
+             if (in)
+               {
+                  guint64 j, pos;
+                  
+                  pos = ((guint64)(reg->start) >> 12) << 3;
+                  fseek(in, pos, SEEK_SET);
+                  for (j = 0; j < (reg->size >> 12); j++)
+                    {
+                       guint64 bpp, memw;
+                       guint64 addr;
+                       guint64 info;
+                       guint swapped, present;
+                       guint64 x, y, w;
+                       GdkGC *gc;
+                       
+                       fread(&info, sizeof(guint64), 1, in);
+                       swapped = (info & (((guint64)1) << 62)) >> 62;
+                       present = (info & (((guint64)1) << 63)) >> 63;
+                       if ((!present) && (!swapped)) continue;
+                       bpp = mem.bpp;
+                       addr = ((guint64)j) << 12;
+                       w = (guint64)(addr + (1 << 12) + (bpp / 2)) / bpp;
+                       x = (guint64)(addr) / bpp;
+                       w -= x;
+                       memw = mem.w;
+                       y = reg->y + (x / memw);
+                       x -= (y * memw);
+                       if (!swapped)
+                         {
+                            gc = gc_present;
+                            gdk_draw_rectangle(pixmap, gc, TRUE, x, y, w, 1);
+                            if ((x + w) > mem.w)
+                              gdk_draw_rectangle(pixmap, gc, TRUE, 0, y + 1, w - (memw - x), 1);
+                         }
+                    }
+               }
+          }
+        if (in) fclose(in);
+     }
+   
    g_hash_table_foreach(pwin->process->block_table,
 			dw_draw_memmap_foreach,
 			&mem);
-
-   for (l = mem.regs; l; l = l->next) g_free(l->data);
+     {
+        gchar buffer[1024];
+        FILE *in;
+        
+        snprintf(buffer, 1023, "/proc/%d/pagemap", pwin->process->pid);
+        in = fopen(buffer, "rb");
+        y = 0;
+        for (i = 0, l = mem.regs; l; l = l->next, i++)
+          {
+             MemReg *reg;
+             
+             reg = l->data;
+             reg->h = ((reg->size * (h - regnum)) + bpl - 1) / mem.mtotal;
+             reg->y = y;
+             y += reg->h;
+             y += 1;
+             if (in)
+               {
+                  guint64 j, pos;
+                  
+                  pos = ((guint64)(reg->start) >> 12) << 3;
+                  fseek(in, pos, SEEK_SET);
+                  for (j = 0; j < (reg->size >> 12); j++)
+                    {
+                       guint64 bpp, memw;
+                       guint64 addr;
+                       guint64 info;
+                       guint swapped, present;
+                       guint64 x, y, w;
+                       GdkGC *gc;
+                       
+                       fread(&info, sizeof(guint64), 1, in);
+                       swapped = (info & (((guint64)1) << 62)) >> 62;
+                       if (swapped)
+                         {
+                            present = (info & (((guint64)1) << 63)) >> 63;
+                            bpp = mem.bpp;
+                            addr = ((guint64)j) << 12;
+                            w = (guint64)(addr + (1 << 12) + (bpp / 2)) / bpp;
+                            x = (guint64)(addr) / bpp;
+                            w -= x;
+                            memw = mem.w;
+                            y = reg->y + (x / memw);
+                            x -= (y * memw);
+                            gc = gc_swapped;
+                            gdk_draw_rectangle(pixmap, gc, TRUE, x, y, w, 1);
+                            if ((x + w) > mem.w)
+                              gdk_draw_rectangle(pixmap, gc, TRUE, 0, y + 1, w - (memw - x), 1);
+                         }
+                       
+                    }
+               }
+             gtk_draw_string(widget->style,
+                             pixmap,
+                             GTK_STATE_NORMAL,
+                             0 + 5, reg->y + reg->h - 5,
+                             reg->file);
+          }
+        if (in) fclose(in);
+     }
+   for (l = mem.regs; l; l = l->next)
+     {
+        MemReg *reg;
+        
+        reg = l->data;
+        g_free(reg->file);
+        g_free(reg);
+     }
    g_list_free(mem.regs);
 
    gdk_draw_pixmap(widget->window,
 		   widget->style->fg_gc[GTK_WIDGET_STATE(widget)],
 		   pixmap, 0, 0, 0, 0, w, h);
+   
+   gdk_gc_unref(gc_none);
+   gdk_gc_unref(gc_bg);
+   gdk_gc_unref(gc_bg2);
+   gdk_gc_unref(gc_mem);
+   gdk_gc_unref(gc_mem2);
+   gdk_gc_unref(gc_swapped);
+   gdk_gc_unref(gc_present);
+   gdk_gc_unref(gc_0);
+   gdk_gc_unref(gc_1);
    gdk_pixmap_unref(pixmap);
+   gdk_pixmap_unref(stip);
 }
 
 gboolean
