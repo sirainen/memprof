@@ -133,7 +133,7 @@ dw_draw_memmap_foreach(gpointer key, gpointer value, gpointer data)
    guint64 x, y, w, i;
    GdkPixmap *pixmap;
    GdkGC *gc;
-   guint64 addr;
+   gsize addr;
    guint64 bpp, memw;
    GList *l;
    MemReg *reg;
@@ -142,17 +142,17 @@ dw_draw_memmap_foreach(gpointer key, gpointer value, gpointer data)
    mem = data;
    block = value;
    bpp = mem->bpp;
-   addr = (guint64)block->addr;
+   addr = GPOINTER_TO_SIZE(block->addr);
    for (i = 0, l = mem->regs; l; l = l->next, i++)
      {
 	reg = l->data;
-	if ((addr >= (guint64)reg->start) && 
-	    (addr < (guint64)(reg->start + reg->size)))
+	if ((addr >= GPOINTER_TO_SIZE(reg->start)) &&
+	    (addr < GPOINTER_TO_SIZE(reg->start + reg->size)))
 	  break;
 	reg = NULL;
      }
    if (!reg) return;
-   addr = addr - (guint64)reg->start;
+   addr = addr - GPOINTER_TO_SIZE(reg->start);
    w = (guint64)(addr + block->size + (bpp / 2)) / bpp;
    x = (guint64)(addr) / bpp;
    w -= x;
@@ -330,7 +330,7 @@ dw_draw_memmap(ProcessWindow *pwin)
                {
                   guint64 j, pos;
                   
-                  pos = ((guint64)(reg->start) >> 12) << 3;
+                  pos = (GPOINTER_TO_SIZE(reg->start) >> 12) << 3;
                   fseek(in, pos, SEEK_SET);
                   for (j = 0; j < (reg->size >> 12); j++)
                     {
@@ -341,7 +341,9 @@ dw_draw_memmap(ProcessWindow *pwin)
                        guint64 x, y, w;
                        GdkGC *gc;
                        
-                       fread(&info, sizeof(guint64), 1, in);
+                       if (fread(&info, sizeof(guint64), 1, in) != 1)
+                         continue;
+
                        swapped = (info & (((guint64)1) << 62)) >> 62;
                        present = (info & (((guint64)1) << 63)) >> 63;
                        if ((!present) && (!swapped)) continue;
@@ -389,7 +391,7 @@ dw_draw_memmap(ProcessWindow *pwin)
                {
                   guint64 j, pos;
                   
-                  pos = ((guint64)(reg->start) >> 12) << 3;
+                  pos = (GPOINTER_TO_SIZE(reg->start) >> 12) << 3;
                   fseek(in, pos, SEEK_SET);
                   for (j = 0; j < (reg->size >> 12); j++)
                     {
@@ -400,7 +402,9 @@ dw_draw_memmap(ProcessWindow *pwin)
                        guint64 x, y, w;
                        GdkGC *gc;
                        
-                       fread(&info, sizeof(guint64), 1, in);
+                       if (fread(&info, sizeof(guint64), 1, in) != 1)
+                          continue;
+
                        swapped = (info & (((guint64)1) << 62)) >> 62;
                        if (swapped)
                          {
