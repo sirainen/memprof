@@ -62,6 +62,7 @@ struct _ProcessWindow {
 	GtkWidget *time_graph;
 	GtkWidget *mem_map;
 	guint memstats[MEMSTATS][2];
+	gboolean draw_memmap;
 };
 
 void tree_window_show   (void);

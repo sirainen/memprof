@@ -952,6 +952,7 @@ static void
 init_process (ProcessWindow *pwin, MPProcess *process)
 {
 	pwin->process = process;
+	pwin->draw_memmap = TRUE;
 
 	process_set_follow_fork (pwin->process, default_follow_fork);
 	process_set_follow_exec (pwin->process, default_follow_exec);
@@ -1193,6 +1194,15 @@ generate_profile_cb (GtkWidget *widget)
 
 		gtk_notebook_set_current_page (GTK_NOTEBOOK (pwin->main_notebook), 0);
 	}
+}
+
+void
+draw_memmap_toggled_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = pwin_from_widget (widget);
+	pwin->draw_memmap = gtk_toggle_tool_button_get_active
+			(GTK_TOGGLE_TOOL_BUTTON (widget));
+	dw_update(pwin);
 }
 
 void

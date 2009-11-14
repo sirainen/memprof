@@ -181,6 +181,11 @@ dw_draw_memmap(ProcessWindow *pwin)
    gint regnum = 0;
    GdkGC *gc_none, *gc_bg, *gc_bg2, *gc_mem, *gc_mem2, *gc_swapped, *gc_present, *gc_divider, *gc_0, *gc_1;
    
+
+   /* disabled */
+   if (!pwin->draw_memmap)
+     return FALSE;
+
    widget = pwin->mem_map;
    w = widget->allocation.width;
    h = widget->allocation.height;
