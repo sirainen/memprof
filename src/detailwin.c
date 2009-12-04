@@ -184,7 +184,7 @@ dw_draw_memmap(ProcessWindow *pwin)
 
    /* disabled */
    if (!pwin->draw_memmap)
-     return FALSE;
+     return;
 
    widget = pwin->mem_map;
    w = widget->allocation.width;
