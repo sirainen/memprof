@@ -36,7 +36,7 @@
 
 /* If USE_SOCKET_DIRECTORY is defined, then the temporary sockets will
  * be created as /tmp/memprof.UID/server.PID. Otherwise, they will
- * be created as /tmp/memprof.XXXXXX. Despite calling mktemp(), the
+ * be created as /tmp/memprof.XXXXXX. Despite calling mkstemp(), the
  * latter should be completely safe, because unix domain socket creation
  * will fail with EADDRINUSE if the file already exists.
  */
@@ -435,8 +435,8 @@ create_control_socket (MPServer *server)
 		
 #else  /* !USE_SOCKET_DIRECTORY */
 	server->socket_path = g_build_filename (g_get_tmp_dir(), SOCKET_TEMPLATE, NULL);
-	if (strlen(mktemp (server->socket_path)) == 0)
-		fatal ("mktemp: %s\n", g_strerror (errno));
+	if (mkstemp (server->socket_path) == -1)
+		fatal ("mkstemp: %s\n", g_strerror (errno));
 #endif /* USE_SOCKET_DIRECTORY */
 
 	strncpy (addr.sun_path, server->socket_path, sizeof (addr.sun_path));
