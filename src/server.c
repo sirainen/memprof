@@ -418,10 +418,11 @@ create_control_socket (MPServer *server)
 		}
 
 	} else if (errno == ENOENT) {
-		if (mkdir (tmpdir, 0700) != 0) { 
-			if (errno == EEXIST)
+		if (mkdir (tmpdir, 0700) != 0) {
+			if (errno == EEXIST) {
+				g_warning ("memprof: '%s' tmpdir already exists.\n", tmpdir);
 				goto retry;
-			else
+			} else
 				fatal ("memprof: Cannot create %s, %d", tmpdir, g_strerror (errno));
 		}
 	} else
@@ -445,9 +446,10 @@ create_control_socket (MPServer *server)
 		addrlen = sizeof(addr);
 
 	if (bind (server->socket_fd, (struct sockaddr *)&addr, addrlen) < 0) {
-		if (errno == EADDRINUSE)
+		if (errno == EADDRINUSE) {
+                        g_warning ("memprof: Binding failed in '%s' with address in use.\n", addr.sun_path);
 			goto retry;
-		else
+		} else
 			fatal ("bind: %s\n", g_strerror (errno));
 	}
 
