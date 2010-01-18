@@ -390,7 +390,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 	GPtrArray *caller_list;
 	ProfileDescendantTree *descendant_tree;
 	int i;
-	int n_samples = pwin->profile->n_bytes;
+	int n_samples;
 	int old_sort_column;
 	GtkSortType old_sort_type;
 	gboolean was_sorted;
@@ -401,6 +401,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 		return;
 	}
 
+	n_samples = pwin->profile->n_bytes;
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &selected,
 			    PROFILE_FUNC_FUNC, &func,
 			    -1);
