@@ -1101,7 +1101,8 @@ save_leak_cb (GtkWidget *widget)
 		filename = get_filename ("Save Leak Report",
 					 suggestion ? suggestion : "memprof.leak");
 		if (filename) {
-			g_free (suggestion);
+			if (suggestion) 
+				g_free (suggestion);
 			suggestion = filename;
 			
 			leaks_print (pwin->process, pwin->leaks, filename);
@@ -1122,7 +1123,8 @@ save_profile_cb (GtkWidget *widget)
 		filename = get_filename ("Save Profile",
 					 suggestion ? suggestion : "memprof.out");
 		if (filename) {
-			g_free (suggestion);
+			if (suggestion)
+				g_free (suggestion);
 			suggestion = filename;
 			
 			profile_write (pwin->profile, filename);
