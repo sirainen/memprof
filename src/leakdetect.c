@@ -21,6 +21,7 @@
 /*====*/
 
 #include <sys/mman.h>
+#include <ctype.h>
 #include <errno.h>
 #include <fcntl.h>
 #include <signal.h>
@@ -396,7 +397,7 @@ leaks_find (MPProcess *process)
 		/* Wait for the processes we are tracing to actually stop */
 
 		/* waitpid(clone->pid, &status, WUNTRACED); */
-		while (process_status (clone->pid) != 'T') {
+		while (tolower(process_status (clone->pid)) != 't') {
 			usleep(50000);
 		}
 
