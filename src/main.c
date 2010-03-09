@@ -1752,6 +1752,7 @@ initialize_skip_funcs ()
 	skip_funcs = g_slist_append (skip_funcs, "g_strndup");
 	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc");
 	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc0");
+	skip_funcs = g_slist_append (skip_funcs, "g_memdup");
 	skip_funcs = g_slist_append (skip_funcs, "strdup");
 	skip_funcs = g_slist_append (skip_funcs, "strndup");
 	skip_funcs = g_slist_append (skip_funcs, "_Znwj");
