@@ -1742,9 +1742,14 @@ initialize_skip_funcs ()
 {
 	gint i = 0;
 
+	/* C library functions */
 	skip_funcs = g_slist_append (skip_funcs, "malloc");
 	skip_funcs = g_slist_append (skip_funcs, "calloc");
 	skip_funcs = g_slist_append (skip_funcs, "realloc");
+	skip_funcs = g_slist_append (skip_funcs, "strdup");
+	skip_funcs = g_slist_append (skip_funcs, "strndup");
+
+	/* glib */
 	skip_funcs = g_slist_append (skip_funcs, "g_malloc");
 	skip_funcs = g_slist_append (skip_funcs, "g_malloc0");
 	skip_funcs = g_slist_append (skip_funcs, "g_realloc");
@@ -1753,12 +1758,22 @@ initialize_skip_funcs ()
 	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc");
 	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc0");
 	skip_funcs = g_slist_append (skip_funcs, "g_memdup");
-	skip_funcs = g_slist_append (skip_funcs, "strdup");
-	skip_funcs = g_slist_append (skip_funcs, "strndup");
+
+	/* C++/STL */
 	skip_funcs = g_slist_append (skip_funcs, "_Znwj");
+
+	/* WebKit */
 	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF16fastZeroedMallocEj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF10fastStrDupEPKc");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF10fastCallocEjj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF10fastMallocEj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF11fastReallocEPvj");
+
+	/* Qt */
 	skip_funcs = g_slist_append (skip_funcs, "_Z7qMallocj");
 	skip_funcs = g_slist_append (skip_funcs, "_Z8qReallocPvj");
+
+	/* Harfbuzz */
 	skip_funcs = g_slist_append (skip_funcs, "_hb_alloc");
 
 	while (profile_skip_funcs && profile_skip_funcs [i]) {
