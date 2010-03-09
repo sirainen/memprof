@@ -1742,6 +1742,9 @@ initialize_skip_funcs ()
 {
 	gint i = 0;
 
+	skip_funcs = g_slist_append (skip_funcs, "malloc");
+	skip_funcs = g_slist_append (skip_funcs, "calloc");
+	skip_funcs = g_slist_append (skip_funcs, "realloc");
 	skip_funcs = g_slist_append (skip_funcs, "g_malloc");
 	skip_funcs = g_slist_append (skip_funcs, "g_malloc0");
 	skip_funcs = g_slist_append (skip_funcs, "g_realloc");
