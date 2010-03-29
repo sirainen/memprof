@@ -4,7 +4,7 @@
  * Copyright 1999, 2000, 2001, Red Hat, Inc.
  * Copyright 2002, Kristian Rietveld
  * Copyright 2002, Soeren Sandmann (sandmann@daimi.au.dk)
- * Copyright 2009, Holger Hans Peter Fryther
+ * Copyright 2009, 2010, Holger Hans Peter Fryther
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1875,8 +1875,14 @@ main(int argc, char **argv)
 
        gtk_widget_show (initial_window->main_window);
 
-       if (argc > 1)
-	       run_file (initial_window, (char **)(argv + 1));
+       if (argc > 1) {
+               /* skip over -- */
+               gint start = 1;
+               if (strcmp (argv[start], "--") == 0)
+                    start = 2;
+
+	       run_file (initial_window, (char **)(argv + start));
+       }
 
        gtk_main ();
 
