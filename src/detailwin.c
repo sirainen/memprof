@@ -44,17 +44,26 @@
 static void
 dw_draw_memstats(ProcessWindow *pwin)
 {
+   GtkAllocation allocation;
+   GdkWindow *window;
    GtkWidget *widget;
+   GtkStyle *style;
    GdkPixmap *pixmap;
+   GtkStateType state;
    gint64 i, j, x, y, w, h, hh;
 
    widget = pwin->time_graph;
-   w = widget->allocation.width;
-   h = widget->allocation.height;
-   if (!widget->window) return;
-   pixmap = gdk_pixmap_new(widget->window, w, h, -1);
+   window = gtk_widget_get_window (widget);
+   if (!window)
+       return;
+
+   style = gtk_widget_get_style (widget);
+   gtk_widget_get_allocation(widget, &allocation);
+   w = allocation.width;
+   h = allocation.height;
+   pixmap = gdk_pixmap_new(gtk_widget_get_window (widget), w, h, -1);
    gdk_draw_rectangle(pixmap,
-		      widget->style->base_gc[GTK_STATE_NORMAL],
+		      style->base_gc[GTK_STATE_NORMAL],
 		      TRUE,
 		      0, 0, w, h);
    for (i = 0; i < MEMSTATS; i++)
@@ -67,7 +76,7 @@ dw_draw_memstats(ProcessWindow *pwin)
 	  hh = 0;
 	y = h - hh;
 	gdk_draw_rectangle(pixmap,
-			   widget->style->base_gc[GTK_STATE_SELECTED],
+			   style->base_gc[GTK_STATE_SELECTED],
 			   TRUE,
 			   x, y, 1, hh);
 	if (pwin->usage_high > 0)
@@ -76,7 +85,7 @@ dw_draw_memstats(ProcessWindow *pwin)
 	  hh = 0;
 	y = h - hh;
 	gdk_draw_rectangle(pixmap,
-			   widget->style->text_gc[GTK_STATE_NORMAL],
+			   style->text_gc[GTK_STATE_NORMAL],
 			   TRUE,
 			   x, y, 1, hh);
      }
@@ -85,7 +94,7 @@ dw_draw_memstats(ProcessWindow *pwin)
 	GdkGC *gc;
 
 	gc = gdk_gc_new(pixmap);
-	gdk_gc_copy(gc, widget->style->dark_gc[GTK_STATE_NORMAL]);
+	gdk_gc_copy(gc, style->dark_gc[GTK_STATE_NORMAL]);
 	gdk_gc_set_line_attributes(gc, 0, GDK_LINE_ON_OFF_DASH,
 				   GDK_CAP_BUTT, GDK_JOIN_MITER);
 	for (j = 0, i = 0; i < pwin->usage_high; i += (256 * 1024), j++)
@@ -93,7 +102,7 @@ dw_draw_memstats(ProcessWindow *pwin)
 	     if (j > 3) j = 0;
 	     y = h - ((i * h) / pwin->usage_high);
 	     if (j == 0)
-	       gdk_draw_line(pixmap, widget->style->dark_gc[GTK_STATE_NORMAL],
+	       gdk_draw_line(pixmap, style->dark_gc[GTK_STATE_NORMAL],
 			     0, y, w, y);
 	     else
 	       gdk_draw_line(pixmap, gc,
@@ -101,8 +110,10 @@ dw_draw_memstats(ProcessWindow *pwin)
 	  }
 	gdk_gc_unref(gc);
      }
-   gdk_draw_pixmap(widget->window,
-		   widget->style->fg_gc[GTK_WIDGET_STATE(widget)],
+
+   state = gtk_widget_get_state (widget);
+   gdk_draw_pixmap(gtk_widget_get_window (widget),
+		   gtk_widget_get_style (widget)->fg_gc[state],
 		   pixmap, 0, 0, 0, 0, w, h);
    gdk_pixmap_unref(pixmap);
 }
@@ -172,7 +183,11 @@ dw_draw_memmap_foreach(gpointer key, gpointer value, gpointer data)
 static void
 dw_draw_memmap(ProcessWindow *pwin)
 {
+   GtkAllocation allocation;
+   GdkWindow *window;
    GtkWidget *widget;
+   GtkStyle *style;
+   GtkStateType state;
    GdkPixmap *pixmap, *stip;
    guint64 w, h, y, bpl, i;
    Mem mem;
@@ -187,11 +202,15 @@ dw_draw_memmap(ProcessWindow *pwin)
      return;
 
    widget = pwin->mem_map;
-   w = widget->allocation.width;
-   h = widget->allocation.height;
-   if (!widget->window) return;
-   pixmap = gdk_pixmap_new(widget->window, w, h, -1);
-   stip = gdk_pixmap_new(widget->window, 2, 2, 1);
+   window = gtk_widget_get_window (widget);
+   if (!window) return;
+
+   style = gtk_widget_get_style (widget);
+   gtk_widget_get_allocation(widget, &allocation);
+   w = allocation.width;
+   h = allocation.height;
+   pixmap = gdk_pixmap_new(window, w, h, -1);
+   stip = gdk_pixmap_new(window, 2, 2, 1);
    
    gc_none = gdk_gc_new(pixmap);
    gc_bg = gdk_gc_new(pixmap);
@@ -430,7 +449,7 @@ dw_draw_memmap(ProcessWindow *pwin)
                        
                     }
                }
-             gtk_draw_string(widget->style,
+             gtk_draw_string(style,
                              pixmap,
                              GTK_STATE_NORMAL,
                              0 + 5, reg->y + reg->h - 5,
@@ -448,8 +467,9 @@ dw_draw_memmap(ProcessWindow *pwin)
      }
    g_list_free(mem.regs);
 
-   gdk_draw_pixmap(widget->window,
-		   widget->style->fg_gc[GTK_WIDGET_STATE(widget)],
+   state = gtk_widget_get_state (widget);
+   gdk_draw_pixmap(window,
+		   style->fg_gc[state],
 		   pixmap, 0, 0, 0, 0, w, h);
    
    gdk_gc_unref(gc_none);

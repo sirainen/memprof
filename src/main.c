@@ -125,17 +125,20 @@ static void
 draw_bar (GtkWidget *widget, int red, int green, int blue,
 	  int size)
 {
-	GdkGC *gc = gdk_gc_new (widget->window);
+	GtkAllocation allocation;
+	GdkWindow *window = gtk_widget_get_window (widget);
+	GdkGC *gc = gdk_gc_new (window);
  	GdkColor color;
 
 	color.red = red;
 	color.green = green;
 	color.blue = blue;
 
+	gtk_widget_get_allocation (widget, &allocation);
 	gdk_gc_set_rgb_fg_color (gc, &color);
 
-	gdk_draw_rectangle (widget->window, gc, TRUE,
-			    0, 0, size, widget->allocation.height);
+	gdk_draw_rectangle (window, gc, TRUE,
+			    0, 0, size, allocation.height);
 
 	color.red = 0;
 	color.green = 0;
@@ -143,8 +146,8 @@ draw_bar (GtkWidget *widget, int red, int green, int blue,
 	
 	gdk_gc_set_rgb_fg_color (gc, &color);
 
-	gdk_draw_rectangle (widget->window, gc, FALSE,
-			    0, 0, size - 1, widget->allocation.height - 1);
+	gdk_draw_rectangle (window, gc, FALSE,
+			    0, 0, size - 1, allocation.height - 1);
 	
 	g_object_unref (gc);
 }
@@ -153,6 +156,7 @@ static gboolean
 on_usage_area_expose (GtkWidget *widget, GdkEvent *event,
 		      gpointer data)
 {
+	GtkAllocation allocation;
 	ProcessWindow *pwin = data;
 	int width;
 	int bytes_used;
@@ -160,7 +164,8 @@ on_usage_area_expose (GtkWidget *widget, GdkEvent *event,
 	int high_size;
 	int current_size;
 
-	width = widget->allocation.width;
+	gtk_widget_get_allocation (widget, &allocation);
+	width = allocation.width;
 
 	/* background */
 	draw_bar (widget, 0xffff, 0xffff, 0xffff, width);
@@ -836,10 +841,11 @@ pwin_from_widget (GtkWidget *widget)
 	GtkWidget *app;
 
 	if (GTK_IS_MENU_ITEM (widget)) {
-		GtkWidget *menu_shell = widget->parent;
+		GtkWidget *menu_shell = gtk_widget_get_parent (widget);
 
 		while (menu_shell && !GTK_IS_MENU_BAR (menu_shell)) {
-			menu_shell = gtk_menu_get_attach_widget (GTK_MENU (menu_shell))->parent;
+			menu_shell = gtk_menu_get_attach_widget (GTK_MENU (menu_shell));
+			menu_shell = gtk_widget_get_parent (menu_shell);
 		}
 		g_assert (menu_shell != NULL);
 
@@ -1454,7 +1460,7 @@ set_default_size (GtkWindow *window)
 	GtkWidget *widget = GTK_WIDGET (window);
 	
 	screen = gtk_widget_get_screen (widget);
-	monitor_num = gdk_screen_get_monitor_at_window (screen, widget->window);
+	monitor_num = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window (widget));
 	
 	gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
 	
@@ -1590,7 +1596,7 @@ process_window_get_process (ProcessWindow *pwin)
 gboolean
 process_window_visible (ProcessWindow *pwin)
 {
-	return GTK_WIDGET_VISIBLE (pwin->main_window);
+	return gtk_widget_get_visible (pwin->main_window);
 }
 
 void
@@ -1599,7 +1605,7 @@ process_window_show (ProcessWindow *pwin)
 	if (!process_window_visible (pwin))
 		gtk_widget_show (pwin->main_window);
 	else
-		gdk_window_show (pwin->main_window->window);
+		gdk_window_show (gtk_widget_get_window (pwin->main_window));
 }
 
 void
@@ -1616,7 +1622,7 @@ check_quit (void)
 	
 	tmplist = toplevels = gtk_window_list_toplevels ();
 	while (tmplist) {
-		if (GTK_WIDGET_VISIBLE (toplevels->data))
+		if (gtk_widget_get_visible (toplevels->data))
 			return;
 		tmplist = tmplist->next;
 	}
@@ -1787,9 +1793,13 @@ main(int argc, char **argv)
 {
        ProcessWindow *initial_window;
        
+
+        printf("befor argc: %d\n", argc);
        gtk_init (&argc, &argv);
        
        parse_options (&argc, &argv);
+        printf("after argc: %d\n", argc);
+
 	
        /* Set up a handler for SIGCHLD to avoid zombie children
 	*/
