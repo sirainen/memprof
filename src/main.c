@@ -1797,11 +1797,9 @@ main(int argc, char **argv)
        ProcessWindow *initial_window;
        
 
-        printf("befor argc: %d\n", argc);
        gtk_init (&argc, &argv);
        
        parse_options (&argc, &argv);
-        printf("after argc: %d\n", argc);
 
 	
        /* Set up a handler for SIGCHLD to avoid zombie children
