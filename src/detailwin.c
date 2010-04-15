@@ -108,14 +108,14 @@ dw_draw_memstats(ProcessWindow *pwin)
 	       gdk_draw_line(pixmap, gc,
 			     0, y, w, y);
 	  }
-	gdk_gc_unref(gc);
+	g_object_unref(gc);
      }
 
    state = gtk_widget_get_state (widget);
-   gdk_draw_pixmap(gtk_widget_get_window (widget),
+   gdk_draw_drawable(gtk_widget_get_window (widget),
 		   gtk_widget_get_style (widget)->fg_gc[state],
 		   pixmap, 0, 0, 0, 0, w, h);
-   gdk_pixmap_unref(pixmap);
+   g_object_unref(pixmap);
 }
 
 typedef struct _Mem
@@ -468,21 +468,21 @@ dw_draw_memmap(ProcessWindow *pwin)
    g_list_free(mem.regs);
 
    state = gtk_widget_get_state (widget);
-   gdk_draw_pixmap(window,
-		   style->fg_gc[state],
-		   pixmap, 0, 0, 0, 0, w, h);
+   gdk_draw_drawable(window,
+		     style->fg_gc[state],
+		     pixmap, 0, 0, 0, 0, w, h);
    
-   gdk_gc_unref(gc_none);
-   gdk_gc_unref(gc_bg);
-   gdk_gc_unref(gc_bg2);
-   gdk_gc_unref(gc_mem);
-   gdk_gc_unref(gc_mem2);
-   gdk_gc_unref(gc_swapped);
-   gdk_gc_unref(gc_present);
-   gdk_gc_unref(gc_0);
-   gdk_gc_unref(gc_1);
-   gdk_pixmap_unref(pixmap);
-   gdk_pixmap_unref(stip);
+   g_object_unref(gc_none);
+   g_object_unref(gc_bg);
+   g_object_unref(gc_bg2);
+   g_object_unref(gc_mem);
+   g_object_unref(gc_mem2);
+   g_object_unref(gc_swapped);
+   g_object_unref(gc_present);
+   g_object_unref(gc_0);
+   g_object_unref(gc_1);
+   g_object_unref(pixmap);
+   g_object_unref(stip);
 }
 
 gboolean
