@@ -919,6 +919,12 @@ process_kill (MPProcess *process)
 	}
 }
 
+gboolean
+process_is_recording (MPProcess *process)
+{
+	return process->input_tag;
+}
+
 typedef struct {
 	MPProcessBlockForeachFunc foreach_func;
 	gpointer data;

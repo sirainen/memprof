@@ -1187,9 +1187,11 @@ generate_leak_cb (GtkWidget *widget)
 void
 generate_profile_cb (GtkWidget *widget)
 {
+	gboolean was_recording;
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
 	if (pwin->process) {
+		was_recording = process_is_recording (pwin->process);
 		process_stop_input (pwin->process);
 
 		if (pwin->profile) {
@@ -1198,7 +1200,8 @@ generate_profile_cb (GtkWidget *widget)
 		}
 
 		pwin->profile = profile_create (pwin->process, skip_funcs);
-		process_start_input (pwin->process);
+		if (was_recording)
+			process_start_input (pwin->process);
 		profile_fill (pwin);
 
 		gtk_notebook_set_current_page (GTK_NOTEBOOK (pwin->main_notebook), 0);

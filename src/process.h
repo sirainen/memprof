@@ -137,5 +137,6 @@ void  process_block_foreach (MPProcess                *process,
 gboolean    process_find_line (MPProcess *process, void *address,
 			       const char **filename, char **functionname,
 			       unsigned int *line);
+gboolean    process_is_recording    (MPProcess          *process);
 
 #endif /* __PROCESS_H__ */
