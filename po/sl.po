@@ -1,30 +1,31 @@
-# Slovenian translation file for memprof
+# Slovenian translation file for memprof.
 # Copyright (C) 2000 Free Software Foundation, Inc.
+# This file is distributed under the same license as the memprof package.
 #
-#
-# Andraz Tori <andraz.tori1@guest.arnes.si>, 2000.
-# Matej Urbančič <matej.urban@gmail.com>, 2007
+# Andraž Tori <andraz.tori1@guest.arnes.si>, 2000.
+# Matej Urbančič <mateju@svn.gnome.org>, 2007 - 2010.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: memprof\n"
+"Project-Id-Version: memprof master\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2007-09-17 13:25+0100\n"
-"PO-Revision-Date: 2007-10-21 09:25+0100\n"
-"Last-Translator: Matej Urbančič <matej.urban@gmail.com>\n"
-"Language-Team: Slovenian <sl@li.org>\n"
+"PO-Revision-Date: 2010-05-30 11:30+0100\n"
+"Last-Translator: Matej Urbančič <mateju@svn.gnome.org>\n"
+"Language-Team: Slovenian GNOME Translation Team <gnome-si@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 1 : n%100==2 ? 2 : n%100==3 || n%100==4 ? 3 : 0);\n"
+"X-Poedit-Country: SLOVENIA\n"
 "X-Poedit-Language: Slovenian\n"
-"X-Poedit-Country: Slovenia\n"
+"X-Poedit-SourceCharset: utf-8\n"
 
 #: ../leakdetect.c:496
 #: ../profile.c:702
 #, c-format
 msgid "Cannot open output file: %s\n"
-msgstr "Ni mogoče odpreti izhodne datoteke: %s\n"
+msgstr "Ni mogoče odpreti odvodne datoteke: %s\n"
 
 #: ../main.c:838
 #, c-format
@@ -61,7 +62,7 @@ msgstr "Samo"
 #: ../main.c:1424
 #: ../main.c:1459
 msgid "Total"
-msgstr "Skupaj"
+msgstr "Skupno"
 
 #: ../main.c:1439
 msgid "Descendants"
@@ -73,7 +74,7 @@ msgstr "Združevalno"
 
 #: ../main.c:1457
 msgid "Callers"
-msgstr "Klicalnik"
+msgstr "Klicalniki"
 
 #: ../main.c:1484
 msgid "Address"
@@ -101,23 +102,23 @@ msgstr "Datoteka"
 
 #: ../main.c:1710
 msgid "Really detach from finished process?"
-msgstr "Ali naj se zares odklopi od končanega procesa?"
+msgstr "Ali naj se zares odklopi od končanega opravila?"
 
 #: ../main.c:1712
 msgid "Really detach from running process?"
-msgstr "Ali naj se zares odklopi od procesa v teku?"
+msgstr "Ali naj se zares odklopi od dejavnega opravila?"
 
 #: ../main.c:1742
 msgid "Really kill running process?"
-msgstr "Ali naj se ubije proces v teku?"
+msgstr "Ali naj se uniči dejavno opravilo?"
 
 #: ../main.c:1777
 msgid "Create new windows for forked processes"
-msgstr "Ustvari nova okna za razvejene procese"
+msgstr "Ustvari nova okna za razvejena opravila"
 
 #: ../main.c:1779
 msgid "Retain windows for processes after exec()"
-msgstr "Ohrani okna za procese po exec()"
+msgstr "Ohrani okna za opravila po exec()"
 
 #: ../main.c:1781
 msgid "Type of profiling information to collect"
@@ -137,7 +138,7 @@ msgstr "Ni mogoče najti memprof.glade"
 
 #: ../memprof.glade.h:1
 msgid "# of Allocations: "
-msgstr "# dodelitev:"
+msgstr "# dodelitev: "
 
 #: ../memprof.glade.h:2
 msgid "0"
@@ -153,19 +154,19 @@ msgstr "32k"
 
 #: ../memprof.glade.h:5
 msgid "Adding Skip Function"
-msgstr "Dodajam prezrto funkcijo"
+msgstr "Dodajanje prezrte funkcijo"
 
 #: ../memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
-msgstr "Dodajam prezrt regularni izraz"
+msgstr "Dodajanje prezrtega logičnega izraza"
 
 #: ../memprof.glade.h:7
 msgid "Bytes / Allocation: "
-msgstr "Bajti / Dodelitve:"
+msgstr "Bajti / Dodelitve: "
 
 #: ../memprof.glade.h:8
 msgid "Check for Leaks"
-msgstr "Preveri za puščanji"
+msgstr "Preveri za puščanja"
 
 #: ../memprof.glade.h:9
 msgid "Command to run on double click in stack trace:"
@@ -206,11 +207,11 @@ msgstr "Ustvari _profil"
 #: ../memprof.glade.h:18
 #: ../tree.c:109
 msgid "Kill"
-msgstr "Ubij"
+msgstr "Uniči"
 
 #: ../memprof.glade.h:19
 msgid "Kill Program"
-msgstr "Ubij program"
+msgstr "Uniči program"
 
 #: ../memprof.glade.h:20
 msgid "Leak Detection Options"
@@ -222,15 +223,15 @@ msgstr "Puščanja"
 
 #: ../memprof.glade.h:22
 msgid "MemProf - Processes"
-msgstr "MemProf - Procesi"
+msgstr "MemProf - Opravila"
 
 #: ../memprof.glade.h:23
 msgid "Preferences"
-msgstr "Nastavitve"
+msgstr "Možnosti"
 
 #: ../memprof.glade.h:24
 msgid "Process _Tree"
-msgstr "_Drevo procesa"
+msgstr "_Ravni opravil"
 
 #: ../memprof.glade.h:25
 msgid "Profile"
@@ -242,15 +243,15 @@ msgstr "Možnosti profila"
 
 #: ../memprof.glade.h:27
 msgid "Record"
-msgstr "Posnemi"
+msgstr "Snemanje"
 
 #: ../memprof.glade.h:28
 msgid "Regular expressions to Skip:"
-msgstr "Regularni izrazi, ki naj bodo prezrti:"
+msgstr "Logični izrazi, ki naj bodo prezrti:"
 
 #: ../memprof.glade.h:29
 msgid "Reset"
-msgstr "Počisti"
+msgstr "Ponastavi"
 
 #: ../memprof.glade.h:30
 msgid "Run"
@@ -274,7 +275,7 @@ msgstr "Shrani poročilo"
 
 #: ../memprof.glade.h:35
 msgid "Save _Leak Info..."
-msgstr "Shrani podatke o p_uščanju..."
+msgstr "Shrani podatke o p_uščanju ..."
 
 #: ../memprof.glade.h:36
 msgid "Save _Profile..."
@@ -286,7 +287,7 @@ msgstr "Sled sklada"
 
 #: ../memprof.glade.h:38
 msgid "Total Bytes: "
-msgstr "Skupaj bajtov:"
+msgstr "Skupaj bajtov: "
 
 #: ../memprof.glade.h:39
 msgid "_About"
@@ -298,7 +299,7 @@ msgstr "_Zapri"
 
 #: ../memprof.glade.h:41
 msgid "_Detach"
-msgstr "_Odklopi"
+msgstr "_Odpni"
 
 #: ../memprof.glade.h:42
 msgid "_File"
@@ -306,19 +307,19 @@ msgstr "_Datoteka"
 
 #: ../memprof.glade.h:43
 msgid "_Help"
-msgstr "_Pomoč"
+msgstr "Pomo_č"
 
 #: ../memprof.glade.h:44
 msgid "_Kill"
-msgstr "_Ubij"
+msgstr "_Uniči"
 
 #: ../memprof.glade.h:45
 msgid "_Process"
-msgstr "_Proces"
+msgstr "_Opravilo"
 
 #: ../memprof.glade.h:46
 msgid "_Quit"
-msgstr "_Izhod"
+msgstr "_Končaj"
 
 #: ../memprof.glade.h:47
 msgid "_Run Program..."
@@ -330,15 +331,15 @@ msgstr "Začetno"
 
 #: ../process.c:846
 msgid "Starting"
-msgstr "Zaganjam"
+msgstr "Začenjanje"
 
 #: ../process.c:849
 msgid "Running"
-msgstr "Teče"
+msgstr "Začeto"
 
 #: ../process.c:852
 msgid "Exiting"
-msgstr "Se zapira"
+msgstr "Končanje"
 
 #: ../process.c:855
 #: ../process.c:858
@@ -360,7 +361,7 @@ msgstr "Skrij"
 
 #: ../tree.c:112
 msgid "Detach"
-msgstr "Odklopi"
+msgstr "Odpni"
 
 #: ../tree.c:180
 msgid "PID"
@@ -374,32 +375,23 @@ msgstr "Ukazna vrstica"
 msgid "Status"
 msgstr "Stanje"
 
-#~ msgid "Really quit MemProf?"
-#~ msgstr "Resničen izhod iz MemProf?"
 #~ msgid "Cannot find libmemintercept.so"
-#~ msgstr "Ne najdem libmemintercept.so"
+#~ msgstr "Ni mogoče najti libmemintercept.so"
 #~ msgid "Add..."
-#~ msgstr "Dodaj..."
+#~ msgstr "Dodaj ..."
 #~ msgid "Bytes"
-#~ msgstr "Bajtov"
+#~ msgstr "Bajti"
 #~ msgid "Children"
-#~ msgstr "Otroci"
+#~ msgstr "Podrejeni"
 #~ msgid "Copyright Red Hat, Inc., 1999-2000"
 #~ msgstr "Avtorske pravice pridržane Red Hat, Inc., 1999-2000"
 #~ msgid "Delete"
-#~ msgstr "Zbriši"
-#~ msgid "Follow _exec()"
-#~ msgstr "Sledi _exec()"
-#~ msgid "Follow _fork()"
-#~ msgstr "Sledi _fork()"
+#~ msgstr "Izbriši"
 #~ msgid "Memory Profiling Tool"
 #~ msgstr "Orodje za profiliranje pomnilnika"
 #~ msgid "_Settings"
 #~ msgstr "_Nastavitve"
 #~ msgid "_Run..."
-#~ msgstr "_Poženi..."
+#~ msgstr "_Zaženi..."
 #~ msgid "Add"
 #~ msgstr "Dodaj"
-#~ msgid "label37"
-#~ msgstr "label37"
-
