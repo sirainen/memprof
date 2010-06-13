@@ -155,7 +155,7 @@ start_itimer_timer (int timer_type)
 #define SIGHANDLER_FRAMES 2
 
 static void
-#if defined (__linux__) && defined (__i386__)
+#if defined (__linux__)
 sigprof_handler (int unused, struct sigcontext ctx)
 #else
 sigprof_handler (int unused)
@@ -169,9 +169,9 @@ sigprof_handler (int unused)
 	info.alloc.new_ptr = NULL;
 	info.alloc.size = 1;
     
-#if defined (__linux__) && defined (__i386__)
-	mi_call_with_signal_backtrace ((void *)ctx.eip, (void *)ctx.ebp, (void *)ctx.esp,
-				       mi_write_stack, &info);
+#if defined (__linux__)
+	mi_call_with_signal_backtrace ((void *)ctx.EIPRIP, (void *)ctx.EBPRBP,
+					(void *)ctx.ESPRSP, mi_write_stack, &info);
 #else
 	mi_call_with_backtrace (SIGHANDLER_FRAMES, saved_pc, mi_write_stack, &info);
 #endif

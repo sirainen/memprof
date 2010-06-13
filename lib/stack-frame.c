@@ -45,7 +45,7 @@
 void
 mi_call_with_backtrace (int to_skip, void callback (int, void **, void *), void *data)
 {
-    int bufsiz = 128, count;
+    int bufsiz = 128, count = 0;
     void **buf;
 	static __thread int in_backtrace = 0;
 
@@ -72,7 +72,7 @@ again:
 
 #define HAVE_FRAME_ACCESSORS
 
-#if defined (__GNUC__) && defined (__i386__)
+#if defined (__GNUC__)
 typedef struct stack_frame_struct stack_frame;
 struct stack_frame_struct {
     stack_frame *next;

@@ -21,7 +21,7 @@
 /*====*/
 
 #include <glib-object.h>
-#include <process.h>
+#include "process.h"
 
 #define MP_TYPE_SERVER            (mp_server_get_type ())
 #define MP_SERVER(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), MP_TYPE_SERVER, MPServer))

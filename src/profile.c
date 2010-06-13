@@ -56,9 +56,9 @@ profile_add_stack_trace (Profile *profile, GList *stack, guint size)
 	StackNode *element = list->data;
 	ProfileNode *match = NULL;
 	const char *symbol =
-	    process_locate_symbol (profile->process, (guint)element->address);
+	    process_locate_symbol (profile->process, GPOINTER_TO_SIZE(element->address));
 	int i;
-	
+
 	for (i = 0; i < roots->len; ++i)
 	{
 	    ProfileNode *node = roots->pdata[i];
@@ -360,7 +360,14 @@ add_leaf_to_tree (ProfileDescendantTree *tree, ProfileNode *leaf, ProfileNode *t
     ProfileNode *node;
     GList *trace = NULL;
     
-    for (node = leaf; node != top->parent; node = node->parent)
+
+    /*
+     * XXX: FIXME: node->parent should always lead to a valid frame
+     * but it does not and more work needs to be done to figure out
+     * why this is the case. This can be easily reproduced with the
+     * GtkLauncher of WebKit/GTK+.
+     */
+    for (node = leaf; node && node != top->parent; node = node->parent)
 	trace = g_list_prepend (trace, node);
     
     add_trace_to_tree (tree->roots, trace, leaf->self);
@@ -694,7 +701,6 @@ void
 profile_write (Profile *profile, const gchar *outfile)
 {
 	FILE *out;
-	int i;
 	GPtrArray *functions;
 
 	out = fopen (outfile, "w");

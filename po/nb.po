@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof 0.5\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2004-09-02 22:23+0200\n"
+"POT-Creation-Date: 2009-10-27 02:54+0100\n"
 "PO-Revision-Date: 2004-01-29 11:08+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@gnome.org>\n"
 "Language-Team: Norwegian <i18n-nb@lister.ping.uio.no>\n"
@@ -14,375 +14,395 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8-bit\n"
 
-#: leakdetect.c:584
+#: ../src/leakdetect.c:496 ../src/profile.c:708
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Kan ikke åpne utdata-filen: %s\n"
 
-#: main.c:777
-#, c-format
-msgid "Executation of \"%s\" failed"
+#: ../src/main.c:772
+#, fuzzy, c-format
+msgid "Execution of \"%s\" failed: %s"
 msgstr "Kjøring av \"%s\" feilet"
 
-#: main.c:921 memprof.glade.h:29
+#: ../src/main.c:902
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:1028
+#: ../src/main.c:1012
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Kunne ikke finne kjørbar fil for \"%s\""
 
-#: main.c:1131
-msgid "Saving is disabled at the moment"
-msgstr "Lagring er deaktivert"
-
-#: main.c:1706
+#: ../src/main.c:1277
 msgid "MemProf Error"
 msgstr "MemProf feil"
 
-#: main.c:1706
+#: ../src/main.c:1277
 msgid "MemProf Warning"
 msgstr "MemProf advarsel"
 
-#: main.c:1775 main.c:1788 main.c:1803
-msgid "Name"
-msgstr "Navn"
+#: ../src/main.c:1340
+#, fuzzy
+msgid "Functions"
+msgstr "Funksjon"
 
-#: main.c:1776 main.c:1789 main.c:1804
+#: ../src/main.c:1341 ../src/main.c:1358 ../src/main.c:1376
 msgid "Self"
 msgstr "Selv"
 
-#: main.c:1777 main.c:1805
+#: ../src/main.c:1342 ../src/main.c:1377
 msgid "Total"
 msgstr "Total"
 
-#: main.c:1790
+#: ../src/main.c:1357
+#, fuzzy
+msgid "Descendants"
+msgstr "<b>Etterkommere</b>"
+
+#: ../src/main.c:1359
 msgid "Cumulative"
 msgstr "Kumulativ"
 
-#: main.c:1827
+#: ../src/main.c:1375
+#, fuzzy
+msgid "Callers"
+msgstr "Kaller"
+
+#: ../src/main.c:1402
 msgid "Address"
 msgstr "Adresse"
 
-#: main.c:1828
+#: ../src/main.c:1403
 msgid "Size"
 msgstr "Størrelse"
 
-#: main.c:1829
+#: ../src/main.c:1404
 msgid "Caller"
 msgstr "Kaller"
 
-#: main.c:1847
+#: ../src/main.c:1424
 msgid "Function"
 msgstr "Funksjon"
 
-#: main.c:1848
+#: ../src/main.c:1425
 msgid "Line"
 msgstr "Linje"
 
-#: main.c:1849
+#: ../src/main.c:1426
 msgid "File"
 msgstr "Fil"
 
-#: main.c:2059
+#: ../src/main.c:1634
 msgid "Really detach from finished process?"
 msgstr "Vil du virkelig koble fra avsluttet prosess?"
 
-#: main.c:2061
+#: ../src/main.c:1636
 msgid "Really detach from running process?"
 msgstr "Vil du virkelig koble fra kjørende prosess?"
 
-#: main.c:2091
+#: ../src/main.c:1666
 msgid "Really kill running process?"
 msgstr "Vil du virkelig drepe kjørende prosess?"
 
-#: main.c:2128
+#: ../src/main.c:1702
 msgid "Create new windows for forked processes"
 msgstr "Opprett nye vinduer for prosesser som har fork()et"
 
-#: main.c:2130
+#: ../src/main.c:1704
 msgid "Retain windows for processes after exec()"
 msgstr "Bevar vinduer for prosesser etter exec()"
 
-#: main.c:2132
+#: ../src/main.c:1706
 msgid "Type of profiling information to collect"
 msgstr "Type profileringsinformasjon som skal samles"
 
-#: main.c:2134
+#: ../src/main.c:1708
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Antall datapunkter per sekund for tidsprofil (1k=1000)"
 
-#: main.c:2183
-msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
+#: ../src/main.c:1710
+msgid "Functions allocating memory"
+msgstr ""
+
+#: ../src/main.c:1792
+#, fuzzy, c-format
+msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
 msgstr "Flagget --profile må være ett av «memory», «cycles» eller «time»\n"
 
-#: main.c:2224
+#: ../src/main.c:1829
 msgid "Cannot find memprof.glade"
 msgstr "Kan ikke finne memprof.glade"
 
-#: memprof.glade.h:1
-msgid "# of Allocations:"
+#: ../memprof.glade.h:1
+#, fuzzy
+msgid "# of Allocations: "
 msgstr "Antall allokasjoner:"
 
-#: memprof.glade.h:2
-msgid "*"
-msgstr "*"
-
-#: memprof.glade.h:3
+#: ../memprof.glade.h:2
 msgid "0"
 msgstr "0"
 
-#: memprof.glade.h:4
+#: ../memprof.glade.h:3
 msgid "0k"
 msgstr "Ok"
 
-#: memprof.glade.h:5
+#: ../memprof.glade.h:4
 msgid "32k"
 msgstr "32k"
 
-#: memprof.glade.h:6
-msgid "<b>Callers</b>"
-msgstr "<b>Kallere</b>"
-
-#: memprof.glade.h:7
-msgid "<b>Descendants</b>"
-msgstr "<b>Etterkommere</b>"
-
-#: memprof.glade.h:8
+#: ../memprof.glade.h:5
 msgid "Adding Skip Function"
 msgstr "Legger til skip funksjon"
 
-#: memprof.glade.h:9
+#: ../memprof.glade.h:6
 msgid "Adding Skip Regular Expression"
 msgstr "Legger til \"hopp over regulære uttrykk\""
 
-#: memprof.glade.h:10
-msgid "Bytes / Allocation:"
+#: ../memprof.glade.h:7
+#, fuzzy
+msgid "Bytes / Allocation: "
 msgstr "Plassering (X-akse):"
 
-#: memprof.glade.h:11
+#: ../memprof.glade.h:8
 msgid "Check for Leaks"
 msgstr "Sjekk etter lekkasjer"
 
-#: memprof.glade.h:12
+#: ../memprof.glade.h:9
 msgid "Command to run on double click in stack trace:"
 msgstr "Kommando som skal kjøres ved dobbeltklikk i stack trace:"
 
-#: memprof.glade.h:13
-msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
-"Copyright 2002, Kristian Rietveld"
-msgstr ""
-"Opphavsrett 1999, 2000, 2001, Red Hat, Inc.\n"
-"Opphavsrett 2002, Kristian Rietveld"
-
-#: memprof.glade.h:15
+#: ../memprof.glade.h:10
 msgid "Create Profile"
 msgstr "Opprett profil"
 
-#: memprof.glade.h:16
+#: ../memprof.glade.h:11
 msgid "Defaults"
 msgstr "Standardverdier"
 
-#: memprof.glade.h:17
+#: ../memprof.glade.h:12
 msgid ""
 "Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Skriv inn et regulært uttrykk med funksjonsnavn som ikke skal tas med under "
 "beregning av profiler"
 
-#: memprof.glade.h:18
+#: ../memprof.glade.h:13
 msgid "Enter pathname to an executable"
 msgstr "Skriv inn sti til en eksekverbar fil"
 
-#: memprof.glade.h:19
+#: ../memprof.glade.h:14
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr ""
 "Skriv inn navnet på en funksjon som ikke skal tas med under beregning av "
 "profiler"
 
-#: memprof.glade.h:20
-msgid "Follow _exec()"
-msgstr "Følg _exec()"
-
-#: memprof.glade.h:21
-msgid "Follow _fork()"
-msgstr "Følg _fork()"
-
-#: memprof.glade.h:22
+#: ../memprof.glade.h:15
 msgid "Functions to Skip:"
 msgstr "Funksjoner som skal hoppes over:"
 
-#: memprof.glade.h:23
-msgid "Generate _Leak Report"
-msgstr "Generer _lekkasjerapport"
-
-#: memprof.glade.h:24
-msgid "Generate _Profile"
-msgstr "Generer _profil"
-
-#: memprof.glade.h:25 tree.c:109
+#: ../memprof.glade.h:16 ../src/tree.c:109
 msgid "Kill"
 msgstr "Drep"
 
-#: memprof.glade.h:26
+#: ../memprof.glade.h:17
 msgid "Kill Program"
 msgstr "Terminer program"
 
-#: memprof.glade.h:27
+#: ../memprof.glade.h:18
 msgid "Leak Detection Options"
 msgstr "Alternativer for lekkasjedeteksjon"
 
-#: memprof.glade.h:28
+#: ../memprof.glade.h:19
 msgid "Leaks"
 msgstr "Lekkasjer"
 
-#: memprof.glade.h:30
+#: ../memprof.glade.h:20
 msgid "MemProf - Processes"
 msgstr "MemProf - prosesser"
 
-#: memprof.glade.h:31
-msgid "Memory Profiling Tool"
-msgstr "Minneprofileringsverktøy"
+#: ../memprof.glade.h:21
+msgid "Memory Usage Maps"
+msgstr ""
 
-#: memprof.glade.h:32
+#: ../memprof.glade.h:22
 msgid "Preferences"
 msgstr "Brukervalg"
 
-#: memprof.glade.h:33
+#: ../memprof.glade.h:23
 msgid "Process _Tree"
 msgstr "Prosesstre"
 
-#: memprof.glade.h:34
+#: ../memprof.glade.h:24
 msgid "Profile"
 msgstr "Profil"
 
-#: memprof.glade.h:35
+#: ../memprof.glade.h:25
 msgid "Profile Options"
 msgstr "Alternativer for profilering"
 
-#: memprof.glade.h:36
+#: ../memprof.glade.h:26
+msgid "Record"
+msgstr ""
+
+#: ../memprof.glade.h:27
 msgid "Regular expressions to Skip:"
 msgstr "Regulære uttrykk som skal hoppes over:"
 
-#: memprof.glade.h:37
+#: ../memprof.glade.h:28
 msgid "Reset"
 msgstr "Nullstill"
 
-#: memprof.glade.h:38
+#: ../memprof.glade.h:29
 msgid "Run"
 msgstr "Kjør"
 
-#: memprof.glade.h:39
+#: ../memprof.glade.h:30
 msgid "Run Executable"
 msgstr "Kjør eksekverbar fil"
 
-#: memprof.glade.h:40
+#: ../memprof.glade.h:31
 msgid "Run Program"
 msgstr "Kjør program"
 
-#: memprof.glade.h:41
+#: ../memprof.glade.h:32
 msgid "Save"
 msgstr "Lagre"
 
-#: memprof.glade.h:42
+#: ../memprof.glade.h:33
 msgid "Save Report"
 msgstr "Lagre rapport"
 
-#: memprof.glade.h:43
-msgid "Save _Leak Info..."
-msgstr "Lagre _lekkasjeinfo..."
+#: ../memprof.glade.h:34
+#, fuzzy
+msgid "Select an Executable"
+msgstr "Kjør eksekverbar fil"
 
-#: memprof.glade.h:44
-msgid "Save _Profile..."
-msgstr "Lagre _profil..."
-
-#: memprof.glade.h:45
+#: ../memprof.glade.h:35
 msgid "Stack Trace"
 msgstr "Stack trace"
 
-#: memprof.glade.h:46
-msgid "Total Bytes:"
+#: ../memprof.glade.h:36
+msgid "Time Graph"
+msgstr ""
+
+#: ../memprof.glade.h:37
+#, fuzzy
+msgid "Total Bytes: "
 msgstr "Totalt antall bytes:"
 
-#: memprof.glade.h:47
+#: ../memprof.glade.h:38
 msgid "_Detach"
 msgstr "_Koble fra"
 
-#: memprof.glade.h:48
+#: ../memprof.glade.h:39
 msgid "_File"
 msgstr "_Fil"
 
-#: memprof.glade.h:49
+#: ../memprof.glade.h:40
 msgid "_Help"
 msgstr "_Hjelp"
 
-#: memprof.glade.h:50
-msgid "_Kill"
-msgstr "_Drep"
-
-#: memprof.glade.h:51
+#: ../memprof.glade.h:41
 msgid "_Process"
 msgstr "_Prosess"
 
-#: memprof.glade.h:52
-msgid "_Run Program..."
-msgstr "Kjø_r program..."
-
-#: memprof.glade.h:53
-msgid "_Settings"
-msgstr "Inn_stillinger"
-
-#: memprof.glade.h:54
-msgid "translator_credits"
-msgstr "<Kjartan Maraas <kmaraas@gnome.org>"
-
-#: process.c:888
+#: ../src/process.c:839
 msgid "Initial"
 msgstr "Initiell"
 
-#: process.c:891
+#: ../src/process.c:842
 msgid "Starting"
 msgstr "Starter"
 
-#: process.c:894
+#: ../src/process.c:845
 msgid "Running"
 msgstr "Kjører"
 
-#: process.c:897
+#: ../src/process.c:848
 msgid "Exiting"
 msgstr "Avslutter"
 
-#: process.c:900 process.c:903
+#: ../src/process.c:851 ../src/process.c:854
 msgid "Defunct"
 msgstr "Ute av funksjon"
 
-#: server.c:288
+#: ../src/server.c:289
 #, c-format
 msgid "Cannot find %s"
 msgstr "Kunne ikke finne %s"
 
-#: tree.c:102
+#: ../src/tree.c:102
 msgid "Show"
 msgstr "Vis"
 
-#: tree.c:105
+#: ../src/tree.c:105
 msgid "Hide"
 msgstr "Skjul"
 
-#: tree.c:112
+#: ../src/tree.c:112
 msgid "Detach"
 msgstr "Koble fra"
 
-#: tree.c:180
+#: ../src/tree.c:180
 msgid "PID"
 msgstr "PID"
 
-#: tree.c:181
+#: ../src/tree.c:181
 msgid "Command Line"
 msgstr "Kommandolinje"
 
-#: tree.c:182
+#: ../src/tree.c:182
 msgid "Status"
 msgstr "Status"
+
+#~ msgid "Saving is disabled at the moment"
+#~ msgstr "Lagring er deaktivert"
+
+#~ msgid "Name"
+#~ msgstr "Navn"
+
+#~ msgid "*"
+#~ msgstr "*"
+
+#~ msgid "<b>Callers</b>"
+#~ msgstr "<b>Kallere</b>"
+
+#~ msgid ""
+#~ "Copyright 1999, 2000, 2001, Red Hat, Inc.\n"
+#~ "Copyright 2002, Kristian Rietveld"
+#~ msgstr ""
+#~ "Opphavsrett 1999, 2000, 2001, Red Hat, Inc.\n"
+#~ "Opphavsrett 2002, Kristian Rietveld"
+
+#~ msgid "Follow _exec()"
+#~ msgstr "Følg _exec()"
+
+#~ msgid "Follow _fork()"
+#~ msgstr "Følg _fork()"
+
+#~ msgid "Generate _Leak Report"
+#~ msgstr "Generer _lekkasjerapport"
+
+#~ msgid "Generate _Profile"
+#~ msgstr "Generer _profil"
+
+#~ msgid "Memory Profiling Tool"
+#~ msgstr "Minneprofileringsverktøy"
+
+#~ msgid "Save _Leak Info..."
+#~ msgstr "Lagre _lekkasjeinfo..."
+
+#~ msgid "Save _Profile..."
+#~ msgstr "Lagre _profil..."
+
+#~ msgid "_Kill"
+#~ msgstr "_Drep"
+
+#~ msgid "_Run Program..."
+#~ msgstr "Kjø_r program..."
+
+#~ msgid "_Settings"
+#~ msgstr "Inn_stillinger"
+
+#~ msgid "translator_credits"
+#~ msgstr "<Kjartan Maraas <kmaraas@gnome.org>"

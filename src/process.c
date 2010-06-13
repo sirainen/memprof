@@ -123,14 +123,6 @@ typedef struct {
   gchar *name;
 } Symbol;
 
-static gint
-compare_address (const void *symbol1, const void *symbol2)
-{
-	return (((Symbol *)symbol1)->addr < ((Symbol *)symbol2)->addr) ?
-		-1 : ((((Symbol *)symbol1)->addr == ((Symbol *)symbol2)->addr) ?
-		      0 : 1);
-}
-
 void
 prepare_map (Map *map)
 {
@@ -235,13 +227,13 @@ locate_map (MPProcess *process, guint addr)
 }
 
 const char *
-process_locate_symbol (MPProcess *process, guint addr)
+process_locate_symbol (MPProcess *process, gsize addr)
 {
 	Map *map = locate_map (process, addr);
 	const BinSymbol *symbol;
 
 	if (!map)
-		return NULL;
+		return "<unknown map>";
 
 	addr -= map->start;
 	addr += map->offset;
@@ -251,17 +243,21 @@ process_locate_symbol (MPProcess *process, guint addr)
 	return bin_symbol_get_name (map->binfile, symbol);
 }
 
+/**
+ * The string assigned to functionname is owned/shared
+ * by the system and must not be freed.
+ */
 gboolean 
 process_find_line (MPProcess *process, void *address,
 		   const char **filename, char **functionname,
 		   unsigned int *line)
 {
-	char *s = process_locate_symbol (process, address);
+	const char *s = process_locate_symbol (process, GPOINTER_TO_SIZE (address));
 
 	if (s)
 	{
 		*filename = NULL;
-		*functionname = s;
+		*functionname = (char*)s;
 		*line = -1;
 	}
 
@@ -868,7 +864,7 @@ process_get_cmdline (MPProcess *process)
 	char *fname;
 	char *result;
 	char *tmp = NULL;
-	int n = 0;
+	size_t n = 0;
 	FILE *in = NULL;
 
 	if (process->status == MP_PROCESS_DEFUNCT)
@@ -882,9 +878,12 @@ process_get_cmdline (MPProcess *process)
 	}
 	g_free (fname);
 
-	getline (&tmp, &n, in);
-	result = g_strdup (tmp);
-	free (tmp);
+	if (getline (&tmp, &n, in) == -1)
+		result = g_strdup ("");
+	else {
+		result = g_strdup (tmp);
+		free (tmp);
+	}
 
 	fclose (in);
 
@@ -894,12 +893,14 @@ process_get_cmdline (MPProcess *process)
 void
 process_detach (MPProcess *process)
 {
+	int ret;
+
 	if (process->status != MP_PROCESS_DEFUNCT) {
 		int fd = g_io_channel_unix_get_fd (process->input_channel);
 
 		if (process->status == MP_PROCESS_EXITING) {
 			char response = 0;
-			write (fd, &response, 1);
+			ret = write (fd, &response, 1);
 		} else {
 			g_io_channel_shutdown (process->input_channel, TRUE, NULL);
 			process_set_status (process, MP_PROCESS_DETACHED);
@@ -916,6 +917,12 @@ process_kill (MPProcess *process)
 		   process->status != MP_PROCESS_INIT) {
 		kill (process->pid, SIGTERM);
 	}
+}
+
+gboolean
+process_is_recording (MPProcess *process)
+{
+	return process->input_tag;
 }
 
 typedef struct {
@@ -947,12 +954,6 @@ process_block_foreach (MPProcess                 *process,
 	g_hash_table_foreach (block_table, block_table_foreach_func, &info);
 }
 
-static gboolean
-my_str_equal (const char *s1, const char *s2)
-{
-	return s1 == s2;
-}
-
 gboolean
 symbol_equal (gconstpointer s1, gconstpointer s2)
 {
@@ -964,7 +965,7 @@ symbol_hash  (gconstpointer s)
 {
 	const char *symbol = s;
 
-	return g_str_hash (s);
+	return g_str_hash (symbol);
 }
 
 char *
@@ -973,7 +974,7 @@ symbol_copy  (const char *orig)
 	if (!orig)
 		return NULL;
 
-	return orig;
+	return (char *) orig;
 }
 
 void

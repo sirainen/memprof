@@ -54,6 +54,12 @@ done
 %{_sysconfdir}/gconf/schemas/*.schemas
 
 %changelog
+* Mo Okt 26 2009 Holger Hans Peter Freyther <zecke+memprof@secretlabs.de>
+- Version 0.6.2
+
+* Mo Jun 08 2009 Holger Hans Peter Freyther <zecke+memprof@secretlabs.de>
+- Version 0.6.1
+
 * Thu Jun 19 2003 Owen Taylor <otaylor@redhat.com>
 - Version 0.5.1-ssp
 

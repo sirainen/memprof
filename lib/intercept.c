@@ -28,6 +28,7 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <string.h>
+#include <assert.h>
 
 #include "intercept.h"
 #include "memintercept.h"
@@ -82,7 +83,9 @@ static MIBool tracing = MI_TRUE;
 
 #define MAX_THREADS 128
 
+#ifndef NPTL
 static ThreadInfo threads[MAX_THREADS];
+#endif
 static char *socket_path = NULL;
 static char socket_buf[64];
 static uint32_t seqno = 0;
@@ -346,7 +349,7 @@ mi_write_stack (int      n_frames,
 	ThreadInfo *thread;
 	int old_errno = errno;
 
-	if (n_frames < 0)
+	if (n_frames < 0 || n_frames > 20000)
 	{
 			MI_DEBUG (("mi_write_stack - elide bogus foo\n"));
 			return;
@@ -557,6 +560,11 @@ _exit (int status)
 	}
 
 	(*old__exit) (status);
+
+	/* Not reached as old__exit will not return but makes
+	 * the compiler happy.
+	 */
+	assert(0);
 }
 
 static void

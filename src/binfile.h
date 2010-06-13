@@ -1,8 +1,10 @@
-/* -*- mode: C; c-file-style: "linux" -*- */
-
 /* MemProf -- memory profiler and leak detector
  * Copyright 1999, 2000, 2001, Red Hat, Inc.
  * Copyright 2002, Kristian Rietveld
+ *
+ * Sysprof -- Sampling, systemwide CPU profiler
+ * Copyright 2004, Red Hat, Inc.
+ * Copyright 2004, 2005, Soeren Sandmann
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,24 +20,25 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
-/*====*/
 
-#include "process.h"
+#ifndef BIN_FILE_H
+#define BIN_FILE_H
 
-typedef struct _ProcessWindow ProcessWindow;
+#include <glib.h>
+#include <sys/types.h>
 
-void tree_window_show   (void);
-void tree_window_add    (ProcessWindow *window);
-void tree_window_remove (ProcessWindow *window);
+typedef struct BinFile BinFile;
+typedef struct BinSymbol BinSymbol;
 
-MPProcess * process_window_get_process  (ProcessWindow *pwin);
-gboolean    process_window_visible      (ProcessWindow *pwin);
-MPProcess * process_window_get_process  (ProcessWindow *pwin);
-void        process_window_show         (ProcessWindow *pwin);
-void        process_window_hide         (ProcessWindow *pwin);
+/* Binary File */
 
-void        process_window_maybe_kill   (ProcessWindow *pwin);
-void        process_window_maybe_detach (ProcessWindow *pwin);
+BinFile *        bin_file_new           (const char      *filename);
+void             bin_file_free          (BinFile         *bin_file);
+const BinSymbol *bin_file_lookup_symbol (BinFile         *bin_file,
+					 gsize           address);
+gboolean         bin_file_check_inode   (BinFile         *bin_file,
+					 ino_t		  inode);
+const char *     bin_symbol_get_name    (BinFile         *bin_file,
+					 const BinSymbol *symbol);
 
-gboolean hide_and_check_quit (GtkWidget *window);
-void     check_quit          (void);
+#endif

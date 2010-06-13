@@ -327,13 +327,14 @@ term_handler (int signum)
 {
 	static int terminated = 0;
 	char c = signum;
+	int ret;
 
 	if (terminated)
 		exit(1);	/* Impatient user, risk reentrancy problems  */
 	
 	terminated = 1;
 
-	write (terminate_pipe[1], &c, 1);
+	ret = write (terminate_pipe[1], &c, 1);
 }
 
 static gboolean
@@ -342,8 +343,9 @@ terminate_io_handler (GIOChannel  *channel,
 		      gpointer     data)
 {
 	char c;
+	int ret;
 	
-	read (terminate_pipe[0], &c, 1);
+	ret = read (terminate_pipe[0], &c, 1);
 
 	fprintf (stderr, "memprof: Caught signal %d (%s), cleaning up\n", c, g_strsignal(c));
 
@@ -416,10 +418,11 @@ create_control_socket (MPServer *server)
 		}
 
 	} else if (errno == ENOENT) {
-		if (mkdir (tmpdir, 0700) != 0) { 
-			if (errno == EEXIST)
+		if (mkdir (tmpdir, 0700) != 0) {
+			if (errno == EEXIST) {
+				g_warning ("memprof: '%s' tmpdir already exists.\n", tmpdir);
 				goto retry;
-			else
+			} else
 				fatal ("memprof: Cannot create %s, %d", tmpdir, g_strerror (errno));
 		}
 	} else
@@ -433,7 +436,8 @@ create_control_socket (MPServer *server)
 		
 #else  /* !USE_SOCKET_DIRECTORY */
 	server->socket_path = g_build_filename (g_get_tmp_dir(), SOCKET_TEMPLATE, NULL);
-	mktemp (server->socket_path);
+	if (strlen(mktemp (server->socket_path)) == 0)
+		fatal ("mktemp: %s\n", g_strerror (errno));
 #endif /* USE_SOCKET_DIRECTORY */
 
 	strncpy (addr.sun_path, server->socket_path, sizeof (addr.sun_path));
@@ -442,9 +446,10 @@ create_control_socket (MPServer *server)
 		addrlen = sizeof(addr);
 
 	if (bind (server->socket_fd, (struct sockaddr *)&addr, addrlen) < 0) {
-		if (errno == EADDRINUSE)
+		if (errno == EADDRINUSE) {
+                        g_warning ("memprof: Binding failed in '%s' with address in use.\n", addr.sun_path);
 			goto retry;
-		else
+		} else
 			fatal ("bind: %s\n", g_strerror (errno));
 	}
 
@@ -574,8 +579,8 @@ control_func (GIOChannel  *source,
 
  out:
 	if (newfd >= 0) {
-		write (newfd, &response, 1);
-		if (!response)
+		int ret = write (newfd, &response, 1);
+		if (!response || ret < 0)
 			close (newfd);
 	}
 

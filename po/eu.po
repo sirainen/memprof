@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-03-11 14:42+0100\n"
+"POT-Creation-Date: 2009-10-27 02:54+0100\n"
 "PO-Revision-Date: 2008-03-11 15:20+0100\n"
 "Last-Translator: Iñaki Larrañaga Murgoitio <dooteo@euskalgnu.org>\n"
 "Language-Team: Basque <itzulpena@euskalgnu.org>\n"
@@ -17,115 +17,120 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n > 1);\n"
 
-#: ../leakdetect.c:496 ../profile.c:702
+#: ../src/leakdetect.c:496 ../src/profile.c:708
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Ezin da irteerako fitxategia ireki: %s\n"
 
-#: ../main.c:838
-#, c-format
-msgid "Executation of \"%s\" failed: %s"
+#: ../src/main.c:772
+#, fuzzy, c-format
+msgid "Execution of \"%s\" failed: %s"
 msgstr "Huts egin du \"%s\" exekutatzean: %s"
 
-#: ../main.c:986
+#: ../src/main.c:902
 msgid "MemProf"
 msgstr "MemProf"
 
-#: ../main.c:1095
+#: ../src/main.c:1012
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Ezin da \"%s\"(r)en exekutagarririk aurkitu"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 msgid "MemProf Error"
 msgstr "MemProf-en errorea"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 msgid "MemProf Warning"
 msgstr "MemProf-en abisua"
 
-#: ../main.c:1422
+#: ../src/main.c:1340
 msgid "Functions"
 msgstr "Funtzioak"
 
-#: ../main.c:1423 ../main.c:1440 ../main.c:1458
+#: ../src/main.c:1341 ../src/main.c:1358 ../src/main.c:1376
 msgid "Self"
 msgstr "Bera"
 
-#: ../main.c:1424 ../main.c:1459
+#: ../src/main.c:1342 ../src/main.c:1377
 msgid "Total"
 msgstr "Guztira"
 
-#: ../main.c:1439
+#: ../src/main.c:1357
 msgid "Descendants"
 msgstr "Ondorengoak"
 
-#: ../main.c:1441
+#: ../src/main.c:1359
 msgid "Cumulative"
 msgstr "Metakorra"
 
-#: ../main.c:1457
+#: ../src/main.c:1375
 msgid "Callers"
 msgstr "Deitzaileak"
 
-#: ../main.c:1484
+#: ../src/main.c:1402
 msgid "Address"
 msgstr "Helbidea"
 
-#: ../main.c:1485
+#: ../src/main.c:1403
 msgid "Size"
 msgstr "Tamaina"
 
-#: ../main.c:1486
+#: ../src/main.c:1404
 msgid "Caller"
 msgstr "Deitzailea"
 
-#: ../main.c:1506
+#: ../src/main.c:1424
 msgid "Function"
 msgstr "Funtzioa"
 
-#: ../main.c:1507
+#: ../src/main.c:1425
 msgid "Line"
 msgstr "Lerroa"
 
-#: ../main.c:1508
+#: ../src/main.c:1426
 msgid "File"
 msgstr "Fitxategia"
 
-#: ../main.c:1710
+#: ../src/main.c:1634
 msgid "Really detach from finished process?"
 msgstr "Nahi duzu amaitutako prozesutik deskonektatzea?"
 
-#: ../main.c:1712
+#: ../src/main.c:1636
 msgid "Really detach from running process?"
 msgstr "Nahi duzu exekuzioan dagoen prozesutik deskonektatzea?"
 
-#: ../main.c:1742
+#: ../src/main.c:1666
 msgid "Really kill running process?"
 msgstr "Nahi duzu exekuzioan dagoen prozesua hiltzea?"
 
-#: ../main.c:1777
+#: ../src/main.c:1702
 msgid "Create new windows for forked processes"
 msgstr "Sortu leiho berriak sardetutako prozesuentzako"
 
-#: ../main.c:1779
+#: ../src/main.c:1704
 msgid "Retain windows for processes after exec()"
 msgstr "Mantendu prozesuen leihoak exec() ondoren"
 
-#: ../main.c:1781
+#: ../src/main.c:1706
 msgid "Type of profiling information to collect"
 msgstr "Profilen informazio mota biltzeko"
 
-#: ../main.c:1783
+#: ../src/main.c:1708
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr "Laginak/seg kopurua denboraren profilarentzako (1k=1000)"
 
-#: ../main.c:1843
+#: ../src/main.c:1710
+msgid "Functions allocating memory"
+msgstr ""
+
+#: ../src/main.c:1792
 #, c-format
 msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
-msgstr "'--profile'-ren argumentua 'memory', 'cycles', edo 'time' izan behar du\n"
+msgstr ""
+"'--profile'-ren argumentua 'memory', 'cycles', edo 'time' izan behar du\n"
 
-#: ../main.c:1878
+#: ../src/main.c:1829
 msgid "Cannot find memprof.glade"
 msgstr "Ezin da memprof.glade aurkitu"
 
@@ -174,7 +179,8 @@ msgid "Defaults"
 msgstr "Lehenetsiak"
 
 #: ../memprof.glade.h:12
-msgid "Enter a regular expression of function names to skip when computing profiles"
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Idatzi funtzioen izenen adierazpen erregularra, profilak kalkulatzean "
 "saltatzeko"
@@ -191,180 +197,183 @@ msgstr "Idatzi funtzioaren izena profilak exekutatzean saltatzeko"
 msgid "Functions to Skip:"
 msgstr "Funtzioak saltatzeko:"
 
-#: ../memprof.glade.h:16
-msgid "Generate _Leak Report"
-msgstr "Sortu _ihes-txostena"
-
-#: ../memprof.glade.h:17
-msgid "Generate _Profile"
-msgstr "Sortu _profila"
-
-#: ../memprof.glade.h:18 ../tree.c:109
+#: ../memprof.glade.h:16 ../src/tree.c:109
 msgid "Kill"
 msgstr "Hil"
 
-#: ../memprof.glade.h:19
+#: ../memprof.glade.h:17
 msgid "Kill Program"
 msgstr "Hil programa"
 
-#: ../memprof.glade.h:20
+#: ../memprof.glade.h:18
 msgid "Leak Detection Options"
 msgstr "Ihes-detekzioaren aukerak"
 
-#: ../memprof.glade.h:21
+#: ../memprof.glade.h:19
 msgid "Leaks"
 msgstr "Ihesak"
 
-#: ../memprof.glade.h:22
+#: ../memprof.glade.h:20
 msgid "MemProf - Processes"
 msgstr "MemProf - Prozesuak"
 
-#: ../memprof.glade.h:23
+#: ../memprof.glade.h:21
+msgid "Memory Usage Maps"
+msgstr ""
+
+#: ../memprof.glade.h:22
 msgid "Preferences"
 msgstr "Hobespenak"
 
-#: ../memprof.glade.h:24
+#: ../memprof.glade.h:23
 msgid "Process _Tree"
 msgstr "Prozesuen _zuhaitza"
 
-#: ../memprof.glade.h:25
+#: ../memprof.glade.h:24
 msgid "Profile"
 msgstr "Profila"
 
-#: ../memprof.glade.h:26
+#: ../memprof.glade.h:25
 msgid "Profile Options"
 msgstr "Profilaren aukerak"
 
-#: ../memprof.glade.h:27
+#: ../memprof.glade.h:26
 msgid "Record"
 msgstr "Erregistroa"
 
-#: ../memprof.glade.h:28
+#: ../memprof.glade.h:27
 msgid "Regular expressions to Skip:"
 msgstr "Adierazpen erregularra saltatzeko:"
 
-#: ../memprof.glade.h:29
+#: ../memprof.glade.h:28
 msgid "Reset"
 msgstr "Berrezarri"
 
-#: ../memprof.glade.h:30
+#: ../memprof.glade.h:29
 msgid "Run"
 msgstr "Exekutatu"
 
-#: ../memprof.glade.h:31
+#: ../memprof.glade.h:30
 msgid "Run Executable"
 msgstr "Exekutatu exekutagarria"
 
-#: ../memprof.glade.h:32
+#: ../memprof.glade.h:31
 msgid "Run Program"
 msgstr "Exekutatu programa"
 
-#: ../memprof.glade.h:33
+#: ../memprof.glade.h:32
 msgid "Save"
 msgstr "Gorde"
 
-#: ../memprof.glade.h:34
+#: ../memprof.glade.h:33
 msgid "Save Report"
 msgstr "Gorde txostena"
 
+#: ../memprof.glade.h:34
+#, fuzzy
+msgid "Select an Executable"
+msgstr "Exekutatu exekutagarria"
+
 #: ../memprof.glade.h:35
-msgid "Save _Leak Info..."
-msgstr "Gorde_ihes-informazioa..."
-
-#: ../memprof.glade.h:36
-msgid "Save _Profile..."
-msgstr "Gorde _profila..."
-
-#: ../memprof.glade.h:37
 msgid "Stack Trace"
 msgstr "Pilatu aztarna"
 
-#: ../memprof.glade.h:38
+#: ../memprof.glade.h:36
+msgid "Time Graph"
+msgstr ""
+
+#: ../memprof.glade.h:37
 msgid "Total Bytes: "
 msgstr "Byte totalak:"
 
-#: ../memprof.glade.h:39
-msgid "_About"
-msgstr "Honi _buruz"
-
-#: ../memprof.glade.h:40
-msgid "_Close"
-msgstr "It_xi"
-
-#: ../memprof.glade.h:41
+#: ../memprof.glade.h:38
 msgid "_Detach"
 msgstr "_Deskonektatu"
 
-#: ../memprof.glade.h:42
+#: ../memprof.glade.h:39
 msgid "_File"
 msgstr "_Fitxategia"
 
-#: ../memprof.glade.h:43
+#: ../memprof.glade.h:40
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: ../memprof.glade.h:44
-msgid "_Kill"
-msgstr "_Hil"
-
-#: ../memprof.glade.h:45
+#: ../memprof.glade.h:41
 msgid "_Process"
 msgstr "_Prozesuak"
 
-#: ../memprof.glade.h:46
-msgid "_Quit"
-msgstr "I_rten"
-
-#: ../memprof.glade.h:47
-msgid "_Run Program..."
-msgstr "_Exekutatu programa..."
-
-#: ../process.c:843
+#: ../src/process.c:839
 msgid "Initial"
 msgstr "Hasierakoa"
 
-#: ../process.c:846
+#: ../src/process.c:842
 msgid "Starting"
 msgstr "Abiatzen"
 
-#: ../process.c:849
+#: ../src/process.c:845
 msgid "Running"
 msgstr "Exekutatzen"
 
-#: ../process.c:852
+#: ../src/process.c:848
 msgid "Exiting"
 msgstr "Irtetzen"
 
-#: ../process.c:855 ../process.c:858
+#: ../src/process.c:851 ../src/process.c:854
 msgid "Defunct"
 msgstr "Hilda"
 
-#: ../server.c:289
+#: ../src/server.c:289
 #, c-format
 msgid "Cannot find %s"
 msgstr "Ezin da %s aurkitu"
 
-#: ../tree.c:102
+#: ../src/tree.c:102
 msgid "Show"
 msgstr "Erakutsi"
 
-#: ../tree.c:105
+#: ../src/tree.c:105
 msgid "Hide"
 msgstr "Ezkutatu"
 
-#: ../tree.c:112
+#: ../src/tree.c:112
 msgid "Detach"
 msgstr "Deskonektatu"
 
-#: ../tree.c:180
+#: ../src/tree.c:180
 msgid "PID"
 msgstr "PIDa"
 
-#: ../tree.c:181
+#: ../src/tree.c:181
 msgid "Command Line"
 msgstr "Komando-lerroa"
 
-#: ../tree.c:182
+#: ../src/tree.c:182
 msgid "Status"
 msgstr "Egoera"
 
+#~ msgid "Generate _Leak Report"
+#~ msgstr "Sortu _ihes-txostena"
+
+#~ msgid "Generate _Profile"
+#~ msgstr "Sortu _profila"
+
+#~ msgid "Save _Leak Info..."
+#~ msgstr "Gorde_ihes-informazioa..."
+
+#~ msgid "Save _Profile..."
+#~ msgstr "Gorde _profila..."
+
+#~ msgid "_About"
+#~ msgstr "Honi _buruz"
+
+#~ msgid "_Close"
+#~ msgstr "It_xi"
+
+#~ msgid "_Kill"
+#~ msgstr "_Hil"
+
+#~ msgid "_Quit"
+#~ msgstr "I_rten"
+
+#~ msgid "_Run Program..."
+#~ msgstr "_Exekutatu programa..."

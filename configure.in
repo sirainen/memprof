@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_PREREQ(2.52)
 
-AC_INIT(memprof, 0.6)
+AC_INIT(memprof, 0.6.2)
 AC_CONFIG_SRCDIR(memprof.glade)
 
 dnl $Format: "AM_INIT_AUTOMAKE(MemProf, $ReleaseVersion$)" $
@@ -10,6 +10,8 @@ AM_INIT_AUTOMAKE(AC_PACKAGE_NAME, AC_PACKAGE_VERSION)
 
 dnl Specify a configuration file
 AM_CONFIG_HEADER(config.h)
+
+m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
 
 dnl Initialize libtool
 AM_PROG_LIBTOOL
@@ -52,6 +54,9 @@ PKG_CHECK_MODULES(MEMPROF,
 ])
 
 AC_SUBST(MEMPROF_CFLAGS)
+
+AC_CHECK_HEADER([bfd.h],[],
+                [AC_MSG_ERROR([Cannot continue: bfd.h not found. Do you have binutils-dev installed?])])
 
 if ! uname | grep Linux > /dev/null ; then
   AC_MSG_ERROR([*** MemProf only works on linux])

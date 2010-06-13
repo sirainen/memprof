@@ -33,6 +33,19 @@
 #ifndef __STACK_FRAME_H__
 #define __STACK_FRAME_H__
 
+/* STACKPOINTER macros to access the right regs on different ARCHs */
+#if defined (__i386__)
+#define EIPRIP eip
+#define EBPRBP ebp
+#define ESPRSP esp
+#elif defined (__x86_64__)
+#define EIPRIP rip
+#define EBPRBP rbp
+#define ESPRSP rsp
+#else
+#error "Unknown architecture and generating backtrace is broken"
+#endif
+
 void mi_call_with_backtrace (int   to_skip,
 			     void  callback (int, void **, void *),
 			     void *data);

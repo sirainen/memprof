@@ -85,3 +85,4 @@ ProfileDescendantTree *profile_func_create_descendant_tree (ProfileFunc         
 void                   profile_descendant_tree_free        (ProfileDescendantTree *descendant_tree);
 GPtrArray *            profile_func_create_caller_list     (ProfileFunc           *func);
 void                   profile_caller_list_free            (GPtrArray             *caller_list);
+void                   profile_write                       (Profile               *profile, const gchar *outfile);

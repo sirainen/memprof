@@ -353,7 +353,7 @@ bin_file_free (BinFile *bin_file)
 
 const BinSymbol *
 bin_file_lookup_symbol (BinFile    *bin_file,
-			gulong      address)
+			gsize      address)
 {
     if (bin_file->elf)
     {

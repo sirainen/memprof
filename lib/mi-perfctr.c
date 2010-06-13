@@ -25,6 +25,9 @@
 #include <signal.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 #include <ucontext.h>
 #include <unistd.h>
 
@@ -62,8 +65,8 @@ sigprof_handler (int unused, siginfo_t *si, ucontext_t *ucontext)
     info.alloc.new_ptr = NULL;
     info.alloc.size = 1;
     
-    mi_call_with_signal_backtrace ((void *)ctx->eip, (void *)ctx->ebp, (void *)ctx->esp,
-				   mi_write_stack, &info);
+    mi_call_with_signal_backtrace ((void *)ctx->EIPRIP, (void *)ctx->EBPRBP,
+					(void *)ctx->ESPRSP, mi_write_stack, &info);
 
     if (ioctl (perfctr_fd, VPERFCTR_IRESUME) < 0)
 	    mi_perror ("Error restarting handler interrupt");
@@ -94,7 +97,7 @@ mi_perfctr_start (int interval)
 	
 	MI_DEBUG (("Turning on performance monitoring timer support\n"));
 
-	if ((perfctr_fd = open ("/proc/self/perfctr", O_RDONLY | O_CREAT)) < 0) {
+	if ((perfctr_fd = open ("/proc/self/perfctr", O_RDONLY)) < 0) {
 		mi_perror ("Error opening /proc/self/perfctr");
 		goto bail;
 	}

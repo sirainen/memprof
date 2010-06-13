@@ -4,6 +4,7 @@
  * Copyright 1999, 2000, 2001, Red Hat, Inc.
  * Copyright 2002, Kristian Rietveld
  * Copyright 2002, Soeren Sandmann (sandmann@daimi.au.dk)
+ * Copyright 2009, 2010, Holger Hans Peter Fryther
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -36,12 +37,8 @@
 
 #include <regex.h>
 
-#include "leakdetect.h"
 #include "gui.h"
 #include "memprof.h"
-#include "process.h"
-#include "profile.h"
-#include "server.h"
 #include "treeviewutils.h"
 #include <string.h>
 #include <stdlib.h>
@@ -49,34 +46,6 @@
 #include <glib/gprintf.h>
 #include "elfparser.h"
 
-struct _ProcessWindow {
-	MPProcess *process;
-	Profile *profile;
-	GSList *leaks;
-
-	GtkWidget *main_window;
-	GtkWidget *main_notebook;
-	GtkWidget *n_allocations_label;
-	GtkWidget *profile_status_label;
-	GtkWidget *bytes_per_label;
-	GtkWidget *total_bytes_label;
-
-	GtkWidget *profile_func_tree_view;
-	GtkWidget *profile_caller_tree_view;
-	GtkWidget *profile_descendants_tree_view;
-
-	GtkWidget *leak_block_tree_view;
-	GtkWidget *leak_stack_tree_view;
-
-	GtkWidget *usage_max_label;
-	GtkWidget *usage_area;
-
-	guint usage_max;
-	guint usage_high;
-	guint usage_leaked;
-
-	guint status_update_timeout;
-};
 
 enum {
 	PROFILE_FUNC_NAME,
@@ -156,17 +125,20 @@ static void
 draw_bar (GtkWidget *widget, int red, int green, int blue,
 	  int size)
 {
-	GdkGC *gc = gdk_gc_new (widget->window);
+	GtkAllocation allocation;
+	GdkWindow *window = gtk_widget_get_window (widget);
+	GdkGC *gc = gdk_gc_new (window);
  	GdkColor color;
 
 	color.red = red;
 	color.green = green;
 	color.blue = blue;
 
+	gtk_widget_get_allocation (widget, &allocation);
 	gdk_gc_set_rgb_fg_color (gc, &color);
 
-	gdk_draw_rectangle (widget->window, gc, TRUE,
-			    0, 0, size, widget->allocation.height);
+	gdk_draw_rectangle (window, gc, TRUE,
+			    0, 0, size, allocation.height);
 
 	color.red = 0;
 	color.green = 0;
@@ -174,8 +146,8 @@ draw_bar (GtkWidget *widget, int red, int green, int blue,
 	
 	gdk_gc_set_rgb_fg_color (gc, &color);
 
-	gdk_draw_rectangle (widget->window, gc, FALSE,
-			    0, 0, size - 1, widget->allocation.height - 1);
+	gdk_draw_rectangle (window, gc, FALSE,
+			    0, 0, size - 1, allocation.height - 1);
 	
 	g_object_unref (gc);
 }
@@ -184,6 +156,7 @@ static gboolean
 on_usage_area_expose (GtkWidget *widget, GdkEvent *event,
 		      gpointer data)
 {
+	GtkAllocation allocation;
 	ProcessWindow *pwin = data;
 	int width;
 	int bytes_used;
@@ -191,7 +164,8 @@ on_usage_area_expose (GtkWidget *widget, GdkEvent *event,
 	int high_size;
 	int current_size;
 
-	width = widget->allocation.width;
+	gtk_widget_get_allocation (widget, &allocation);
+	width = allocation.width;
 
 	/* background */
 	draw_bar (widget, 0xffff, 0xffff, 0xffff, width);
@@ -253,7 +227,8 @@ update_status (gpointer data)
 	pwin->usage_high = MAX (pwin->process->bytes_used, pwin->usage_high);
 
 	gtk_widget_queue_draw (pwin->usage_area);
-	
+	dw_update(pwin);
+
 	return TRUE;
 }
 
@@ -367,50 +342,10 @@ set_sample (GtkTreeModel *model, GtkTreeIter *iter, int column, guint value, gui
 		set_double (model, iter, column, 100 * (double)value / n_samples);
 }
 
-static GQueue *free_us;
-int idle_id;
-
-static gboolean
-do_idle_free (gpointer d)
-{
-	GList *list;
-
-	for (list = free_us->head; list; list = list->next)
-		g_free (list->data);
-	
-	idle_id = 0;
-	
-	return FALSE;
-}
-
-static char *
-idle_free (char *d)
-{
-	if (!free_us)
-		free_us = g_queue_new ();
-
-	g_queue_push_tail (free_us, d);
-
-	if (!idle_id)
-		idle_id = g_idle_add (do_idle_free, NULL);
-	
-	return d;
-}
-
-static char *
-get_name (const char *name)
-{
-	if (name)
-		return idle_free (elf_demangle (name));
-	else
-		return idle_free (g_strdup ("???"));
-}
-
 static void
 add_node (GtkTreeStore *store, int n_samples,
 	  const GtkTreeIter *parent, ProfileDescendantTreeNode *node)
 {
-	GtkTreeModel *model = GTK_TREE_MODEL (store);
 	GtkTreeIter iter;
 	gchar *name;
 	int i;
@@ -460,7 +395,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 	GPtrArray *caller_list;
 	ProfileDescendantTree *descendant_tree;
 	int i;
-	int n_samples = pwin->profile->n_bytes;
+	int n_samples;
 	int old_sort_column;
 	GtkSortType old_sort_type;
 	gboolean was_sorted;
@@ -471,6 +406,7 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 		return;
 	}
 
+	n_samples = pwin->profile->n_bytes;
 	gtk_tree_model_get (GTK_TREE_MODEL (store), &selected,
 			    PROFILE_FUNC_FUNC, &func,
 			    -1);
@@ -534,12 +470,12 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 		if (caller->node) {
 			if (caller->node->symbol)
-				name = caller->node->symbol;
+				name = elf_demangle(caller->node->symbol);
 			else
-				name = "???";
+				name = g_strdup("???");
 		}
 		else
-			name = "<spontaneous>";
+			name = g_strdup("<spontaneous>");
 			
 		gtk_list_store_append (list_store, &iter);
 			
@@ -550,6 +486,8 @@ profile_selection_changed (GtkTreeSelection *selection, ProcessWindow *pwin)
 
 		set_sample (list_model, &iter, PROFILE_CALLER_SELF, caller->self, n_samples);
 		set_sample (list_model, &iter, PROFILE_CALLER_TOTAL, caller->total, n_samples);
+
+		g_free(name);
 	}
 	profile_caller_list_free (caller_list);
 
@@ -611,9 +549,9 @@ profile_fill (ProcessWindow *pwin)
 		g_assert (func);
 
 		if (func->node->symbol)
-			name = func->node->symbol;
+			name = elf_demangle(func->node->symbol);
 		else
-			name = "???";
+			name = g_strdup("???");
 		
 		gtk_list_store_set (store, &iter,
 				    PROFILE_FUNC_NAME, name,
@@ -622,6 +560,8 @@ profile_fill (ProcessWindow *pwin)
 		
 		set_sample (model, &iter, PROFILE_FUNC_SELF, func->self, n_samples);
 		set_sample (model, &iter, PROFILE_FUNC_TOTAL, func->total, n_samples);
+
+		g_free(name);
 	}
 	
 	tree_view_set_sort_ids (GTK_TREE_VIEW (pwin->profile_func_tree_view));
@@ -689,7 +629,7 @@ leak_block_selection_changed (GtkTreeSelection *selection,
 		if (!process_find_line (pwin->process, stack->address,
 					&filename, &functionname, &line)) {
 			/* 0x3f == '?' -- suppress trigraph warnings */
-			functionname = g_strdup ("(\x3f\x3f\x3f)");
+			functionname = "(\x3f\x3f\x3f)";
 			filename = "(\x3f\x3f\x3f)";
 			line = 0;
 		}
@@ -722,6 +662,7 @@ leaks_fill (ProcessWindow *pwin)
 	tmp_list = pwin->leaks;
 	while (tmp_list) {
 		const char *filename;
+		gboolean free_function = FALSE;
 		char *functionname = NULL;
 		GtkTreeIter iter;
 
@@ -740,7 +681,6 @@ leaks_fill (ProcessWindow *pwin)
 
 				for (tmp_list = skip_funcs; tmp_list != NULL; tmp_list = tmp_list->next) {
 					if (!strcmp (functionname, tmp_list->data)) {
-						free (functionname);
 						functionname = NULL;
 						break;
 					}
@@ -755,7 +695,6 @@ leaks_fill (ProcessWindow *pwin)
 					regcomp (&regex, tmp_list->data, 0);
 
 					if (!regexec (&regex, functionname, 0, NULL, 0)) {
-						free (functionname);
 						functionname = NULL;
 						regfree (&regex);
 						break;
@@ -768,8 +707,10 @@ leaks_fill (ProcessWindow *pwin)
 			if (functionname)
 				break;
 		}
-		if (!functionname)
+		if (!functionname) {
+			free_function = TRUE;
 			functionname = g_strdup ("(\x3f\x3f\x3f)");
+		}
 
 		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter,
@@ -779,7 +720,8 @@ leaks_fill (ProcessWindow *pwin)
 				    LEAK_BLOCK_BLOCK, block,
 				    -1);
 
-		g_free (functionname);
+		if (free_function)
+			g_free (functionname);
 		
 		tmp_list = tmp_list->next;
 	}
@@ -829,13 +771,11 @@ leak_stack_run_command (ProcessWindow *pwin, Block *block, int frame)
 			p++;
 		}
 		
-		free (functionname);
-
 		cmdline = g_strdup_printf ("/bin/sh -c %s", command->str);
 
 		if (!g_spawn_command_line_async (cmdline, &err)) {
 			show_error (pwin->main_window,
-				    ERROR_MODAL, _("Executation of \"%s\" failed: %s"),
+				    ERROR_MODAL, _("Execution of \"%s\" failed: %s"),
 				    command->str, err->message);
 			
 			g_error_free (err);
@@ -873,40 +813,22 @@ leak_stack_row_activated (GtkTreeView   *tree_view,
  * File Selection handling
  ************************************************************/
 
-static void
-filename_ok_clicked (GtkWidget *button, gchar **name)
-{
-	GtkWidget *fs = gtk_widget_get_ancestor (button,
-						 gtk_file_selection_get_type());
-  
-	*name = g_strdup (gtk_file_selection_get_filename (GTK_FILE_SELECTION (fs)));
-	gtk_widget_destroy (fs);
-}
-
 static gchar *
-get_filename (const gchar *title, 
-	      const gchar *prompt_text, 
+get_filename (const gchar *title,
 	      const gchar *suggested_name)
 {
-	GtkWidget *fs;
+	GtkWidget *dialog;
 	gchar *filename = NULL;
-	
-	fs = gtk_file_selection_new (title);
-	gtk_file_selection_set_filename (GTK_FILE_SELECTION (fs), 
-					 suggested_name);
-	
-	gtk_label_set_text (GTK_LABEL (GTK_FILE_SELECTION (fs)->selection_text),
-			    prompt_text);
-	g_signal_connect (GTK_FILE_SELECTION (fs)->ok_button, "clicked",
-			  G_CALLBACK (filename_ok_clicked), &filename);
-	g_signal_connect_swapped (GTK_FILE_SELECTION (fs)->cancel_button, "clicked",
-				  G_CALLBACK (gtk_widget_destroy), fs);
-	g_signal_connect (fs, "destroy",
-			  G_CALLBACK (gtk_main_quit), NULL);
-	
-	gtk_widget_show (fs);
-	gtk_main();
-	
+	dialog = gtk_file_chooser_dialog_new (title,
+					      NULL, GTK_FILE_CHOOSER_ACTION_SAVE,
+					      GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
+					      GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
+					      NULL);
+	gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (dialog), suggested_name);
+	if (gtk_dialog_run (GTK_DIALOG (dialog)) == GTK_RESPONSE_ACCEPT)
+		filename = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (dialog));
+
+	gtk_widget_destroy (dialog);
 	return filename;
 }
 
@@ -919,10 +841,11 @@ pwin_from_widget (GtkWidget *widget)
 	GtkWidget *app;
 
 	if (GTK_IS_MENU_ITEM (widget)) {
-		GtkWidget *menu_shell = widget->parent;
+		GtkWidget *menu_shell = gtk_widget_get_parent (widget);
 
 		while (menu_shell && !GTK_IS_MENU_BAR (menu_shell)) {
-			menu_shell = gtk_menu_get_attach_widget (GTK_MENU (menu_shell))->parent;
+			menu_shell = gtk_menu_get_attach_widget (GTK_MENU (menu_shell));
+			menu_shell = gtk_widget_get_parent (menu_shell);
 		}
 		g_assert (menu_shell != NULL);
 
@@ -1029,12 +952,14 @@ process_window_reset (ProcessWindow *pwin)
 	gtk_window_set_title (GTK_WINDOW (pwin->main_window), "MemProf");
 
 	gtk_widget_queue_draw (pwin->usage_area);
+	dw_update(pwin);
 }
 
 static void
 init_process (ProcessWindow *pwin, MPProcess *process)
 {
 	pwin->process = process;
+	pwin->draw_memmap = TRUE;
 
 	process_set_follow_fork (pwin->process, default_follow_fork);
 	process_set_follow_exec (pwin->process, default_follow_exec);
@@ -1107,17 +1032,13 @@ run_cb (GtkWidget *widget)
 {
        GladeXML *xml;
        GtkWidget *run_dialog;
-       GtkWidget *entry;
+       GtkWidget *filechooser;
 
        ProcessWindow *pwin = pwin_from_widget (widget);
        
        xml = glade_xml_new (glade_file, "RunDialog", NULL);
        run_dialog = get_widget (xml, "RunDialog");
-       entry = get_widget (xml, "RunDialog-entry");
-
-       g_signal_connect_swapped (entry, "activate",
-				 G_CALLBACK (gtk_widget_activate),
-				 get_widget (xml, "RunDialog-run"));
+       filechooser = get_widget (xml, "RunDialog-chooser");
 
        g_object_unref (G_OBJECT (xml));
 
@@ -1129,7 +1050,10 @@ run_cb (GtkWidget *widget)
 		       char *text;
 		       gboolean result;
 
-		       text = gtk_editable_get_chars (GTK_EDITABLE (entry), 0, -1);
+		       text = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (filechooser));
+		       if (!text)
+			       break;
+
 		       args = process_parse_exec (text);
 
 		       result = run_file (pwin, args);
@@ -1180,13 +1104,15 @@ save_leak_cb (GtkWidget *widget)
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
 	if (pwin->leaks) {
-		filename = get_filename ("Save Leak Report", "Output file",
+		filename = get_filename ("Save Leak Report",
 					 suggestion ? suggestion : "memprof.leak");
 		if (filename) {
-			g_free (suggestion);
+			if (suggestion) 
+				g_free (suggestion);
 			suggestion = filename;
 			
 			leaks_print (pwin->process, pwin->leaks, filename);
+			g_free (filename);
 		}
 	}
 }
@@ -1200,13 +1126,15 @@ save_profile_cb (GtkWidget *widget)
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
 	if (pwin->profile) {
-		filename = get_filename ("Save Profile", "Output file",
+		filename = get_filename ("Save Profile",
 					 suggestion ? suggestion : "memprof.out");
 		if (filename) {
-			g_free (suggestion);
+			if (suggestion)
+				g_free (suggestion);
 			suggestion = filename;
 			
 			profile_write (pwin->profile, filename);
+			g_free (filename);
 		}
 	}
 }
@@ -1259,9 +1187,11 @@ generate_leak_cb (GtkWidget *widget)
 void
 generate_profile_cb (GtkWidget *widget)
 {
+	gboolean was_recording;
 	ProcessWindow *pwin = pwin_from_widget (widget);
        
 	if (pwin->process) {
+		was_recording = process_is_recording (pwin->process);
 		process_stop_input (pwin->process);
 
 		if (pwin->profile) {
@@ -1270,11 +1200,21 @@ generate_profile_cb (GtkWidget *widget)
 		}
 
 		pwin->profile = profile_create (pwin->process, skip_funcs);
-		process_start_input (pwin->process);
+		if (was_recording)
+			process_start_input (pwin->process);
 		profile_fill (pwin);
 
 		gtk_notebook_set_current_page (GTK_NOTEBOOK (pwin->main_notebook), 0);
 	}
+}
+
+void
+draw_memmap_toggled_cb (GtkWidget *widget)
+{
+	ProcessWindow *pwin = pwin_from_widget (widget);
+	pwin->draw_memmap = gtk_toggle_tool_button_get_active
+			(GTK_TOGGLE_TOOL_BUTTON (widget));
+	dw_update(pwin);
 }
 
 void
@@ -1351,7 +1291,7 @@ show_error (GtkWidget *parent_window,
 					 (error == ERROR_FATAL) ?
 					   GTK_MESSAGE_ERROR :
 					   GTK_MESSAGE_WARNING,
-					 GTK_BUTTONS_OK, message);
+					 GTK_BUTTONS_OK, "%s", message);
 	g_free (message);
 
 	gtk_window_set_title (GTK_WINDOW (dialog),
@@ -1523,7 +1463,7 @@ set_default_size (GtkWindow *window)
 	GtkWidget *widget = GTK_WIDGET (window);
 	
 	screen = gtk_widget_get_screen (widget);
-	monitor_num = gdk_screen_get_monitor_at_window (screen, widget->window);
+	monitor_num = gdk_screen_get_monitor_at_window (screen, gtk_widget_get_window (widget));
 	
 	gdk_screen_get_monitor_geometry (screen, monitor_num, &monitor);
 	
@@ -1541,7 +1481,6 @@ process_window_new (void)
 	GtkWidget *vpaned;
 	GtkWidget *hpaned;
 	ProcessWindow *pwin;
-	GtkWidget *menuitem;
 	GError *err = NULL;
 	
 	pwin = g_new0 (ProcessWindow, 1);
@@ -1637,9 +1576,16 @@ process_window_new (void)
 		gtk_widget_hide (get_widget (xml, "reset-profile-button"));
 	}
 	
+	pwin->time_graph = get_widget(xml, "time-graph");
+	pwin->mem_map = get_widget(xml, "mem-map");
+	g_signal_connect(pwin->time_graph, "expose_event",
+				G_CALLBACK (time_graph_expose_event), pwin);
+	g_signal_connect(pwin->mem_map, "expose_event",
+				G_CALLBACK (mem_map_expose_event), pwin);
+
 	glade_xml_signal_autoconnect (xml);
 	g_object_unref (G_OBJECT (xml));
-	
+
 	return pwin;
 }
 
@@ -1653,7 +1599,7 @@ process_window_get_process (ProcessWindow *pwin)
 gboolean
 process_window_visible (ProcessWindow *pwin)
 {
-	return GTK_WIDGET_VISIBLE (pwin->main_window);
+	return gtk_widget_get_visible (pwin->main_window);
 }
 
 void
@@ -1662,7 +1608,7 @@ process_window_show (ProcessWindow *pwin)
 	if (!process_window_visible (pwin))
 		gtk_widget_show (pwin->main_window);
 	else
-		gdk_window_show (pwin->main_window->window);
+		gdk_window_show (gtk_widget_get_window (pwin->main_window));
 }
 
 void
@@ -1679,7 +1625,7 @@ check_quit (void)
 	
 	tmplist = toplevels = gtk_window_list_toplevels ();
 	while (tmplist) {
-		if (GTK_WIDGET_VISIBLE (toplevels->data))
+		if (gtk_widget_get_visible (toplevels->data))
 			return;
 		tmplist = tmplist->next;
 	}
@@ -1715,7 +1661,7 @@ process_window_maybe_detach (ProcessWindow *pwin)
 					 GTK_DIALOG_MODAL | GTK_DIALOG_DESTROY_WITH_PARENT,
 					 GTK_MESSAGE_QUESTION,
 					 GTK_BUTTONS_YES_NO,
-					 message);
+					 "%s", message);
 	gtk_dialog_set_default_response (GTK_DIALOG (dialog), GTK_RESPONSE_YES);
 
 	response = gtk_dialog_run (GTK_DIALOG (dialog));
@@ -1770,6 +1716,7 @@ sigchld_handler (int signum)
 static char *profile_type_string = NULL;
 static char *profile_rate_string = NULL;
 static int profile_interval = 1000;
+static gchar **profile_skip_funcs = NULL;
 
 static const GOptionEntry entries[] = 
 {
@@ -1781,6 +1728,8 @@ static const GOptionEntry entries[] =
 	  N_("Type of profiling information to collect"), "memory/cycles/time" },
 	{ "rate", '\0', 0, G_OPTION_ARG_STRING, &profile_rate_string,
 	  N_("Number of samples/sec for time profile (1k=1000)"), NULL },
+	{ "skip-funcs", '\0', 0, G_OPTION_ARG_STRING_ARRAY, &profile_skip_funcs,
+	  N_("Functions allocating memory"), "function_name" },
 	{ NULL }
 };
 	
@@ -1797,15 +1746,61 @@ parse_options (int *argc, char ***argv)
 	g_option_context_parse (context, argc, argv, &err);
 }
 
+static void
+initialize_skip_funcs ()
+{
+	gint i = 0;
+
+	/* C library functions */
+	skip_funcs = g_slist_append (skip_funcs, "malloc");
+	skip_funcs = g_slist_append (skip_funcs, "calloc");
+	skip_funcs = g_slist_append (skip_funcs, "realloc");
+	skip_funcs = g_slist_append (skip_funcs, "strdup");
+	skip_funcs = g_slist_append (skip_funcs, "strndup");
+
+	/* glib */
+	skip_funcs = g_slist_append (skip_funcs, "g_malloc");
+	skip_funcs = g_slist_append (skip_funcs, "g_malloc0");
+	skip_funcs = g_slist_append (skip_funcs, "g_realloc");
+	skip_funcs = g_slist_append (skip_funcs, "g_strdup");
+	skip_funcs = g_slist_append (skip_funcs, "g_strndup");
+	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc");
+	skip_funcs = g_slist_append (skip_funcs, "g_slice_alloc0");
+	skip_funcs = g_slist_append (skip_funcs, "g_memdup");
+
+	/* C++/STL */
+	skip_funcs = g_slist_append (skip_funcs, "_Znwj");
+
+	/* WebKit */
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF16fastZeroedMallocEj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF10fastStrDupEPKc");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF10fastCallocEjj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF10fastMallocEj");
+	skip_funcs = g_slist_append (skip_funcs, "_ZN3WTF11fastReallocEPvj");
+
+	/* Qt */
+	skip_funcs = g_slist_append (skip_funcs, "_Z7qMallocj");
+	skip_funcs = g_slist_append (skip_funcs, "_Z8qReallocPvj");
+
+	/* Harfbuzz */
+	skip_funcs = g_slist_append (skip_funcs, "_hb_alloc");
+
+	while (profile_skip_funcs && profile_skip_funcs [i]) {
+		skip_funcs = g_slist_append (skip_funcs, profile_skip_funcs [i]);
+		++i;
+	}
+}
+
 int
 main(int argc, char **argv)
 {
-       const char **startup_args;
        ProcessWindow *initial_window;
        
+
        gtk_init (&argc, &argv);
        
        parse_options (&argc, &argv);
+
 	
        /* Set up a handler for SIGCHLD to avoid zombie children
 	*/
@@ -1843,7 +1838,9 @@ main(int argc, char **argv)
 	       g_printerr (_("Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"));
 	       exit (1);
        }
-	       
+
+       initialize_skip_funcs();
+
        if (profile_rate_string) {
 	       int multiplier = 1;
 	       double rate;
@@ -1889,8 +1886,14 @@ main(int argc, char **argv)
 
        gtk_widget_show (initial_window->main_window);
 
-       if (argc > 1)
-	       run_file (initial_window, (char **)(argv + 1));
+       if (argc > 1) {
+               /* skip over -- */
+               gint start = 1;
+               if (strcmp (argv[start], "--") == 0)
+                    start = 2;
+
+	       run_file (initial_window, (char **)(argv + start));
+       }
 
        gtk_main ();
 

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: memprof.HEAD\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2003-06-13 20:52+0200\n"
+"POT-Creation-Date: 2009-10-27 02:54+0100\n"
 "PO-Revision-Date: 2003-06-15 09:42+0200\n"
 "Last-Translator: \n"
 "Language-Team:  <mk@li.org>\n"
@@ -19,359 +19,387 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.0\n"
 
-#: leakdetect.c:584 profile.c:202
+#: ../src/leakdetect.c:496 ../src/profile.c:708
 #, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "Не може да се отвори излезната датотека: %s\n"
 
-#: main.c:536
-#, c-format
-msgid "Executation of \"%s\" failed"
+#: ../src/main.c:772
+#, fuzzy, c-format
+msgid "Execution of \"%s\" failed: %s"
 msgstr "Извршувањето на \"%s\" неуспеа"
 
-#: main.c:667
-msgid "Really quit MemProf?"
-msgstr "Навистина напушти MemProf?"
-
-#: main.c:713 memprof.glade.h:34
+#: ../src/main.c:902
 msgid "MemProf"
 msgstr "MemProf"
 
-#: main.c:807
+#: ../src/main.c:1012
 #, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "Не може да најде извршна датотека за \"%s\""
 
-#: main.c:1418
+#: ../src/main.c:1277
 msgid "MemProf Error"
 msgstr "MemProf Грешка"
 
-#: main.c:1418
+#: ../src/main.c:1277
 msgid "MemProf Warning"
 msgstr "MemProf Предупредување"
 
-#: main.c:1672
-msgid "Really detach from finished process?"
-msgstr "Навистина извади од завршени процеси?"
+#: ../src/main.c:1340
+#, fuzzy
+msgid "Functions"
+msgstr "Функција"
 
-#: main.c:1674
-msgid "Really detach from running process?"
-msgstr "Навистина извади од тековни процеси?"
+#: ../src/main.c:1341 ../src/main.c:1358 ../src/main.c:1376
+msgid "Self"
+msgstr "Свое"
 
-#: main.c:1704
-msgid "Really kill running process?"
-msgstr "Навистина сакаш да го убиеш работниот процес?"
+#: ../src/main.c:1342 ../src/main.c:1377
+msgid "Total"
+msgstr "Вкупно"
 
-#: main.c:1741
-msgid "Create new windows for forked processes"
-msgstr "Креирај нови прозорци за разгранети процези"
+#: ../src/main.c:1357
+msgid "Descendants"
+msgstr ""
 
-#: main.c:1743
-msgid "Retain windows for processes after exec()"
-msgstr "Врати ги прозорците за процесите после извршување()"
+#: ../src/main.c:1359
+msgid "Cumulative"
+msgstr ""
 
-#: main.c:1745
-msgid "Type of profiling information to collect"
-msgstr "Тип на информации од профил за собирање"
-
-#: main.c:1747
-msgid "Number of samples/sec for time profile (1k=1000)"
-msgstr "Број на узорци/сек за временски профил (1к=1000)"
-
-#: main.c:1796
-msgid "Argument of --profile must be one of 'memory', 'cycles, or 'time'\n"
-msgstr "Аргумент од --профил мора да биде 'меморија', 'повторувања, или 'време'\n"
-
-#: main.c:1837
-msgid "Cannot find memprof.glade"
-msgstr "Неможам да најдам memprof.glade"
-
-#: memprof.glade.h:1
-msgid "# of Allocations:"
-msgstr "# на Алокации:"
-
-#: memprof.glade.h:2
-msgid "0"
-msgstr "0"
-
-#: memprof.glade.h:3
-msgid "0k"
-msgstr "Ок"
-
-#: memprof.glade.h:4
-msgid "32k"
-msgstr "32к"
-
-#: memprof.glade.h:5
-msgid "Adding Skip Function"
-msgstr "Додавање на функција за прескокнување"
-
-#: memprof.glade.h:6
-msgid "Adding Skip Regular Expression"
-msgstr "Додавање прескокнувачко регуларен израз"
-
-#: memprof.glade.h:7
-msgid "Address"
-msgstr "Адреса"
-
-#: memprof.glade.h:8
-msgid "Bytes"
-msgstr "бајти"
-
-#: memprof.glade.h:9
-msgid "Bytes / Allocation:"
-msgstr "Бајти / Алокации:"
-
-#: memprof.glade.h:10
-msgid "Caller"
-msgstr "Јавувач"
-
-#: memprof.glade.h:11
+#: ../src/main.c:1375
 msgid "Callers"
 msgstr "Јавувачи"
 
-#: memprof.glade.h:12
+#: ../src/main.c:1402
+msgid "Address"
+msgstr "Адреса"
+
+#: ../src/main.c:1403
+msgid "Size"
+msgstr "Големина"
+
+#: ../src/main.c:1404
+msgid "Caller"
+msgstr "Јавувач"
+
+#: ../src/main.c:1424
+msgid "Function"
+msgstr "Функција"
+
+#: ../src/main.c:1425
+msgid "Line"
+msgstr "Линија"
+
+#: ../src/main.c:1426
+msgid "File"
+msgstr "Датотека"
+
+#: ../src/main.c:1634
+msgid "Really detach from finished process?"
+msgstr "Навистина извади од завршени процеси?"
+
+#: ../src/main.c:1636
+msgid "Really detach from running process?"
+msgstr "Навистина извади од тековни процеси?"
+
+#: ../src/main.c:1666
+msgid "Really kill running process?"
+msgstr "Навистина сакаш да го убиеш работниот процес?"
+
+#: ../src/main.c:1702
+msgid "Create new windows for forked processes"
+msgstr "Креирај нови прозорци за разгранети процези"
+
+#: ../src/main.c:1704
+msgid "Retain windows for processes after exec()"
+msgstr "Врати ги прозорците за процесите после извршување()"
+
+#: ../src/main.c:1706
+msgid "Type of profiling information to collect"
+msgstr "Тип на информации од профил за собирање"
+
+#: ../src/main.c:1708
+msgid "Number of samples/sec for time profile (1k=1000)"
+msgstr "Број на узорци/сек за временски профил (1к=1000)"
+
+#: ../src/main.c:1710
+msgid "Functions allocating memory"
+msgstr ""
+
+#: ../src/main.c:1792
+#, fuzzy, c-format
+msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
+msgstr ""
+"Аргумент од --профил мора да биде 'меморија', 'повторувања, или 'време'\n"
+
+#: ../src/main.c:1829
+msgid "Cannot find memprof.glade"
+msgstr "Неможам да најдам memprof.glade"
+
+#: ../memprof.glade.h:1
+#, fuzzy
+msgid "# of Allocations: "
+msgstr "# на Алокации:"
+
+#: ../memprof.glade.h:2
+msgid "0"
+msgstr "0"
+
+#: ../memprof.glade.h:3
+msgid "0k"
+msgstr "Ок"
+
+#: ../memprof.glade.h:4
+msgid "32k"
+msgstr "32к"
+
+#: ../memprof.glade.h:5
+msgid "Adding Skip Function"
+msgstr "Додавање на функција за прескокнување"
+
+#: ../memprof.glade.h:6
+msgid "Adding Skip Regular Expression"
+msgstr "Додавање прескокнувачко регуларен израз"
+
+#: ../memprof.glade.h:7
+#, fuzzy
+msgid "Bytes / Allocation: "
+msgstr "Бајти / Алокации:"
+
+#: ../memprof.glade.h:8
 msgid "Check for Leaks"
 msgstr "Провери за протекувања"
 
-#: memprof.glade.h:13
-msgid "Children"
-msgstr "Дете"
-
-#: memprof.glade.h:14
-msgid "Command Line"
-msgstr "Командна линија"
-
-#: memprof.glade.h:15
+#: ../memprof.glade.h:9
 msgid "Command to run on double click in stack trace:"
 msgstr "Команда за извршување при двоен клик при барање на stack:"
 
-#: memprof.glade.h:16
-msgid ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
-msgstr ""
-"Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
-"Rietveld"
-
-#: memprof.glade.h:17
+#: ../memprof.glade.h:10
 msgid "Create Profile"
 msgstr "Креирај Профил"
 
-#: memprof.glade.h:18
+#: ../memprof.glade.h:11
 msgid "Defaults"
 msgstr "Стандардни"
 
-#: memprof.glade.h:19
-msgid "Enter a regular expression of function names to skip when computing profiles"
+#: ../memprof.glade.h:12
+msgid ""
+"Enter a regular expression of function names to skip when computing profiles"
 msgstr ""
 "Внеси регуларен израз од функционални имиња  за прескокнување при "
 "пресметување на профили"
 
-#: memprof.glade.h:20
+#: ../memprof.glade.h:13
 msgid "Enter pathname to an executable"
 msgstr "Внеси ја патеката до извршната датотека"
 
-#: memprof.glade.h:21
+#: ../memprof.glade.h:14
 msgid "Enter the name of a function to skip when computing profiles"
 msgstr ""
-"Внеси го името на функцијата за прескокнување при пресметување на "
-"профили"
+"Внеси го името на функцијата за прескокнување при пресметување на профили"
 
-#: memprof.glade.h:22
-msgid "File"
-msgstr "Датотека"
-
-#: memprof.glade.h:23
-msgid "Follow _exec()"
-msgstr "Следи _exec()"
-
-#: memprof.glade.h:24
-msgid "Follow _fork()"
-msgstr "Следи _fork()"
-
-#: memprof.glade.h:25
-msgid "Function"
-msgstr "Функција"
-
-#: memprof.glade.h:26
+#: ../memprof.glade.h:15
 msgid "Functions to Skip:"
 msgstr "функции за прескокнување:"
 
-#: memprof.glade.h:27
-msgid "Generate _Leak Report"
-msgstr "Генерирај _Leak Репорт"
-
-#: memprof.glade.h:28
-msgid "Generate _Profile"
-msgstr "Генерирај _Profile"
-
-#: memprof.glade.h:29 tree.c:98
+#: ../memprof.glade.h:16 ../src/tree.c:109
 msgid "Kill"
 msgstr "Убиј"
 
-#: memprof.glade.h:30
+#: ../memprof.glade.h:17
 msgid "Kill Program"
 msgstr "Убиј ја програмата"
 
-#: memprof.glade.h:31
+#: ../memprof.glade.h:18
 msgid "Leak Detection Options"
 msgstr "Опции за детекција на истечување"
 
-#: memprof.glade.h:32
+#: ../memprof.glade.h:19
 msgid "Leaks"
 msgstr "Истечувања"
 
-#: memprof.glade.h:33
-msgid "Line"
-msgstr "Линија"
-
-#: memprof.glade.h:35
+#: ../memprof.glade.h:20
 msgid "MemProf - Processes"
 msgstr "MemProf - Процеси"
 
-#: memprof.glade.h:36
-msgid "Memory Profiling Tool"
-msgstr "Алатки за мемориски профили"
+#: ../memprof.glade.h:21
+msgid "Memory Usage Maps"
+msgstr ""
 
-#: memprof.glade.h:37
-msgid "PID"
-msgstr "PID"
-
-#: memprof.glade.h:38
+#: ../memprof.glade.h:22
 msgid "Preferences"
 msgstr "Параметри"
 
-#: memprof.glade.h:39
+#: ../memprof.glade.h:23
 msgid "Process _Tree"
 msgstr "Процесно _Дрво"
 
-#: memprof.glade.h:40
+#: ../memprof.glade.h:24
 msgid "Profile"
 msgstr "Профил"
 
-#: memprof.glade.h:41
+#: ../memprof.glade.h:25
 msgid "Profile Options"
 msgstr "Опции за профили"
 
-#: memprof.glade.h:42
+#: ../memprof.glade.h:26
+msgid "Record"
+msgstr ""
+
+#: ../memprof.glade.h:27
 msgid "Regular expressions to Skip:"
 msgstr "Регуларни изрази за прескокнување:"
 
-#: memprof.glade.h:43
+#: ../memprof.glade.h:28
+msgid "Reset"
+msgstr ""
+
+#: ../memprof.glade.h:29
 msgid "Run"
 msgstr "Изврши"
 
-#: memprof.glade.h:44
+#: ../memprof.glade.h:30
 msgid "Run Executable"
 msgstr "Изврши извршувачка датотека"
 
-#: memprof.glade.h:45
+#: ../memprof.glade.h:31
 msgid "Run Program"
 msgstr "Изврши програма"
 
-#: memprof.glade.h:46
+#: ../memprof.glade.h:32
 msgid "Save"
 msgstr "Зачувај"
 
-#: memprof.glade.h:47
+#: ../memprof.glade.h:33
 msgid "Save Report"
 msgstr "Зачувај репорт"
 
-#: memprof.glade.h:48
-msgid "Save _Leak Info..."
-msgstr "Зачувај _информации за истекување..."
+#: ../memprof.glade.h:34
+#, fuzzy
+msgid "Select an Executable"
+msgstr "Изврши извршувачка датотека"
 
-#: memprof.glade.h:49
-msgid "Save _Profile..."
-msgstr "Зачувај _Профил..."
-
-#: memprof.glade.h:50
-msgid "Self"
-msgstr "Свое"
-
-#: memprof.glade.h:51
-msgid "Size"
-msgstr "Големина"
-
-#: memprof.glade.h:52
+#: ../memprof.glade.h:35
 msgid "Stack Trace"
 msgstr "Барање на магацин"
 
-#: memprof.glade.h:53
-msgid "Status"
-msgstr "Статус"
+#: ../memprof.glade.h:36
+msgid "Time Graph"
+msgstr ""
 
-#: memprof.glade.h:54
-msgid "Total"
-msgstr "Вкупно"
-
-#: memprof.glade.h:55
-msgid "Total Bytes:"
+#: ../memprof.glade.h:37
+#, fuzzy
+msgid "Total Bytes: "
 msgstr "Вкупно бајти:"
 
-#: memprof.glade.h:56
+#: ../memprof.glade.h:38
 msgid "_Detach"
 msgstr "_Откачи"
 
-#: memprof.glade.h:57
+#: ../memprof.glade.h:39
 msgid "_File"
 msgstr "_Датотека"
 
-#: memprof.glade.h:58
+#: ../memprof.glade.h:40
 msgid "_Help"
 msgstr "_Помош"
 
-#: memprof.glade.h:59
-msgid "_Kill"
-msgstr "_Убиј"
-
-#: memprof.glade.h:60
+#: ../memprof.glade.h:41
 msgid "_Process"
 msgstr "_Процес"
 
-#: memprof.glade.h:61
-msgid "_Run Program..."
-msgstr "_Изврши програм..."
-
-#: memprof.glade.h:62
-msgid "_Settings"
-msgstr "_Подесувања"
-
-#: process.c:854
+#: ../src/process.c:839
 msgid "Initial"
 msgstr "Почетно"
 
-#: process.c:857
+#: ../src/process.c:842
 msgid "Starting"
 msgstr "Стартува"
 
-#: process.c:860
+#: ../src/process.c:845
 msgid "Running"
 msgstr "Работи"
 
-#: process.c:863
+#: ../src/process.c:848
 msgid "Exiting"
 msgstr "Езлегување"
 
-#: process.c:866 process.c:869
+#: ../src/process.c:851 ../src/process.c:854
 msgid "Defunct"
 msgstr "Расипано"
 
-#: server.c:286
+#: ../src/server.c:289
 #, c-format
 msgid "Cannot find %s"
 msgstr "Не може да најде %s"
 
-#: tree.c:91
+#: ../src/tree.c:102
 msgid "Show"
 msgstr "Прикажи"
 
-#: tree.c:94
+#: ../src/tree.c:105
 msgid "Hide"
 msgstr "Скриј"
 
-#: tree.c:101
+#: ../src/tree.c:112
 msgid "Detach"
 msgstr "Откачи"
 
+#: ../src/tree.c:180
+msgid "PID"
+msgstr "PID"
+
+#: ../src/tree.c:181
+msgid "Command Line"
+msgstr "Командна линија"
+
+#: ../src/tree.c:182
+msgid "Status"
+msgstr "Статус"
+
+#~ msgid "Really quit MemProf?"
+#~ msgstr "Навистина напушти MemProf?"
+
+#~ msgid "Bytes"
+#~ msgstr "бајти"
+
+#~ msgid "Children"
+#~ msgstr "Дете"
+
+#~ msgid ""
+#~ "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+#~ "Rietveld"
+#~ msgstr ""
+#~ "Copyright 1999, 2000, 2001, Red Hat, Inc.&#13;Copyright 2002, Kristian "
+#~ "Rietveld"
+
+#~ msgid "Follow _exec()"
+#~ msgstr "Следи _exec()"
+
+#~ msgid "Follow _fork()"
+#~ msgstr "Следи _fork()"
+
+#~ msgid "Generate _Leak Report"
+#~ msgstr "Генерирај _Leak Репорт"
+
+#~ msgid "Generate _Profile"
+#~ msgstr "Генерирај _Profile"
+
+#~ msgid "Memory Profiling Tool"
+#~ msgstr "Алатки за мемориски профили"
+
+#~ msgid "Save _Leak Info..."
+#~ msgstr "Зачувај _информации за истекување..."
+
+#~ msgid "Save _Profile..."
+#~ msgstr "Зачувај _Профил..."
+
+#~ msgid "_Kill"
+#~ msgstr "_Убиј"
+
+#~ msgid "_Run Program..."
+#~ msgstr "_Изврши програм..."
+
+#~ msgid "_Settings"
+#~ msgstr "_Подесувања"

@@ -54,7 +54,7 @@ make_menu_item (const char *label, GCallback cb)
 static ProcessWindow *
 get_process_window (GtkWidget *menu_item)
 {
-	return g_object_get_data (G_OBJECT (menu_item->parent), "process-window");
+	return g_object_get_data (G_OBJECT (gtk_widget_get_parent (menu_item)), "process-window");
 }
 
 static void
@@ -194,7 +194,7 @@ tree_window_show (void)
 	ensure_tree_window ();
 	
 	gtk_widget_show (tree_window);
-	gdk_window_show (tree_window->window); /* Raise */
+	gdk_window_show (gtk_widget_get_window (tree_window)); /* Raise */
 }
 
 static ProcessWindow *

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Arabic\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-07-31 11:08+0100\n"
+"POT-Creation-Date: 2009-10-27 02:54+0100\n"
 "PO-Revision-Date: 2007-04-14 18:49+0100\n"
 "Last-Translator: Djihed Afifi <djihed@gmail.com>\n"
 "Language-Team: Arabeyes <doc@arabeyes.org>\n"
@@ -15,126 +15,130 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../leakdetect.c:496 ../profile.c:702
+#: ../src/leakdetect.c:496 ../src/profile.c:708
 #, fuzzy, c-format
 msgid "Cannot open output file: %s\n"
 msgstr "تعذر فتح ملف البادرات (gestures): %s"
 
-#: ../main.c:838
+#: ../src/main.c:772
 #, fuzzy, c-format
-msgid "Executation of \"%s\" failed: %s"
+msgid "Execution of \"%s\" failed: %s"
 msgstr "فشل تنشيط %s: %s\n"
 
-#: ../main.c:986
+#: ../src/main.c:902
 #, fuzzy
 msgid "MemProf"
 msgstr "تذكير"
 
-#: ../main.c:1095
+#: ../src/main.c:1012
 #, fuzzy, c-format
 msgid "Cannot find executable for \"%s\""
 msgstr "لا يمكن العثور على شهادة لـ '%s'"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 #, fuzzy
 msgid "MemProf Error"
 msgstr "خطأ عند الضم"
 
-#: ../main.c:1359
+#: ../src/main.c:1277
 #, fuzzy
 msgid "MemProf Warning"
 msgstr "تحذير أمني"
 
-#: ../main.c:1422
+#: ../src/main.c:1340
 #, fuzzy
 msgid "Functions"
 msgstr "الوظيفة"
 
-#: ../main.c:1423 ../main.c:1440 ../main.c:1458
+#: ../src/main.c:1341 ../src/main.c:1358 ../src/main.c:1376
 msgid "Self"
 msgstr "ذاته"
 
-#: ../main.c:1424 ../main.c:1459
+#: ../src/main.c:1342 ../src/main.c:1377
 #, fuzzy
 msgid "Total"
 msgstr "المجموع:"
 
-#: ../main.c:1439
+#: ../src/main.c:1357
 #, fuzzy
 msgid "Descendants"
 msgstr "<b>تواريخ</b>"
 
-#: ../main.c:1441
+#: ../src/main.c:1359
 #, fuzzy
 msgid "Cumulative"
 msgstr "متعدد"
 
-#: ../main.c:1457
+#: ../src/main.c:1375
 #, fuzzy
 msgid "Callers"
 msgstr "أطول"
 
-#: ../main.c:1484
+#: ../src/main.c:1402
 msgid "Address"
 msgstr "العنوان"
 
-#: ../main.c:1485
+#: ../src/main.c:1403
 #, fuzzy
 msgid "Size"
 msgstr "الحجم:"
 
-#: ../main.c:1486
+#: ../src/main.c:1404
 #, fuzzy
 msgid "Caller"
 msgstr "أطول"
 
-#: ../main.c:1506
+#: ../src/main.c:1424
 msgid "Function"
 msgstr "الوظيفة"
 
-#: ../main.c:1507
+#: ../src/main.c:1425
 msgid "Line"
 msgstr "خط"
 
-#: ../main.c:1508
+#: ../src/main.c:1426
 msgid "File"
 msgstr "ملف"
 
-#: ../main.c:1710
+#: ../src/main.c:1634
 msgid "Really detach from finished process?"
 msgstr ""
 
-#: ../main.c:1712
+#: ../src/main.c:1636
 msgid "Really detach from running process?"
 msgstr ""
 
-#: ../main.c:1742
+#: ../src/main.c:1666
 msgid "Really kill running process?"
 msgstr ""
 
-#: ../main.c:1777
+#: ../src/main.c:1702
 msgid "Create new windows for forked processes"
 msgstr ""
 
-#: ../main.c:1779
+#: ../src/main.c:1704
 msgid "Retain windows for processes after exec()"
 msgstr ""
 
-#: ../main.c:1781
+#: ../src/main.c:1706
 #, fuzzy
 msgid "Type of profiling information to collect"
 msgstr "اظهر/إخفي معلوات الصورة في المجموعة."
 
-#: ../main.c:1783
+#: ../src/main.c:1708
 msgid "Number of samples/sec for time profile (1k=1000)"
 msgstr ""
 
-#: ../main.c:1843
+#: ../src/main.c:1710
+msgid "Functions allocating memory"
+msgstr ""
+
+#: ../src/main.c:1792
 #, c-format
 msgid "Argument of --profile must be one of 'memory', 'cycles', or 'time'\n"
 msgstr ""
 
-#: ../main.c:1878
+#: ../src/main.c:1829
 #, fuzzy
 msgid "Cannot find memprof.glade"
 msgstr "لا يمكن ايجاد المشغل"
@@ -212,214 +216,218 @@ msgstr "اكتب إسم ملف التعريف الجديد"
 msgid "Functions to Skip:"
 msgstr "دالة جيب تمام"
 
-#: ../memprof.glade.h:16
-#, fuzzy
-msgid "Generate _Leak Report"
-msgstr "ولِّد كلمة سر _عشوائيّة"
-
-#: ../memprof.glade.h:17
-#, fuzzy
-msgid "Generate _Profile"
-msgstr "احذف الطور"
-
-#: ../memprof.glade.h:18 ../tree.c:109
+#: ../memprof.glade.h:16 ../src/tree.c:109
 msgid "Kill"
 msgstr "اقتل"
 
-#: ../memprof.glade.h:19
+#: ../memprof.glade.h:17
 #, fuzzy
 msgid "Kill Program"
 msgstr "البرنامج"
 
-#: ../memprof.glade.h:20
+#: ../memprof.glade.h:18
 #, fuzzy
 msgid "Leak Detection Options"
 msgstr "خيارات إنتقاء الملف"
 
-#: ../memprof.glade.h:21
+#: ../memprof.glade.h:19
 #, fuzzy
 msgid "Leaks"
 msgstr "ليكنس"
 
-#: ../memprof.glade.h:22
+#: ../memprof.glade.h:20
 #, fuzzy
 msgid "MemProf - Processes"
 msgstr "_عملياتي"
 
-#: ../memprof.glade.h:23
+#: ../memprof.glade.h:21
+msgid "Memory Usage Maps"
+msgstr ""
+
+#: ../memprof.glade.h:22
 #, fuzzy
 msgid "Preferences"
 msgstr "ت_فضيلات"
 
-#: ../memprof.glade.h:24
+#: ../memprof.glade.h:23
 #, fuzzy
 msgid "Process _Tree"
 msgstr "المعالج"
 
-#: ../memprof.glade.h:25
+#: ../memprof.glade.h:24
 msgid "Profile"
 msgstr "الملف الشخصي"
 
-#: ../memprof.glade.h:26
+#: ../memprof.glade.h:25
 #, fuzzy
 msgid "Profile Options"
 msgstr "خيارات التسلسل"
 
-#: ../memprof.glade.h:27
+#: ../memprof.glade.h:26
 #, fuzzy
 msgid "Record"
 msgstr "سجل:"
 
-#: ../memprof.glade.h:28
+#: ../memprof.glade.h:27
 #, fuzzy
 msgid "Regular expressions to Skip:"
 msgstr "_عبارة منتظمة"
 
-#: ../memprof.glade.h:29
+#: ../memprof.glade.h:28
 #, fuzzy
 msgid "Reset"
 msgstr "إعادة ضب_ط"
 
-#: ../memprof.glade.h:30
+#: ../memprof.glade.h:29
 msgid "Run"
 msgstr "شغّل"
 
-#: ../memprof.glade.h:31
+#: ../memprof.glade.h:30
 #, fuzzy
 msgid "Run Executable"
 msgstr "تنفيذي:"
 
-#: ../memprof.glade.h:32
+#: ../memprof.glade.h:31
 msgid "Run Program"
 msgstr "شغّل برنامج"
 
-#: ../memprof.glade.h:33
+#: ../memprof.glade.h:32
 msgid "Save"
 msgstr "احفظ"
 
-#: ../memprof.glade.h:34
+#: ../memprof.glade.h:33
 #, fuzzy
 msgid "Save Report"
 msgstr "ا_حفظ تقرير العلِّة"
 
+#: ../memprof.glade.h:34
+#, fuzzy
+msgid "Select an Executable"
+msgstr "تنفيذي:"
+
 #: ../memprof.glade.h:35
-#, fuzzy
-msgid "Save _Leak Info..."
-msgstr "إحفظ في..."
-
-#: ../memprof.glade.h:36
-#, fuzzy
-msgid "Save _Profile..."
-msgstr "_طور جديد..."
-
-#: ../memprof.glade.h:37
 #, fuzzy
 msgid "Stack Trace"
 msgstr "استخراج المقطوعات"
 
-#: ../memprof.glade.h:38
+#: ../memprof.glade.h:36
+msgid "Time Graph"
+msgstr ""
+
+#: ../memprof.glade.h:37
 #, fuzzy
 msgid "Total Bytes: "
 msgstr "مجموع المقاطع:"
 
-#: ../memprof.glade.h:39
-#, fuzzy
-msgid "_About"
-msgstr "_6 عن البرنامج"
-
-#: ../memprof.glade.h:40
-#, fuzzy
-msgid "_Close"
-msgstr "أغلق"
-
-#: ../memprof.glade.h:41
+#: ../memprof.glade.h:38
 #, fuzzy
 msgid "_Detach"
 msgstr "_اخلع اللسان"
 
-#: ../memprof.glade.h:42
+#: ../memprof.glade.h:39
 #, fuzzy
 msgid "_File"
 msgstr "/ملف"
 
-#: ../memprof.glade.h:43
+#: ../memprof.glade.h:40
 #, fuzzy
 msgid "_Help"
 msgstr "مساعدة"
 
-#: ../memprof.glade.h:44
-#, fuzzy
-msgid "_Kill"
-msgstr "اقتل"
-
-#: ../memprof.glade.h:45
+#: ../memprof.glade.h:41
 #, fuzzy
 msgid "_Process"
 msgstr "عمليّة"
 
-#: ../memprof.glade.h:46
-#, fuzzy
-msgid "_Quit"
-msgstr "اخرج"
-
-#: ../memprof.glade.h:47
-#, fuzzy
-msgid "_Run Program..."
-msgstr "شغّل برنامج"
-
-#: ../process.c:843
+#: ../src/process.c:839
 #, fuzzy
 msgid "Initial"
 msgstr "وقت أولي"
 
-#: ../process.c:846
+#: ../src/process.c:842
 msgid "Starting"
 msgstr "يجري التشغيل"
 
-#: ../process.c:849
+#: ../src/process.c:845
 #, fuzzy
 msgid "Running"
 msgstr "يجري تشغيل..."
 
-#: ../process.c:852
+#: ../src/process.c:848
 msgid "Exiting"
 msgstr "خروج"
 
-#: ../process.c:855 ../process.c:858
+#: ../src/process.c:851 ../src/process.c:854
 #, fuzzy
 msgid "Defunct"
 msgstr "الإفتراضيّات"
 
-#: ../server.c:289
+#: ../src/server.c:289
 #, fuzzy, c-format
 msgid "Cannot find %s"
 msgstr "لا يمكنني ايجاد المستضيف"
 
-#: ../tree.c:102
+#: ../src/tree.c:102
 msgid "Show"
 msgstr "اعرض"
 
-#: ../tree.c:105
+#: ../src/tree.c:105
 msgid "Hide"
 msgstr "إخفاء"
 
-#: ../tree.c:112
+#: ../src/tree.c:112
 #, fuzzy
 msgid "Detach"
 msgstr "افصل اللسان "
 
-#: ../tree.c:180
+#: ../src/tree.c:180
 msgid "PID"
 msgstr "PID"
 
-#: ../tree.c:181
+#: ../src/tree.c:181
 #, fuzzy
 msgid "Command Line"
 msgstr "سطر الأوامر"
 
-#: ../tree.c:182
+#: ../src/tree.c:182
 msgid "Status"
 msgstr "الحالة"
+
+#, fuzzy
+#~ msgid "Generate _Leak Report"
+#~ msgstr "ولِّد كلمة سر _عشوائيّة"
+
+#, fuzzy
+#~ msgid "Generate _Profile"
+#~ msgstr "احذف الطور"
+
+#, fuzzy
+#~ msgid "Save _Leak Info..."
+#~ msgstr "إحفظ في..."
+
+#, fuzzy
+#~ msgid "Save _Profile..."
+#~ msgstr "_طور جديد..."
+
+#, fuzzy
+#~ msgid "_About"
+#~ msgstr "_6 عن البرنامج"
+
+#, fuzzy
+#~ msgid "_Close"
+#~ msgstr "أغلق"
+
+#, fuzzy
+#~ msgid "_Kill"
+#~ msgstr "اقتل"
+
+#, fuzzy
+#~ msgid "_Quit"
+#~ msgstr "اخرج"
+
+#, fuzzy
+#~ msgid "_Run Program..."
+#~ msgstr "شغّل برنامج"
 
 #, fuzzy
 #~ msgid "Saving is disabled at the moment"
