@@ -6,7 +6,7 @@
 
   <name xml:lang="en">Memprof</name>
   <shortdesc xml:lang="en">Memory profiler</shortdesc>
-  <homepage rdf:resource="http://live.gnome.org/Memprof" />
+  <homepage rdf:resource="http://projects.gnome.org/memprof" />
   <mailing-list rdf:resource="http://mail.gnome.org/mailman/listinfo/memprof-list" />
 
   <maintainer>
