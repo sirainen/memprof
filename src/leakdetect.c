@@ -448,7 +448,7 @@ leaks_find (MPProcess *process)
 		g_slist_free_1 (block_list);
 		block_list = tmp_list;
 
-		block_list = scan_block (process->pid, memfd, block_list, block_arr, block);
+		//block_list = scan_block (process->pid, memfd, block_list, block_arr, block);
 
 #if 0
 		if (block->flags & BLOCK_IS_ROOT)
