@@ -1405,6 +1405,25 @@ setup_profile_caller_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 	gtk_widget_set_sensitive (GTK_WIDGET (tree_view), FALSE);
 }
 
+static gint
+pointer_sort_func (GtkTreeModel *model,
+		   GtkTreeIter *a,
+		   GtkTreeIter *b,
+		   gpointer user_data)
+{
+	void *p1, *p2;
+
+	gtk_tree_model_get(model, a, 0, &p1, -1);
+	gtk_tree_model_get(model, b, 0, &p2, -1);
+
+	if (p1 < p2)
+		return -1;
+	else if (p1 > p2)
+		return 1;
+	else
+		return 0;
+}
+
 static void
 setup_leak_block_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 {
@@ -1418,6 +1437,7 @@ setup_leak_block_tree_view (ProcessWindow *pwin, GtkTreeView *tree_view)
 				    G_TYPE_INT,
 				    G_TYPE_STRING,
 				    G_TYPE_POINTER);
+	gtk_tree_sortable_set_sort_func (GTK_TREE_SORTABLE (store), 0, pointer_sort_func, NULL, NULL);
 
 	gtk_tree_view_set_model (tree_view, GTK_TREE_MODEL (store));
 	
