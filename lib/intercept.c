@@ -219,7 +219,7 @@ new_process (ThreadInfo *thread,
 	     pid_t old_pid,
 	     MIOperation operation)
 {
-	MIInfo info;
+	MIInfo info = { 0 };
 	struct sockaddr_un addr;
 	int addrlen;
 	char response;
@@ -514,7 +514,7 @@ int clone (int (*fn) (void *arg),
 static void
 exit_wait (void)
 {
-	MIInfo info;
+	MIInfo info = { 0 };
 	ThreadInfo *thread;
 	int count;
 	char response;

@@ -58,7 +58,7 @@ sigprof_handler (int unused, siginfo_t *si, ucontext_t *ucontext)
 {
     int saved_errno = errno;
     struct sigcontext *ctx = (struct sigcontext *)&ucontext->uc_mcontext;
-    MIInfo info;
+    MIInfo info = { 0 };
 
     info.alloc.operation = MI_TIME;
     info.alloc.old_ptr = NULL;

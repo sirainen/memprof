@@ -162,7 +162,7 @@ sigprof_handler (int unused)
 #endif
 {
 	int saved_errno = errno;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	info.alloc.operation = MI_TIME;
 	info.alloc.old_ptr = NULL;

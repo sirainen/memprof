@@ -56,7 +56,7 @@ static void *
 do_malloc (size_t size, int to_skip)
 {
 	void *result;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	/* It's possible to get recursion here, since dlsym() can trigger
 	 * memory allocation. To deal with this, we flag the initialization
@@ -124,7 +124,7 @@ static void *
 do_memalign (size_t boundary, size_t size)
 {
 	void *result;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		abort_unitialized ("memalign");
@@ -159,7 +159,7 @@ static void *
 do_realloc (void *ptr, size_t size)
 {
 	void *result;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		return NULL;/* See comment in initialize() */
@@ -193,7 +193,7 @@ realloc (void *ptr, size_t size)
 static void
 do_free (void  *ptr)
 {
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		return;
@@ -226,7 +226,7 @@ void *
 _ZN3WTF10fastMallocEj(size_t size)
 {
 	void *result;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		return NULL;/* See comment in initialize() */
@@ -249,7 +249,7 @@ void *
 _ZN3WTF11fastReallocEPvj(void *ptr, size_t size)
 {
 	void *result;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		return NULL;/* See comment in initialize() */
@@ -271,7 +271,7 @@ _ZN3WTF11fastReallocEPvj(void *ptr, size_t size)
 void
 _ZN3WTF8fastFreeEPv(void *ptr)
 {
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		return;/* See comment in initialize() */
@@ -292,7 +292,7 @@ void *
 _ZN3WTF10fastCallocEjj(size_t nmemb, size_t size)
 {
 	void *result;
-	MIInfo info;
+	MIInfo info = { 0 };
 
 	if (!mi_check_init ())
 		return NULL;/* See comment in initialize() */
