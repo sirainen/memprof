@@ -31,7 +31,7 @@ block_create_stack_list (Block *block, MPProcess *process, GHashTable *skip_hash
 
     for (element = block->stack; element != NULL; element = element->parent)
     {
-	const char *symbol = process_locate_symbol (process, (guint)element->address);
+	const char *symbol = process_locate_symbol (process, GPOINTER_TO_SIZE(element->address));
 
 	if (symbol && g_hash_table_lookup (skip_hash, symbol))
 	    continue;

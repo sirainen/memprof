@@ -47,8 +47,8 @@ typedef struct {
 
 typedef struct {
 	/* Initial members of this struct must be identical to that of Symbol */
-	guint start;
-	guint size;
+	gsize start;
+	gsize size;
 	gchar *name;
 	gulong offset;
 	gboolean prepared;

@@ -118,8 +118,8 @@ block_unref (Block *block)
  * Code to map addresses to object files
  ************************************************************/
 typedef struct {
-  guint addr;
-  guint size;
+  gsize addr;
+  gsize size;
   gchar *name;
 } Symbol;
 
@@ -182,7 +182,7 @@ process_read_maps (MPProcess *process)
 }
 
 static Map *
-real_locate_map (MPProcess *process, guint addr)
+real_locate_map (MPProcess *process, gsize addr)
 {
 	GList *tmp_list = process->map_list;
 
@@ -201,7 +201,7 @@ real_locate_map (MPProcess *process, guint addr)
 }
 
 Map *
-locate_map (MPProcess *process, guint addr)
+locate_map (MPProcess *process, gsize addr)
 {
 	Map *map = real_locate_map (process, addr);
 	if (!map)
@@ -526,7 +526,7 @@ input_func (GIOChannel  *source,
 	    gpointer     data)
 {
 	MIInfo info;
-	guint count;
+	gsize count;
 	MPProcess *input_process = data;
 	MPProcess *process = NULL;
   
