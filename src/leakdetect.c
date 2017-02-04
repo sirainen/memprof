@@ -178,10 +178,17 @@ read_stack_maps (MPProcess *process)
 				Map *map;
 
 				map = g_new (Map, 1);
-				map->start = start;
+				map->prepared = FALSE;
+				map->addr = start;
 				map->size = end - start;
 				map->name = NULL;
-				map->offset = 0;
+				map->abfd = NULL;
+				map->section = NULL;
+				map->symbols = NULL;
+				map->syms = NULL;
+				map->symcount = 0;
+
+				map->do_offset = TRUE;
 
 				result = g_list_prepend (result, map);
 			}
@@ -208,19 +215,19 @@ add_stack_root (MPProcess *process, GSList *block_list,
 	while (tmp_list) {
 		Map *map = tmp_list->data;
 
-		if (end_stack >= map->start &&
-		    end_stack < map->start + map->size) {
+		if (end_stack >= map->addr &&
+		    end_stack < map->addr + map->size) {
 			Block *block;
 			
 			block = g_new (Block, 1);
 			block->refcount = 1;
 			block->flags = BLOCK_IS_ROOT;
 			block->addr = (void *)end_stack;
-			if (start_stack > map->start &&
-			    start_stack < map->start + map->size)
+			if (start_stack > map->addr &&
+			    start_stack < map->addr + map->size)
 				block->size = start_stack - end_stack;
 			else
-				block->size = map->start + map->size - end_stack;
+				block->size = map->addr + map->size - end_stack;
 			block->stack = NULL;
 
 			return g_slist_prepend (block_list, block);
@@ -354,6 +361,7 @@ scan_block (pid_t pid, int memfd, GSList *block_list,
 	mem = (void **)addr;
 
 	for (i = 0; i < length; i++) {
+		errno = 0;
 		mem[i] = (void *)ptrace (PTRACE_PEEKDATA, pid,
 					 block->addr+i*sizeof(void *),
 					 &mem[i]);

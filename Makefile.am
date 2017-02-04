@@ -27,13 +27,7 @@ memprof_SOURCES =	        \
 	src/treeviewutils.c	\
 	src/treeviewutils.h	\
 	src/tree.c		\
-	src/binfile.h		\
-	src/binfile.c		\
-	src/elfparser.h		\
-	src/elfparser.c		\
-	src/binparser.h		\
-	src/binparser.c		\
-	src/demangle.c		\
+	src/bfdutils.c		\
 	src/detailwin.c
 
 memprof_LDADD = $(MEMPROF_LIBS)

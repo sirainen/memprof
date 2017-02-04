@@ -55,6 +55,14 @@ PKG_CHECK_MODULES(MEMPROF,
 
 AC_SUBST(MEMPROF_CFLAGS)
 
+AC_CHECK_LIB(iberty, cplus_demangle,:,
+  AC_CHECK_LIB(iberty, cplus_demangle_opname, LIBS="$LIBS -ldl",
+    AC_MSG_ERROR([*** libiberty required to compile MemProf]), -ldl))
+
+AC_CHECK_LIB(bfd, bfd_get_error, [MEMPROF_LIBS="$MEMPROF_LIBS -Wl,-Bstatic -lbfd -liberty -Wl,-Bdynamic"],
+  AC_MSG_ERROR([*** libbfd required to compile MemProf]),
+  -liberty)
+
 AC_CHECK_HEADER([bfd.h],[],
                 [AC_MSG_ERROR([Cannot continue: bfd.h not found. Do you have binutils-dev installed?])])
 

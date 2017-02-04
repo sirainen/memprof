@@ -26,7 +26,6 @@
 #include <sys/types.h>
 #include "bfd.h"
 #include "stackstash.h"
-#include "binfile.h"
 
 #ifndef __MEMPROF_H__
 #define __MEMPROF_H__
@@ -47,13 +46,16 @@ typedef struct {
 
 typedef struct {
 	/* Initial members of this struct must be identical to that of Symbol */
-	gsize start;
+	gsize addr;
 	gsize size;
 	gchar *name;
-	gulong offset;
-	gboolean prepared;
-	
-	BinFile *binfile;
+	bfd *abfd;
+	GArray *symbols;
+	long symcount;
+	asymbol **syms;
+	asection *section;
+	gboolean do_offset : 1;
+	gboolean prepared : 1;
 } Map;
 
 gboolean symbol_equal (gconstpointer s1, gconstpointer s2);
