@@ -268,7 +268,7 @@ mi_write (int         fd,
 uint32_t
 mi_atomic_increment(uint32_t *addr)
 {
-#if defined (__GNUC__) && defined (__i386__)
+#if defined (__GNUC__) && (defined (__i386__) || defined(__x86_64__))
 	uint32_t result;
 	__asm__ __volatile__("lock; xaddl %0, %1; incl %0"
 			     : "=r"(result), "=m"(*(addr))
@@ -283,7 +283,7 @@ mi_atomic_increment(uint32_t *addr)
 uint32_t
 mi_atomic_decrement(uint32_t *addr)
 {
-#if defined (__GNUC__) && defined (__i386__)
+#if defined (__GNUC__) && (defined (__i386__) || defined(__x86_64__))
 	uint32_t result;
 	__asm__ __volatile__("lock; xaddl %0, %1; decl %0"
 			     : "=r"(result), "=m"(*(addr))
